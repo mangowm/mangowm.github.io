@@ -7,6 +7,8 @@ import {
 } from "fumadocs-ui/page";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Pencil } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 
@@ -26,6 +28,16 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription>{page.data.description}</DocsDescription>
 			<DocsBody>
+				<Button asChild variant="outline" size="sm">
+					<a
+						href={`https://github.com/atheeq-rhxn/mangowc-web/blob/main/apps/web/content/docs/${page.path}.mdx`}
+						rel="noreferrer noopener"
+						target="_blank"
+					>
+						<Pencil className="w-4 h-4" />
+						Edit
+					</a>
+				</Button>
 				<MDX
 					components={getMDXComponents({
 						// this allows you to link to other pages with relative file paths
