@@ -43,6 +43,16 @@ export function Footer() {
 									Docs
 								</Link>
 							</li>
+							<li>
+								<a
+									href="https://github.com/DreamMaoMao/mangowc/wiki"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="text-foreground/70 text-sm transition-colors hover:text-primary"
+								>
+									Wiki
+								</a>
+							</li>
 						</ul>
 					</div>
 
@@ -57,6 +67,16 @@ export function Footer() {
 									className="text-foreground/70 text-sm transition-colors hover:text-primary"
 								>
 									Discord
+								</a>
+							</li>
+							<li>
+								<a
+									href="https://github.com/DreamMaoMao/mangowc/discussions"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="text-foreground/70 text-sm transition-colors hover:text-primary"
+								>
+									Discussions
 								</a>
 							</li>
 						</ul>
