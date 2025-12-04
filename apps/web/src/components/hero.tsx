@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MangoLayouts } from "@/components/mango-layouts";
+import { MangowcLayouts } from "@/components/mangowc-layouts";
 
 export function Hero() {
 	return (
@@ -47,7 +47,7 @@ export function Hero() {
 					</div>
 				</div>
 				<div className="flex-1 flex justify-center">
-					<MangoLayouts />
+					<MangowcLayouts />
 				</div>
 			</div>
 		</section>
