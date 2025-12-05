@@ -5,12 +5,12 @@ import {
 	DocsPage,
 	DocsTitle,
 } from "fumadocs-ui/page";
-import { Pencil } from "lucide-react";
+
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
+import { LLMCopyButton, ViewOptions } from "@/components/ai/page-actions";
 
 export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 	const params = await props.params;
@@ -46,22 +46,21 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 				<DocsTitle>{page.data.title}</DocsTitle>
 				<DocsDescription>{page.data.description}</DocsDescription>
 				<DocsBody>
-					<Button asChild variant="outline" size="sm">
-						<a
-							href={`https://github.com/atheeq-rhxn/mangowc-web/blob/main/apps/web/content/docs/${page.path}`}
-							rel="noreferrer noopener"
-							target="_blank"
-						>
-							<Pencil className="h-4 w-4" />
-							Edit
-						</a>
-					</Button>
-					<MDX
-						components={getMDXComponents({
-							// this allows you to link to other pages with relative file paths
-							a: createRelativeLink(source, page),
-						})}
-					/>
+					<div className="flex flex-row flex-wrap gap-2 items-center border-b pb-6 -mt-6">
+						<LLMCopyButton filePath={`apps/web/content/docs/${page.path}`} />
+						<ViewOptions
+							markdownUrl={`${page.url}.mdx`}
+							githubUrl={`https://github.com/atheeq-rhxn/mangowc-web/blob/main/apps/web/content/docs/${page.path}`}
+						/>
+					</div>
+					<div className="pt-4">
+						<MDX
+							components={getMDXComponents({
+								// this allows you to link to other pages with relative file paths
+								a: createRelativeLink(source, page),
+							})}
+						/>
+					</div>
 				</DocsBody>
 			</DocsPage>
 		</>

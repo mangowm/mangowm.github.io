@@ -11,9 +11,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
 
 Regardless of your installation method, MangoWC requires a Wayland-capable environment. If you are building from source, ensure you have the following dependencies:
 
-<details>
-<summary>View Build Dependencies</summary>
-
+<Callout type="info" title="Build Dependencies">
 - `glibc`
 - `wayland`
 - `wayland-protocols`
@@ -31,8 +29,7 @@ Regardless of your installation method, MangoWC requires a Wayland-capable envir
 - `pcre2`
 - `xorg-xwayland`
 - `libxcb`
-
-</details>
+</Callout>
 
 ## Install Guide
 
@@ -60,17 +57,23 @@ The package is hosted in the community-maintained **GURU** repository.
 <Steps>
 <Step>
 **Add the GURU repository**
-` bash emerge --ask --verbose eselect-repository eselect repository enable guru emerge --sync guru  `
+```bash
+emerge --ask --verbose eselect-repository
+eselect repository enable guru
+emerge --sync guru
+```
 </Step>
 <Step>
 **Unmask packages**
 Add the required packages to your `package.accept_keywords` file:
-\- `gui-libs/scenefx`
-\- `gui-wm/mangowc`
+- `gui-libs/scenefx`
+- `gui-wm/mangowc`
 </Step>
 <Step>
 **Install MangoWC**
-` bash emerge --ask --verbose gui-wm/mangowc  `
+```bash
+emerge --ask --verbose gui-wm/mangowc
+```
 </Step>
 </Steps>
 </Tab>
@@ -117,17 +120,32 @@ If your distribution isn't listed, you can build MangoWC from source. You will n
 <Step>
 **Build wlroots**
 Clone and install the specific version required (check README for latest version).
-` bash git clone -b 0.19.2 https://gitlab.freedesktop.org/wlroots/wlroots.git cd wlroots meson build -Dprefix=/usr sudo ninja -C build install  `
+```bash
+git clone -b 0.19.2 https://gitlab.freedesktop.org/wlroots/wlroots.git
+cd wlroots
+meson build -Dprefix=/usr
+sudo ninja -C build install
+```
 </Step>
 <Step>
 **Build scenefx**
 This library handles the visual effects.
-` bash git clone -b 0.4.1 https://github.com/wlrfx/scenefx.git cd scenefx meson build -Dprefix=/usr sudo ninja -C build install  `
+```bash
+git clone -b 0.4.1 https://github.com/wlrfx/scenefx.git
+cd scenefx
+meson build -Dprefix=/usr
+sudo ninja -C build install
+```
 </Step>
 <Step>
 **Build MangoWC**
 Finally, compile the compositor itself.
-` bash git clone https://github.com/DreamMaoMao/mangowc.git cd mangowc meson build -Dprefix=/usr sudo ninja -C build install  `
+```bash
+git clone https://github.com/DreamMaoMao/mangowc.git
+cd mangowc
+meson build -Dprefix=/usr
+sudo ninja -C build install
+```
 </Step>
 </Steps>
 </Tab>
