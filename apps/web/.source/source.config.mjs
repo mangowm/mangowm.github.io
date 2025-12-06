@@ -4,8 +4,10 @@ var docs = defineDocs({
   dir: "content/docs",
   docs: {
     postprocess: {
-      includeProcessedMarkdown: true
-    }
+      includeProcessedMarkdown: true,
+      extractLinkReferences: true
+    },
+    async: true
   }
 });
 var source_config_default = defineConfig({

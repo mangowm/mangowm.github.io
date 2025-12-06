@@ -15,9 +15,10 @@ import { LLMCopyButton, ViewOptions } from "@/components/page-actions";
 export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 	const params = await props.params;
 	const page = source.getPage(params.slug);
+
 	if (!page) notFound();
 
-	const MDX = page.data.body;
+	const { body: MDX, toc } = await page.data.load();
 
 	const baseUrl = "https://mangowc.vercel.app";
 	const pathname = `/docs/${params.slug?.join("/") || ""}`;
@@ -39,29 +40,29 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
 			/>
 			<DocsPage
-				toc={page.data.toc}
+				toc={toc}
 				full={page.data.full}
 				tableOfContent={{ style: "clerk" }}
 			>
 				<DocsTitle>{page.data.title}</DocsTitle>
-				<DocsDescription>{page.data.description}</DocsDescription>
-				<DocsBody>
-					<div className="flex flex-row flex-wrap gap-2 items-center border-b pb-6 -mt-6">
-						<LLMCopyButton markdownUrl={`${page.url}.mdx`} />
-						<ViewOptions
-							markdownUrl={`${page.url}.mdx`}
-							githubUrl={`https://github.com/atheeq-rhxn/mangowc-web/blob/main/apps/web/content/docs/${page.path}`}
-						/>
-					</div>
-					<div className="pt-4">
-						<MDX
-							components={getMDXComponents({
-								// this allows you to link to other pages with relative file paths
-								a: createRelativeLink(source, page),
-							})}
-						/>
-					</div>
-				</DocsBody>
+				<DocsDescription className="mb-2">
+					{page.data.description}
+				</DocsDescription>
+				<div className="flex flex-row flex-wrap gap-2 items-center border-b pb-8">
+					<LLMCopyButton markdownUrl={`${page.url}.mdx`} />
+					<ViewOptions
+						markdownUrl={`${page.url}.mdx`}
+						githubUrl={`https://github.com/atheeq-rhxn/mangowc-web/blob/main/apps/web/content/docs/${page.path}`}
+					/>
+				</div>
+				<div className="prose flex-1 text-fd-foreground/90 prose-no-margin">
+					<MDX
+						components={getMDXComponents({
+							// this allows you to link to other pages with relative file paths
+							a: createRelativeLink(source, page),
+						})}
+					/>
+				</div>
 			</DocsPage>
 		</>
 	);
