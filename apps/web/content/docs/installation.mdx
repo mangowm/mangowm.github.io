@@ -126,8 +126,12 @@ pikman install mangowc
 <Tab value="Fedora">
 The package is in the third-party **Terra repository**. First, add the Terra Repository.
 
+<Callout type="warning" title="Requires sudo privileges">
+Both commands require root privileges. Use `sudo` if needed.
+</Callout>
+
 ```bash
-dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+dnf install --nogprgcheck --repofrompath 'terra,https://repos.fyralabs.com/terraform$releasever' terra-release
 ```
 
 Then, install the package:
