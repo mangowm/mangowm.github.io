@@ -102,23 +102,9 @@ tagrule=id:Number,Parameter:Value
 |-----------|------|--------|-------------|
 | `id` | integer | 0-9 | Match by tags id, 0 means ~0 tag |
 | `monitor_name` | string | monitor name | Match by monitor name |
-| `layout_name` | string | layout name | Layout name to set |
-| `no_render_border` | integer | 0 or 1 | Disable render border |
-| `no_hide` | integer | 0,1 | Not hide even if the tag is empty (persistent tag) |
-
-### Supported Layout Names
-- `tile`
-- `scroller`
-- `monocle`
-- `grid`
-- `deck`
-- `center_tile`
-- `right_tile`
-- `vertical_tile`
-- `vertical_scroller`
-- `vertical_grid`
-- `vertical_spiral`
-- `vertical_deck`
+| `layout_name` | string | layout name | Layout name to set, see [Supported Layouts](/docs/window-management/layouts#supported-layouts) for a list. |
+| `no_render_border` | integer | `0` / `1` | Disable render border |
+| `no_hide` | integer | `0` / `1` | Not hide even if the tag is empty (persistent tag) |
 
 ### Examples
 
@@ -150,9 +136,9 @@ layerrule=layer_name:Regex,Parameter:Value
 | `layer_name` | string | layer_name | Match name of layer, support regex |
 | `animation_type_open` | string | slide, zoom, fade, none | Set open animation |
 | `animation_type_close` | string | slide, zoom, fade, none | Set close animation |
-| `noblur` | integer | 0 or 1 | Disable blur |
-| `noanim` | integer | 0 or 1 | Disable layer animation |
-| `noshadow` | integer | 0 or 1 | Disable layer shadow |
+| `noblur` | integer | `0` / `1` | Disable blur |
+| `noanim` | integer | `0` / `1` | Disable layer animation |
+| `noshadow` | integer | `0` / `1` | Disable layer shadow |
 
 **Examples:**
 

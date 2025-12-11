@@ -6,7 +6,7 @@ export const highlights = [
 		icon: "Zap",
 	},
 	{
-		title: "Base Tags, Not Workspaces",
+		title: "Based On Tags, Not Workspaces",
 		description:
 			"Separate window layouts per tag with easy switching. Supports persistent tags and cross-monitor management.",
 		icon: "Grid3X3",

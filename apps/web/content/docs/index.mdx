@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: A lightweight, Wayland compositor based on dwl.
+description: A lightweight and feature-rich Wayland compositor based on dwl.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
@@ -22,7 +22,7 @@ Beyond basic window management, Mango provides a rich set of features designed f
 <Cards>
   <Card
     icon={<Zap />}
-    href="/docs/appearance/animations"
+    href="/docs/visuals/animations"
     title="Fluid Animations"
     description="Smooth, customizable animations for opening, moving, and closing windows, as well as tag switching."
   />
@@ -34,13 +34,13 @@ Beyond basic window management, Mango provides a rich set of features designed f
   />
   <Card
     icon={<Layers />}
-    href="/docs/appearance/effects"
+    href="/docs/visuals/effects"
     title="Visual Effects"
     description="Built-in blur, shadows, corner radius, and opacity effects powered by scenefx."
   />
   <Card
     icon={<Keyboard />}
-    href="/docs/advanced/ipc"
+    href="/docs/ipc"
     title="IPC & Scripting"
     description="Control the compositor externally with robust IPC support for custom scripts and widgets."
   />
@@ -75,8 +75,8 @@ Beyond basic window management, Mango provides a rich set of features designed f
 
 This project is built upon the hard work of several open-source projects:
 
-- **[wlroots](https://gitlab.freedesktop.org/wlroots/wlroots)**: Implementation of Wayland protocol.
+- **[wlroots](https://gitlab.freedesktop.org/wlroots/wlroots)**: Implementation of the Wayland protocols.
 - **[dwl](https://codeberg.org/dwl/dwl)**: The base for Mango's core functionality.
-- **[owl](https://github.com/dqrk0jeste/owl)**: Inspiration for basal window animations.
+- **[mwl](https://github.com/nikoloc/mwl)**: Inspiration for basal window animations.
 - **[scenefx](https://github.com/wlrfx/scenefx)**: The library powering Mango's window effects.
 
