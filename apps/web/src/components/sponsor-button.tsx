@@ -23,7 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const SPONSOR_DATA = {
-	ADDRESS: "0xf9cda472f256671d2504afc4c35340ec5615da1",
+	ADDRESS: "0xf9cda472f2556671d2504afc4c35340ec5615da1",
 	QR_SRC: "/sponsor-qr.png",
 } as const;
 
