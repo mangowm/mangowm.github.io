@@ -3,70 +3,137 @@ title: Mouse & Gestures
 description: Configure mouse buttons, scrolling, gestures, and lid switches.
 ---
 
-## Mouse Bindings
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
-Bind actions to mouse clicks.
+<Tabs items={['Mouse Bindings', 'Axis Bindings', 'Gesture Bindings', 'Switch Bindings']}>
 
-**Format:**
-```ini
-mousebind=MODIFIERS,BUTTON,COMMAND,PARAMS
-```
+<Tab value="Mouse Bindings">
 
-  - **Buttons**: `btn_left`, `btn_right`, `btn_middle`, `btn_side`, `btn_extra`.
+Assign actions to mouse button presses with optional modifier keys.
 
-**Example:**
+#### Syntax
 
 ```ini
-# Move window with Super + Left Click
-mousebind=SUPER,btn_left,moveresize,curmove
-
-# Resize window with Super + Right Click
-mousebind=SUPER,btn_right,moveresize,curresize
-
-# Close window with Right Click in overview
-mousebind=NONE,btn_right,killclient,0
+mousebind=MODIFIERS,BUTTON,COMMAND,PARAMETERS
 ```
 
-<Callout type="info">
-When using `NONE` as the modifier:
-- Only `btn_middle` works in general mode.
-- `btn_left` and `btn_right` only work in overview mode.
+- **Modifiers**: `SUPER`, `CTRL`, `ALT`, `SHIFT`, `NONE`. Combine with `+` (e.g., `SUPER+CTRL`)
+- **Buttons**: `btn_left`, `btn_right`, `btn_middle`, `btn_side`, `btn_extra`, `btn_forward`, `btn_back`, `btn_task`
+
+<Callout type="warn" title="NONE Modifier Behavior">
+When modifiers are set to `NONE`:
+- Only `btn_middle` works in normal mode
+- `btn_left` and `btn_right` only work in overview mode
 </Callout>
 
-## Axis Bindings (Scroll)
-
-Trigger actions by scrolling the mouse wheel.
-
-**Format:** `axisbind=MODIFIERS,DIRECTION,COMMAND`
+#### Examples
 
 ```ini
-# Switch tags by scrolling while holding Super
+# Window manipulation
+mousebind=SUPER,btn_left,moveresize,curmove
+mousebind=SUPER,btn_right,moveresize,curresize
+mousebind=SUPER+CTRL,btn_right,killclient
+
+# Overview mode (requires NONE modifier)
+mousebind=NONE,btn_left,toggleoverview,-1
+mousebind=NONE,btn_right,killclient,0
+mousebind=NONE,btn_middle,togglemaximizescreen,0
+```
+
+</Tab>
+
+<Tab value="Axis Bindings">
+
+Map scroll wheel movements to actions for workspace and window navigation.
+
+#### Syntax
+
+```ini
+axisbind=MODIFIERS,DIRECTION,COMMAND,PARAMETERS
+```
+
+- **Direction**: `UP`, `DOWN`, `LEFT`, `RIGHT`
+
+
+
+#### Examples
+
+```ini
 axisbind=SUPER,UP,viewtoleft_have_client
 axisbind=SUPER,DOWN,viewtoright_have_client
 ```
 
-## Touchpad Gestures
+</Tab>
 
-Bind multi-finger swipes on the touchpad.
+<Tab value="Gesture Bindings">
 
-**Format:** `gesturebind=MODIFIERS,DIRECTION,FINGERS,COMMAND`
+Enable touchpad swipe gestures for navigation and window management.
+
+#### Syntax
 
 ```ini
-# 3-finger swipe to move focus
+gesturebind=MODIFIERS,DIRECTION,FINGERS,COMMAND,PARAMETERS
+```
+
+- **Direction**: `up`, `down`, `left`, `right`
+- **Fingers**: `3` or `4`
+
+
+
+<Callout type="info" title="Touchpad Setup Required">
+Gestures require proper touchpad configuration. See [Input Devices](/configuration/input) for touchpad settings like `tap_to_click` and `disable_while_typing`.
+</Callout>
+
+#### Examples
+
+```ini
+# 3-finger: Window focus
 gesturebind=none,left,3,focusdir,left
 gesturebind=none,right,3,focusdir,right
+gesturebind=none,up,3,focusdir,up
+gesturebind=none,down,3,focusdir,down
 
-# 4-finger swipe to switch workspace
+# 4-finger: Workspace navigation
+gesturebind=none,left,4,viewtoleft_have_client
+gesturebind=none,right,4,viewtoright_have_client
 gesturebind=none,up,4,toggleoverview
+gesturebind=none,down,4,toggleovervie
 ```
 
-## Switch Bindings (Lid)
+</Tab>
 
-Trigger actions when the laptop lid is opened or closed.
+<Tab value="Switch Bindings">
 
-**Prerequisite:** Ensure `HandleLidSwitch=ignore` is set in `/etc/systemd/logind.conf`.
+Trigger actions on hardware events like laptop lid open/close.
+
+#### Syntax
 
 ```ini
-switchbind=fold,spawn,swaylock
+switchbind=FOLD_STATE,COMMAND,PARAMETERS
+```
+
+- **Fold State**: `fold` (lid closed), `unfold` (lid opened)
+
+<Callout type="warn" title="System Configuration Required">
+Disable system lid handling in `/etc/systemd/logind.conf`:
+
+```ini
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore  
+HandleLidSwitchDocked=ignore
+```
+
+
+</Callout>
+
+#### Examples
+
+```ini
+switchbind=fold,spawn,swaylock -f -c 000000
 switchbind=unfold,spawn,wlr-dpms on
 ```
+
+</Tab>
+
+</Tabs>
