@@ -60,7 +60,8 @@ export function ScrollerLayout({ orientation }: ScrollerLayoutProps) {
 			const phase = animationPhase;
 
 			// Track Logic (Absolute Positioning Fix)
-			const isExpandedTrack = phase >= 3 && phase <= 5;
+			// Only phase 3 needs expanded track (windows at 0%, 50%, 100%)
+			const isExpandedTrack = phase === 3;
 			const trackMultiplier = isExpandedTrack ? 1.5 : 1.0;
 
 			// Reset styles to avoid conflicts when switching orientation
@@ -79,11 +80,8 @@ export function ScrollerLayout({ orientation }: ScrollerLayoutProps) {
 			track.style.top = "0";
 			track.style.left = "0";
 
-			// Transform Logic
-			let scrollTargetPercent = 0;
-			if (phase === 3 || phase === 4 || phase === 5) {
-				scrollTargetPercent = 50;
-			}
+			// Transform Logic - only scroll for phase 3
+			const scrollTargetPercent = phase === 3 ? 50 : 0;
 			const scrollOffset = (dim * scrollTargetPercent) / 100;
 
 			if (isVert) {
@@ -95,25 +93,58 @@ export function ScrollerLayout({ orientation }: ScrollerLayoutProps) {
 			// Window Logic
 			const set = (
 				el: HTMLDivElement | null,
-				offsetPercent: number, // xPercent or yPercent
-				sizePercent: number, // widthPercent or heightPercent
-				visible = true,
-				active = false,
+				options: {
+					primaryOffset: number; // main axis position (percent)
+					primarySize: number; // main axis size (percent)
+					secondaryOffset?: number; // cross axis position (percent) - for stacking
+					secondarySize?: number; // cross axis size (percent) - for stacking
+					visible?: boolean;
+					active?: boolean;
+				},
 			) => {
+				const {
+					primaryOffset,
+					primarySize,
+					secondaryOffset = 0,
+					secondarySize = 100,
+					visible = true,
+					active = false,
+				} = options;
+
 				if (!el) return;
-				const rawPos = (dim * offsetPercent) / 100;
-				const rawSize = (dim * sizePercent) / 100;
 
-				const isVisuallyFirst = offsetPercent === scrollTargetPercent;
+				const isVisuallyFirst = primaryOffset === scrollTargetPercent;
 				const isVisuallyLast =
-					offsetPercent + sizePercent === scrollTargetPercent + 100;
+					primaryOffset + primarySize === scrollTargetPercent + 100;
 
+				// Primary axis calculations
+				const rawPos = (dim * primaryOffset) / 100;
+				const rawSize = (dim * primarySize) / 100;
 				const actualPos = isVisuallyFirst ? rawPos : rawPos + GAP / 2;
 				let actualSize = rawSize;
 				if (!isVisuallyFirst) actualSize -= GAP / 2;
 				if (!isVisuallyLast) actualSize -= GAP / 2;
-
 				actualSize = Math.max(actualSize, 0);
+
+				// Secondary axis calculations (matching tile-layout approach)
+				const secondaryDim = isVert ? width : height;
+				let actualSecondaryPos: number;
+				let actualSecondarySize: number;
+
+				if (secondarySize < 100) {
+					// Stacking mode - use tile-layout style calculations
+					const halfSecondary = (secondaryDim - GAP) / 2;
+					if (secondaryOffset === 0) {
+						actualSecondaryPos = 0;
+						actualSecondarySize = halfSecondary;
+					} else {
+						actualSecondaryPos = halfSecondary + GAP;
+						actualSecondarySize = halfSecondary;
+					}
+				} else {
+					actualSecondaryPos = 0;
+					actualSecondarySize = secondaryDim;
+				}
 
 				el.style.position = "absolute";
 				el.style.opacity = visible ? "1" : "0";
@@ -121,55 +152,191 @@ export function ScrollerLayout({ orientation }: ScrollerLayoutProps) {
 				el.className = cn(CARD_BASE, active ? CARD_ACTIVE : CARD_INACTIVE);
 
 				if (isVert) {
-					el.style.left = "0px";
-					el.style.width = "100%";
+					el.style.left = `${actualSecondaryPos}px`;
+					el.style.width = `${actualSecondarySize}px`;
 					el.style.top = `${actualPos}px`;
 					el.style.height = `${actualSize}px`;
 				} else {
-					el.style.top = "0px";
-					el.style.height = "100%";
+					el.style.top = `${actualSecondaryPos}px`;
+					el.style.height = `${actualSecondarySize}px`;
 					el.style.left = `${actualPos}px`;
 					el.style.width = `${actualSize}px`;
 				}
 			};
 
-			// Phase States (Same logic, mapped to Vertical/Horizontal via `set`)
+			// Phase States
+			// 0: Init (all hidden)
+			// 1: Spawn window 1
+			// 2: Spawn window 2 (50/50 split)
+			// 3: Spawn window 3 (all 3 visible in row)
+			// 4: Stack - windows 2&3 stack on right (2 above, 3 below), window 3 focused
+			// 5: Unstack - window 3 expands to full-height right, window 2 fades out from stacked
+			// 6: Window 3 fades out, window 2 fades in at full-height right
+			// 7: Despawn window 2
+			// 8: Despawn window 1
+
 			if (phase === 0) {
-				set(leftRef.current, 0, halfScreen, false, false);
-				set(centerRef.current, 100, halfScreen, false, false);
-				set(rightRef.current, 200, halfScreen, false, false);
+				set(leftRef.current, {
+					primaryOffset: 0,
+					primarySize: halfScreen,
+					visible: false,
+				});
+				set(centerRef.current, {
+					primaryOffset: 100,
+					primarySize: halfScreen,
+					visible: false,
+				});
+				set(rightRef.current, {
+					primaryOffset: 200,
+					primarySize: halfScreen,
+					visible: false,
+				});
 			} else if (phase === 1) {
-				set(leftRef.current, 25, halfScreen, true, true);
-				set(centerRef.current, 100, halfScreen, false, false);
-				set(rightRef.current, 200, halfScreen, false, false);
+				set(leftRef.current, {
+					primaryOffset: 25,
+					primarySize: halfScreen,
+					visible: true,
+					active: true,
+				});
+				set(centerRef.current, {
+					primaryOffset: 100,
+					primarySize: halfScreen,
+					visible: false,
+				});
+				set(rightRef.current, {
+					primaryOffset: 200,
+					primarySize: halfScreen,
+					visible: false,
+				});
 			} else if (phase === 2) {
-				set(leftRef.current, 0, halfScreen, true, false);
-				set(centerRef.current, 50, halfScreen, true, true);
-				set(rightRef.current, 200, halfScreen, false, false);
+				set(leftRef.current, {
+					primaryOffset: 0,
+					primarySize: halfScreen,
+					visible: true,
+				});
+				set(centerRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					visible: true,
+					active: true,
+				});
+				set(rightRef.current, {
+					primaryOffset: 200,
+					primarySize: halfScreen,
+					visible: false,
+				});
 			} else if (phase === 3) {
-				set(leftRef.current, 0, halfScreen, true, false);
-				set(centerRef.current, 50, halfScreen, true, false);
-				set(rightRef.current, 100, halfScreen, true, true);
+				set(leftRef.current, {
+					primaryOffset: 0,
+					primarySize: halfScreen,
+					visible: true,
+				});
+				set(centerRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					visible: true,
+				});
+				set(rightRef.current, {
+					primaryOffset: 100,
+					primarySize: halfScreen,
+					visible: true,
+					active: true,
+				});
 			} else if (phase === 4) {
-				set(leftRef.current, 0, halfScreen, true, false);
-				set(centerRef.current, 100, halfScreen, true, false);
-				set(rightRef.current, 50, halfScreen, true, true);
+				// Stack phase: Window 1 left, Windows 2&3 stacked on right
+				// Window 3 is focused while coming to stack position
+				set(leftRef.current, {
+					primaryOffset: 0,
+					primarySize: halfScreen,
+					visible: true,
+				});
+				set(centerRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					secondaryOffset: 0,
+					secondarySize: 50,
+					visible: true,
+				});
+				set(rightRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					secondaryOffset: 50,
+					secondarySize: 50,
+					visible: true,
+					active: true,
+				});
 			} else if (phase === 5) {
-				set(rightRef.current, 50, 100, true, true);
-				set(centerRef.current, 150, halfScreen, true, false);
-				set(leftRef.current, -50, halfScreen, true, false);
+				// Window 3 unstacks: expands from bottom-right stacked to full-height right side
+				// Window 2 positioned off-screen to the right, ready to slide in
+				set(leftRef.current, {
+					primaryOffset: 0,
+					primarySize: halfScreen,
+					visible: true,
+				});
+				// Window 3: expands from bottom stacked to full-height
+				set(rightRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					visible: true,
+					active: true,
+				});
+				// Window 2: positioned off-screen right, ready to slide in
+				set(centerRef.current, {
+					primaryOffset: 100,
+					primarySize: halfScreen,
+					visible: false,
+				});
 			} else if (phase === 6) {
-				set(rightRef.current, 50, halfScreen, false, false);
-				set(centerRef.current, 50, halfScreen, true, true);
-				set(leftRef.current, 0, halfScreen, true, false);
+				// Window 3 fades out from right side, window 2 fades in at full-height right side
+				set(rightRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					visible: false,
+				});
+				set(leftRef.current, {
+					primaryOffset: 0,
+					primarySize: halfScreen,
+					visible: true,
+				});
+				set(centerRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					visible: true,
+					active: true,
+				});
 			} else if (phase === 7) {
-				set(leftRef.current, 25, halfScreen, true, true);
-				set(centerRef.current, 50, halfScreen, false, false);
-				set(rightRef.current, 50, halfScreen, false, false);
+				set(leftRef.current, {
+					primaryOffset: 25,
+					primarySize: halfScreen,
+					visible: true,
+					active: true,
+				});
+				set(centerRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					visible: false,
+				});
+				set(rightRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					visible: false,
+				});
 			} else if (phase === 8) {
-				set(leftRef.current, 25, halfScreen, false, false);
-				set(centerRef.current, 50, halfScreen, false, false);
-				set(rightRef.current, 50, halfScreen, false, false);
+				set(leftRef.current, {
+					primaryOffset: 25,
+					primarySize: halfScreen,
+					visible: false,
+				});
+				set(centerRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					visible: false,
+				});
+				set(rightRef.current, {
+					primaryOffset: 50,
+					primarySize: halfScreen,
+					visible: false,
+				});
 			}
 		};
 
