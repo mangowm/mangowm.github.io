@@ -20,11 +20,12 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { basePath } from "@/lib/base-path";
 import { cn } from "@/lib/utils";
 
 const SPONSOR_DATA = {
 	ADDRESS: "0xf9cda472f2556671d2504afc4c35340ec5615da1",
-	QR_SRC: "/sponsor-qr.png",
+	QR_SRC: `${basePath}/sponsor-qr.png`,
 	NETWORK: "BEP20 (BSC)",
 	NETWORK_FULL: "BNB Smart Chain (BEP20)",
 } as const;

@@ -4,11 +4,12 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../index.css";
 import { AppProviders } from "@/components/app-providers";
 import Providers from "@/components/providers";
+import { basePath } from "@/lib/base-path";
 import { createMetadata, SITE_DESCRIPTION } from "@/lib/metadata";
 
 const SITE_TITLE = "MangoWC - Lightweight Wayland Compositor";
 const SITE_URL = "https://mangowc.vercel.app";
-const SITE_OG_IMAGE = "/image.webp";
+const SITE_OG_IMAGE = `${basePath}/image.webp`;
 const IMAGE_VERSION = "3";
 const TWITTER_CREATOR = "";
 

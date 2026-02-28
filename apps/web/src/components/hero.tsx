@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { MangowcLayouts } from "@/components/mangowc-layouts";
+import { basePath } from "@/lib/base-path";
 
 export function Hero() {
 	return (

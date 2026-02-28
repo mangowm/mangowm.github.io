@@ -1,4 +1,5 @@
 import type { Metadata } from "next/types";
+import { basePath } from "./base-path";
 import type { Page } from "./source";
 
 const IMAGE_VERSION = "4";
@@ -18,8 +19,8 @@ export function createMetadata(override: Metadata): Metadata {
 			"dynamic tiling",
 		],
 		icons: {
-			icon: "/favicon.ico",
-			apple: "/logo-192x192.webp",
+			icon: `${basePath}/favicon.ico`,
+			apple: `${basePath}/logo-192x192.webp`,
 		},
 		robots: {
 			index: true,
@@ -78,9 +79,8 @@ export const SITE_DESCRIPTION =
 	"MangoWC is a fast, lightweight, modern Wayland compositor.";
 
 export const baseUrl =
-	process.env.NODE_ENV === "development" ||
-	!process.env.VERCEL_PROJECT_PRODUCTION_URL
+	process.env.NODE_ENV === "development"
 		? new URL("http://localhost:3001")
-		: new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+		: new URL("https://atheeq-rhxn.github.io" + basePath);
 
 export const githubPagesBasePath = "/mangowc-web";
