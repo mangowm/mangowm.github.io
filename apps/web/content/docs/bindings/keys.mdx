@@ -3,6 +3,7 @@ title: Key Bindings
 description: Define keyboard shortcuts and modes.
 ---
 
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { Callout } from 'fumadocs-ui/components/callout';
 
 ## Syntax
@@ -126,6 +127,42 @@ bind=NONE,Escape,setkeymode,default
 | `disable_monitor` | `monitor_name` | Shutdown monitor. |
 | `enable_monitor` | `monitor_name` | Open monitor. |
 | `toggle_monitor` | `monitor_name` | Toggle monitor power. |
+
+### Media Controls
+
+<Tabs items={['Brightness', 'Volume']}>
+
+<Tab value="Brightness">
+
+Requires: `brightnessctl`
+
+```ini
+bind=NONE,XF86MonBrightnessUp,spawn,brightnessctl s +2%
+bind=SHIFT,XF86MonBrightnessUp,spawn,brightnessctl s 100%
+bind=NONE,XF86MonBrightnessDown,spawn,brightnessctl s 2%-
+bind=SHIFT,XF86MonBrightnessDown,spawn,brightnessctl s 1%
+```
+
+</Tab>
+
+<Tab value="Volume">
+
+Requires: `wpctl` (WirePlumber)
+
+```ini
+bind=NONE,XF86AudioRaiseVolume,spawn,wpctl set-volume @DEFAULT_SINK@ 5%+
+bind=NONE,XF86AudioLowerVolume,spawn,wpctl set-volume @DEFAULT_SINK@ 5%-
+bind=NONE,XF86AudioMute,spawn,wpctl set-mute @DEFAULT_SINK@ toggle
+bind=SHIFT,XF86AudioMute,spawn,wpctl set-mute @DEFAULT_SOURCE@ toggle
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout type="warning">
+  Some keyboards don't send standard media keys. Run `wev` and press your key to check.
+</Callout>
 
 ### Floating Window Movement
 
