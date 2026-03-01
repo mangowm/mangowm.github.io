@@ -7,8 +7,6 @@ const isGitHubPages = process.env.GITHUB_PAGES === "true";
 const nextConfig = {
 	...(isGitHubPages && {
 		output: "export",
-		basePath: "/mango-web",
-		assetPrefix: "https://mangowm.github.io/mango-web",
 	}),
 	trailingSlash: true,
 	reactCompiler: false,

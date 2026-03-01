@@ -1,6 +1,2 @@
 export const basePath =
-	process.env.GITHUB_PAGES === "true"
-		? "/mango-web"
-		: process.env.VERCEL
-			? ""
-			: "";
+	process.env.GITHUB_PAGES === "true" ? "" : process.env.VERCEL ? "" : "";

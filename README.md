@@ -71,4 +71,4 @@ mango-web/
 * **Core Project:** [mangowm/mango](https://github.com/mangowm/mango)
 * **Project Wiki:** [mangowm/mango](https://github.com/mangowm/mango/wiki)
 * **Live Site (Vercel):** [https://mangowc.vercel.app](https://mangowc.vercel.app)
-* **Live Site (GitHub Pages):** [https://mangowm.github.io/mango-web/](https://mangowm.github.io/mango-web/)
+* **Live Site (GitHub Pages):** [https://mangowm.github.io](https://mangowm.github.io)

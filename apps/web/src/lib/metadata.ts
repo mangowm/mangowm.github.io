@@ -83,4 +83,4 @@ export const baseUrl =
 		? new URL("http://localhost:3001")
 		: new URL("https://mangowm.github.io" + basePath);
 
-export const githubPagesBasePath = "/mango-web";
+export const githubPagesBasePath = "";
