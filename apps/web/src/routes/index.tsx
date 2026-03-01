@@ -30,6 +30,7 @@ const DiscordIcon = memo(function DiscordIcon() {
 
 const NAV_LINKS: LinkItemType[] = [
   { text: "Docs", url: "/docs" },
+  { text: "Layouts", url: "/layouts" },
   { text: "Releases", url: "/releases" },
   {
     type: "icon",
