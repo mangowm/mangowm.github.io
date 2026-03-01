@@ -35,6 +35,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
+import { ConfigExportPanel } from "./ConfigExportPanel";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -50,7 +51,7 @@ interface LayoutInfo {
   hasOverview: boolean;
 }
 
-interface LayoutParams {
+export interface LayoutParams {
   windowCount: number;
   masterCount: number;
   masterFactor: number;
@@ -74,7 +75,7 @@ interface LayoutParams {
   overviewGapOuter: number;
 }
 
-interface MonitorParams {
+export interface MonitorParams {
   width: number;
   height: number;
   scale: number;
@@ -235,7 +236,7 @@ function useLayoutRects(
 // Main
 // ---------------------------------------------------------------------------
 
-export function Layouts() {
+export function Editor() {
   const [activeLayout, setActiveLayout] = useState<LayoutType>("tile");
   const [monitor, setMonitor]           = useState<MonitorParams>(DEFAULT_MONITOR);
   const [params, setParams]             = useState<LayoutParams>(DEFAULT_PARAMS);
@@ -266,7 +267,7 @@ export function Layouts() {
   )?.label;
 
   return (
-    <div className="flex h-[820px] overflow-hidden rounded-lg border bg-background">
+    <div className="flex h-full overflow-hidden rounded-lg border bg-background">
 
       {/* ── Sidebar ── */}
       <aside className="flex w-64 flex-shrink-0 flex-col border-r bg-muted/30">
@@ -477,6 +478,8 @@ export function Layouts() {
           </div>
         </div>
       </main>
+
+      <ConfigExportPanel params={params} monitor={monitor} />
 
     </div>
   );
