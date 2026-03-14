@@ -5,6 +5,7 @@ import type { LinkItemType } from "fumadocs-ui/layouts/shared";
 import { baseOptions } from "@/lib/layout.shared";
 import { latestVersion } from "@/lib/latest-version";
 import { MangoLayouts } from "@/components/mango-layouts";
+import { SponsorButton } from "@/components/sponsor-button";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -40,6 +41,10 @@ const NAV_LINKS: LinkItemType[] = [
     text: "Discord",
     external: true,
     icon: <DiscordIcon />,
+  },
+  {
+    type: "custom",
+    children: <SponsorButton />,
   },
 ];
 
