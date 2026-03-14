@@ -10,13 +10,26 @@ import { Suspense } from "react";
 
 import { LLMCopyButton, ViewOptions } from "@/components/ai/page-actions";
 import { baseOptions, gitConfig, sourceGitConfig } from "@/lib/layout.shared";
-import { source } from "@/lib/source";
+import { getPageImage, source, type Page } from "@/lib/source";
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
   head: ({ loaderData }) => {
-    const title = loaderData?.title ?? "Docs";
-    return { meta: [{ title: `${title} | mangowm` }] };
+    if (!loaderData) return { meta: [{ title: "Docs | mangowm" }] };
+    const { title, slugs } = loaderData;
+    const ogImage = getPageImage({ slugs } as Page);
+
+    return {
+      meta: [
+        { title: `${title} | mangowm` },
+        { property: "og:title", content: title },
+        { property: "og:image", content: ogImage.url },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:image", content: ogImage.url },
+      ],
+    };
   },
   loader: async ({ params }) => {
     const slugs = params._splat?.split("/") ?? [];

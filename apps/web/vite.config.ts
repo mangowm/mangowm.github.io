@@ -6,10 +6,14 @@ import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 
+import { ogPages } from "./src/generated/og-paths";
+
 export default defineConfig({
-  base: "/",
-  server: {
-    port: 3000,
+  ssr: {
+    external: ["@takumi-rs/image-response", "@takumi-rs/core", "@takumi-rs/helpers"],
+  },
+  optimizeDeps: {
+    exclude: ["@takumi-rs/core"],
   },
   plugins: [
     mdx(await import("./source.config")),
@@ -18,17 +22,26 @@ export default defineConfig({
       projects: ["./tsconfig.json"],
     }),
     tanstackStart({
-      spa: {
+      prerender: {
         enabled: true,
-        prerender: {
-          enabled: true,
-          crawlLinks: true,
-        },
+        autoStaticPathsDiscovery: true,
+        autoSubfolderIndex: true,
+        crawlLinks: true,
+        concurrency: 4,
+        retryCount: 1,
+        retryDelay: 1000,
+        failOnError: false,
+        pages: [
+          { path: "/" },
+          { path: "/releases" },
+          { path: "/editor" },
+          { path: "/docs" },
+          { path: "/api/search" },
+          ...ogPages,
+        ],
       },
-      pages: [{ path: "/" }, { path: "/releases" }, { path: "/editor" }, { path: "/docs" }, { path: "/api/search"}],
     }),
     react(),
-    // please see https://tanstack.com/start/latest/docs/framework/react/guide/hosting#nitro for guides on hosting
     nitro(),
   ],
 });
