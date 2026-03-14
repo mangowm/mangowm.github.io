@@ -41,7 +41,9 @@ async function generateOgImages() {
   console.log(`Found ${files.length} doc files`);
 
   const { ImageResponse } = await import("@takumi-rs/image-response");
-  const { generate: DefaultImage } = await import("fumadocs-ui/og/takumi");
+  const { generate, getImageResponseOptions } = await import("../src/lib/og/generate");
+
+  const imageOptions = await getImageResponseOptions();
 
   for (const file of files) {
     const slugs = getSlugsFromPath(file);
@@ -56,12 +58,11 @@ async function generateOgImages() {
     const description = `Documentation for ${title}`;
 
     const imageResponse = new ImageResponse(
-      createElement(DefaultImage, {
+      createElement(await generate, {
         title,
         description,
-        site: "mangowm",
       }),
-      { width: 1200, height: 630, format: "webp" },
+      imageOptions,
     );
 
     const arrayBuffer = await imageResponse.arrayBuffer();
