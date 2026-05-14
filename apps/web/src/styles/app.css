@@ -136,6 +136,11 @@
   html {
     @apply font-sans;
   }
+  button:not(:disabled):not([aria-disabled="true"]),
+  [role="button"]:not(:disabled):not([aria-disabled="true"]),
+  a[href] {
+    cursor: pointer;
+  }
 }
 
 .grid-bg {
