@@ -35,6 +35,7 @@ const DiscordIcon = memo(function DiscordIcon() {
 const NAV_LINKS: LinkItemType[] = [
   { text: "Docs", url: "/docs" },
   ...(import.meta.env.DEV ? [{ text: "Editor", url: "/editor" }] : []),
+  { text: "Showcase", url: "/showcase" },
   { text: "Releases", url: "/releases" },
   {
     type: "icon",
