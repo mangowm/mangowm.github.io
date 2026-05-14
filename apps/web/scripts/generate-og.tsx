@@ -2,7 +2,8 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
 import { resolve, dirname, relative, parse, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ImageResponse } from "@takumi-rs/image-response";
-import { generate } from "../src/lib/og/generate";
+import { generate, generateHomePage } from "../src/lib/og/generate";
+import { siteConfig } from "../src/lib/site";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CONTENT_DIR = resolve(__dirname, "../content/docs");
@@ -75,6 +76,17 @@ async function main() {
   }
 
   let count = 0;
+
+  const homeResponse = new ImageResponse(
+    generateHomePage({ logoPaths }),
+    { width: 1200, height: 630, format: "webp" },
+  );
+
+  const homePath = resolve(OUT_DIR, "og/home/image.webp");
+  mkdirSync(dirname(homePath), { recursive: true });
+  writeFileSync(homePath, Buffer.from(await homeResponse.arrayBuffer()));
+  count++;
+
   for (const page of pages) {
     const segments = [...page.slugs, "image.webp"];
     const filePath = resolve(OUT_DIR, "og/docs", ...segments);
