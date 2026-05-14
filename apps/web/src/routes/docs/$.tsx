@@ -28,6 +28,12 @@ export const Route = createFileRoute("/docs/$")({
     await clientLoader.preload(data.path);
     return data;
   },
+  head: ({ loaderData }) => {
+    const ogUrl = `/og/docs/${[...loaderData.slugs, "image.webp"].join("/")}`;
+    return {
+      meta: [{ property: "og:image", content: ogUrl }],
+    };
+  },
 });
 
 const serverLoader = createServerFn({
