@@ -5,7 +5,7 @@
   "sideEffects": false,
   "scripts": {
     "dev": "vite dev --port=4000",
-    "prebuild": "tsx scripts/fetch-version.ts",
+    "prebuild": "node scripts/sync-markdown.mjs && tsx scripts/fetch-version.ts",
     "build": "vite build && tsx scripts/generate-og.tsx && cp .output/public/index.html .output/public/404.html",
     "start": "serve .output/public --config ../../serve.json",
     "preview": "vite preview",
