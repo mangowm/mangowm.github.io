@@ -13,6 +13,7 @@ import { MonocleLayout } from "./layouts/monocle-layout";
 import { OverviewLayout } from "./layouts/overview-layout";
 import { RightTileLayout } from "./layouts/right-tile-layout";
 import { ScrollerLayout } from "./layouts/scroller-layout";
+import { DwindleLayout } from "./layouts/dwindle-layout";
 import { TileLayout } from "./layouts/tile-layout";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -26,6 +27,7 @@ type LayoutId =
   | "center-tile"
   | "right-tile"
   | "monocle"
+  | "dwindle";
 
 type Orientation = "horizontal" | "vertical";
 
@@ -38,17 +40,18 @@ interface LayoutDef {
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const MAIN_LAYOUTS: LayoutDef[] = [
-  { id: "scroller", label: "Scroller", supportsOrientation: true },
   { id: "tiling", label: "Tiling", supportsOrientation: true },
+  { id: "scroller", label: "Scroller", supportsOrientation: true },
   { id: "grid", label: "Grid", supportsOrientation: true },
 ];
 
 const OTHER_LAYOUTS: LayoutDef[] = [
-  { id: "overview", label: "Overview", supportsOrientation: false },
   { id: "deck", label: "Deck", supportsOrientation: true },
+  { id: "dwindle", label: "Dwindle", supportsOrientation: false },
   { id: "center-tile", label: "Center Tile", supportsOrientation: false },
   { id: "right-tile", label: "Right Tile", supportsOrientation: false },
   { id: "monocle", label: "Monocle", supportsOrientation: false },
+  { id: "overview", label: "Overview", supportsOrientation: false },
 ];
 
 const ALL_LAYOUTS = [...MAIN_LAYOUTS, ...OTHER_LAYOUTS];
@@ -186,7 +189,9 @@ export function MangoLayouts() {
             "inline-flex shrink-0 items-center gap-0.5 rounded-xl border border-fd-border bg-fd-muted p-1 transition-opacity",
             !supportsOrientation && "pointer-events-none opacity-40",
           )}
-          title={!supportsOrientation ? "This layout has no orientation variant" : undefined}
+          title={!supportsOrientation
+            ? "This layout has no orientation variant"
+            : undefined}
         >
           <button
             type="button"
@@ -220,19 +225,28 @@ export function MangoLayouts() {
       {/* Preview area */}
       <div className="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-fd-border bg-fd-background/50 shadow-sm">
         {activeLayout === "tiling" && <TileLayout orientation={orientation} />}
-        {activeLayout === "scroller" && <ScrollerLayout orientation={orientation} />}
+        {activeLayout === "scroller" && (
+          <ScrollerLayout orientation={orientation} />
+        )}
         {activeLayout === "grid" && <GridLayout orientation={orientation} />}
         {activeLayout === "overview" && <OverviewLayout />}
         {activeLayout === "deck" && <DeckLayout orientation={orientation} />}
-        {activeLayout === "center-tile" && <CenterTileLayout orientation={orientation} />}
+        {activeLayout === "center-tile" && (
+          <CenterTileLayout orientation={orientation} />
+        )}
         {activeLayout === "right-tile" && <RightTileLayout />}
         {activeLayout === "monocle" && <MonocleLayout />}
+        {activeLayout === "dwindle" && (
+          <DwindleLayout orientation={orientation} />
+        )}
       </div>
 
       {/* Active layout label */}
       <p className="text-center text-xs text-fd-muted-foreground">
-        <span className="font-medium text-fd-foreground">{activeDef.label}</span>
-        {supportsOrientation && <> &mdash; {orientation}</>}
+        <span className="font-medium text-fd-foreground">
+          {activeDef.label}
+        </span>
+        {supportsOrientation && <>&mdash; {orientation}</>}
       </p>
     </div>
   );
