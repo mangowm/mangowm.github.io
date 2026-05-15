@@ -12,7 +12,12 @@ function formatDate(iso: string): string {
 }
 
 export const Route = createFileRoute("/showcase")({
-  head: () => ({ meta: [{ title: createTitle("Showcase") }] }),
+  head: () => ({
+    meta: [
+      { title: createTitle("Showcase") },
+      { property: "og:image", content: "/og/showcase/image.webp" },
+    ],
+  }),
   component: Showcase,
   loader: async () => {
     return showcaseEntries;

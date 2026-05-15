@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
-import { resolve, dirname, relative, parse, sep } from "node:path";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, parse, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ImageResponse } from "@takumi-rs/image-response";
 import { generate, generateHomePage } from "../src/lib/og/generate";
@@ -40,8 +40,10 @@ function parseFrontmatter(content: string): Record<string, string> {
     if (idx === -1) continue;
     const key = line.slice(0, idx).trim();
     let value = line.slice(idx + 1).trim();
-    if ((value.startsWith('"') && value.endsWith('"')) ||
-        (value.startsWith("'") && value.endsWith("'"))) {
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
       value = value.slice(1, -1);
     }
     result[key] = value;
@@ -49,8 +51,11 @@ function parseFrontmatter(content: string): Record<string, string> {
   return result;
 }
 
-function collectPages(dir: string): Array<{ slugs: string[]; title: string; description?: string }> {
-  const pages: Array<{ slugs: string[]; title: string; description?: string }> = [];
+function collectPages(
+  dir: string,
+): Array<{ slugs: string[]; title: string; description?: string }> {
+  const pages: Array<{ slugs: string[]; title: string; description?: string }> =
+    [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     if (entry.name.startsWith(".")) continue;
     const fullPath = resolve(dir, entry.name);
@@ -77,10 +82,11 @@ async function main() {
 
   let count = 0;
 
-  const homeResponse = new ImageResponse(
-    generateHomePage({ logoPaths }),
-    { width: 1200, height: 630, format: "webp" },
-  );
+  const homeResponse = new ImageResponse(generateHomePage({ logoPaths }), {
+    width: 1200,
+    height: 630,
+    format: "webp",
+  });
 
   const homePath = resolve(OUT_DIR, "og/home/image.webp");
   mkdirSync(dirname(homePath), { recursive: true });
@@ -97,10 +103,13 @@ async function main() {
         title: page.title,
         description: page.description,
         icon: (
-          <svg width="56" height="56" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-            {logoPaths.map((p, i) => (
-              <path key={i} fill={p.fill} d={p.d} />
-            ))}
+          <svg
+            width="56"
+            height="56"
+            viewBox="0 0 1024 1024"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {logoPaths.map((p, i) => <path key={i} fill={p.fill} d={p.d} />)}
           </svg>
         ),
         site: "mangowm",
@@ -108,6 +117,44 @@ async function main() {
       { width: 1200, height: 630, format: "webp" },
     );
 
+    writeFileSync(filePath, Buffer.from(await response.arrayBuffer()));
+    count++;
+  }
+
+  const staticPages = [
+    {
+      path: "og/showcase/image.webp",
+      title: "Showcase",
+      description: "Community setup showcases",
+    },
+    {
+      path: "og/releases/image.webp",
+      title: "Releases",
+      description: "All mangowm releases and changelogs",
+    },
+  ];
+
+  for (const page of staticPages) {
+    const filePath = resolve(OUT_DIR, page.path);
+    mkdirSync(dirname(filePath), { recursive: true });
+    const response = new ImageResponse(
+      generate({
+        title: page.title,
+        description: page.description,
+        icon: (
+          <svg
+            width="56"
+            height="56"
+            viewBox="0 0 1024 1024"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {logoPaths.map((p, i) => <path key={i} fill={p.fill} d={p.d} />)}
+          </svg>
+        ),
+        site: "mangowm",
+      }),
+      { width: 1200, height: 630, format: "webp" },
+    );
     writeFileSync(filePath, Buffer.from(await response.arrayBuffer()));
     count++;
   }
