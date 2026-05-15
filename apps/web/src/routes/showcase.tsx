@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import showcaseEntries from "../showcase.json";
 import { createTitle } from "@/lib/site";
@@ -55,7 +55,6 @@ function Lightbox({
       style={{ background: "rgba(0,0,0,0.92)", backdropFilter: "blur(12px)" }}
       onClick={onClose}
     >
-      {/* Prev */}
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -81,7 +80,6 @@ function Lightbox({
         </span>
       </button>
 
-      {/* Content */}
       <div
         className="flex flex-col items-center gap-5 px-16"
         onClick={(e) => e.stopPropagation()}
@@ -107,7 +105,6 @@ function Lightbox({
           )}
         </div>
 
-        {/* Meta bar */}
         <div className="flex items-center gap-4 rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm backdrop-blur-md">
           <span className="text-white/30 text-xs font-mono tracking-widest uppercase">
             {String(index + 1).padStart(2, "0")} /{" "}
@@ -155,7 +152,6 @@ function Lightbox({
         </div>
       </div>
 
-      {/* Next */}
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -181,7 +177,6 @@ function Lightbox({
         </span>
       </button>
 
-      {/* Close */}
       <button
         onClick={onClose}
         className="absolute right-5 top-5 group"
@@ -223,7 +218,6 @@ function ShowcaseCard({
       className="showcase-card group relative flex flex-col overflow-hidden rounded-xl border border-fd-border/50 bg-fd-card transition-all duration-500 hover:border-fd-border hover:shadow-2xl"
       style={{ animationDelay: `${index * 60}ms` }}
     >
-      {/* Image */}
       <button
         onClick={!imgError ? onOpen : undefined}
         className="relative aspect-video w-full overflow-hidden bg-fd-muted text-left focus:outline-none"
@@ -242,59 +236,70 @@ function ShowcaseCard({
           </div>
         )}
 
-        {/* Gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 transition-opacity duration-400 group-hover:opacity-100" />
 
-        {/* Index number — top-left badge */}
         <span className="absolute left-3 top-3 font-mono text-[10px] font-bold tracking-widest text-white/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           {num}
         </span>
 
-        {/* Expand hint — bottom center */}
         <span className="absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-2 rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[11px] font-medium tracking-wide text-white/80 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
           View full size ↗
         </span>
       </button>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between gap-3 border-t border-fd-border/40 bg-fd-card px-4 py-3">
-        <div className="flex min-w-0 flex-col gap-0.5">
+      <div className="flex flex-col gap-2 border-t border-fd-border/40 bg-fd-card px-4 py-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex min-w-0 flex-col gap-0.5">
+            <a
+              href={`https://github.com/${entry.username}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="truncate text-sm font-semibold text-fd-foreground transition-colors hover:text-fd-primary"
+            >
+              @{entry.username}
+            </a>
+            {entry.added && (
+              <span className="text-[10px] text-fd-muted-foreground/60">
+                {formatDate(entry.added)}
+              </span>
+            )}
+          </div>
+
           <a
-            href={`https://github.com/${entry.username}`}
+            href={entry.dotfiles}
             target="_blank"
             rel="noopener noreferrer"
-            className="truncate text-sm font-semibold text-fd-foreground transition-colors hover:text-fd-primary"
+            className="inline-flex shrink-0 items-center gap-1 rounded-md border border-fd-border/60 bg-fd-muted/50 px-2.5 py-1 text-[11px] font-medium text-fd-foreground/60 transition-all duration-200 hover:border-fd-border hover:bg-fd-muted hover:text-fd-foreground"
           >
-            @{entry.username}
+            Dotfiles
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M7 7h10v10M7 17 17 7" />
+            </svg>
           </a>
-          {entry.added && (
-            <span className="text-[10px] text-fd-muted-foreground/60">
-              {formatDate(entry.added)}
-            </span>
-          )}
         </div>
 
-        <a
-          href={entry.dotfiles}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex shrink-0 items-center gap-1 rounded-md border border-fd-border/60 bg-fd-muted/50 px-2.5 py-1 text-[11px] font-medium text-fd-foreground/60 transition-all duration-200 hover:border-fd-border hover:bg-fd-muted hover:text-fd-foreground"
-        >
-          Dotfiles
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="10"
-            height="10"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M7 7h10v10M7 17 17 7" />
-          </svg>
-        </a>
+        {entry.tags && entry.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {entry.tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-fd-border/40 bg-fd-muted/40 px-2 py-0.5 text-[10px] text-fd-muted-foreground"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -303,25 +308,40 @@ function ShowcaseCard({
 function Showcase() {
   const entries = Route.useLoaderData();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  const allTags = useMemo(
+    () => Array.from(new Set(entries.flatMap((e) => e.tags ?? []))).sort(),
+    [entries],
+  );
+
+  const filteredEntries = useMemo(
+    () =>
+      activeTag ? entries.filter((e) => e.tags?.includes(activeTag)) : entries,
+    [entries, activeTag],
+  );
 
   const openLightbox = useCallback((i: number) => setLightboxIndex(i), []);
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
   const prevLightbox = useCallback(
     () =>
       setLightboxIndex((i) =>
-        i !== null ? (i - 1 + entries.length) % entries.length : null,
+        i !== null
+          ? (i - 1 + filteredEntries.length) % filteredEntries.length
+          : null,
       ),
-    [entries.length],
+    [filteredEntries.length],
   );
   const nextLightbox = useCallback(
     () =>
-      setLightboxIndex((i) => (i !== null ? (i + 1) % entries.length : null)),
-    [entries.length],
+      setLightboxIndex((i) =>
+        i !== null ? (i + 1) % filteredEntries.length : null,
+      ),
+    [filteredEntries.length],
   );
 
   return (
     <div className="relative min-h-screen bg-fd-background px-4 py-12 sm:px-6 lg:px-8">
-      {/* Subtle radial glow at the top */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-96 opacity-30"
         style={{
@@ -330,7 +350,6 @@ function Showcase() {
         }}
       />
 
-      {/* Back button */}
       <Link
         to="/"
         className="fixed left-6 top-6 z-50 inline-flex items-center gap-2 rounded-full border border-fd-border bg-fd-background/80 px-4 py-2 text-sm font-medium text-fd-foreground shadow-lg backdrop-blur-md transition-colors hover:text-fd-primary"
@@ -352,7 +371,6 @@ function Showcase() {
       </Link>
 
       <div className="relative mx-auto w-full max-w-7xl">
-        {/* Header */}
         <div className="mb-14 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-4xl font-bold tracking-tight text-fd-foreground sm:text-5xl">
@@ -362,11 +380,38 @@ function Showcase() {
               Browse configs, grab dotfiles, and get inspired.
             </p>
 
-            {/* Entry count pill */}
             <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-fd-border/60 bg-fd-muted/30 px-3.5 py-1.5 text-xs text-fd-muted-foreground">
               <span className="h-1.5 w-1.5 rounded-full bg-fd-primary" />
-              {entries.length} setups
+              {filteredEntries.length} setups
             </div>
+
+            {allTags.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button
+                  onClick={() => setActiveTag(null)}
+                  className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                    activeTag === null
+                      ? "border-fd-primary bg-fd-primary/10 text-fd-primary"
+                      : "border-fd-border/60 bg-fd-muted/30 text-fd-muted-foreground hover:border-fd-border hover:text-fd-foreground"
+                  }`}
+                >
+                  All
+                </button>
+                {allTags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                    className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                      activeTag === tag
+                        ? "border-fd-primary bg-fd-primary/10 text-fd-primary"
+                        : "border-fd-border/60 bg-fd-muted/30 text-fd-muted-foreground hover:border-fd-border hover:text-fd-foreground"
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <a
@@ -392,12 +437,10 @@ function Showcase() {
           </a>
         </div>
 
-        {/* Divider */}
         <div className="mb-10 h-px w-full bg-gradient-to-r from-transparent via-fd-border to-transparent" />
 
-        {/* Grid */}
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-          {entries.map((entry, i) => (
+          {filteredEntries.map((entry, i) => (
             <ShowcaseCard
               key={entry.username}
               entry={entry}
@@ -407,7 +450,6 @@ function Showcase() {
           ))}
         </div>
 
-        {/* Bottom CTA */}
         {entries.length > 0 && (
           <div className="mt-16 flex flex-col items-center gap-3 text-center">
             <p className="text-sm text-fd-muted-foreground">
@@ -427,7 +469,7 @@ function Showcase() {
 
       {lightboxIndex !== null && (
         <Lightbox
-          entries={entries}
+          entries={filteredEntries}
           index={lightboxIndex}
           onClose={closeLightbox}
           onPrev={prevLightbox}

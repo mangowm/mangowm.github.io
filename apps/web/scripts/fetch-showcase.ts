@@ -6,30 +6,23 @@ import { parse } from "yaml";
 const RAW_BASE =
   "https://raw.githubusercontent.com/mangowm/mango-showcase/main";
 
-/**
- * Converts:
- * https://github.com/user/repo
- * ->
- * https://raw.githubusercontent.com/user/repo/main
- */
 function toRawBase(dotfilesUrl: string): string {
   const url = new URL(dotfilesUrl);
   return `https://raw.githubusercontent.com${url.pathname}/main`;
 }
 
-/** Shape of each entry in entries.yml after bot stamping */
 type RawEntry = {
-  /** username is the only non-reserved key; value is the dotfiles URL */
-  [username: string]: string;
-  /** ISO timestamp stamped by the bot on merge */
+  username: string;
+  dotfiles: string;
+  tags: string[];
   added?: string;
 };
 
-/** Shape written to showcase.json */
 type ShowcaseEntry = {
   username: string;
   screenshot: string;
   dotfiles: string;
+  tags: string[];
   added: string | null;
 };
 
@@ -49,16 +42,15 @@ async function main() {
   const entries: ShowcaseEntry[] = [];
 
   for (const item of rawEntries) {
-    // The username key is whichever key is not "added"
-    const usernameKey = Object.keys(item).find((k) => k !== "added");
-    if (!usernameKey) {
-      console.warn("  ⚠ Skipping malformed entry (no username key):", item);
+    if (!item.username || !item.dotfiles) {
+      console.warn(
+        "  ⚠ Skipping malformed entry (missing username or dotfiles):",
+        item,
+      );
       continue;
     }
 
-    const username = usernameKey;
-    const dotfiles = item[usernameKey];
-    const added = item.added ?? null;
+    const { username, dotfiles, tags = [], added = null } = item;
 
     const rawBase = toRawBase(dotfiles);
     const screenshotUrl = `${rawBase}/screenshot.png`;
@@ -84,11 +76,11 @@ async function main() {
       username,
       screenshot: `/showcase/${fileName}`,
       dotfiles,
+      tags,
       added,
     });
   }
 
-  // Sort newest-first; entries without a timestamp go to the end
   entries.sort((a, b) => {
     if (!a.added && !b.added) return 0;
     if (!a.added) return 1;
