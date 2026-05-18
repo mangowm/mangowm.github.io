@@ -475,11 +475,356 @@ function TagFilter({
   );
 }
 
+type RepoStatus =
+  | "idle"
+  | "checking"
+  | "valid"
+  | "private"
+  | "not-found"
+  | "error";
+type ScreenshotStatus = "idle" | "checking" | "found" | "missing" | "error";
+
+function useRepoValidation(
+  username: string | null,
+  repo: string | null,
+): RepoStatus {
+  const [status, setStatus] = useState<RepoStatus>("idle");
+
+  useEffect(() => {
+    if (!username || !repo) {
+      setStatus("idle");
+      return;
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      setStatus("checking");
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${username}/${repo}`,
+          { signal: controller.signal },
+        );
+        if (res.status === 404) {
+          setStatus("not-found");
+        } else if (res.ok) {
+          const data = await res.json();
+          setStatus(data.private ? "private" : "valid");
+        } else {
+          setStatus("error");
+        }
+      } catch {
+        if (!controller.signal.aborted) setStatus("error");
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [username, repo]);
+
+  return status;
+}
+
+function useScreenshotValidation(
+  repoStatus: RepoStatus,
+  username: string | null,
+  repo: string | null,
+): ScreenshotStatus {
+  const [status, setStatus] = useState<ScreenshotStatus>("idle");
+
+  useEffect(() => {
+    if (repoStatus !== "valid" || !username || !repo) {
+      setStatus("idle");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    async function check() {
+      setStatus("checking");
+      try {
+        const rootRes = await fetch(
+          `https://api.github.com/repos/${username}/${repo}/contents/screenshot.png`,
+          { signal: controller.signal },
+        );
+        if (rootRes.ok) {
+          setStatus("found");
+          return;
+        }
+
+        if (rootRes.status === 404) {
+          const dirRes = await fetch(
+            `https://api.github.com/repos/${username}/${repo}/contents/screenshots`,
+            { signal: controller.signal },
+          );
+          if (dirRes.ok) {
+            const files = (await dirRes.json()) as { name: string }[];
+            setStatus(
+              files.some((f) => f.name === "1.png") ? "found" : "missing",
+            );
+          } else if (dirRes.status === 404) {
+            setStatus("missing");
+          } else {
+            setStatus("error");
+          }
+        } else {
+          setStatus("error");
+        }
+      } catch {
+        if (!controller.signal.aborted) setStatus("error");
+      }
+    }
+
+    check();
+    return () => controller.abort();
+  }, [repoStatus, username, repo]);
+
+  return status;
+}
+
+function useModalBehavior(onClose: () => void) {
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+}
+
+type FieldStatusProps = {
+  dotfiles: string;
+  repoStatus: RepoStatus;
+  screenshotStatus: ScreenshotStatus;
+  username: string | null;
+};
+
+function FieldStatus(
+  { dotfiles, repoStatus, screenshotStatus, username }: FieldStatusProps,
+) {
+  if (dotfiles.length > 0 && !dotfiles.startsWith("https://github.com/")) {
+    return <p className="text-[11px] text-red-400/80">Must be a GitHub URL</p>;
+  }
+
+  if (repoStatus === "checking") {
+    return (
+      <p className="flex items-center gap-1.5 text-[11px] text-fd-muted-foreground/70">
+        <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-yellow-500/70" />
+        Checking repository…
+      </p>
+    );
+  }
+
+  if (repoStatus === "private") {
+    return (
+      <p className="flex items-center gap-1.5 text-[11px] text-red-400/80">
+        Repo exists but is private
+      </p>
+    );
+  }
+
+  if (repoStatus === "not-found") {
+    return (
+      <p className="flex items-center gap-1.5 text-[11px] text-red-400/80">
+        Repository not found
+      </p>
+    );
+  }
+
+  if (repoStatus === "error") {
+    return (
+      <p className="flex items-center gap-1.5 text-[11px] text-amber-400/80">
+        Couldn't verify — you can still submit
+      </p>
+    );
+  }
+
+  if (repoStatus === "valid") {
+    if (screenshotStatus === "found") {
+      return (
+        <p className="flex items-center gap-1.5 text-[11px] text-green-400/80">
+          Submitting as @{username}
+        </p>
+      );
+    }
+
+    if (screenshotStatus === "missing") {
+      return (
+        <p className="flex items-center gap-1.5 text-[11px] text-red-400/80">
+          No screenshots found
+        </p>
+      );
+    }
+
+    if (screenshotStatus === "error") {
+      return (
+        <p className="flex items-center gap-1.5 text-[11px] text-amber-400/80">
+          Couldn't verify screenshots — you can still submit
+        </p>
+      );
+    }
+  }
+
+  return null;
+}
+
+function SubmitModal({ onClose }: { onClose: () => void }) {
+  const [dotfiles, setDotfiles] = useState("");
+  const [tags, setTags] = useState("");
+
+  const parts = dotfiles.startsWith("https://github.com/")
+    ? dotfiles.slice(19).split("/")
+    : null;
+  const username = parts?.[0] ?? null;
+  const repo = parts?.[1] ?? null;
+
+  const repoStatus = useRepoValidation(username, repo);
+  const screenshotStatus = useScreenshotValidation(repoStatus, username, repo);
+
+  useModalBehavior(onClose);
+
+  const canSubmit = (repoStatus === "valid" || repoStatus === "not-found" || repoStatus === "error") &&
+    screenshotStatus !== "missing";
+
+  function handleSubmit() {
+    if (!canSubmit) return;
+
+    const params = new URLSearchParams({
+      template: "showcase.yml",
+      title: `showcase: ${username!.trim()}`,
+      username: username!.trim(),
+      dotfiles: dotfiles.trim(),
+      ...(tags.trim() ? { tags: tags.trim() } : {}),
+    });
+
+    window.open(
+      `https://github.com/mangowm/mango-showcase/issues/new?${params.toString()}`,
+      "_blank",
+    );
+    onClose();
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center"
+      style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(12px)" }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="w-full max-w-md rounded-t-2xl border border-fd-border/60 bg-fd-background shadow-2xl sm:rounded-2xl">
+        <div className="flex items-center justify-between border-b border-fd-border/40 px-5 py-4">
+          <div>
+            <h2 className="text-sm font-semibold text-fd-foreground">
+              Submit your setup
+            </h2>
+            <p className="mt-0.5 text-xs text-fd-muted-foreground">
+              Opens a prefilled GitHub issue
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex h-7 w-7 items-center justify-center rounded-full border border-fd-border/50 text-fd-muted-foreground transition-colors hover:border-fd-border hover:text-fd-foreground"
+            aria-label="Close"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="space-y-4 px-5 py-5">
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-fd-foreground">
+              Dotfiles URL <span className="text-fd-primary">*</span>
+            </label>
+            <input
+              autoFocus
+              type="url"
+              placeholder="https://github.com/your-username/dotfiles"
+              value={dotfiles}
+              onChange={(e) => setDotfiles(e.target.value)}
+              className="w-full rounded-lg border border-fd-border/60 bg-fd-muted/30 px-3 py-2 text-sm text-fd-foreground placeholder:text-fd-muted-foreground/50 outline-none focus:border-fd-border"
+            />
+            <FieldStatus
+              dotfiles={dotfiles}
+              repoStatus={repoStatus}
+              screenshotStatus={screenshotStatus}
+              username={username}
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-fd-foreground">
+              Tags{" "}
+              <span className="ml-1.5 font-normal text-fd-muted-foreground">
+                optional
+              </span>
+            </label>
+            <input
+              type="text"
+              placeholder="dark, minimal, CachyOS"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+              className="w-full rounded-lg border border-fd-border/60 bg-fd-muted/30 px-3 py-2 text-sm text-fd-foreground placeholder:text-fd-muted-foreground/50 outline-none focus:border-fd-border"
+            />
+            <p className="text-[11px] text-fd-muted-foreground/60">
+              Comma-separated
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between border-t border-fd-border/40 px-5 py-4">
+          <p className="text-[11px] text-fd-muted-foreground/60">
+            You'll confirm on GitHub
+          </p>
+          <button
+            onClick={handleSubmit}
+            disabled={!canSubmit}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-fd-primary px-4 py-2 text-xs font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-30"
+          >
+            Open issue
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M7 7h10v10M7 17 17 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Showcase() {
   const entries = Route.useLoaderData();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [activeTags, setActiveTags] = useState<Set<string>>(new Set());
   const [screenshotIndex, setScreenshotIndex] = useState(0);
+  const [submitOpen, setSubmitOpen] = useState(false);
 
   const allTags = useMemo(
     () =>
@@ -581,10 +926,8 @@ function Showcase() {
             )}
           </div>
 
-          <a
-            href="https://github.com/mangowm/mango-showcase"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setSubmitOpen(true)}
             className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-fd-border bg-fd-muted/30 px-4 py-2 text-sm font-medium text-fd-foreground transition-all hover:bg-fd-muted sm:mt-2"
           >
             <svg
@@ -598,10 +941,11 @@ function Showcase() {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <path d="M12 5v14M5 12l7 7 7-7" />
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 8v8M8 12h8" />
             </svg>
             Submit your setup
-          </a>
+          </button>
         </div>
 
         <div className="mb-8 h-px w-full bg-gradient-to-r from-transparent via-fd-border to-transparent" />
@@ -619,6 +963,8 @@ function Showcase() {
           </div>
         )}
       </div>
+
+      {submitOpen && <SubmitModal onClose={() => setSubmitOpen(false)} />}
 
       {lightboxIndex !== null && (
         <Lightbox
