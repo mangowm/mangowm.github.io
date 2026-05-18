@@ -218,9 +218,11 @@ function Lightbox({
 
 function ShowcaseCard({
   entry,
+  _index,
   onOpen,
 }: {
   entry: (typeof showcaseEntries)[0];
+  _index: number;
   onOpen: () => void;
 }) {
   const [imgError, setImgError] = useState(false);
@@ -311,7 +313,7 @@ function ShowcaseCard({
 function Showcase() {
   const entries = Route.useLoaderData();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [activeTags, setActiveTags] = useState<Set<string>>(new Set());
 
   const allTags = useMemo(
     () =>
@@ -322,9 +324,20 @@ function Showcase() {
   );
 
   const filteredEntries = useMemo(
-    () => (activeTag ? entries.filter((e) => e.tags?.includes(activeTag)) : entries),
-    [entries, activeTag],
+    () =>
+      activeTags.size === 0
+        ? entries
+        : entries.filter((e) => e.tags?.some((t) => activeTags.has(t))),
+    [entries, activeTags],
   );
+
+  const toggleTag = useCallback((tag: string) => {
+    setActiveTags((prev) => {
+      const next = new Set(prev);
+      if (next.has(tag)) next.delete(tag); else next.add(tag);
+      return next;
+    });
+  }, []);
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
   const prevLightbox = useCallback(
@@ -382,31 +395,78 @@ function Showcase() {
 
             {/* Tag filters */}
             {allTags.length > 0 && (
-              <div className="mt-5 flex flex-wrap gap-1.5">
-                <button
-                  onClick={() => setActiveTag(null)}
-                  className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
-                    activeTag === null
-                      ? "border-fd-primary bg-fd-primary/10 text-fd-primary"
-                      : "border-fd-border/50 text-fd-muted-foreground hover:border-fd-border hover:text-fd-foreground"
-                  }`}
-                >
-                  All
-                  <span className="ml-1.5 opacity-50">{entries.length}</span>
-                </button>
-                {allTags.map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                    className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
-                      activeTag === tag
-                        ? "border-fd-primary bg-fd-primary/10 text-fd-primary"
-                        : "border-fd-border/50 text-fd-muted-foreground hover:border-fd-border hover:text-fd-foreground"
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
+              <div className="mt-5 space-y-2">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  {allTags.map((tag) => {
+                    const active = activeTags.has(tag);
+                    const count = entries.filter((e) => e.tags?.includes(tag)).length;
+                    return (
+                      <button
+                        key={tag}
+                        onClick={() => toggleTag(tag)}
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-all duration-150 ${
+                          active
+                            ? "border-fd-primary bg-fd-primary/10 text-fd-primary"
+                            : "border-fd-border/50 text-fd-muted-foreground hover:border-fd-border hover:text-fd-foreground"
+                        }`}
+                      >
+                        {active && (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="9"
+                            height="9"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M20 6 9 17l-5-5" />
+                          </svg>
+                        )}
+                        {tag}
+                        <span
+                          className={`rounded-full px-1 py-px text-[9px] font-semibold tabular-nums ${
+                            active
+                              ? "bg-fd-primary/15 text-fd-primary"
+                              : "bg-fd-muted text-fd-muted-foreground/60"
+                          }`}
+                        >
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {activeTags.size > 0 && (
+                  <div className="flex items-center gap-2 text-xs text-fd-muted-foreground">
+                    <span>
+                      {filteredEntries.length} of {entries.length} setups
+                    </span>
+                    <span className="h-3 w-px bg-fd-border/60" />
+                    <button
+                      onClick={() => setActiveTags(new Set())}
+                      className="inline-flex items-center gap-1 text-fd-muted-foreground hover:text-fd-foreground transition-colors"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="10"
+                        height="10"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M18 6 6 18M6 6l12 12" />
+                      </svg>
+                      Clear filters
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
