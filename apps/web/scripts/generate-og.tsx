@@ -3,7 +3,6 @@ import { dirname, parse, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ImageResponse } from "@takumi-rs/image-response";
 import { generate, generateHomePage } from "../src/lib/og/generate";
-import { siteConfig } from "../src/lib/site";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CONTENT_DIR = resolve(__dirname, "../content/docs");

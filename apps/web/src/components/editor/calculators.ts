@@ -453,7 +453,7 @@ function computeDeckRects(
           (nmasters - masterIdx);
         rects.push({ x: gappoh, y: gappov, width: Math.round(w), height: mh });
       } else {
-        const stackIdx = newIsMaster ? i - nmasters : i;
+        const _stackIdx = newIsMaster ? i - nmasters : i;
         const stackX = gappoh + nmasters * ((container.width - 2 * gappoh) / nmasters);
         rects.push({
           x: stackX,
@@ -486,8 +486,8 @@ function computeDeckRects(
         (nmasters - masterIdx);
       rects.push({ x: gappoh, y: gappov, width: mw, height: Math.round(h) });
     } else {
-      const stackIdx = newIsMaster ? i - nmasters : i;
-      const stackY = nmasters * ((container.height - 2 * gappov) / nmasters);
+      const _stackIdx = newIsMaster ? i - nmasters : i;
+      const _stackY = nmasters * ((container.height - 2 * gappov) / nmasters);
       rects.push({
         x: mw + gappoh + gappih,
         y: gappov,
@@ -674,7 +674,7 @@ export function calculateRightTileLayout(
       });
       my += h + gappiv * ie;
     } else {
-      const stackIdx = newIsMaster ? i - nmasters : i;
+      const _stackIdx = newIsMaster ? i - nmasters : i;
       const r = n - i;
       const h = Math.round((container.height - ty - gappov - gappiv * ie * (r - 1)) / r);
       rects.push({ x: gappoh, y: ty, width: container.width - mw - 2 * gappoh, height: h });
@@ -750,8 +750,8 @@ function computeScrollerRects(
     focusMainPos = sizeA - focusMainSize - config.scrollerStructs;
   }
 
-  const mainPositions = new Array<number>(n);
-  const mainSizes = new Array<number>(n);
+  const mainPositions = Array.from<number>({ length: n });
+  const mainSizes = Array.from<number>({ length: n });
   mainPositions[focusIndex] = focusMainPos;
   mainSizes[focusIndex] = focusMainSize;
 

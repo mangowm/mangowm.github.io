@@ -49,9 +49,7 @@ export function calculateFairLayout(
         ? Math.floor(i / baseRows)
         : firstGroupCols + Math.floor((i - firstGroupCount) / maxRows);
 
-      const rowIdx = isFirstGroup
-        ? i % baseRows
-        : (i - firstGroupCount) % maxRows;
+      const rowIdx = isFirstGroup ? i % baseRows : (i - firstGroupCount) % maxRows;
 
       const rowsInThisCol = isFirstGroup ? baseRows : maxRows;
 
@@ -81,9 +79,7 @@ export function calculateFairLayout(
         ? Math.floor(i / baseCols)
         : firstGroupRows + Math.floor((i - firstGroupCount) / maxCols);
 
-      const colIdx = isFirstGroup
-        ? i % baseCols
-        : (i - firstGroupCount) % maxCols;
+      const colIdx = isFirstGroup ? i % baseCols : (i - firstGroupCount) % maxCols;
 
       const colsInThisRow = isFirstGroup ? baseCols : maxCols;
 
@@ -253,13 +249,8 @@ export function FairLayout({ orientation }: FairLayoutProps) {
 
   // Animation loop
   useEffect(() => {
-    const timeouts = TIMINGS.map(({ phase: p, delay }) =>
-      setTimeout(() => setPhase(p), delay),
-    );
-    const loop = setTimeout(
-      () => setLoopKey((k) => k + 1),
-      TOTAL_DURATION,
-    );
+    const timeouts = TIMINGS.map(({ phase: p, delay }) => setTimeout(() => setPhase(p), delay));
+    const loop = setTimeout(() => setLoopKey((k) => k + 1), TOTAL_DURATION);
     return () => {
       timeouts.forEach(clearTimeout);
       clearTimeout(loop);

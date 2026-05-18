@@ -188,25 +188,6 @@ function ReleaseCard({
   );
 }
 
-function ReleaseSkeleton() {
-  return (
-    <div className="flex gap-8 sm:gap-12">
-      <div className="flex flex-col items-center">
-        <div className="mt-1 h-3 w-3 rounded-full bg-fd-border" />
-        <div className="mt-1 w-px flex-1 bg-fd-border" />
-      </div>
-      <div className="mb-12 flex-1 space-y-3">
-        <div className="flex items-center gap-3">
-          <div className="h-7 w-24 animate-pulse rounded bg-fd-muted" />
-          <div className="h-5 w-14 animate-pulse rounded-full bg-fd-muted" />
-          <div className="ml-auto h-4 w-24 animate-pulse rounded bg-fd-muted" />
-        </div>
-        <div className="h-32 w-full animate-pulse rounded-lg bg-fd-muted/50" />
-      </div>
-    </div>
-  );
-}
-
 function Releases() {
   const releases = Route.useLoaderData();
 

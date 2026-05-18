@@ -41,7 +41,7 @@ interface CenterTileLayoutProps {
  *  7  – 1 window  (window 2 gone)
  *  8  – hidden
  */
-export function CenterTileLayout({ orientation }: CenterTileLayoutProps) {
+export function CenterTileLayout({ orientation: _orientation }: CenterTileLayoutProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const r1 = useRef<HTMLDivElement>(null);
   const r2 = useRef<HTMLDivElement>(null);

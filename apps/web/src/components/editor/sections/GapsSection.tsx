@@ -2,7 +2,6 @@
 
 import { ConfigSection } from "../ui/ConfigSection";
 import { SliderRow } from "../ui/SliderRow";
-import { SwitchRow } from "../ui/SwitchRow";
 import type { LayoutParams } from "../types";
 
 interface Props {
