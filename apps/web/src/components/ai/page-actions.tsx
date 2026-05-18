@@ -92,7 +92,6 @@ export function ViewOptions({
         href: markdownUrl,
         icon: <TextIcon />,
       },
-
     ];
   }, [githubUrl, markdownUrl]);
 

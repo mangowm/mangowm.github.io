@@ -1,17 +1,17 @@
-import { copyFileSync, mkdirSync, readdirSync, existsSync, rmSync } from 'fs';
-import { join, dirname, relative, extname, basename } from 'path';
+import { copyFileSync, mkdirSync, readdirSync, existsSync, rmSync } from "fs";
+import { join, dirname, relative, extname, basename } from "path";
 
-const contentDir = new URL('../content/docs', import.meta.url).pathname;
-const publicDir = new URL('../public/docs', import.meta.url).pathname;
+const contentDir = new URL("../content/docs", import.meta.url).pathname;
+const publicDir = new URL("../public/docs", import.meta.url).pathname;
 
 function getSlugs(file) {
   const dir = dirname(file);
   const name = basename(file, extname(file));
   const slugs = [];
-  for (const seg of dir.split('/')) {
-    if (seg.length > 0 && seg !== '.') slugs.push(seg);
+  for (const seg of dir.split("/")) {
+    if (seg.length > 0 && seg !== ".") slugs.push(seg);
   }
-  if (name !== 'index') slugs.push(name);
+  if (name !== "index") slugs.push(name);
   return slugs;
 }
 
@@ -22,7 +22,7 @@ function walk(dir, baseDir) {
     const fullPath = join(dir, entry.name);
     if (entry.isDirectory()) {
       files.push(...walk(fullPath, baseDir));
-    } else if (entry.name.endsWith('.md') || entry.name.endsWith('.mdx')) {
+    } else if (entry.name.endsWith(".md") || entry.name.endsWith(".mdx")) {
       files.push(relative(baseDir, fullPath));
     }
   }
@@ -38,7 +38,7 @@ mkdirSync(publicDir, { recursive: true });
 const files = walk(contentDir, contentDir);
 for (const file of files) {
   const slugs = getSlugs(file);
-  const outputName = slugs.length === 0 ? 'index.md' : slugs.join('/') + '.md';
+  const outputName = slugs.length === 0 ? "index.md" : slugs.join("/") + ".md";
   const outputPath = join(publicDir, outputName);
 
   mkdirSync(dirname(outputPath), { recursive: true });

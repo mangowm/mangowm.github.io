@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { ChevronDown, ExternalLinkIcon, TextIcon } from 'lucide-react';
-import { useMemo } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from 'fumadocs-ui/components/ui/popover';
-import { buttonVariants } from 'fumadocs-ui/components/ui/button';
-import { cn } from '@/lib/cn';
+import { ChevronDown, ExternalLinkIcon, TextIcon } from "lucide-react";
+import { useMemo } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "fumadocs-ui/components/ui/popover";
+import { buttonVariants } from "fumadocs-ui/components/ui/button";
+import { cn } from "@/lib/cn";
 
 interface ViewOptionsProps {
   markdownUrl: string;
@@ -16,7 +16,7 @@ export function ViewOptions({ markdownUrl, githubUrl, className }: ViewOptionsPr
   const items = useMemo(() => {
     return [
       {
-        title: 'Open in GitHub',
+        title: "Open in GitHub",
         href: githubUrl,
         icon: (
           <svg fill="currentColor" role="img" viewBox="0 0 24 24">
@@ -26,11 +26,10 @@ export function ViewOptions({ markdownUrl, githubUrl, className }: ViewOptionsPr
         ),
       },
       {
-        title: 'View as Markdown',
+        title: "View as Markdown",
         href: markdownUrl,
         icon: <TextIcon />,
       },
-
     ];
   }, [githubUrl, markdownUrl]);
 
@@ -39,11 +38,11 @@ export function ViewOptions({ markdownUrl, githubUrl, className }: ViewOptionsPr
       <PopoverTrigger
         className={cn(
           buttonVariants({
-            color: 'secondary',
-            size: 'sm',
+            color: "secondary",
+            size: "sm",
           }),
-          'gap-2',
-          className
+          "gap-2",
+          className,
         )}
       >
         Open

@@ -7,9 +7,7 @@ export interface GenerateProps {
   icon?: ReactNode;
 }
 
-export function generate(
-  { title, description, icon, site = "mangowm" }: GenerateProps,
-) {
+export function generate({ title, description, icon, site = "mangowm" }: GenerateProps) {
   return (
     <div
       style={{
@@ -41,22 +39,20 @@ export function generate(
         >
           {title}
         </p>
-        {description
-          ? (
-            <p
-              style={{
-                fontSize: "48px",
-                color: "rgba(240,240,240,0.7)",
-                letterSpacing: "-0.02em",
-                lineClamp: 2,
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-              }}
-            >
-              {description}
-            </p>
-          )
-          : null}
+        {description ? (
+          <p
+            style={{
+              fontSize: "48px",
+              color: "rgba(240,240,240,0.7)",
+              letterSpacing: "-0.02em",
+              lineClamp: 2,
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+            }}
+          >
+            {description}
+          </p>
+        ) : null}
         <div
           style={{
             display: "flex",
@@ -67,12 +63,7 @@ export function generate(
           }}
         >
           {icon || (
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 48 48"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
               <rect width="48" height="48" rx="8" fill="rgb(59,130,246)" />
               <text
                 x="24"
@@ -102,11 +93,7 @@ export function generate(
   );
 }
 
-export function generateHomePage({
-  logoPaths,
-}: {
-  logoPaths: Array<{ fill: string; d: string }>;
-}) {
+export function generateHomePage({ logoPaths }: { logoPaths: Array<{ fill: string; d: string }> }) {
   return (
     <div
       style={{
@@ -223,8 +210,7 @@ export function generateHomePage({
           width: 500,
           height: 500,
           borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(245,166,35,0.07) 0%, transparent 60%)",
+          background: "radial-gradient(circle, rgba(245,166,35,0.07) 0%, transparent 60%)",
           pointerEvents: "none",
         }}
       />
@@ -245,12 +231,7 @@ export function generateHomePage({
             gap: 16,
           }}
         >
-          <svg
-            width="44"
-            height="44"
-            viewBox="0 0 1024 1024"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="44" height="44" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
             {logoPaths.map((p, i) => (
               <path key={i} fill={p.fill} d={p.d} />
             ))}

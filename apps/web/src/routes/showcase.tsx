@@ -85,15 +85,11 @@ function Lightbox({
         </span>
       </button>
 
-      <div
-        className="flex flex-col items-center gap-5 px-16"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="flex flex-col items-center gap-5 px-16" onClick={(e) => e.stopPropagation()}>
         <div
           className="relative overflow-hidden rounded-xl shadow-2xl"
           style={{
-            boxShadow:
-              "0 0 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06)",
+            boxShadow: "0 0 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06)",
           }}
         >
           {!imgError ? (
@@ -112,8 +108,7 @@ function Lightbox({
 
         <div className="flex items-center gap-4 rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm backdrop-blur-md">
           <span className="text-white/30 text-xs font-mono tracking-widest uppercase">
-            {String(index + 1).padStart(2, "0")} /{" "}
-            {String(entries.length).padStart(2, "0")}
+            {String(index + 1).padStart(2, "0")} / {String(entries.length).padStart(2, "0")}
           </span>
           <span className="h-3 w-px bg-white/15" />
           <a
@@ -127,9 +122,7 @@ function Lightbox({
           {entry.added && (
             <>
               <span className="h-3 w-px bg-white/15" />
-              <span className="text-white/40 text-[11px]">
-                {formatDate(entry.added)}
-              </span>
+              <span className="text-white/40 text-[11px]">{formatDate(entry.added)}</span>
             </>
           )}
           <span className="h-3 w-px bg-white/15" />
@@ -182,11 +175,7 @@ function Lightbox({
         </span>
       </button>
 
-      <button
-        onClick={onClose}
-        className="absolute right-5 top-5 group"
-        aria-label="Close"
-      >
+      <button onClick={onClose} className="absolute right-5 top-5 group" aria-label="Close">
         <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/40 backdrop-blur transition-all duration-200 group-hover:border-white/30 group-hover:text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -324,8 +313,7 @@ function Showcase() {
   );
 
   const filteredEntries = useMemo(
-    () =>
-      activeTag ? entries.filter((e) => e.tags?.includes(activeTag)) : entries,
+    () => (activeTag ? entries.filter((e) => e.tags?.includes(activeTag)) : entries),
     [entries, activeTag],
   );
 
@@ -334,17 +322,12 @@ function Showcase() {
   const prevLightbox = useCallback(
     () =>
       setLightboxIndex((i) =>
-        i !== null
-          ? (i - 1 + filteredEntries.length) % filteredEntries.length
-          : null,
+        i !== null ? (i - 1 + filteredEntries.length) % filteredEntries.length : null,
       ),
     [filteredEntries.length],
   );
   const nextLightbox = useCallback(
-    () =>
-      setLightboxIndex((i) =>
-        i !== null ? (i + 1) % filteredEntries.length : null,
-      ),
+    () => setLightboxIndex((i) => (i !== null ? (i + 1) % filteredEntries.length : null)),
     [filteredEntries.length],
   );
 
@@ -460,9 +443,7 @@ function Showcase() {
 
         {entries.length > 0 && (
           <div className="mt-16 flex flex-col items-center gap-3 text-center">
-            <p className="text-sm text-fd-muted-foreground">
-              Have a setup to share?
-            </p>
+            <p className="text-sm text-fd-muted-foreground">Have a setup to share?</p>
             <a
               href="https://github.com/mangowm/mango-showcase"
               target="_blank"

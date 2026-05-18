@@ -99,9 +99,7 @@ function Page() {
   return (
     <DocsLayout {...baseOptions()} tree={pageTree}>
       <a href={markdownUrl} hidden aria-hidden />
-      <Suspense>
-        {clientLoader.useContent(path, { markdownUrl, path })}
-      </Suspense>
+      <Suspense>{clientLoader.useContent(path, { markdownUrl, path })}</Suspense>
     </DocsLayout>
   );
 }

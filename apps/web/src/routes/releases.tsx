@@ -50,9 +50,7 @@ const STREAMDOWN_COMPONENTS = {
     </pre>
   ),
   code: ({ children, className }: any) => (
-    <code className={`font-mono text-xs text-fd-foreground ${className ?? ""}`}>
-      {children}
-    </code>
+    <code className={`font-mono text-xs text-fd-foreground ${className ?? ""}`}>{children}</code>
   ),
   h1: ({ children, className }: any) => (
     <h1
@@ -69,16 +67,12 @@ const STREAMDOWN_COMPONENTS = {
     </h2>
   ),
   h3: ({ children, className }: any) => (
-    <h3
-      className={`mb-2 mt-4 text-sm font-semibold text-fd-foreground ${className ?? ""}`}
-    >
+    <h3 className={`mb-2 mt-4 text-sm font-semibold text-fd-foreground ${className ?? ""}`}>
       {children}
     </h3>
   ),
   p: ({ children, className }: any) => (
-    <p
-      className={`mb-3 text-sm leading-relaxed text-fd-foreground/80 ${className ?? ""}`}
-    >
+    <p className={`mb-3 text-sm leading-relaxed text-fd-foreground/80 ${className ?? ""}`}>
       {children}
     </p>
   ),
@@ -86,16 +80,10 @@ const STREAMDOWN_COMPONENTS = {
     <ul className={`mb-3 space-y-1 pl-4 ${className ?? ""}`}>{children}</ul>
   ),
   ol: ({ children, className }: any) => (
-    <ol className={`mb-3 space-y-1 pl-4 list-decimal ${className ?? ""}`}>
-      {children}
-    </ol>
+    <ol className={`mb-3 space-y-1 pl-4 list-decimal ${className ?? ""}`}>{children}</ol>
   ),
   li: ({ children, className }: any) => (
-    <li
-      className={`text-sm leading-relaxed text-fd-foreground ${className ?? ""}`}
-    >
-      {children}
-    </li>
+    <li className={`text-sm leading-relaxed text-fd-foreground ${className ?? ""}`}>{children}</li>
   ),
   a: ({ href, children, className }: any) => (
     <a
@@ -126,10 +114,7 @@ function ReleaseCard({
   total: number;
 }) {
   const isLatest = index === 0 && !release.prerelease;
-  const body = useMemo(
-    () => (release.body ? normalizeBody(release.body) : null),
-    [release.body],
-  );
+  const body = useMemo(() => (release.body ? normalizeBody(release.body) : null), [release.body]);
 
   return (
     <div className="relative flex gap-8 sm:gap-12">
@@ -162,24 +147,16 @@ function ReleaseCard({
         </div>
 
         {release.name && release.name !== release.tag_name && (
-          <p className="mb-3 text-sm font-medium text-fd-foreground">
-            {release.name}
-          </p>
+          <p className="mb-3 text-sm font-medium text-fd-foreground">{release.name}</p>
         )}
 
         <div className="rounded-lg border border-fd-border bg-fd-muted/20 px-5 py-4">
           {body ? (
-            <Streamdown
-              mode="static"
-              plugins={{ code }}
-              components={STREAMDOWN_COMPONENTS}
-            >
+            <Streamdown mode="static" plugins={{ code }} components={STREAMDOWN_COMPONENTS}>
               {body}
             </Streamdown>
           ) : (
-            <p className="text-sm italic text-fd-muted-foreground">
-              No release notes provided.
-            </p>
+            <p className="text-sm italic text-fd-muted-foreground">No release notes provided.</p>
           )}
         </div>
 
@@ -260,9 +237,7 @@ function Releases() {
           <p className="mb-2 font-mono text-xs font-semibold uppercase tracking-widest text-fd-primary">
             Changelog
           </p>
-          <h1 className="text-3xl font-bold text-fd-foreground sm:text-4xl">
-            Releases
-          </h1>
+          <h1 className="text-3xl font-bold text-fd-foreground sm:text-4xl">Releases</h1>
           <p className="mt-3 text-fd-muted-foreground">
             All MangoWM releases, from latest stable to earliest builds.
           </p>
@@ -270,12 +245,7 @@ function Releases() {
 
         <div>
           {releases.map((release, index) => (
-            <ReleaseCard
-              key={release.id}
-              release={release}
-              index={index}
-              total={releases.length}
-            />
+            <ReleaseCard key={release.id} release={release} index={index} total={releases.length} />
           ))}
         </div>
       </div>

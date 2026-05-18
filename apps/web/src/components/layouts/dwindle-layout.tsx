@@ -141,9 +141,7 @@ export function DwindleLayout() {
 
   // Animation loop relies strictly on unchanged constants
   useEffect(() => {
-    const timeouts = TIMINGS.map(({ phase: p, delay }) =>
-      setTimeout(() => setPhase(p), delay)
-    );
+    const timeouts = TIMINGS.map(({ phase: p, delay }) => setTimeout(() => setPhase(p), delay));
     const loop = setTimeout(() => setLoopKey((k) => k + 1), TOTAL_DURATION);
     return () => {
       timeouts.forEach(clearTimeout);
@@ -152,27 +150,29 @@ export function DwindleLayout() {
   }, [loopKey]);
 
   return (
-    <div
-      ref={containerRef}
-      className="relative h-full w-full overflow-hidden p-4"
-    >
-      <div ref={r1} className="absolute opacity-0">1</div>
-      <div ref={r2} className="absolute opacity-0">2</div>
-      <div ref={r3} className="absolute opacity-0">3</div>
-      <div ref={r4} className="absolute opacity-0">4</div>
-      <div ref={r5} className="absolute opacity-0">5</div>
+    <div ref={containerRef} className="relative h-full w-full overflow-hidden p-4">
+      <div ref={r1} className="absolute opacity-0">
+        1
+      </div>
+      <div ref={r2} className="absolute opacity-0">
+        2
+      </div>
+      <div ref={r3} className="absolute opacity-0">
+        3
+      </div>
+      <div ref={r4} className="absolute opacity-0">
+        4
+      </div>
+      <div ref={r5} className="absolute opacity-0">
+        5
+      </div>
     </div>
   );
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function getDwindleRects(
-  count: number,
-  width: number,
-  height: number,
-  gap: number,
-): Rect[] {
+function getDwindleRects(count: number, width: number, height: number, gap: number): Rect[] {
   const rects: Rect[] = [];
   if (count === 0) return rects;
 

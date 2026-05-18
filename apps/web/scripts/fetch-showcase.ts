@@ -3,8 +3,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { parse } from "yaml";
 
-const RAW_BASE =
-  "https://raw.githubusercontent.com/mangowm/mango-showcase/main";
+const RAW_BASE = "https://raw.githubusercontent.com/mangowm/mango-showcase/main";
 
 function toRawBase(dotfilesUrl: string): string {
   const url = new URL(dotfilesUrl);
@@ -43,10 +42,7 @@ async function main() {
 
   for (const item of rawEntries) {
     if (!item.username || !item.dotfiles) {
-      console.warn(
-        "  ⚠ Skipping malformed entry (missing username or dotfiles):",
-        item,
-      );
+      console.warn("  ⚠ Skipping malformed entry (missing username or dotfiles):", item);
       continue;
     }
 
@@ -55,15 +51,11 @@ async function main() {
     const rawBase = toRawBase(dotfiles);
     const screenshotUrl = `${rawBase}/screenshot.png`;
 
-    console.log(
-      `Downloading screenshot for @${username} from ${screenshotUrl}...`,
-    );
+    console.log(`Downloading screenshot for @${username} from ${screenshotUrl}...`);
 
     const imgRes = await fetch(screenshotUrl);
     if (!imgRes.ok) {
-      console.warn(
-        `  ⚠ Skipping @${username}: screenshot.png not found (${imgRes.status})`,
-      );
+      console.warn(`  ⚠ Skipping @${username}: screenshot.png not found (${imgRes.status})`);
       continue;
     }
 
@@ -93,9 +85,7 @@ async function main() {
     JSON.stringify(entries, null, 2),
   );
 
-  console.log(
-    `\nSuccessfully generated showcase.json with ${entries.length} entries.`,
-  );
+  console.log(`\nSuccessfully generated showcase.json with ${entries.length} entries.`);
 }
 
 main();

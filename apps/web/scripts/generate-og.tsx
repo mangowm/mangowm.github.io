@@ -54,8 +54,7 @@ function parseFrontmatter(content: string): Record<string, string> {
 function collectPages(
   dir: string,
 ): Array<{ slugs: string[]; title: string; description?: string }> {
-  const pages: Array<{ slugs: string[]; title: string; description?: string }> =
-    [];
+  const pages: Array<{ slugs: string[]; title: string; description?: string }> = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     if (entry.name.startsWith(".")) continue;
     const fullPath = resolve(dir, entry.name);
@@ -103,13 +102,10 @@ async function main() {
         title: page.title,
         description: page.description,
         icon: (
-          <svg
-            width="56"
-            height="56"
-            viewBox="0 0 1024 1024"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {logoPaths.map((p, i) => <path key={i} fill={p.fill} d={p.d} />)}
+          <svg width="56" height="56" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+            {logoPaths.map((p, i) => (
+              <path key={i} fill={p.fill} d={p.d} />
+            ))}
           </svg>
         ),
         site: "mangowm",
@@ -142,13 +138,10 @@ async function main() {
         title: page.title,
         description: page.description,
         icon: (
-          <svg
-            width="56"
-            height="56"
-            viewBox="0 0 1024 1024"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {logoPaths.map((p, i) => <path key={i} fill={p.fill} d={p.d} />)}
+          <svg width="56" height="56" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+            {logoPaths.map((p, i) => (
+              <path key={i} fill={p.fill} d={p.d} />
+            ))}
           </svg>
         ),
         site: "mangowm",
