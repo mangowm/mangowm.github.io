@@ -46,11 +46,11 @@ const MAIN_LAYOUTS: LayoutDef[] = [
   { id: "scroller", label: "Scroller", supportsOrientation: true },
   { id: "grid", label: "Grid", supportsOrientation: true },
   { id: "fair", label: "Fair", supportsOrientation: true },
+  { id: "dwindle", label: "Dwindle", supportsOrientation: false },
 ];
 
 const OTHER_LAYOUTS: LayoutDef[] = [
   { id: "deck", label: "Deck", supportsOrientation: true },
-  { id: "dwindle", label: "Dwindle", supportsOrientation: false },
   { id: "center-tile", label: "Center Tile", supportsOrientation: false },
   { id: "right-tile", label: "Right Tile", supportsOrientation: false },
   { id: "monocle", label: "Monocle", supportsOrientation: false },
@@ -192,7 +192,9 @@ export function MangoLayouts() {
             "inline-flex shrink-0 items-center gap-0.5 rounded-xl border border-fd-border bg-fd-muted p-1 transition-opacity",
             !supportsOrientation && "pointer-events-none opacity-40",
           )}
-          title={!supportsOrientation ? "This layout has no orientation variant" : undefined}
+          title={!supportsOrientation
+            ? "This layout has no orientation variant"
+            : undefined}
         >
           <button
             type="button"
@@ -226,20 +228,28 @@ export function MangoLayouts() {
       {/* Preview area */}
       <div className="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-fd-border bg-fd-background/50 shadow-sm">
         {activeLayout === "tiling" && <TileLayout orientation={orientation} />}
-        {activeLayout === "scroller" && <ScrollerLayout orientation={orientation} />}
+        {activeLayout === "scroller" && (
+          <ScrollerLayout orientation={orientation} />
+        )}
         {activeLayout === "grid" && <GridLayout orientation={orientation} />}
         {activeLayout === "overview" && <OverviewLayout />}
         {activeLayout === "deck" && <DeckLayout orientation={orientation} />}
-        {activeLayout === "center-tile" && <CenterTileLayout orientation={orientation} />}
+        {activeLayout === "center-tile" && (
+          <CenterTileLayout orientation={orientation} />
+        )}
         {activeLayout === "right-tile" && <RightTileLayout />}
         {activeLayout === "monocle" && <MonocleLayout />}
         {activeLayout === "fair" && <FairLayout orientation={orientation} />}
-        {activeLayout === "dwindle" && <DwindleLayout orientation={orientation} />}
+        {activeLayout === "dwindle" && (
+          <DwindleLayout orientation={orientation} />
+        )}
       </div>
 
       {/* Active layout label */}
       <p className="text-center text-xs text-fd-muted-foreground">
-        <span className="font-medium text-fd-foreground">{activeDef.label}</span>
+        <span className="font-medium text-fd-foreground">
+          {activeDef.label}
+        </span>
         {supportsOrientation && <>&mdash; {orientation}</>}
       </p>
     </div>
