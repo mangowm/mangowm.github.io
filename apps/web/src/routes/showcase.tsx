@@ -89,7 +89,7 @@ function Lightbox({
   }) => (
     <button
       onClick={onClick}
-      className={`absolute ${side}-4 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/40 backdrop-blur transition-all hover:border-white/25 hover:bg-white/10 hover:text-white`}
+      className={`absolute ${side === "left" ? "left-6 sm:left-[5%]" : "right-6 sm:right-[5%]"} top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/70 backdrop-blur-md transition-all hover:border-white/40 hover:bg-white/20 hover:text-white hover:scale-110 active:scale-95`}
       aria-label={label}
     >
       {children}
@@ -112,12 +112,12 @@ function Lightbox({
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
+          width="22"
+          height="22"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -215,12 +215,12 @@ function Lightbox({
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
+          width="22"
+          height="22"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
