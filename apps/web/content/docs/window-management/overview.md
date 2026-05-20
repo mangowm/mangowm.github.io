@@ -13,7 +13,7 @@ description: Configure the overview mode for window navigation.
 | `ov_tab_mode` | integer | `0` | Overview tab mode (0: disable, 1: enable). |
 | `overviewgappi` | integer | `5` | Inner gap in overview mode. |
 | `overviewgappo` | integer | `30` | Outer gap in overview mode. |
-| `ov_no_resize` | integer | `0` | Disable window resizing in overview mode. |
+| `ov_no_resize` | integer | `1` | Disable window resizing in overview mode. |
 
 ### Setting Descriptions
 
