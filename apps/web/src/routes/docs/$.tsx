@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
 import browserCollections from "collections/browser";
@@ -15,7 +15,7 @@ import { Suspense } from "react";
 
 import { useMDXComponents } from "@/components/mdx";
 import { baseOptions, sourceGitConfig } from "@/lib/layout.shared";
-import { source } from "@/lib/source";
+import { markdownPathToSlugs, source } from "@/lib/source";
 import { ViewOptions } from "@/components/view-options";
 
 export const Route = createFileRoute("/docs/$")({
@@ -43,7 +43,7 @@ const serverLoader = createServerFn({
   .inputValidator((slugs: string[]) => slugs)
   .middleware([staticFunctionMiddleware])
   .handler(async ({ data: slugs }) => {
-    const page = source.getPage(slugs);
+    const page = source.getPage(markdownPathToSlugs(slugs));
     if (!page) throw notFound();
 
     return {
@@ -98,7 +98,7 @@ function Page() {
 
   return (
     <DocsLayout {...baseOptions()} tree={pageTree}>
-      <a href={markdownUrl} hidden aria-hidden />
+      <Link to={markdownUrl} hidden />
       <Suspense>{clientLoader.useContent(path, { markdownUrl, path })}</Suspense>
     </DocsLayout>
   );

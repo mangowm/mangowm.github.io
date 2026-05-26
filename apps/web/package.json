@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite dev --port=4000",
     "prebuild": "node scripts/sync-markdown.mjs && tsx scripts/fetch-version.ts && tsx scripts/fetch-showcase.ts",
-    "build": "vite build && tsx scripts/generate-og.tsx && cp .output/public/index.html .output/public/404.html",
+    "build": "vite build && tsx scripts/generate-og.tsx && cp .output/public/_shell.html .output/public/404.html",
     "start": "serve .output/public --config ../../serve.json",
     "preview": "vite preview",
     "types:check": "fumadocs-mdx && tsc --noEmit",

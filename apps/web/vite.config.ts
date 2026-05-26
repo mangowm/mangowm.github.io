@@ -1,3 +1,4 @@
+import { readdirSync } from "node:fs";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
@@ -5,29 +6,39 @@ import mdx from "fumadocs-mdx/vite";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
+function getDocVersionRoots(): { path: string }[] {
+  try {
+    return readdirSync("./content/docs", { withFileTypes: true })
+      .filter((d) => d.isDirectory() && d.name !== "(git)")
+      .map((d) => ({ path: `/docs/${d.name}` }));
+  } catch {
+    return [];
+  }
+}
+
 export default defineConfig({
   base: "/",
   server: {
     port: 3000,
   },
   plugins: [
-    mdx(await import("./source.config")),
+    mdx(),
     tailwindcss(),
     tanstackStart({
-      prerender: {
+      spa: {
         enabled: true,
-        crawlLinks: true,
+        prerender: {
+          enabled: true,
+          crawlLinks: true,
+        },
       },
       pages: [
-        {
-          path: "/api/search",
-        },
-        {
-          path: "/llms.txt",
-        },
-        {
-          path: "/llms-full.txt",
-        },
+        { path: "/" },
+        { path: "/docs" },
+        ...getDocVersionRoots(),
+        { path: "/api/search" },
+        { path: "/llms.txt" },
+        { path: "/llms-full.txt" },
       ],
     }),
     react(),
