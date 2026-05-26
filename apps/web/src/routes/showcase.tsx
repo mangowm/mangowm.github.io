@@ -475,19 +475,10 @@ function TagFilter({
   );
 }
 
-type RepoStatus =
-  | "idle"
-  | "checking"
-  | "valid"
-  | "private"
-  | "not-found"
-  | "error";
+type RepoStatus = "idle" | "checking" | "valid" | "private" | "not-found" | "error";
 type ScreenshotStatus = "idle" | "checking" | "found" | "missing" | "error";
 
-function useRepoValidation(
-  username: string | null,
-  repo: string | null,
-): RepoStatus {
+function useRepoValidation(username: string | null, repo: string | null): RepoStatus {
   const [status, setStatus] = useState<RepoStatus>("idle");
 
   useEffect(() => {
@@ -500,10 +491,9 @@ function useRepoValidation(
     const timer = setTimeout(async () => {
       setStatus("checking");
       try {
-        const res = await fetch(
-          `https://api.github.com/repos/${username}/${repo}`,
-          { signal: controller.signal },
-        );
+        const res = await fetch(`https://api.github.com/repos/${username}/${repo}`, {
+          signal: controller.signal,
+        });
         if (res.status === 404) {
           setStatus("not-found");
         } else if (res.ok) {
@@ -560,9 +550,7 @@ function useScreenshotValidation(
           );
           if (dirRes.ok) {
             const files = (await dirRes.json()) as { name: string }[];
-            setStatus(
-              files.some((f) => f.name === "1.png") ? "found" : "missing",
-            );
+            setStatus(files.some((f) => f.name === "1.png") ? "found" : "missing");
           } else if (dirRes.status === 404) {
             setStatus("missing");
           } else {
@@ -604,9 +592,7 @@ type FieldStatusProps = {
   username: string | null;
 };
 
-function FieldStatus(
-  { dotfiles, repoStatus, screenshotStatus, username }: FieldStatusProps,
-) {
+function FieldStatus({ dotfiles, repoStatus, screenshotStatus, username }: FieldStatusProps) {
   if (dotfiles.length > 0 && !dotfiles.startsWith("https://github.com/")) {
     return <p className="text-[11px] text-red-400/80">Must be a GitHub URL</p>;
   }
@@ -630,9 +616,7 @@ function FieldStatus(
 
   if (repoStatus === "not-found") {
     return (
-      <p className="flex items-center gap-1.5 text-[11px] text-red-400/80">
-        Repository not found
-      </p>
+      <p className="flex items-center gap-1.5 text-[11px] text-red-400/80">Repository not found</p>
     );
   }
 
@@ -677,9 +661,7 @@ function SubmitModal({ onClose }: { onClose: () => void }) {
   const [dotfiles, setDotfiles] = useState("");
   const [tags, setTags] = useState("");
 
-  const parts = dotfiles.startsWith("https://github.com/")
-    ? dotfiles.slice(19).split("/")
-    : null;
+  const parts = dotfiles.startsWith("https://github.com/") ? dotfiles.slice(19).split("/") : null;
   const username = parts?.[0] ?? null;
   const repo = parts?.[1] ?? null;
 
@@ -688,7 +670,8 @@ function SubmitModal({ onClose }: { onClose: () => void }) {
 
   useModalBehavior(onClose);
 
-  const canSubmit = (repoStatus === "valid" || repoStatus === "not-found" || repoStatus === "error") &&
+  const canSubmit =
+    (repoStatus === "valid" || repoStatus === "not-found" || repoStatus === "error") &&
     screenshotStatus !== "missing";
 
   function handleSubmit() {
@@ -720,9 +703,7 @@ function SubmitModal({ onClose }: { onClose: () => void }) {
       <div className="w-full max-w-md rounded-t-2xl border border-fd-border/60 bg-fd-background shadow-2xl sm:rounded-2xl">
         <div className="flex items-center justify-between border-b border-fd-border/40 px-5 py-4">
           <div>
-            <h2 className="text-sm font-semibold text-fd-foreground">
-              Submit your setup
-            </h2>
+            <h2 className="text-sm font-semibold text-fd-foreground">Submit your setup</h2>
             <p className="mt-0.5 text-xs text-fd-muted-foreground">
               Opens a prefilled GitHub issue
             </p>
@@ -771,10 +752,7 @@ function SubmitModal({ onClose }: { onClose: () => void }) {
 
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-fd-foreground">
-              Tags{" "}
-              <span className="ml-1.5 font-normal text-fd-muted-foreground">
-                optional
-              </span>
+              Tags <span className="ml-1.5 font-normal text-fd-muted-foreground">optional</span>
             </label>
             <input
               type="text"
@@ -783,16 +761,12 @@ function SubmitModal({ onClose }: { onClose: () => void }) {
               onChange={(e) => setTags(e.target.value)}
               className="w-full rounded-lg border border-fd-border/60 bg-fd-muted/30 px-3 py-2 text-sm text-fd-foreground placeholder:text-fd-muted-foreground/50 outline-none focus:border-fd-border"
             />
-            <p className="text-[11px] text-fd-muted-foreground/60">
-              Comma-separated
-            </p>
+            <p className="text-[11px] text-fd-muted-foreground/60">Comma-separated</p>
           </div>
         </div>
 
         <div className="flex items-center justify-between border-t border-fd-border/40 px-5 py-4">
-          <p className="text-[11px] text-fd-muted-foreground/60">
-            You'll confirm on GitHub
-          </p>
+          <p className="text-[11px] text-fd-muted-foreground/60">You'll confirm on GitHub</p>
           <button
             onClick={handleSubmit}
             disabled={!canSubmit}

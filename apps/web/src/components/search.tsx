@@ -26,8 +26,7 @@ const filterItems: { name: string; value: string | undefined; description: strin
   ...docsMeta.pages.map((name) => ({
     name: name === "(git)" ? "Latest (git)" : name,
     value: name === "(git)" ? "latest" : name,
-    description:
-      name === "(git)" ? "Latest development version" : `${name} release`,
+    description: name === "(git)" ? "Latest development version" : `${name} release`,
   })),
 ];
 
