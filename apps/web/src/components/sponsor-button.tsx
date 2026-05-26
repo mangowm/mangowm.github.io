@@ -76,7 +76,13 @@ function SimpleToast({ message }: { message: string }) {
   return createPortal(toast, document.body);
 }
 
-export function SponsorButton() {
+export function SponsorButton({
+  size = "sm",
+  className,
+}: {
+  size?: "sm" | "default" | "lg";
+  className?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [lastCopied, setLastCopied] = useState<CopyType | null>(null);
   const [toast, setToast] = useState<string | null>(null);
@@ -129,10 +135,13 @@ export function SponsorButton() {
     <>
       <Button
         variant="ghost"
-        size="sm"
-        aria-label="Sponsor Mango"
+        size={size}
+        aria-label="Sponsor mango"
         onClick={() => setOpen(true)}
-        className="group flex items-center gap-2 bg-red-50 text-red-600 transition-all hover:bg-red-100 hover:text-red-700 active:scale-95 sm:px-4 dark:bg-red-950 dark:text-red-400 dark:hover:bg-red-900 dark:hover:text-red-300"
+        className={cn(
+          "group flex items-center gap-2 bg-red-50 text-red-600 transition-all hover:bg-red-100 hover:text-red-700 active:scale-95 sm:px-4 dark:bg-red-950 dark:text-red-400 dark:hover:bg-red-900 dark:hover:text-red-300",
+          className,
+        )}
       >
         <Heart className="h-4 w-4 fill-current transition-transform group-hover:scale-110" />
         <span className="font-semibold">Sponsor</span>
@@ -149,7 +158,7 @@ export function SponsorButton() {
           </button>
 
           <div className="p-5 pb-0 sm:p-6 sm:pb-2">
-            <h2 className="font-bold text-lg tracking-tight sm:text-xl">Sponsor Mango</h2>
+            <h2 className="font-bold text-lg tracking-tight sm:text-xl">Sponsor mango</h2>
             <p className="mt-1 max-w-md text-xs text-fd-muted-foreground">
               Help sustain open-source development.
             </p>
