@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { writeFileSync } from "fs";
 import { resolve } from "path";
 
@@ -13,6 +14,10 @@ interface GitHubRelease {
 }
 
 async function fetchReleases() {
+  if (process.env.SKIP_FETCH_VERSION === "true") {
+    console.log("SKIP_FETCH_VERSION is set, skipping release fetch.");
+    return;
+  }
   console.log("Fetching releases from GitHub...");
 
   const res = await fetch("https://api.github.com/repos/mangowm/mango/releases", {

@@ -1,5 +1,11 @@
+import "dotenv/config";
 import { copyFileSync, mkdirSync, readdirSync, existsSync, rmSync } from "fs";
 import { join, dirname, relative, extname, basename } from "path";
+
+if (process.env.SKIP_SYNC_MARKDOWN === "true") {
+  console.log("SKIP_SYNC_MARKDOWN is set, skipping markdown sync.");
+  process.exit(0);
+}
 
 const contentDir = new URL("../content/docs", import.meta.url).pathname;
 const publicDir = new URL("../public/docs", import.meta.url).pathname;

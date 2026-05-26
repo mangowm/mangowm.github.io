@@ -1,3 +1,4 @@
+import "dotenv/config";
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -26,6 +27,10 @@ type ShowcaseEntry = {
 };
 
 async function main() {
+  if (process.env.SKIP_SHOWCASE === "true") {
+    console.log("SKIP_SHOWCASE is set, skipping showcase fetch.");
+    return;
+  }
   console.log("Fetching showcase entries and downloading images...");
 
   const res = await fetch(`${RAW_BASE}/entries.yml`);
