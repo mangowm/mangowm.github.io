@@ -16,6 +16,7 @@ import { Suspense } from "react";
 import { useMDXComponents } from "@/components/mdx";
 import { baseOptions, sourceGitConfig } from "@/lib/layout.shared";
 import { markdownPathToSlugs, source } from "@/lib/source";
+import { siteConfig } from "@/lib/site";
 import { ViewOptions } from "@/components/view-options";
 
 export const Route = createFileRoute("/docs/$")({
@@ -30,9 +31,20 @@ export const Route = createFileRoute("/docs/$")({
   },
   head: ({ loaderData }) => {
     if (!loaderData) return {};
-    const ogUrl = `/og/docs/${[...loaderData.slugs, "image.webp"].join("/")}`;
+    const { slugs } = loaderData;
+    const ogUrl = `/og/docs/${[...slugs, "image.webp"].join("/")}`;
+
+    const canonicalSlugs = slugs[0]?.match(/^v\d+\.\d+\.\d+$/)
+      ? slugs.slice(1)
+      : slugs;
+    const canonicalPath = canonicalSlugs.length > 0
+      ? `/docs/${canonicalSlugs.join("/")}`
+      : "/docs";
+    const canonicalUrl = `${siteConfig.url}${canonicalPath}`;
+
     return {
       meta: [{ property: "og:image", content: ogUrl }],
+      links: [{ rel: "canonical", href: canonicalUrl }],
     };
   },
 });
