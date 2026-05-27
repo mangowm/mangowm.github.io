@@ -1,7 +1,5 @@
 {
-	"title": "v0.13.1",
-	"description": "v0.13.1 release",
-	"root": true,
+	"title": "mangowm",
 	"pages": [
 		"---Getting Started---",
 		"index",
