@@ -4,11 +4,11 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { parse } from "yaml";
 
-const RAW_BASE = "https://raw.githubusercontent.com/mangowm/mango-showcase/main";
+const RAW_BASE = "https://raw.githubusercontent.com/mangowm/mango-showcase/HEAD";
 
 function toRawBase(dotfilesUrl: string): string {
   const url = new URL(dotfilesUrl);
-  return `https://raw.githubusercontent.com${url.pathname}/main`;
+  return `https://raw.githubusercontent.com${url.pathname}/HEAD`;
 }
 
 type RawEntry = {
