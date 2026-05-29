@@ -1,20 +1,49 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
+import { exists } from "@tauri-apps/plugin-fs";
+import { homeDir, join } from "@tauri-apps/api/path";
 import "./App.css";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
+  const [configExists, setConfigExists] = useState<boolean | null>(null);
+  const [configPath, setConfigPath] = useState("");
+
+  async function checkConfig() {
+    const home = await homeDir();
+    const fullPath = await join(home, ".config/mango/config.conf");
+    setConfigPath(fullPath);
+    const found = await exists(fullPath);
+    setConfigExists(found);
+  }
+
+  useEffect(() => {
+    checkConfig();
+  }, []);
 
   async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
     setGreetMsg(await invoke("greet", { name }));
   }
 
   return (
     <main className="container">
-      <h1>Welcome to Tauri + React</h1>
+      <h1>Mango Settings</h1>
+
+      <section>
+        <h2>
+          Config Check
+          <button onClick={checkConfig} style={{ marginLeft: 8 }}>Refresh</button>
+        </h2>
+        {configExists === null ? (
+          <p>Checking for config file...</p>
+        ) : configExists ? (
+          <p style={{ color: "green" }}>Found: {configPath}</p>
+        ) : (
+          <p style={{ color: "red" }}>Not found: {configPath}</p>
+        )}
+      </section>
 
       <div className="row">
         <a href="https://vite.dev" target="_blank">
