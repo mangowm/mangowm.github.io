@@ -1958,8 +1958,6 @@ checksum = "616ec5685824bcc94416c6d4a7a446eea774a31efd7062c8480ba6fd06d7a6e5"
 name = "mango-settings"
 version = "0.1.0"
 dependencies = [
- "serde",
- "serde_json",
  "tauri",
  "tauri-build",
  "tauri-plugin-fs",
