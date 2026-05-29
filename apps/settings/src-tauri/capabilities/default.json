@@ -11,6 +11,13 @@
     "fs:allow-copy-file",
     "fs:allow-mkdir",
     "fs:allow-write-text-file",
+    "fs:allow-read-text-file",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        { "name": "mmsg", "cmd": "mmsg", "args": ["dispatch", "reload_config"], "sidecar": false }
+      ]
+    },
     {
       "identifier": "fs:scope",
       "allow": [

@@ -1,5 +1,8 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { useConfigStore } from "@/lib/config-store";
+import { useShallow } from "zustand/react/shallow";
 
 export function PageHeader({ title }: { title?: string }) {
   return (
@@ -8,7 +11,28 @@ export function PageHeader({ title }: { title?: string }) {
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mx-2 h-4 data-vertical:self-auto" />
         <h1 className="text-base font-medium">{title ?? "Settings"}</h1>
+        <div className="ml-auto">
+          <ApplyButton />
+        </div>
       </div>
     </header>
+  );
+}
+
+function ApplyButton() {
+  const { applying, loading, apply } = useConfigStore(
+    useShallow((s) => ({
+      applying: s.applying,
+      loading: s.loading,
+      apply: s.apply,
+    })),
+  );
+
+  if (loading) return null;
+
+  return (
+    <Button size="sm" onClick={apply} disabled={applying}>
+      {applying ? "Applying..." : "Apply"}
+    </Button>
   );
 }

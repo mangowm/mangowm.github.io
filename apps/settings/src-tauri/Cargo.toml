@@ -16,4 +16,5 @@ tauri-build = { version = "2", features = [] }
 tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
 tauri-plugin-fs = "2.5.1"
+tauri-plugin-shell = "2"
 
