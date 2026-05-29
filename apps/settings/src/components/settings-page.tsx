@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { SettingsSidebar } from "@/components/settings-sidebar";
 import { PageHeader } from "@/components/page-header";
+import { SectionDocs } from "@/components/section-docs";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useConfigStore } from "@/lib/config-store";
 import { AutostartPanel } from "@/components/AutostartPanel";
@@ -29,11 +30,12 @@ export function SettingsPage() {
       />
       <SidebarInset>
         <PageHeader title={activeSection} />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+        <div className="flex-1 overflow-y-auto p-5">
+          <div className="flex flex-row gap-5 min-h-full">
+            <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 overflow-y-auto p-6">
               {activeSection === "Autostart" && <AutostartPanel />}
             </div>
+            <SectionDocs section={activeSection} />
           </div>
         </div>
       </SidebarInset>

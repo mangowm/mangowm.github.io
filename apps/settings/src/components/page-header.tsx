@@ -20,10 +20,11 @@ export function PageHeader({ title }: { title?: string }) {
 }
 
 function ApplyButton() {
-  const { applying, loading, apply } = useConfigStore(
+  const { applying, loading, dirty, apply } = useConfigStore(
     useShallow((s) => ({
       applying: s.applying,
       loading: s.loading,
+      dirty: s.dirty,
       apply: s.apply,
     })),
   );
@@ -31,8 +32,8 @@ function ApplyButton() {
   if (loading) return null;
 
   return (
-    <Button size="sm" onClick={apply} disabled={applying}>
-      {applying ? "Applying..." : "Apply"}
+    <Button onClick={apply} disabled={applying || !dirty}>
+      {applying ? "Applying..." : dirty ? "Apply" : "Applied"}
     </Button>
   );
 }

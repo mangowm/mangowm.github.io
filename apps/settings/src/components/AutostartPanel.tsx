@@ -1,4 +1,4 @@
-import { PlusIcon, Trash2Icon } from "lucide-react";
+import { PlusIcon, TerminalIcon, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useConfigStore } from "@/lib/config-store";
@@ -9,42 +9,64 @@ export function AutostartPanel() {
   const removeExecOnce = useConfigStore((s) => s.removeExecOnce);
   const updateExecOnce = useConfigStore((s) => s.updateExecOnce);
 
+  if (exec_once.length === 0) {
+    return (
+      <div className="flex flex-col items-center gap-5 py-16">
+        <TerminalIcon className="size-12 text-muted-foreground/60" />
+        <div className="flex flex-col items-center gap-1">
+          <p className="text-base font-medium text-foreground">No startup commands</p>
+          <p className="text-sm text-muted-foreground text-center max-w-80">
+            Commands run in order on each mango session. Add your first command to get started.
+          </p>
+        </div>
+        <Button onClick={() => addExecOnce("")} size="lg">
+          <PlusIcon className="size-4" />
+          Add Command
+        </Button>
+      </div>
+    );
+  }
+
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-col gap-3">
+    <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
-        <h2 className="text-sm font-medium text-foreground">Autostart Commands</h2>
-        <p className="text-xs text-muted-foreground">
-          Commands run on mango startup. One command per line.
+        <h2 className="text-base font-medium text-foreground">Autostart Commands</h2>
+        <p className="text-sm text-muted-foreground">
+          Commands run in order on each mango session.
         </p>
       </div>
-
-      {exec_once.length === 0 && (
-        <p className="text-xs text-muted-foreground py-2">No autostart commands configured.</p>
-      )}
-
-      {exec_once.map((cmd, i) => (
-        <div key={i} className="flex items-center gap-2">
-          <Input
-            value={cmd}
-            onChange={(e) => updateExecOnce(i, e.target.value)}
-            placeholder="/usr/bin/program"
-            className="flex-1"
-          />
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={() => removeExecOnce(i)}
-            aria-label="Remove command"
+      <div className="flex flex-col gap-1.5">
+        {exec_once.map((cmd, i) => (
+          <div
+            key={i}
+            className="group flex items-center gap-2 rounded-lg px-2.5 py-1.5 -mx-2.5 transition-colors hover:bg-muted/40 has-focus-within:bg-muted/40"
           >
-            <Trash2Icon className="size-4" />
-          </Button>
-        </div>
-      ))}
-
-      <Button variant="outline" size="sm" onClick={() => addExecOnce("")} className="self-start">
-        <PlusIcon className="size-4" />
-        Add Command
-      </Button>
+            <Input
+              value={cmd}
+              onChange={(e) => updateExecOnce(i, e.target.value)}
+              placeholder="/usr/bin/program"
+              className="flex-1"
+            />
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              onClick={() => removeExecOnce(i)}
+              aria-label="Remove command"
+              className="opacity-0 group-hover:opacity-100 group-has-focus-within:opacity-100 transition-opacity"
+            >
+              <XIcon className="size-4" />
+            </Button>
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center gap-3">
+        <div className="h-px flex-1 bg-border" />
+        <Button variant="outline" onClick={() => addExecOnce("")}>
+          <PlusIcon className="size-4" />
+          Add Command
+        </Button>
+        <div className="h-px flex-1 bg-border" />
+      </div>
     </div>
   );
 }

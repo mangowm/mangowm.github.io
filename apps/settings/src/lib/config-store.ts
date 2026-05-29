@@ -9,6 +9,7 @@ interface ConfigStore {
   raw: ParsedConfig["raw"];
   loading: boolean;
   applying: boolean;
+  dirty: boolean;
   error: string | null;
 
   load: () => Promise<void>;
@@ -26,6 +27,7 @@ export const useConfigStore = create<ConfigStore>((set, get) => ({
   raw: {},
   loading: false,
   applying: false,
+  dirty: false,
   error: null,
 
   load: async () => {
@@ -33,22 +35,23 @@ export const useConfigStore = create<ConfigStore>((set, get) => ({
     try {
       const text = await readConfigFile();
       if (text === null) {
-        set({ typed: { ...defaultTyped }, lines: [], raw: {}, loading: false });
+        set({ typed: { ...defaultTyped }, lines: [], raw: {}, loading: false, dirty: false });
         return;
       }
       const parsed = parseConfig(text);
-      set({ typed: parsed.typed, lines: parsed.lines, raw: parsed.raw, loading: false });
+      set({ typed: parsed.typed, lines: parsed.lines, raw: parsed.raw, loading: false, dirty: false });
     } catch (e) {
       set({ error: String(e), loading: false });
     }
   },
 
   addExecOnce: (cmd) =>
-    set((s) => ({ typed: { ...s.typed, exec_once: [...s.typed.exec_once, cmd] } })),
+    set((s) => ({ typed: { ...s.typed, exec_once: [...s.typed.exec_once, cmd] }, dirty: true })),
 
   removeExecOnce: (i) =>
     set((s) => ({
       typed: { ...s.typed, exec_once: s.typed.exec_once.filter((_, j) => j !== i) },
+      dirty: true,
     })),
 
   updateExecOnce: (i, cmd) =>
@@ -56,7 +59,7 @@ export const useConfigStore = create<ConfigStore>((set, get) => ({
       if (i >= s.typed.exec_once.length) return s;
       const next = [...s.typed.exec_once];
       next[i] = cmd;
-      return { typed: { ...s.typed, exec_once: next } };
+      return { typed: { ...s.typed, exec_once: next }, dirty: true };
     }),
 
   apply: async () => {
@@ -66,7 +69,7 @@ export const useConfigStore = create<ConfigStore>((set, get) => ({
       const text = serializeConfig({ typed, raw, lines });
       await writeConfigFile(text);
       await reloadMango();
-      set({ applying: false });
+      set({ applying: false, dirty: false });
     } catch (e) {
       set({ error: String(e), applying: false });
     }
