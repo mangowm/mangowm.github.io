@@ -8,7 +8,43 @@
     "opener:default",
     {
       "identifier": "fs:allow-exists",
-      "allow": [{ "path": "$HOME/.config/mango/config.conf" }]
+      "allow": [
+        { "path": "$HOME/.config/mango" },
+        { "path": "$HOME/.config/mango/*" },
+        { "path": "$HOME/.config/mango/.*" },
+        { "path": "$HOME/.config/mango/**/*" },
+        { "path": "$HOME/.config/mango/**/.*" }
+      ]
+    },
+    {
+      "identifier": "fs:allow-read-dir",
+      "allow": [{ "path": "$HOME/.config/mango" }, { "path": "$HOME/.config/mango/**" }]
+    },
+    {
+      "identifier": "fs:allow-copy-file",
+      "allow": [
+        { "path": "$HOME/.config/mango/*" },
+        { "path": "$HOME/.config/mango/.*" },
+        { "path": "$HOME/.config/mango/**/*" },
+        { "path": "$HOME/.config/mango/**/.*" },
+        { "path": "$HOME/.config/mango/backup/*" },
+        { "path": "$HOME/.config/mango/backup/.*" },
+        { "path": "$HOME/.config/mango/backup/**/*" },
+        { "path": "$HOME/.config/mango/backup/**/.*" }
+      ]
+    },
+    {
+      "identifier": "fs:allow-mkdir",
+      "allow": [{ "path": "$HOME/.config/mango" }, { "path": "$HOME/.config/mango/**" }]
+    },
+    {
+      "identifier": "fs:allow-write-text-file",
+      "allow": [
+        { "path": "$HOME/.config/mango/*" },
+        { "path": "$HOME/.config/mango/.*" },
+        { "path": "$HOME/.config/mango/**/*" },
+        { "path": "$HOME/.config/mango/**/.*" }
+      ]
     }
   ]
 }
