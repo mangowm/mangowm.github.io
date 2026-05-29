@@ -1,6 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
-import { exists, readDir, copyFile, mkdir, writeTextFile, BaseDirectory } from "@tauri-apps/plugin-fs";
+import {
+  exists,
+  readDir,
+  copyFile,
+  mkdir,
+  writeTextFile,
+  BaseDirectory,
+} from "@tauri-apps/plugin-fs";
 import { join } from "@tauri-apps/api/path";
+import { Button } from "@/components/ui/button";
 
 const BASE = ".config/mango";
 const BACKUP = ".config/mango/backup";
@@ -27,7 +35,9 @@ async function copyRecursive(rel: string) {
 }
 
 export default function App() {
-  const [status, setStatus] = useState<"checking" | "none" | "ready" | "running" | "exists" | "success">("checking");
+  const [status, setStatus] = useState<
+    "checking" | "none" | "ready" | "running" | "exists" | "success"
+  >("checking");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -52,7 +62,7 @@ export default function App() {
       await writeTextFile(
         SETTINGS,
         JSON.stringify({ backup: { createdAt: new Date().toISOString() } }, null, 2),
-        { baseDir: BD }
+        { baseDir: BD },
       );
       setStatus("success");
     } catch (e) {
@@ -67,14 +77,31 @@ export default function App() {
       <section>
         <h2>Backup</h2>
         {error && <p style={{ color: "red" }}>Error: {error}</p>}
-        {{
-          checking: <p>Checking...</p>,
-          none:     <p>No config directory found — nothing to back up.</p>,
-          ready:    <><p>Back up your config before making changes.</p><button onClick={startBackup}>Start Backup</button></>,
-          running:  <p>Backing up...</p>,
-          exists:   <><p>A backup already exists.</p><button onClick={startBackup}>Overwrite Backup</button></>,
-          success:  <><p>Backup complete.</p><button onClick={startBackup}>Back Up Again</button></>,
-        }[status]}
+        {
+          {
+            checking: <p>Checking...</p>,
+            none: <p>No config directory found — nothing to back up.</p>,
+            ready: (
+              <>
+                <p>Back up your config before making changes.</p>
+                <Button onClick={startBackup}>Start Backup</Button>
+              </>
+            ),
+            running: <p>Backing up...</p>,
+            exists: (
+              <>
+                <p>A backup already exists.</p>
+                <Button onClick={startBackup}>Overwrite Backup</Button>
+              </>
+            ),
+            success: (
+              <>
+                <p>Backup complete.</p>
+                <Button onClick={startBackup}>Back Up Again</Button>
+              </>
+            ),
+          }[status]
+        }
       </section>
     </main>
   );
