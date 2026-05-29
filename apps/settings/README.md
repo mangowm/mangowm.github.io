@@ -1,1 +1,1 @@
-# Mango Settings
+# mangowm settings

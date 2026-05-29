@@ -11,7 +11,7 @@ import { join } from "@tauri-apps/api/path";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import "./index.css";
-import mangoLogo from "@/assets/mango-logo.svg";
+import mangowmLogo from "@/assets/mangowm-logo.svg";
 
 const BASE = ".config/mango";
 const BACKUP = ".config/mango/backup";
@@ -91,7 +91,11 @@ export default function App() {
       <div className="w-full max-w-lg">
         {step === "welcome" && (
           <div className="flex items-center justify-center gap-5">
-            <img src={mangoLogo} alt="mangowm logo" className="size-16 animate-in fade-in zoom-in duration-500 fill-mode-both" />
+            <img
+              src={mangowmLogo}
+              alt="mangowm logo"
+              className="size-16 animate-in fade-in zoom-in duration-500 fill-mode-both"
+            />
             <h1 className="text-5xl font-semibold tracking-tight text-foreground animate-in fade-in slide-in-from-left-2 duration-500 delay-150 fill-mode-both">
               mangowm
             </h1>
