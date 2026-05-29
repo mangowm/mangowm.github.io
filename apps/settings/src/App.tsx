@@ -10,6 +10,8 @@ import {
 import { join } from "@tauri-apps/api/path";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { SettingsPage } from "@/components/settings-page";
 import "./index.css";
 import mangowmLogo from "@/assets/mangowm-logo.svg";
 
@@ -87,108 +89,111 @@ export default function App() {
   }, []);
 
   return (
-    <main className="dark min-h-screen bg-background text-foreground flex items-center justify-center p-6 selection:bg-primary selection:text-primary-foreground">
-      <div className="w-full max-w-lg">
-        {step === "welcome" && (
-          <div className="flex items-center justify-center gap-5">
-            <img
-              src={mangowmLogo}
-              alt="mangowm logo"
-              className="size-16 animate-in fade-in zoom-in duration-500 fill-mode-both"
-            />
-            <h1 className="text-5xl font-semibold tracking-tight text-foreground animate-in fade-in slide-in-from-left-2 duration-500 delay-150 fill-mode-both">
-              mangowm
-            </h1>
-          </div>
-        )}
-
-        {step === "backup" && (
-          <Card className="p-8 border-border bg-card/50 backdrop-blur-sm animate-in slide-in-from-bottom-4 fade-in duration-500 shadow-2xl">
-            <div className="flex flex-col items-center text-center space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-xl font-medium tracking-tight">Secure Configuration</h2>
-                <p className="text-sm text-muted-foreground max-w-sm">
-                  Create a restoration point for your existing environment before modifying core
-                  parameters.
-                </p>
+    <>
+      {step === "welcome" || step === "backup" ? (
+        <main className="dark min-h-screen bg-background text-foreground flex items-center justify-center p-6 selection:bg-primary selection:text-primary-foreground">
+          <div className="w-full max-w-lg">
+            {step === "welcome" && (
+              <div className="flex items-center justify-center gap-5">
+                <img
+                  src={mangowmLogo}
+                  alt="mangowm logo"
+                  className="size-16 animate-in fade-in zoom-in duration-500 fill-mode-both"
+                />
+                <h1 className="text-5xl font-semibold tracking-tight text-foreground animate-in fade-in slide-in-from-left-2 duration-500 delay-150 fill-mode-both">
+                  mangowm
+                </h1>
               </div>
+            )}
 
-              {error && (
-                <div className="p-3 w-full border border-destructive/50 bg-destructive/10 text-destructive text-sm rounded-md animate-in fade-in">
-                  {error}
+            {step === "backup" && (
+              <Card className="p-8 border-border bg-card/50 backdrop-blur-sm animate-in slide-in-from-bottom-4 fade-in duration-500 shadow-2xl">
+                <div className="flex flex-col items-center text-center space-y-6">
+                  <div className="space-y-2">
+                    <h2 className="text-xl font-medium tracking-tight">Secure Configuration</h2>
+                    <p className="text-sm text-muted-foreground max-w-sm">
+                      Create a restoration point for your existing environment before modifying core
+                      parameters.
+                    </p>
+                  </div>
+
+                  {error && (
+                    <div className="p-3 w-full border border-destructive/50 bg-destructive/10 text-destructive text-sm rounded-md animate-in fade-in">
+                      {error}
+                    </div>
+                  )}
+
+                  <div className="w-full pt-4 min-h-[40px] flex items-center justify-center">
+                    {
+                      {
+                        checking: (
+                          <Button disabled className="w-full" variant="outline">
+                            Verifying Environment...
+                          </Button>
+                        ),
+                        none: (
+                          <Button className="w-full" onClick={() => setStep("settings")}>
+                            No Config Found — Continue
+                          </Button>
+                        ),
+                        ready: (
+                          <Button className="w-full" onClick={() => startBackup(false)}>
+                            Create Backup
+                          </Button>
+                        ),
+                        running: (
+                          <Button disabled className="w-full">
+                            <span className="animate-pulse">Securing Backup...</span>
+                          </Button>
+                        ),
+                        exists: (
+                          <div className="flex gap-3 w-full">
+                            <Button
+                              variant="secondary"
+                              className="flex-1"
+                              onClick={() => setStep("settings")}
+                            >
+                              Skip
+                            </Button>
+                            <Button className="flex-1" onClick={() => startBackup(true)}>
+                              Overwrite
+                            </Button>
+                          </div>
+                        ),
+                        "running-overwrite": (
+                          <div className="flex gap-3 w-full">
+                            <Button disabled variant="secondary" className="flex-1">
+                              Skip
+                            </Button>
+                            <Button disabled className="flex-1">
+                              <span className="animate-pulse">Overwriting...</span>
+                            </Button>
+                          </div>
+                        ),
+                        success: (
+                          <Button
+                            className="w-full bg-green-900/20 text-green-500 border-green-900/50 border hover:bg-green-900/30 hover:text-green-400"
+                            variant="outline"
+                            onClick={() => setStep("settings")}
+                          >
+                            Continue to Settings
+                          </Button>
+                        ),
+                      }[status]
+                    }
+                  </div>
                 </div>
-              )}
-
-              <div className="w-full pt-4 min-h-[40px] flex items-center justify-center">
-                {
-                  {
-                    checking: (
-                      <Button disabled className="w-full" variant="outline">
-                        Verifying Environment...
-                      </Button>
-                    ),
-                    none: (
-                      <Button className="w-full" onClick={() => setStep("settings")}>
-                        No Config Found — Continue
-                      </Button>
-                    ),
-                    ready: (
-                      <Button className="w-full" onClick={() => startBackup(false)}>
-                        Create Backup
-                      </Button>
-                    ),
-                    running: (
-                      <Button disabled className="w-full">
-                        <span className="animate-pulse">Securing Backup...</span>
-                      </Button>
-                    ),
-                    exists: (
-                      <div className="flex gap-3 w-full">
-                        <Button
-                          variant="secondary"
-                          className="flex-1"
-                          onClick={() => setStep("settings")}
-                        >
-                          Skip
-                        </Button>
-                        <Button className="flex-1" onClick={() => startBackup(true)}>
-                          Overwrite
-                        </Button>
-                      </div>
-                    ),
-                    "running-overwrite": (
-                      <div className="flex gap-3 w-full">
-                        <Button disabled variant="secondary" className="flex-1">
-                          Skip
-                        </Button>
-                        <Button disabled className="flex-1">
-                          <span className="animate-pulse">Overwriting...</span>
-                        </Button>
-                      </div>
-                    ),
-                    success: (
-                      <Button
-                        className="w-full bg-green-900/20 text-green-500 border-green-900/50 border hover:bg-green-900/30 hover:text-green-400"
-                        variant="outline"
-                        onClick={() => setStep("settings")}
-                      >
-                        Continue to Settings
-                      </Button>
-                    ),
-                  }[status]
-                }
-              </div>
-            </div>
-          </Card>
-        )}
-
-        {step === "settings" && (
-          <div className="text-center animate-in fade-in duration-500">
-            <h1 className="text-2xl font-semibold tracking-tight mb-2 text-foreground">Settings</h1>
-            <p className="text-muted-foreground text-sm">Coming soon.</p>
+              </Card>
+            )}
           </div>
-        )}
-      </div>
-    </main>
+        </main>
+      ) : (
+        <TooltipProvider>
+          <div className="dark bg-background text-foreground min-h-screen selection:bg-primary selection:text-primary-foreground">
+            <SettingsPage />
+          </div>
+        </TooltipProvider>
+      )}
+    </>
   );
 }
