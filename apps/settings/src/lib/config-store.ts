@@ -1,30 +1,28 @@
 import { create } from "zustand";
 import { parseConfig, serializeConfig } from "./config-parse";
 import { readConfigFile, writeConfigFile, reloadMango } from "./config-file";
-import type { MangoConfig, ParsedConfig } from "./config-types";
+import type { ConfigData, ParsedConfig, MangoConfigKey } from "./config-types";
 
 interface ConfigStore {
-  typed: MangoConfig;
+  data: ConfigData;
   lines: ParsedConfig["lines"];
-  raw: ParsedConfig["raw"];
   loading: boolean;
   applying: boolean;
   dirty: boolean;
   error: string | null;
 
   load: () => Promise<void>;
-  addExecOnce: (cmd: string) => void;
-  removeExecOnce: (i: number) => void;
-  updateExecOnce: (i: number, cmd: string) => void;
+
+  addEntry: (key: MangoConfigKey, value: string) => void;
+  updateEntry: (key: MangoConfigKey, index: number, value: string) => void;
+  removeEntry: (key: MangoConfigKey, index: number) => void;
+
   apply: () => Promise<void>;
 }
 
-const defaultTyped: MangoConfig = { exec_once: [] };
-
 export const useConfigStore = create<ConfigStore>((set, get) => ({
-  typed: { ...defaultTyped },
+  data: {},
   lines: [],
-  raw: {},
   loading: false,
   applying: false,
   dirty: false,
@@ -35,49 +33,66 @@ export const useConfigStore = create<ConfigStore>((set, get) => ({
     try {
       const text = await readConfigFile();
       if (text === null) {
-        set({ typed: { ...defaultTyped }, lines: [], raw: {}, loading: false, dirty: false });
+        set({ data: {}, lines: [], loading: false, dirty: false });
         return;
       }
       const parsed = parseConfig(text);
       set({
-        typed: parsed.typed,
+        data: parsed.data,
         lines: parsed.lines,
-        raw: parsed.raw,
         loading: false,
         dirty: false,
       });
-    } catch (e) {
-      set({ error: String(e), loading: false });
+    } catch (e: any) {
+      set({ error: e.message || String(e), loading: false });
     }
   },
 
-  addExecOnce: (cmd) =>
-    set((s) => ({ typed: { ...s.typed, exec_once: [...s.typed.exec_once, cmd] }, dirty: true })),
+  addEntry: (key, value) =>
+    set((state) => {
+      const current = state.data[key] || [];
+      return {
+        data: { ...state.data, [key]: [...current, value] },
+        dirty: true,
+      };
+    }),
 
-  removeExecOnce: (i) =>
-    set((s) => ({
-      typed: { ...s.typed, exec_once: s.typed.exec_once.filter((_, j) => j !== i) },
-      dirty: true,
-    })),
+  updateEntry: (key, index, value) =>
+    set((state) => {
+      const current = state.data[key] || [];
+      if (index < 0 || index >= current.length) return state;
 
-  updateExecOnce: (i, cmd) =>
-    set((s) => {
-      if (i >= s.typed.exec_once.length) return s;
-      const next = [...s.typed.exec_once];
-      next[i] = cmd;
-      return { typed: { ...s.typed, exec_once: next }, dirty: true };
+      const next = [...current];
+      next[index] = value;
+      return {
+        data: { ...state.data, [key]: next },
+        dirty: true,
+      };
+    }),
+
+  removeEntry: (key, index) =>
+    set((state) => {
+      const current = state.data[key] || [];
+      if (index < 0 || index >= current.length) return state;
+
+      return {
+        data: { ...state.data, [key]: current.filter((_, i) => i !== index) },
+        dirty: true,
+      };
     }),
 
   apply: async () => {
     set({ applying: true, error: null });
     try {
-      const { typed, raw, lines } = get();
-      const text = serializeConfig({ typed, raw, lines });
+      const { data, lines } = get();
+      const text = serializeConfig({ data, lines });
+
       await writeConfigFile(text);
       await reloadMango();
+
       set({ applying: false, dirty: false });
-    } catch (e) {
-      set({ error: String(e), applying: false });
+    } catch (e: any) {
+      set({ error: e.message || String(e), applying: false });
     }
   },
 }));

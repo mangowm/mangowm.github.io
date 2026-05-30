@@ -4,12 +4,12 @@ import { Input } from "@/components/ui/input";
 import { useConfigStore } from "@/lib/config-store";
 
 export function AutostartPanel() {
-  const exec_once = useConfigStore((s) => s.typed.exec_once);
-  const addExecOnce = useConfigStore((s) => s.addExecOnce);
-  const removeExecOnce = useConfigStore((s) => s.removeExecOnce);
-  const updateExecOnce = useConfigStore((s) => s.updateExecOnce);
+  const commands = useConfigStore((state) => state.data["exec-once"]) ?? [];
+  const addEntry = useConfigStore((state) => state.addEntry);
+  const removeEntry = useConfigStore((state) => state.removeEntry);
+  const updateEntry = useConfigStore((state) => state.updateEntry);
 
-  if (exec_once.length === 0) {
+  if (commands.length === 0) {
     return (
       <div className="flex flex-col items-center gap-5 py-16">
         <TerminalIcon className="size-12 text-muted-foreground/60" />
@@ -19,7 +19,7 @@ export function AutostartPanel() {
             Commands run in order on each mango session. Add your first command to get started.
           </p>
         </div>
-        <Button onClick={() => addExecOnce("")} size="lg">
+        <Button onClick={() => addEntry("exec-once", "")} size="lg">
           <PlusIcon className="size-4" />
           Add Command
         </Button>
@@ -36,21 +36,21 @@ export function AutostartPanel() {
         </p>
       </div>
       <div className="flex flex-col gap-1.5">
-        {exec_once.map((cmd, i) => (
+        {commands.map((cmd, i) => (
           <div
             key={i}
             className="group flex items-center gap-2 rounded-lg px-2.5 py-1.5 -mx-2.5 transition-colors hover:bg-muted/40 has-focus-within:bg-muted/40"
           >
             <Input
               value={cmd}
-              onChange={(e) => updateExecOnce(i, e.target.value)}
+              onChange={(e) => updateEntry("exec-once", i, e.target.value)}
               placeholder="/usr/bin/program"
               className="flex-1"
             />
             <Button
               variant="ghost"
               size="icon-xs"
-              onClick={() => removeExecOnce(i)}
+              onClick={() => removeEntry("exec-once", i)}
               aria-label="Remove command"
               className="opacity-0 group-hover:opacity-100 group-has-focus-within:opacity-100 transition-opacity"
             >
@@ -61,7 +61,7 @@ export function AutostartPanel() {
       </div>
       <div className="flex items-center gap-3">
         <div className="h-px flex-1 bg-border" />
-        <Button variant="outline" onClick={() => addExecOnce("")}>
+        <Button variant="outline" onClick={() => addEntry("exec-once", "")}>
           <PlusIcon className="size-4" />
           Add Command
         </Button>

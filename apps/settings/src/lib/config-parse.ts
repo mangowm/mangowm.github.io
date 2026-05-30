@@ -1,84 +1,71 @@
-import type { ConfigLine, ParsedConfig, MangoConfig, RawConfig } from "./config-types";
+import { ConfigData, ConfigLine, ParsedConfig } from "./config-types";
 
 export function parseConfig(text: string): ParsedConfig {
-  const typed: MangoConfig = { exec_once: [] };
-  const raw: RawConfig = {};
+  const data: ConfigData = {};
   const lines: ConfigLine[] = [];
 
-  for (const rawLine of text.split("\n")) {
-    const trimmed = rawLine.trim();
+  for (const raw of text.split("\n")) {
+    const trimmed = raw.trim();
 
-    if (trimmed === "") {
-      lines.push({ type: "blank", raw: rawLine });
+    if (!trimmed) {
+      lines.push({ type: "blank", raw });
       continue;
     }
 
     if (trimmed.startsWith("#")) {
-      lines.push({ type: "comment", text: trimmed, raw: rawLine });
+      lines.push({ type: "comment", text: trimmed, raw });
       continue;
     }
 
     const eqIdx = trimmed.indexOf("=");
     if (eqIdx === -1) {
-      lines.push({ type: "comment", text: trimmed, raw: rawLine });
+      // Treat lines without '=' as comments/invalid to preserve them
+      lines.push({ type: "comment", text: trimmed, raw });
       continue;
     }
 
-    const key = trimmed.slice(0, eqIdx).trim();
-    const value = trimmed.slice(eqIdx + 1).trim();
+    const key = trimmed.substring(0, eqIdx).trim();
+    const value = trimmed.substring(eqIdx + 1).trim();
 
-    lines.push({ type: "entry", key, value, raw: rawLine });
+    lines.push({ type: "entry", key, value, raw });
 
-    if (key === "exec-once") {
-      typed.exec_once.push(value);
-    } else {
-      if (!raw[key]) raw[key] = [];
-      raw[key].push(value);
+    if (!data[key]) {
+      data[key] = [];
     }
+    data[key].push(value);
   }
 
-  return { typed, raw, lines };
+  return { data, lines };
 }
 
 export function serializeConfig(parsed: ParsedConfig): string {
-  const { typed, raw, lines } = parsed;
-
+  const { data, lines } = parsed;
   const buffer = new Map<string, string[]>();
 
-  for (const cmd of typed.exec_once) {
-    const arr = buffer.get("exec-once") ?? [];
-    arr.push(cmd);
-    buffer.set("exec-once", arr);
-  }
-
-  for (const [key, values] of Object.entries(raw)) {
-    if (!buffer.has(key)) {
-      buffer.set(key, [...values]);
-    }
-  }
-
-  function consume(key: string): string | null {
-    const arr = buffer.get(key);
-    if (!arr || arr.length === 0) return null;
-    return arr.shift()!;
+  for (const [key, values] of Object.entries(data)) {
+    buffer.set(key, [...values]);
   }
 
   const result: string[] = [];
 
+  // Rebuild file preserving comments and whitespace
   for (const line of lines) {
     if (line.type === "entry") {
-      const val = consume(line.key);
-      if (val !== null) {
-        result.push(`${line.key}=${val}`);
+      const arr = buffer.get(line.key);
+      if (arr && arr.length > 0) {
+        const val = arr.shift();
+        result.push(`${line.key} = ${val}`);
       }
+      // If arr is empty/undefined, the user deleted it in the UI, so we skip it here.
     } else {
       result.push(line.raw);
     }
   }
 
-  for (const [key, values] of buffer) {
+  // Append brand new entries added via the UI to the end of the file
+  for (const [key, values] of buffer.entries()) {
     for (const val of values) {
-      result.push(`${key}=${val}`);
+      result.push(`${key} = ${val}`);
     }
   }
 

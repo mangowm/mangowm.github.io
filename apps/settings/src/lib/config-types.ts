@@ -1,9 +1,6 @@
-export interface MangoConfig {
-  exec_once: string[];
-}
+export type MangoConfigKey = "exec-once" | "exec" | (string & {});
 
-export type RawValue = string[];
-export type RawConfig = Record<string, RawValue>;
+export type ConfigData = Record<string, string[]>;
 
 export type ConfigLine =
   | { type: "entry"; key: string; value: string; raw: string }
@@ -11,7 +8,6 @@ export type ConfigLine =
   | { type: "blank"; raw: string };
 
 export interface ParsedConfig {
-  typed: MangoConfig;
-  raw: RawConfig;
+  data: ConfigData;
   lines: ConfigLine[];
 }
