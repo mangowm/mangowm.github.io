@@ -1,5 +1,4 @@
 import type { ComponentType } from "react";
-import type { DocSection } from "@/lib/doc-types";
 import {
   FileJsonIcon,
   AppWindowIcon,
@@ -17,14 +16,12 @@ import {
   MoveIcon,
 } from "lucide-react";
 import { AutostartPanel } from "@/components/sections/autostart/AutostartPanel";
-import { autostartDocs } from "@/components/sections/autostart/autostart.docs";
 
 export interface SectionDef {
   id: string;
   label: string;
   icon: React.ReactNode;
   panel?: ComponentType;
-  docs?: DocSection[];
   parentId?: string;
 }
 
@@ -34,7 +31,6 @@ export const SECTIONS: SectionDef[] = [
     label: "Autostart",
     icon: <RocketIcon />,
     panel: AutostartPanel,
-    docs: autostartDocs,
   },
   {
     id: "environment",

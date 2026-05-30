@@ -5,6 +5,7 @@ import { SectionDocs } from "@/components/section-docs";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useConfigStore } from "@/lib/config-store";
 import { getSectionById, SECTIONS } from "@/lib/sections";
+import { getDocs } from "@/lib/docs";
 
 const DEFAULT_SECTION = SECTIONS[0].id;
 
@@ -40,7 +41,7 @@ export function SettingsPage() {
             <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 overflow-y-auto p-6">
               {Panel && <Panel />}
             </div>
-            <SectionDocs docs={section?.docs} />
+            <SectionDocs markdown={getDocs(activeSection)} />
           </div>
         </div>
       </SidebarInset>
