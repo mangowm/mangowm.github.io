@@ -13,9 +13,10 @@ import {
 import { cn } from "@/lib/utils";
 
 type NavItem = {
+  id: string;
   title: string;
   icon?: React.ReactNode;
-  children?: { title: string; icon?: React.ReactNode }[];
+  children?: { id: string; title: string; icon?: React.ReactNode }[];
 };
 
 export function SidebarNav({
@@ -25,12 +26,12 @@ export function SidebarNav({
 }: {
   items: NavItem[];
   activeSection: string;
-  onSectionChange: (section: string) => void;
+  onSectionChange: (id: string) => void;
 }) {
   const [openGroups, setOpenGroups] = React.useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     for (const item of items) {
-      if (item.children) initial[item.title] = true;
+      if (item.children) initial[item.id] = true;
     }
     return initial;
   });
@@ -40,7 +41,7 @@ export function SidebarNav({
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
+            <SidebarMenuItem key={item.id}>
               {item.children ? (
                 <>
                   <SidebarMenuButton
@@ -48,7 +49,7 @@ export function SidebarNav({
                     onClick={() =>
                       setOpenGroups((prev) => ({
                         ...prev,
-                        [item.title]: !prev[item.title],
+                        [item.id]: !prev[item.id],
                       }))
                     }
                   >
@@ -57,17 +58,17 @@ export function SidebarNav({
                     <ChevronDownIcon
                       className={cn(
                         "ml-auto size-4 transition-transform",
-                        openGroups[item.title] && "rotate-180",
+                        openGroups[item.id] && "rotate-180",
                       )}
                     />
                   </SidebarMenuButton>
-                  {openGroups[item.title] && (
+                  {openGroups[item.id] && (
                     <SidebarMenuSub>
                       {item.children.map((child) => (
-                        <SidebarMenuSubItem key={child.title}>
+                        <SidebarMenuSubItem key={child.id}>
                           <SidebarMenuSubButton
-                            isActive={child.title === activeSection}
-                            onClick={() => onSectionChange(child.title)}
+                            isActive={child.id === activeSection}
+                            onClick={() => onSectionChange(child.id)}
                             className="cursor-pointer"
                           >
                             {child.icon}
@@ -80,9 +81,9 @@ export function SidebarNav({
                 </>
               ) : (
                 <SidebarMenuButton
-                  isActive={item.title === activeSection}
+                  isActive={item.id === activeSection}
                   tooltip={item.title}
-                  onClick={() => onSectionChange(item.title)}
+                  onClick={() => onSectionChange(item.id)}
                 >
                   {item.icon}
                   <span>{item.title}</span>

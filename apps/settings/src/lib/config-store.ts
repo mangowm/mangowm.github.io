@@ -39,7 +39,13 @@ export const useConfigStore = create<ConfigStore>((set, get) => ({
         return;
       }
       const parsed = parseConfig(text);
-      set({ typed: parsed.typed, lines: parsed.lines, raw: parsed.raw, loading: false, dirty: false });
+      set({
+        typed: parsed.typed,
+        lines: parsed.lines,
+        raw: parsed.raw,
+        loading: false,
+        dirty: false,
+      });
     } catch (e) {
       set({ error: String(e), loading: false });
     }

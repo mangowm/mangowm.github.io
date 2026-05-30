@@ -1,9 +1,8 @@
 import { BookOpenTextIcon } from "lucide-react";
-import { getDocContent, type DocSection } from "@/lib/section-docs";
+import type { DocSection } from "@/lib/doc-types";
 
-export function SectionDocs({ section }: { section: string }) {
-  const content = getDocContent(section);
-  if (!content) return null;
+export function SectionDocs({ docs }: { docs?: DocSection[] }) {
+  if (!docs || docs.length === 0) return null;
 
   return (
     <aside className="w-80 shrink-0 rounded-xl bg-card ring-1 ring-foreground/10 overflow-y-auto p-6">
@@ -12,7 +11,7 @@ export function SectionDocs({ section }: { section: string }) {
         <span className="text-sm font-medium text-muted-foreground">Docs</span>
       </div>
       <div className="flex flex-col gap-5">
-        {content.map((doc) => (
+        {docs.map((doc) => (
           <DocBlock key={doc.heading} {...doc} />
         ))}
       </div>

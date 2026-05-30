@@ -10,60 +10,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import {
-  FileJsonIcon,
-  AppWindowIcon,
-  TagIcon,
-  LayersIcon,
-  ListChecksIcon,
-  MonitorIcon,
-  ArrowUpDownIcon,
-  RocketIcon,
-  PaletteIcon,
-  LinkIcon,
-  KeyboardIcon,
-  MousePointerClickIcon,
-  HandIcon,
-  MoveIcon,
-} from "lucide-react";
+import { ROOT_SECTIONS, getChildren } from "@/lib/sections";
 
-const data = {
-  navMain: [
-    {
-      title: "Autostart",
-      icon: <RocketIcon />,
-    },
-    {
-      title: "Environment Variables",
-      icon: <FileJsonIcon />,
-    },
-    {
-      title: "Appearance",
-      icon: <PaletteIcon />,
-    },
-    {
-      title: "Rules",
-      icon: <ListChecksIcon />,
-      children: [
-        { title: "Window Rules", icon: <AppWindowIcon /> },
-        { title: "Tag Rules", icon: <TagIcon /> },
-        { title: "Layer Rule", icon: <LayersIcon /> },
-        { title: "Monitor Rules", icon: <MonitorIcon /> },
-      ],
-    },
-    {
-      title: "Bindings",
-      icon: <LinkIcon />,
-      children: [
-        { title: "Keybinds", icon: <KeyboardIcon /> },
-        { title: "Mouse Binds", icon: <MousePointerClickIcon /> },
-        { title: "Gesture Binds", icon: <HandIcon /> },
-        { title: "Axis Binds", icon: <MoveIcon /> },
-        { title: "Switch Binds", icon: <ArrowUpDownIcon /> },
-      ],
-    },
-  ],
-};
 export function SettingsSidebar({
   activeSection,
   onSectionChange,
@@ -72,6 +20,18 @@ export function SettingsSidebar({
   activeSection: string;
   onSectionChange: (section: string) => void;
 }) {
+  const navItems = ROOT_SECTIONS.map((s) => {
+    const children = getChildren(s.id);
+    return {
+      title: s.label,
+      id: s.id,
+      icon: s.icon,
+      ...(children.length > 0
+        ? { children: children.map((c) => ({ title: c.label, id: c.id, icon: c.icon })) }
+        : {}),
+    };
+  });
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -86,7 +46,7 @@ export function SettingsSidebar({
       </SidebarHeader>
       <SidebarContent>
         <SidebarNav
-          items={data.navMain}
+          items={navItems}
           activeSection={activeSection}
           onSectionChange={onSectionChange}
         />

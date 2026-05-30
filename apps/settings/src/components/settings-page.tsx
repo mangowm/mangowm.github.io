@@ -4,15 +4,20 @@ import { PageHeader } from "@/components/page-header";
 import { SectionDocs } from "@/components/section-docs";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useConfigStore } from "@/lib/config-store";
-import { AutostartPanel } from "@/components/AutostartPanel";
+import { getSectionById, SECTIONS } from "@/lib/sections";
+
+const DEFAULT_SECTION = SECTIONS[0].id;
 
 export function SettingsPage() {
-  const [activeSection, setActiveSection] = useState("Autostart");
+  const [activeSection, setActiveSection] = useState(DEFAULT_SECTION);
   const load = useConfigStore((s) => s.load);
 
   useEffect(() => {
     load();
   }, [load]);
+
+  const section = getSectionById(activeSection);
+  const Panel = section?.panel ?? null;
 
   return (
     <SidebarProvider
@@ -29,13 +34,13 @@ export function SettingsPage() {
         onSectionChange={setActiveSection}
       />
       <SidebarInset>
-        <PageHeader title={activeSection} />
+        <PageHeader title={section?.label ?? "Settings"} />
         <div className="flex-1 overflow-y-auto p-5">
           <div className="flex flex-row gap-5 min-h-full">
             <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 overflow-y-auto p-6">
-              {activeSection === "Autostart" && <AutostartPanel />}
+              {Panel && <Panel />}
             </div>
-            <SectionDocs section={activeSection} />
+            <SectionDocs docs={section?.docs} />
           </div>
         </div>
       </SidebarInset>
