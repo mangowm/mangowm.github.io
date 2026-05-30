@@ -90,7 +90,7 @@ Uses `mmsg` (ships with mango) to capture the focused window.
 
 ```bash
 #!/usr/bin/env bash
-geometry=$(mmsg -x | awk '/x / {x=$3} /y / {y=$3} /width / {w=$3} /height / {h=$3} END {print x","y" "w"x"h}')
+geometry=$(mmsg get focusing-client | jq -r '"\(.x),\(.y) \(.width)x\(.height)"')
 [ -z "$geometry" ] && exit 1
 grim -g "$geometry" "$HOME/Pictures/Screenshots/$(date +%Y%m%d%H%M%S).png"
 ```
@@ -173,7 +173,7 @@ case "${1:-fullscreen}" in
     g=$(slurp -d); [ -z "$g" ] && exit 1
     grim -g "$g" "$filepath" ;;
   window)
-    g=$(mmsg -x | awk '/x / {x=$3} /y / {y=$3} /width / {w=$3} /height / {h=$3} END {print x","y" "w"x"h}')
+    g=$(mmsg get focusing-client | jq -r '"\(.x),\(.y) \(.width)x\(.height)"')
     [ -z "$g" ] && exit 1
     grim -g "$g" "$filepath" ;;
   freeze)
