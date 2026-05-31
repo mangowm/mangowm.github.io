@@ -5,20 +5,18 @@ import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
 import type { MangoConfigKey } from "@/lib/config-types";
 
-export const defaultConfig = {
-  rootcolor: "0x201b14ff",
-  bordercolor: "0x444444ff",
-  dropcolor: "0x8FBA7C55",
-  splitcolor: "0xEB441EFF",
-  focuscolor: "0xc9b890ff",
-  maximizescreencolor: "0x89aa61ff",
-  urgentcolor: "0xad401fff",
-  scratchpadcolor: "0x516c93ff",
-  globalcolor: "0xb153a7ff",
-  overlaycolor: "0x14a57cff",
-};
-
-export type AppearanceConfig = typeof defaultConfig;
+interface AppearanceConfig {
+  rootcolor: string;
+  bordercolor: string;
+  dropcolor: string;
+  splitcolor: string;
+  focuscolor: string;
+  maximizescreencolor: string;
+  urgentcolor: string;
+  scratchpadcolor: string;
+  globalcolor: string;
+  overlaycolor: string;
+}
 
 const APPEARANCE_FIELDS: Array<{
   key: keyof AppearanceConfig;
@@ -37,16 +35,29 @@ const APPEARANCE_FIELDS: Array<{
   { key: "splitcolor", label: "Split Indicator", description: "Dwindle manual-split guide line" },
 ];
 
+interface ColorPalette {
+  name: string;
+  colors: AppearanceConfig;
+}
+
+const paletteModules = import.meta.glob("./palettes/*.json", { eager: true });
+const PALETTES: ColorPalette[] = Object.values(paletteModules).map(
+  (m: any) => m.default,
+);
+
 const COLOR_MODES: ColorMode[] = ["hex", "rgb", "hsl"];
 
+const defaultPalette = PALETTES.find((p) => p.name === "Default")!;
+
 function readTheme(data: Record<string, string[]>): AppearanceConfig {
+  const defaults = defaultPalette.colors;
   return APPEARANCE_FIELDS.reduce(
     (theme, field) => {
       const values = data[field.key as MangoConfigKey];
       if (values?.[0]) theme[field.key] = values[0];
       return theme;
     },
-    { ...defaultConfig },
+    { ...defaults },
   );
 }
 
@@ -198,11 +209,86 @@ const ColorInput = memo(function ColorInput({
   );
 });
 
+const APPEARANCE_ORDER = APPEARANCE_FIELDS.map((f) => f.key);
+
+interface PaletteCardProps {
+  palette: ColorPalette;
+  isActive: boolean;
+  onSelect: (palette: ColorPalette) => void;
+}
+
+const PaletteCard = memo(function PaletteCard({
+  palette,
+  isActive,
+  onSelect,
+}: PaletteCardProps) {
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(palette)}
+      aria-pressed={isActive}
+      className="relative w-[130px] shrink-0 cursor-pointer rounded-lg border bg-card p-2 text-left outline-none transition-all duration-150"
+      style={{
+        borderColor: isActive ? "hsl(var(--ring))" : "transparent",
+      }}
+    >
+      <div className="mb-1.5 flex h-[22px] overflow-hidden rounded-[4px]">
+        {APPEARANCE_ORDER.map((key) => (
+          <div
+            key={key}
+            className="flex-1"
+            style={{ backgroundColor: toCss(palette.colors[key]) }}
+          />
+        ))}
+      </div>
+
+      <span
+        className="block truncate text-[11px] font-medium"
+        style={{ color: isActive ? "hsl(var(--ring))" : "hsl(var(--muted-foreground))" }}
+      >
+        {palette.name}
+      </span>
+    </button>
+  );
+});
+
 export function AppearancePanel() {
   const data = useConfigStore((state) => state.data);
+  const loading = useConfigStore((state) => state.loading);
   const [mode, setMode] = useState<ColorMode>("hex");
 
   const theme = readTheme(data);
+  const currentTheme = useRef<AppearanceConfig | null>(null);
+  const didLoad = useRef(false);
+
+  if (!loading && Object.keys(data).length > 0 && !didLoad.current) {
+    didLoad.current = true;
+    currentTheme.current = theme;
+  }
+
+  const currentColors = currentTheme.current ?? defaultPalette.colors;
+
+  const activePalette = useMemo(() => {
+    const themeStr = APPEARANCE_ORDER.map((key) => theme[key]).join(",");
+    return (
+      PALETTES.find((p) => {
+        const paletteStr = APPEARANCE_ORDER.map((key) => p.colors[key]).join(",");
+        return themeStr === paletteStr;
+      })?.name ?? null
+    );
+  }, [theme]);
+
+  const handlePaletteSelect = useCallback((palette: ColorPalette) => {
+    const state = useConfigStore.getState();
+    state.bulkUpdateEntries(
+      (Object.entries(palette.colors) as [keyof AppearanceConfig, string][]).map(
+        ([key, value]) => ({
+          key: key as MangoConfigKey,
+          value,
+        }),
+      ),
+    );
+  }, []);
 
   const handleColorChange = useCallback((key: keyof AppearanceConfig, value: string) => {
     const configKey = key as MangoConfigKey;
@@ -255,7 +341,33 @@ export function AppearancePanel() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border/40 bg-card shadow-sm">
+      {PALETTES.length > 0 && (
+        <div className="mb-4">
+          <div className="mb-3 flex items-center gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+              Palettes
+            </span>
+            <div className="h-px flex-1 bg-border/20" />
+          </div>
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            <PaletteCard
+              palette={{ name: "Current", colors: currentColors }}
+              isActive={activePalette === null}
+              onSelect={handlePaletteSelect}
+            />
+            {PALETTES.map((palette) => (
+              <PaletteCard
+                key={palette.name}
+                palette={palette}
+                isActive={activePalette === palette.name}
+                onSelect={handlePaletteSelect}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="rounded-xl border border-border/40 bg-card shadow-sm">
         <div className="divide-y divide-border/20">
           {APPEARANCE_FIELDS.map((field, i) => (
             <ColorInput

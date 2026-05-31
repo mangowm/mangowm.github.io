@@ -17,6 +17,7 @@ interface ConfigStore {
   addEntry: (key: MangoConfigKey, value: string) => void;
   updateEntry: (key: MangoConfigKey, index: number, value: string) => void;
   removeEntry: (key: MangoConfigKey, index: number) => void;
+  bulkUpdateEntries: (entries: Array<{ key: MangoConfigKey; value: string }>) => void;
 
   apply: () => Promise<void>;
 }
@@ -81,6 +82,18 @@ export const useConfigStore = create<ConfigStore>()(
             data: { ...state.data, [key]: current.filter((_, i) => i !== index) },
             dirty: true,
           };
+        }),
+
+      bulkUpdateEntries: (entries) =>
+        set((state) => {
+          const data = { ...state.data };
+          for (const { key, value } of entries) {
+            const current = data[key] || [];
+            const next = [...current];
+            next[0] = value;
+            data[key] = next;
+          }
+          return { data, dirty: true };
         }),
 
       apply: async () => {
