@@ -22,7 +22,7 @@ export default function App() {
 
   return (
     <TooltipProvider>
-      <div className="dark bg-background text-foreground min-h-screen selection:bg-primary selection:text-primary-foreground">
+      <div className="bg-background text-foreground min-h-screen selection:bg-primary selection:text-primary-foreground">
         <SettingsPage />
       </div>
     </TooltipProvider>
