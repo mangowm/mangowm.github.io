@@ -46,7 +46,7 @@ interface OnboardingFlowProps {
 export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   const [step, setStep] = useState<"welcome" | "backup">("welcome");
   const [status, setStatus] = useState<
-    "checking" | "none" | "ready" | "running" | "running-overwrite" | "exists" | "success"
+    "checking" | "none" | "ready" | "running" | "success"
   >("checking");
   const [error, setError] = useState("");
 
@@ -55,10 +55,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     (async () => {
       try {
         const dirExists = await exists(BASE, { baseDir: BD });
-        if (!dirExists) return setStatus("none");
-
-        const backupExists = await exists(BACKUP, { baseDir: BD });
-        setStatus(backupExists ? "exists" : "ready");
+        setStatus(dirExists ? "ready" : "none");
       } catch {
         setStatus("ready");
       }
@@ -66,8 +63,8 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     return () => clearTimeout(splash);
   }, []);
 
-  const startBackup = useCallback(async (isOverwrite = false) => {
-    setStatus(isOverwrite ? "running-overwrite" : "running");
+  const startBackup = useCallback(async () => {
+    setStatus("running");
     setError("");
 
     try {
@@ -92,7 +89,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
       setStatus("success");
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
-      setStatus(isOverwrite ? "exists" : "ready");
+      setStatus("ready");
     }
   }, []);
 
@@ -148,7 +145,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                       </Button>
                     ),
                     ready: (
-                      <Button className="w-full" onClick={() => startBackup(false)}>
+                      <Button className="w-full" onClick={startBackup}>
                         Create Backup
                       </Button>
                     ),
@@ -156,26 +153,6 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                       <Button disabled className="w-full">
                         <span className="animate-pulse">Securing Backup...</span>
                       </Button>
-                    ),
-                    exists: (
-                      <div className="flex gap-3 w-full">
-                        <Button variant="secondary" className="flex-1" onClick={handleContinue}>
-                          Skip
-                        </Button>
-                        <Button className="flex-1" onClick={() => startBackup(true)}>
-                          Overwrite
-                        </Button>
-                      </div>
-                    ),
-                    "running-overwrite": (
-                      <div className="flex gap-3 w-full">
-                        <Button disabled variant="secondary" className="flex-1">
-                          Skip
-                        </Button>
-                        <Button disabled className="flex-1">
-                          <span className="animate-pulse">Overwriting...</span>
-                        </Button>
-                      </div>
                     ),
                     success: (
                       <Button
