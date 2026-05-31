@@ -1,12 +1,44 @@
 import { create } from "zustand";
 import { temporal } from "zundo";
-import { parseConfig, serializeConfig } from "./config-parse";
-import { readConfigFile, writeConfigFile, reloadMango } from "./config-file";
-import type { ConfigData, ParsedConfig, MangoConfigKey } from "./config-types";
+import {
+  readAllConfigFiles,
+  writeAllConfigFiles,
+  reloadMango,
+} from "./config-file";
+import type {
+  ConfigData,
+  SourceFile,
+  MangoConfigKey,
+} from "./config-types";
+
+/** Merge the data from all SourceFiles into a single ConfigData. */
+function mergeFileData(files: SourceFile[]): ConfigData {
+  const merged: ConfigData = {};
+  for (const file of files) {
+    for (const [key, values] of Object.entries(file.data)) {
+      if (!merged[key]) {
+        merged[key] = [];
+      }
+      merged[key].push(...values);
+    }
+  }
+  return merged;
+}
+
+/** Find the index of the first SourceFile that owns the given key. */
+function findFileForKey(files: SourceFile[], key: string): number {
+  for (let i = 0; i < files.length; i++) {
+    if (key in files[i].data) return i;
+  }
+  return 0; // fallback to main file
+}
 
 interface ConfigStore {
+  /** Merged data from all files – used by the UI panels. */
   data: ConfigData;
-  lines: ParsedConfig["lines"];
+  /** All config files with their own data & lines. */
+  files: SourceFile[];
+
   loading: boolean;
   applying: boolean;
   dirty: boolean;
@@ -26,7 +58,7 @@ export const useConfigStore = create<ConfigStore>()(
   temporal(
     (set, get) => ({
       data: {},
-      lines: [],
+      files: [],
       loading: false,
       applying: false,
       dirty: false,
@@ -35,15 +67,17 @@ export const useConfigStore = create<ConfigStore>()(
       load: async () => {
         set({ loading: true, error: null });
         try {
-          const text = await readConfigFile();
-          if (text === null) {
-            set({ data: {}, lines: [], loading: false, dirty: false });
+          const files = await readAllConfigFiles();
+          if (files.length === 0) {
+            set({ data: {}, files: [], loading: false, dirty: false });
             return;
           }
-          const parsed = parseConfig(text);
+
+          const data = mergeFileData(files);
+
           set({
-            data: parsed.data,
-            lines: parsed.lines,
+            data,
+            files,
             loading: false,
             dirty: false,
           });
@@ -55,54 +89,74 @@ export const useConfigStore = create<ConfigStore>()(
 
       addEntry: (key, value) =>
         set((state) => {
-          const current = state.data[key] || [];
-          return {
-            data: { ...state.data, [key]: [...current, value] },
-            dirty: true,
-          };
+          const files = state.files.map((f) => ({ ...f, data: { ...f.data } }));
+          // New entries go to the main file (index 0)
+          const main = files[0];
+          const current = main.data[key] || [];
+          main.data = { ...main.data, [key]: [...current, value] };
+
+          const data = mergeFileData(files);
+          return { data, files, dirty: true };
         }),
 
       updateEntry: (key, index, value) =>
         set((state) => {
-          const current = state.data[key] || [];
+          const fileIdx = findFileForKey(state.files, key);
+          const files = state.files.map((f) => ({ ...f, data: { ...f.data } }));
+          const file = files[fileIdx];
+          const current = file.data[key] || [];
           if (index < 0 || index >= current.length) return state;
           const next = [...current];
           next[index] = value;
-          return {
-            data: { ...state.data, [key]: next },
-            dirty: true,
-          };
+          file.data = { ...file.data, [key]: next };
+
+          const data = mergeFileData(files);
+          return { data, files, dirty: true };
         }),
 
       removeEntry: (key, index) =>
         set((state) => {
-          const current = state.data[key] || [];
+          const fileIdx = findFileForKey(state.files, key);
+          const files = state.files.map((f) => ({ ...f, data: { ...f.data } }));
+          const file = files[fileIdx];
+          const current = file.data[key] || [];
           if (index < 0 || index >= current.length) return state;
-          return {
-            data: { ...state.data, [key]: current.filter((_, i) => i !== index) },
-            dirty: true,
-          };
+          const next = current.filter((_, i) => i !== index);
+          if (next.length === 0) {
+            const { [key]: _, ...rest } = file.data;
+            file.data = rest;
+          } else {
+            file.data = { ...file.data, [key]: next };
+          }
+
+          const data = mergeFileData(files);
+          return { data, files, dirty: true };
         }),
 
       bulkUpdateEntries: (entries) =>
         set((state) => {
-          const data = { ...state.data };
+          const files = state.files.map((f) => ({ ...f, data: { ...f.data } }));
+
           for (const { key, value } of entries) {
-            const current = data[key] || [];
+            const fileIdx = findFileForKey(files, key);
+            const file = files[fileIdx];
+            const current = file.data[key] || [];
             const next = [...current];
             next[0] = value;
-            data[key] = next;
+            file.data = { ...file.data, [key]: next };
           }
-          return { data, dirty: true };
+
+          const data = mergeFileData(files);
+          return { data, files, dirty: true };
         }),
 
       apply: async () => {
         set({ applying: true, error: null });
         try {
-          const { data, lines } = get();
-          const text = serializeConfig({ data, lines });
+          const { files } = get();
 
-          await writeConfigFile(text);
+          // Write each file back using its own data & lines template
+          await writeAllConfigFiles(files);
           await reloadMango();
 
           useConfigStore.temporal.getState().clear();
@@ -115,14 +169,14 @@ export const useConfigStore = create<ConfigStore>()(
     {
       partialize: (state) => ({
         data: state.data,
-        lines: state.lines,
+        files: state.files,
         dirty: state.dirty,
       }),
       limit: 50,
       equality: (a, b) =>
         a.dirty === b.dirty &&
         JSON.stringify(a.data) === JSON.stringify(b.data) &&
-        JSON.stringify(a.lines) === JSON.stringify(b.lines),
+        JSON.stringify(a.files) === JSON.stringify(b.files),
     },
   ),
 );

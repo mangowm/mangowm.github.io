@@ -48,7 +48,6 @@ export function serializeConfig(parsed: ParsedConfig): string {
 
   const result: string[] = [];
 
-  // Rebuild file preserving comments and whitespace
   for (const line of lines) {
     if (line.type === "entry") {
       const arr = buffer.get(line.key);
@@ -56,13 +55,12 @@ export function serializeConfig(parsed: ParsedConfig): string {
         const val = arr.shift();
         result.push(`${line.key} = ${val}`);
       }
-      // If arr is empty/undefined, the user deleted it in the UI, so we skip it here.
     } else {
       result.push(line.raw);
     }
   }
 
-  // Append brand new entries added via the UI to the end of the file
+  // Append entries added via the UI that don't have a matching line yet
   for (const [key, values] of buffer.entries()) {
     for (const val of values) {
       result.push(`${key} = ${val}`);
