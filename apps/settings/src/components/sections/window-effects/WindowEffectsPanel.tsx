@@ -15,21 +15,21 @@ import type { MangoConfigKey } from "@/lib/config-types";
 const DEFAULTS = {
   blur: "0",
   blur_layer: "0",
-  blur_optimized: "0",
-  blur_params_num_passes: "6",
-  blur_params_radius: "8",
-  blur_params_noise: "0.1",
-  blur_params_brightness: "1.0",
-  blur_params_contrast: "1.0",
-  blur_params_saturation: "1.0",
+  blur_optimized: "1",
+  blur_params_num_passes: "1",
+  blur_params_radius: "5",
+  blur_params_noise: "0.02",
+  blur_params_brightness: "0.9",
+  blur_params_contrast: "0.9",
+  blur_params_saturation: "1.2",
   shadows: "0",
-  shadow_only_floating: "0",
+  shadow_only_floating: "1",
   layer_shadows: "0",
-  shadows_size: "8",
-  shadows_blur: "0.5",
+  shadows_size: "10",
+  shadows_blur: "15.0",
   shadows_position_x: "0",
   shadows_position_y: "0",
-  border_radius: "8",
+  border_radius: "0",
   border_radius_location_default: "15"
 } as const;
 
@@ -315,9 +315,9 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Blur Passes"
                 description="Number of blur iterations — higher is smoother but more GPU work."
-                value={clampInt(blurPasses, 1, 20)}
+                value={clampInt(blurPasses, 1, 10)}
                 min={1}
-                max={20}
+                max={10}
                 onChange={(v) => setValue("blur_params_num_passes", String(v))}
               />
               <SliderRow
@@ -339,28 +339,28 @@ export function WindowEffectsPanel() {
               />
               <SliderRow
                 label="Brightness"
-                description="Brightness multiplier for the blurred layer (0.0 – 2.0)."
-                value={clampFloat(blurBrightness, 0, 2)}
+                description="Brightness multiplier for the blurred layer (0.0 – 1.0)."
+                value={clampFloat(blurBrightness, 0, 1)}
                 min={0}
-                max={2}
+                max={1}
                 step={0.01}
                 onChange={(v) => setValue("blur_params_brightness", v.toFixed(2))}
               />
               <SliderRow
                 label="Contrast"
-                description="Contrast multiplier for the blurred layer (0.0 – 2.0)."
-                value={clampFloat(blurContrast, 0, 2)}
+                description="Contrast multiplier for the blurred layer (0.0 – 1.0)."
+                value={clampFloat(blurContrast, 0, 1)}
                 min={0}
-                max={2}
+                max={1}
                 step={0.01}
                 onChange={(v) => setValue("blur_params_contrast", v.toFixed(2))}
               />
               <SliderRow
                 label="Saturation"
-                description="Saturation multiplier for the blurred layer (0.0 – 2.0)."
-                value={clampFloat(blurSaturation, 0, 2)}
+                description="Saturation multiplier for the blurred layer (0.0 – 1.0)."
+                value={clampFloat(blurSaturation, 0, 1)}
                 min={0}
-                max={2}
+                max={1}
                 step={0.01}
                 onChange={(v) => setValue("blur_params_saturation", v.toFixed(2))}
               />
