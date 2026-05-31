@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { FileJsonIcon, PaintbrushIcon, PaletteIcon, RocketIcon, Blend, Grid3x3, LayoutGridIcon, PanelLeftIcon, SplitSquareHorizontalIcon } from "lucide-react";
+import { FileJsonIcon, PaintbrushIcon, PaletteIcon, RocketIcon, Blend, Grid3x3, LayoutGridIcon, PanelLeftIcon, SplitSquareHorizontalIcon, GalleryHorizontalEndIcon } from "lucide-react";
 import { AutostartPanel } from "@/components/sections/autostart/AutostartPanel";
 import { EnvironmentPanel } from "@/components/sections/environment/EnvironmentPanel";
 import { ColorsPanel } from "@/components/sections/colors/ColorsPanel";
@@ -7,6 +7,7 @@ import { WindowEffectsPanel } from "@/components/sections/window-effects/WindowE
 import { GapsBordersPanel } from "@/components/sections/gaps-borders/GapsBordersPanel";
 import { TilingPanel } from "@/components/sections/layout/TilingPanel";
 import { DwindlePanel } from "@/components/sections/layout/DwindlePanel";
+import { ScrollerPanel } from "@/components/sections/layout/ScrollerPanel";
 
 export interface SectionDef {
   id: string;
@@ -72,6 +73,13 @@ export const SECTIONS: SectionDef[] = [
     label: "Dwindle",
     icon: <SplitSquareHorizontalIcon />,
     panel: DwindlePanel,
+    parentId: "layout",
+  },
+  {
+    id: "scroller",
+    label: "Scroller",
+    icon: <GalleryHorizontalEndIcon />,
+    panel: ScrollerPanel,
     parentId: "layout",
   },
 ];
