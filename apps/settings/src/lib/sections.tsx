@@ -2,7 +2,7 @@ import type { ComponentType } from "react";
 import { FileJsonIcon, PaletteIcon, RocketIcon } from "lucide-react";
 import { AutostartPanel } from "@/components/sections/autostart/AutostartPanel";
 import { EnvironmentPanel } from "@/components/sections/environment/EnvironmentPanel";
-import { AppearancePanel } from "@/components/sections/appearance/AppearancePanel";
+import { ColorsPanel } from "@/components/sections/colors/ColorsPanel";
 
 export interface SectionDef {
   id: string;
@@ -26,10 +26,10 @@ export const SECTIONS: SectionDef[] = [
     panel: EnvironmentPanel,
   },
   {
-    id: "appearance",
-    label: "Appearance",
+    id: "colors",
+    label: "Colors",
     icon: <PaletteIcon />,
-    panel: AppearancePanel,
+    panel: ColorsPanel,
   },
 ];
 

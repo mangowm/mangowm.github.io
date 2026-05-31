@@ -5,7 +5,7 @@ import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
 import type { MangoConfigKey } from "@/lib/config-types";
 
-interface AppearanceConfig {
+interface ColorsConfig {
   rootcolor: string;
   bordercolor: string;
   dropcolor: string;
@@ -19,8 +19,8 @@ interface AppearanceConfig {
   shadowscolor: string;
 }
 
-const APPEARANCE_FIELDS: Array<{
-  key: keyof AppearanceConfig;
+const COLORS_FIELDS: Array<{
+  key: keyof ColorsConfig;
   label: string;
   description: string;
 }> = [
@@ -39,7 +39,7 @@ const APPEARANCE_FIELDS: Array<{
 
 interface ColorPalette {
   name: string;
-  colors: AppearanceConfig;
+  colors: ColorsConfig;
 }
 
 const paletteModules = import.meta.glob("./palettes/*.json", { eager: true });
@@ -51,9 +51,9 @@ const COLOR_MODES: ColorMode[] = ["hex", "rgb", "hsl"];
 
 const defaultPalette = PALETTES.find((p) => p.name === "Default")!;
 
-function readTheme(data: Record<string, string[]>): AppearanceConfig {
+function readTheme(data: Record<string, string[]>): ColorsConfig {
   const defaults = defaultPalette.colors;
-  return APPEARANCE_FIELDS.reduce(
+  return     COLORS_FIELDS.reduce(
     (theme, field) => {
       const values = data[field.key as MangoConfigKey];
       if (values?.[0]) theme[field.key] = values[0];
@@ -211,7 +211,7 @@ const ColorInput = memo(function ColorInput({
   );
 });
 
-const APPEARANCE_ORDER = APPEARANCE_FIELDS.map((f) => f.key);
+const COLORS_ORDER = COLORS_FIELDS.map((f) => f.key);
 
 interface PaletteCardProps {
   palette: ColorPalette;
@@ -235,7 +235,7 @@ const PaletteCard = memo(function PaletteCard({
       }}
     >
       <div className="mb-1.5 flex h-[22px] overflow-hidden rounded-[4px]">
-        {APPEARANCE_ORDER.map((key) => (
+        {COLORS_ORDER.map((key) => (
           <div
             key={key}
             className="flex-1"
@@ -254,13 +254,13 @@ const PaletteCard = memo(function PaletteCard({
   );
 });
 
-export function AppearancePanel() {
+export function ColorsPanel() {
   const data = useConfigStore((state) => state.data);
   const loading = useConfigStore((state) => state.loading);
   const [mode, setMode] = useState<ColorMode>("hex");
 
   const theme = readTheme(data);
-  const currentTheme = useRef<AppearanceConfig | null>(null);
+  const currentTheme = useRef<ColorsConfig | null>(null);
   const didLoad = useRef(false);
 
   if (!loading && Object.keys(data).length > 0 && !didLoad.current) {
@@ -271,10 +271,10 @@ export function AppearancePanel() {
   const currentColors = currentTheme.current ?? defaultPalette.colors;
 
   const activePalette = useMemo(() => {
-    const themeStr = APPEARANCE_ORDER.map((key) => theme[key]).join(",");
+    const themeStr = COLORS_ORDER.map((key) => theme[key]).join(",");
     return (
       PALETTES.find((p) => {
-        const paletteStr = APPEARANCE_ORDER.map((key) => p.colors[key]).join(",");
+        const paletteStr = COLORS_ORDER.map((key) => p.colors[key]).join(",");
         return themeStr === paletteStr;
       })?.name ?? null
     );
@@ -283,7 +283,7 @@ export function AppearancePanel() {
   const handlePaletteSelect = useCallback((palette: ColorPalette) => {
     const state = useConfigStore.getState();
     state.bulkUpdateEntries(
-      (Object.entries(palette.colors) as [keyof AppearanceConfig, string][]).map(
+      (Object.entries(palette.colors) as [keyof ColorsConfig, string][]).map(
         ([key, value]) => ({
           key: key as MangoConfigKey,
           value,
@@ -292,7 +292,7 @@ export function AppearancePanel() {
     );
   }, []);
 
-  const handleColorChange = useCallback((key: keyof AppearanceConfig, value: string) => {
+  const handleColorChange = useCallback((key: keyof ColorsConfig, value: string) => {
     const configKey = key as MangoConfigKey;
     const state = useConfigStore.getState();
     const existing = state.data[configKey];
@@ -304,20 +304,20 @@ export function AppearancePanel() {
   }, []);
 
   const changeHandlers = useMemo(() => {
-    const handlers: Partial<Record<keyof AppearanceConfig, (v: string) => void>> = {};
-    for (const field of APPEARANCE_FIELDS) {
+    const handlers: Partial<Record<keyof ColorsConfig, (v: string) => void>> = {};
+    for (const field of COLORS_FIELDS) {
       handlers[field.key] = (v) => handleColorChange(field.key, v);
     }
     return handlers;
   }, [handleColorChange]);
 
-  const total = APPEARANCE_FIELDS.length;
+  const total = COLORS_FIELDS.length;
 
   return (
     <div className="mx-auto w-full max-w-6xl pb-12">
       <div className="mb-6 flex items-end justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Appearance</h2>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Colors</h2>
         </div>
 
         <div className="flex shrink-0 items-center rounded-lg border border-border/40 bg-muted/30 p-0.5">
@@ -371,7 +371,7 @@ export function AppearancePanel() {
 
       <div className="rounded-xl border border-border/40 bg-card shadow-sm">
         <div className="divide-y divide-border/20">
-          {APPEARANCE_FIELDS.map((field, i) => (
+          {COLORS_FIELDS.map((field, i) => (
             <ColorInput
               key={field.key}
               label={field.label}
