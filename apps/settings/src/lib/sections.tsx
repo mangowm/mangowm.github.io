@@ -4,6 +4,7 @@ import {
   RocketIcon,
 } from "lucide-react";
 import { AutostartPanel } from "@/components/sections/autostart/AutostartPanel";
+import { EnvironmentPanel } from "@/components/sections/environment/EnvironmentPanel";
 
 export interface SectionDef {
   id: string;
@@ -24,7 +25,7 @@ export const SECTIONS: SectionDef[] = [
     id: "environment",
     label: "Environment Variables",
     icon: <FileJsonIcon />,
-    panel: () => null,
+    panel: EnvironmentPanel,
   },
 ];
 
