@@ -16,6 +16,7 @@ interface AppearanceConfig {
   scratchpadcolor: string;
   globalcolor: string;
   overlaycolor: string;
+  shadowscolor: string;
 }
 
 const APPEARANCE_FIELDS: Array<{
@@ -33,6 +34,7 @@ const APPEARANCE_FIELDS: Array<{
   { key: "overlaycolor", label: "Overlay", description: "Border when focused + toggleoverlay window" },
   { key: "dropcolor", label: "Drop Shadow", description: "Drop-shadow rectangle when dragging floating windows" },
   { key: "splitcolor", label: "Split Indicator", description: "Dwindle manual-split guide line" },
+  { key: "shadowscolor", label: "Shadow", description: "Drop shadow color for windows" },
 ];
 
 interface ColorPalette {

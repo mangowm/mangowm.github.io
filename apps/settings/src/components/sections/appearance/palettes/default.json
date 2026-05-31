@@ -10,6 +10,7 @@
     "urgentcolor": "0xad401fff",
     "scratchpadcolor": "0x516c93ff",
     "globalcolor": "0xb153a7ff",
-    "overlaycolor": "0x14a57cff"
+    "overlaycolor": "0x14a57cff",
+    "shadowscolor": "0x000000ff"
   }
 }
