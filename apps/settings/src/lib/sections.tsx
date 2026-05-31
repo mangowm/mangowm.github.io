@@ -1,10 +1,11 @@
 import type { ComponentType } from "react";
-import { FileJsonIcon, PaintbrushIcon, PaletteIcon, RocketIcon, Blend, Grid3x3 } from "lucide-react";
+import { FileJsonIcon, PaintbrushIcon, PaletteIcon, RocketIcon, Blend, Grid3x3, LayoutGridIcon, PanelLeftIcon } from "lucide-react";
 import { AutostartPanel } from "@/components/sections/autostart/AutostartPanel";
 import { EnvironmentPanel } from "@/components/sections/environment/EnvironmentPanel";
 import { ColorsPanel } from "@/components/sections/colors/ColorsPanel";
 import { WindowEffectsPanel } from "@/components/sections/window-effects/WindowEffectsPanel";
 import { GapsBordersPanel } from "@/components/sections/gaps-borders/GapsBordersPanel";
+import { TilingPanel } from "@/components/sections/layout/TilingPanel";
 
 export interface SectionDef {
   id: string;
@@ -52,6 +53,18 @@ export const SECTIONS: SectionDef[] = [
     icon: <Grid3x3 />,
     panel: GapsBordersPanel,
     parentId: "appearance",
+  },
+  {
+    id: "layout",
+    label: "Layout",
+    icon: <LayoutGridIcon />,
+  },
+  {
+    id: "tiling",
+    label: "Tiling",
+    icon: <PanelLeftIcon />,
+    panel: TilingPanel,
+    parentId: "layout",
   },
 ];
 
