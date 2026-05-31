@@ -1,5 +1,5 @@
-import { useCallback } from "react";
 import { useConfigStore } from "@/lib/config-store";
+import { useConfigSetter } from "@/lib/use-config-setter";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
@@ -39,21 +39,6 @@ function enabled(data: ConfigData, key: string): boolean {
 function readInt(data: ConfigData, key: string, fallback: string, min: number, max: number): number {
   const n = parseInt(val(data, key, fallback), 10);
   return isNaN(n) ? min : Math.min(max, Math.max(min, n));
-}
-
-function useSetter() {
-  const store = useConfigStore();
-  return useCallback(
-    (key: string, value: string) => {
-      const k = key as MangoConfigKey;
-      if (store.data[k]?.[0] !== undefined) {
-        store.updateEntry(k, 0, value);
-      } else {
-        store.addEntry(k, value);
-      }
-    },
-    [store.data, store.addEntry, store.updateEntry],
-  );
 }
 
 function AccentHover() {
@@ -138,7 +123,7 @@ function SectionCard({ title, children }: { title: string; children: React.React
 
 export function GapsBordersPanel() {
   const data = useConfigStore((s) => s.data);
-  const setValue = useSetter();
+  const setValue = useConfigSetter();
 
   const smartgapsOn = enabled(data, "smartgaps");
   const gappih = readInt(data, "gappih", DEFAULTS.gappih, LIMITS.gappih.min, LIMITS.gappih.max);

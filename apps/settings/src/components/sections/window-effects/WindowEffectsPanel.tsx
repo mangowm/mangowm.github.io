@@ -1,5 +1,5 @@
-import { useCallback } from "react";
 import { useConfigStore } from "@/lib/config-store";
+import { useConfigSetter } from "@/lib/use-config-setter";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
@@ -65,26 +65,6 @@ function clampInt(s: string, min: number, max: number): number {
 function clampFloat(s: string, min: number, max: number): number {
   const n = parseFloat(s);
   return isNaN(n) ? min : Math.min(max, Math.max(min, n));
-}
-
-function useConfigSetter() {
-  const data = useConfigStore((s) => s.data);
-  const addEntry = useConfigStore((s) => s.addEntry);
-  const updateEntry = useConfigStore((s) => s.updateEntry);
-
-  const setValue = useCallback(
-    (key: string, value: string) => {
-      const k = key as MangoConfigKey;
-      if (data[k]?.[0] !== undefined) {
-        updateEntry(k, 0, value);
-      } else {
-        addEntry(k, value);
-      }
-    },
-    [data, addEntry, updateEntry],
-  );
-
-  return setValue;
 }
 
 function AccentHover() {

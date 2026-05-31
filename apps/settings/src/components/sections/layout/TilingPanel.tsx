@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useConfigStore } from "@/lib/config-store";
+import { useConfigSetter } from "@/lib/use-config-setter";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
@@ -72,21 +73,6 @@ function bool(data: ConfigData, key: string): boolean {
 function num(data: ConfigData, key: string): number {
   const def = FIELDS.find((f) => f.key === key)!;
   return (def.parse as (v: string) => number)(raw(data, key));
-}
-
-function useSetter() {
-  const { data, addEntry, updateEntry } = useConfigStore();
-  return useCallback(
-    (key: string, value: string) => {
-      const k = key as MangoConfigKey;
-      if (data[k]?.[0] !== undefined) {
-        updateEntry(k, 0, value);
-      } else {
-        addEntry(k, value);
-      }
-    },
-    [data, addEntry, updateEntry],
-  );
 }
 
 // Primitives
@@ -201,7 +187,7 @@ function SectionCard({ title, children }: { title: string; children: React.React
 
 export function TilingPanel() {
   const data = useConfigStore((s) => s.data);
-  const setValue = useSetter();
+  const setValue = useConfigSetter();
 
   const boolSetter = useCallback(
     (key: string) => (v: boolean) => setValue(key, v ? "1" : "0"),

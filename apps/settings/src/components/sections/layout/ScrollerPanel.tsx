@@ -1,5 +1,6 @@
 import { useCallback, useState, useRef } from "react";
 import { useConfigStore } from "@/lib/config-store";
+import { useConfigSetter } from "@/lib/use-config-setter";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
@@ -28,21 +29,6 @@ function readFloat(data: ConfigData, key: string, fallback: string, min: number,
 function readInt(data: ConfigData, key: string, fallback: string, min: number, max: number): number {
   const n = parseInt(raw(data, key, fallback), 10);
   return isNaN(n) ? min : Math.min(max, Math.max(min, n));
-}
-
-function useSetter() {
-  const { data, addEntry, updateEntry } = useConfigStore();
-  return useCallback(
-    (key: string, value: string) => {
-      const k = key as MangoConfigKey;
-      if (data[k]?.[0] !== undefined) {
-        updateEntry(k, 0, value);
-      } else {
-        addEntry(k, value);
-      }
-    },
-    [data, addEntry, updateEntry],
-  );
 }
 
 // Primitives
@@ -234,7 +220,7 @@ function PresetInput({
 
 export function ScrollerPanel() {
   const data = useConfigStore((s) => s.data);
-  const setValue = useSetter();
+  const setValue = useConfigSetter();
 
   const boolSetter = useCallback(
     (key: string) => (v: boolean) => setValue(key, v ? "1" : "0"),
