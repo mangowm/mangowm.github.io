@@ -30,7 +30,9 @@ const DEFAULTS = {
   shadows_position_x: "0",
   shadows_position_y: "0",
   border_radius: "0",
-  border_radius_location_default: "15"
+  border_radius_location_default: "15",
+  focused_opacity: "1.0",
+  unfocused_opacity: "1.0",
 } as const;
 
 const CORNER_LOCATIONS = [
@@ -275,6 +277,13 @@ export function WindowEffectsPanel() {
   const shadowsPosX = readVal(data, "shadows_position_x", DEFAULTS.shadows_position_x);
   const shadowsPosY = readVal(data, "shadows_position_y", DEFAULTS.shadows_position_y);
 
+  const focusedOpacity = clampFloat(
+    readVal(data, "focused_opacity", DEFAULTS.focused_opacity), 0.0, 1.0,
+  );
+  const unfocusedOpacity = clampFloat(
+    readVal(data, "unfocused_opacity", DEFAULTS.unfocused_opacity), 0.0, 1.0,
+  );
+
   const tb = (k: string) => (v: boolean) => setValue(k, v ? "1" : "0");
 
   return (
@@ -283,7 +292,7 @@ export function WindowEffectsPanel() {
         <div className="flex flex-col gap-1">
           <h2 className="text-xl font-semibold tracking-tight text-foreground">Window Effects</h2>
           <p className="text-sm text-muted-foreground">
-            Configure blur, shadows, and border radius for windows and surfaces.
+            Configure blur, shadows, border radius, and opacity for windows and surfaces.
           </p>
         </div>
 
@@ -392,6 +401,57 @@ export function WindowEffectsPanel() {
             options={CORNER_LOCATIONS}
             onChange={(v) => setValue("border_radius_location_default", v)}
           />
+        </SectionCard>
+      </div>
+
+      <div className="mb-5">
+        <SectionCard title="Window Opacity">
+          <Row>
+            <FieldLabel
+              label="Focused Opacity"
+              description="Opacity of the currently focused window. 1.0 = fully opaque."
+            />
+            <div className="flex w-44 shrink-0 items-center gap-3">
+              <Slider
+                value={[focusedOpacity]}
+                min={0.0}
+                max={1.0}
+                step={0.01}
+                onValueChange={(v) => {
+                  const arr = Array.isArray(v) ? v : [v];
+                  setValue("focused_opacity", arr[0].toFixed(2));
+                }}
+                className="flex-1"
+                aria-label="Focused Opacity"
+              />
+              <span className="w-14 text-right font-mono text-[12px] tabular-nums text-foreground/80">
+                {focusedOpacity.toFixed(2)}
+              </span>
+            </div>
+          </Row>
+          <Row>
+            <FieldLabel
+              label="Unfocused Opacity"
+              description="Opacity of unfocused (background) windows. Lower values make them dimmer."
+            />
+            <div className="flex w-44 shrink-0 items-center gap-3">
+              <Slider
+                value={[unfocusedOpacity]}
+                min={0.0}
+                max={1.0}
+                step={0.01}
+                onValueChange={(v) => {
+                  const arr = Array.isArray(v) ? v : [v];
+                  setValue("unfocused_opacity", arr[0].toFixed(2));
+                }}
+                className="flex-1"
+                aria-label="Unfocused Opacity"
+              />
+              <span className="w-14 text-right font-mono text-[12px] tabular-nums text-foreground/80">
+                {unfocusedOpacity.toFixed(2)}
+              </span>
+            </div>
+          </Row>
         </SectionCard>
       </div>
 
