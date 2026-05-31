@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Undo2, Redo2, AlertCircle } from "lucide-react";
+import { Undo2, Redo2, AlertCircle, SearchIcon } from "lucide-react";
 import { useStore } from "zustand";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useConfigStore } from "@/lib/config-store";
 import { useShallow } from "zustand/react/shallow";
 
-export function PageHeader({ title }: { title?: string }) {
+export function PageHeader({ title, onSearch }: { title?: string; onSearch?: () => void }) {
   const error = useConfigStore((s) => s.error);
 
   return (
@@ -25,6 +25,16 @@ export function PageHeader({ title }: { title?: string }) {
         )}
 
         <div className="ml-auto flex items-center gap-1">
+          {onSearch && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={onSearch}
+              title="Search settings (Ctrl+K)"
+            >
+              <SearchIcon className="size-4" />
+            </Button>
+          )}
           <HistoryButtons />
           <ApplyButton />
         </div>
