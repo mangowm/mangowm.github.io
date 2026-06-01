@@ -100,7 +100,7 @@ interface ConfigData {
 }
 
 function raw(data: ConfigData, key: string): string {
-  return (data[key as MangoConfigKey]?.[0]) ?? FIELDS.find((f) => f.key === key)!.default;
+  return data[key as MangoConfigKey]?.[0] ?? FIELDS.find((f) => f.key === key)!.default;
 }
 
 function bool(data: ConfigData, key: string): boolean {
@@ -133,7 +133,9 @@ function FieldLabel({ label, description }: { label: string; description: string
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
       <span className="text-[13px] font-medium leading-none text-foreground">{label}</span>
-      <span className="truncate text-[11px] leading-none text-muted-foreground/60">{description}</span>
+      <span className="truncate text-[11px] leading-none text-muted-foreground/60">
+        {description}
+      </span>
     </div>
   );
 }
@@ -275,8 +277,8 @@ export function DwindlePanel() {
       <div className="mb-8">
         <h2 className="text-xl font-semibold tracking-tight text-foreground">Dwindle</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Configure the dwindle tiling layout: split direction policies, smart behavior, and
-          split ratio.
+          Configure the dwindle tiling layout: split direction policies, smart behavior, and split
+          ratio.
         </p>
       </div>
 

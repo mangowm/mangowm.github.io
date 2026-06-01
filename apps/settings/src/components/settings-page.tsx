@@ -41,21 +41,14 @@ export function SettingsPage() {
         } as React.CSSProperties
       }
     >
-      <SearchCommand
-        open={searchOpen}
-        onOpenChange={setSearchOpen}
-        onSelect={handleSearchSelect}
-      />
+      <SearchCommand open={searchOpen} onOpenChange={setSearchOpen} onSelect={handleSearchSelect} />
       <SettingsSidebar
         variant="inset"
         activeSection={activeSection}
         onSectionChange={setActiveSection}
       />
       <SidebarInset>
-        <PageHeader
-          title={section?.label ?? "Settings"}
-          onSearch={() => setSearchOpen(true)}
-        />
+        <PageHeader title={section?.label ?? "Settings"} onSearch={() => setSearchOpen(true)} />
         <div className="flex-1 overflow-y-auto p-5">
           <div className="flex flex-row gap-5 min-h-full">
             <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 overflow-y-auto p-6 relative">

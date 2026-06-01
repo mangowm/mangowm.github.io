@@ -42,7 +42,6 @@ function CommandSection({
 
       {/* The List Group */}
       <div className="flex flex-col overflow-hidden rounded-xl border border-border/50 bg-card shadow-sm divide-y divide-border/50">
-        
         {/* Empty State */}
         {commands.length === 0 && (
           <div className="flex flex-col items-center justify-center py-10 text-sm text-muted-foreground bg-muted/5">
@@ -113,7 +112,6 @@ function CommandSection({
 export function AutostartPanel() {
   return (
     <div className="mx-auto w-full max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-      
       {/* Sharper, more direct page header */}
       <div className="mb-8 flex flex-col gap-2">
         <h2 className="text-3xl font-semibold tracking-tight">Autostart</h2>

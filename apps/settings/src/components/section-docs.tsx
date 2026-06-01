@@ -21,10 +21,7 @@ export function SectionDocs({ markdown }: { markdown?: string }) {
         <BookOpenTextIcon className="size-4 text-muted-foreground" />
         <span className="text-sm font-medium text-muted-foreground">Docs</span>
       </div>
-      <div
-        className="docs-content"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+      <div className="docs-content" dangerouslySetInnerHTML={{ __html: html }} />
     </aside>
   );
 }
@@ -41,10 +38,7 @@ export function SectionDocsPage({ markdown }: { markdown?: string }) {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div
-        className="docs-content"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+      <div className="docs-content" dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
 }

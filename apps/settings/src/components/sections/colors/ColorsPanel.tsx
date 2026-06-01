@@ -24,15 +24,47 @@ const COLORS_FIELDS: Array<{
   label: string;
   description: string;
 }> = [
-  { key: "rootcolor", label: "Root Background", description: "Desktop background behind all windows" },
-  { key: "bordercolor", label: "Inactive Border", description: "Unfocused window border (non-selected monitor)" },
-  { key: "focuscolor", label: "Active Border", description: "Focused window border on the selected monitor" },
-  { key: "maximizescreencolor", label: "Maximize Screen", description: "Border when window is focused + maximized" },
-  { key: "urgentcolor", label: "Urgent", description: "Urgent window border — overrides all other colors" },
-  { key: "scratchpadcolor", label: "Scratchpad", description: "Border when focused + scratchpad window" },
+  {
+    key: "rootcolor",
+    label: "Root Background",
+    description: "Desktop background behind all windows",
+  },
+  {
+    key: "bordercolor",
+    label: "Inactive Border",
+    description: "Unfocused window border (non-selected monitor)",
+  },
+  {
+    key: "focuscolor",
+    label: "Active Border",
+    description: "Focused window border on the selected monitor",
+  },
+  {
+    key: "maximizescreencolor",
+    label: "Maximize Screen",
+    description: "Border when window is focused + maximized",
+  },
+  {
+    key: "urgentcolor",
+    label: "Urgent",
+    description: "Urgent window border — overrides all other colors",
+  },
+  {
+    key: "scratchpadcolor",
+    label: "Scratchpad",
+    description: "Border when focused + scratchpad window",
+  },
   { key: "globalcolor", label: "Global", description: "Border when focused + toggleglobal window" },
-  { key: "overlaycolor", label: "Overlay", description: "Border when focused + toggleoverlay window" },
-  { key: "dropcolor", label: "Drop Shadow", description: "Drop-shadow rectangle when dragging floating windows" },
+  {
+    key: "overlaycolor",
+    label: "Overlay",
+    description: "Border when focused + toggleoverlay window",
+  },
+  {
+    key: "dropcolor",
+    label: "Drop Shadow",
+    description: "Drop-shadow rectangle when dragging floating windows",
+  },
   { key: "splitcolor", label: "Split Indicator", description: "Dwindle manual-split guide line" },
   { key: "shadowscolor", label: "Shadow", description: "Drop shadow color for windows" },
 ];
@@ -43,9 +75,7 @@ interface ColorPalette {
 }
 
 const paletteModules = import.meta.glob("./palettes/*.json", { eager: true });
-const PALETTES: ColorPalette[] = Object.values(paletteModules).map(
-  (m: any) => m.default,
-);
+const PALETTES: ColorPalette[] = Object.values(paletteModules).map((m: any) => m.default);
 
 const COLOR_MODES: ColorMode[] = ["hex", "rgb", "hsl"];
 
@@ -53,7 +83,7 @@ const defaultPalette = PALETTES.find((p) => p.name === "Default")!;
 
 function readTheme(data: Record<string, string[]>): ColorsConfig {
   const defaults = defaultPalette.colors;
-  return     COLORS_FIELDS.reduce(
+  return COLORS_FIELDS.reduce(
     (theme, field) => {
       const values = data[field.key as MangoConfigKey];
       if (values?.[0]) theme[field.key] = values[0];
@@ -115,9 +145,7 @@ const ColorInput = memo(function ColorInput({
   const alpha = Math.round((parseInt(alphaHex, 16) / 255) * 100);
   const isTranslucent = alpha < 100;
 
-  const popoverPosition = flipPopover
-    ? "bottom-[calc(100%+8px)] top-auto"
-    : "top-[calc(100%+8px)]";
+  const popoverPosition = flipPopover ? "bottom-[calc(100%+8px)] top-auto" : "top-[calc(100%+8px)]";
 
   return (
     <div className="group relative flex items-center gap-3 px-4 py-3 transition-colors duration-150 hover:bg-muted/20">
@@ -164,7 +192,10 @@ const ColorInput = memo(function ColorInput({
                 {label}
               </span>
               <div className="flex items-center gap-1.5">
-                <div className="size-3.5 rounded-sm shadow-inner" style={{ backgroundColor: cssValue }} />
+                <div
+                  className="size-3.5 rounded-sm shadow-inner"
+                  style={{ backgroundColor: cssValue }}
+                />
                 <span className="font-mono text-[10px] text-muted-foreground">{alpha}%</span>
               </div>
             </div>
@@ -177,7 +208,9 @@ const ColorInput = memo(function ColorInput({
 
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="text-[13px] font-medium leading-none text-foreground">{label}</span>
-        <span className="truncate text-[11px] leading-none text-muted-foreground/70">{description}</span>
+        <span className="truncate text-[11px] leading-none text-muted-foreground/70">
+          {description}
+        </span>
       </div>
 
       {isTranslucent && (
@@ -201,7 +234,7 @@ const ColorInput = memo(function ColorInput({
             (e.target as HTMLInputElement).blur();
           }
         }}
-          className="w-44 shrink-0 rounded-md border-0 bg-background/20 px-3 py-2 text-center font-mono text-[12px] outline-none transition-all duration-150 hover:bg-background/30"
+        className="w-44 shrink-0 rounded-md border-0 bg-background/20 px-3 py-2 text-center font-mono text-[12px] outline-none transition-all duration-150 hover:bg-background/30"
         style={{
           boxShadow: isFocused ? `0 0 0 2px ${cssValue}55` : "none",
           color: "hsl(var(--foreground))",
@@ -219,11 +252,7 @@ interface PaletteCardProps {
   onSelect: (palette: ColorPalette) => void;
 }
 
-const PaletteCard = memo(function PaletteCard({
-  palette,
-  isActive,
-  onSelect,
-}: PaletteCardProps) {
+const PaletteCard = memo(function PaletteCard({ palette, isActive, onSelect }: PaletteCardProps) {
   return (
     <button
       type="button"
@@ -283,12 +312,10 @@ export function ColorsPanel() {
   const handlePaletteSelect = useCallback((palette: ColorPalette) => {
     const state = useConfigStore.getState();
     state.bulkUpdateEntries(
-      (Object.entries(palette.colors) as [keyof ColorsConfig, string][]).map(
-        ([key, value]) => ({
-          key: key as MangoConfigKey,
-          value,
-        }),
-      ),
+      (Object.entries(palette.colors) as [keyof ColorsConfig, string][]).map(([key, value]) => ({
+        key: key as MangoConfigKey,
+        value,
+      })),
     );
   }, []);
 

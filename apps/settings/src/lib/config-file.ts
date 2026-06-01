@@ -29,10 +29,7 @@ export async function getConfigFilePath(): Promise<string> {
   return `${home}/${CONFIG_FILE}`;
 }
 
-export async function resolveSourcePath(
-  sourcePath: string,
-  baseDir?: string,
-): Promise<string> {
+export async function resolveSourcePath(sourcePath: string, baseDir?: string): Promise<string> {
   let resolved = sourcePath.trim();
 
   if (resolved.startsWith("~/")) {
@@ -62,7 +59,7 @@ export async function readAllConfigFiles(): Promise<SourceFile[]> {
     seen.add(absPath);
 
     try {
-      const text = preloadedText ?? await readTextFile(absPath);
+      const text = preloadedText ?? (await readTextFile(absPath));
       const parsed = parseConfig(text);
 
       const file: SourceFile = {

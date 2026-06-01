@@ -1,15 +1,7 @@
 import { create } from "zustand";
 import { temporal } from "zundo";
-import {
-  readAllConfigFiles,
-  writeAllConfigFiles,
-  reloadMango,
-} from "./config-file";
-import type {
-  ConfigData,
-  SourceFile,
-  MangoConfigKey,
-} from "./config-types";
+import { readAllConfigFiles, writeAllConfigFiles, reloadMango } from "./config-file";
+import type { ConfigData, SourceFile, MangoConfigKey } from "./config-types";
 
 /** Merge the data from all SourceFiles into a single ConfigData. */
 function mergeFileData(files: SourceFile[]): ConfigData {

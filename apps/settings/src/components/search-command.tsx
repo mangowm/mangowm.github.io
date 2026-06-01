@@ -62,13 +62,23 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
 
           {SEARCH_INDEX.map((item) => {
             const keywords = keywordMap.get(item.sectionId) ?? [];
-            const searchValue = [item.label, item.description, item.configKey, item.sectionLabel, ...keywords]
+            const searchValue = [
+              item.label,
+              item.description,
+              item.configKey,
+              item.sectionLabel,
+              ...keywords,
+            ]
               .filter(Boolean)
               .join(" ");
 
             return (
               <Command.Item
-                key={item.type === "field" ? `${item.sectionId}-${item.configKey}` : `section-${item.sectionId}`}
+                key={
+                  item.type === "field"
+                    ? `${item.sectionId}-${item.configKey}`
+                    : `section-${item.sectionId}`
+                }
                 value={searchValue}
                 onSelect={() => handleSelect(item)}
                 className="group flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground aria-selected:bg-accent aria-selected:text-accent-foreground transition-colors duration-100"
@@ -76,7 +86,9 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
                 <div className="flex min-w-0 flex-1 flex-col">
                   <span className="truncate font-medium text-foreground">{item.label}</span>
                   {item.description && (
-                    <span className="truncate text-[11px] text-muted-foreground/60">{item.description}</span>
+                    <span className="truncate text-[11px] text-muted-foreground/60">
+                      {item.description}
+                    </span>
                   )}
                 </div>
                 <span className="shrink-0 rounded-md border border-border/30 bg-muted/40 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/50">

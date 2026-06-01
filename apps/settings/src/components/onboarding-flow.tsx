@@ -45,9 +45,9 @@ interface OnboardingFlowProps {
 
 export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   const [step, setStep] = useState<"welcome" | "backup">("welcome");
-  const [status, setStatus] = useState<
-    "checking" | "none" | "ready" | "running" | "success"
-  >("checking");
+  const [status, setStatus] = useState<"checking" | "none" | "ready" | "running" | "success">(
+    "checking",
+  );
   const [error, setError] = useState("");
 
   useEffect(() => {

@@ -14,19 +14,31 @@ interface ConfigData {
 }
 
 function raw(data: ConfigData, key: string, fallback: string): string {
-  return (data[key as MangoConfigKey]?.[0]) ?? fallback;
+  return data[key as MangoConfigKey]?.[0] ?? fallback;
 }
 
 function enabled(data: ConfigData, key: string, fallback = "0"): boolean {
   return raw(data, key, fallback) === "1";
 }
 
-function readFloat(data: ConfigData, key: string, fallback: string, min: number, max: number): number {
+function readFloat(
+  data: ConfigData,
+  key: string,
+  fallback: string,
+  min: number,
+  max: number,
+): number {
   const n = parseFloat(raw(data, key, fallback));
   return isNaN(n) ? min : Math.min(max, Math.max(min, n));
 }
 
-function readInt(data: ConfigData, key: string, fallback: string, min: number, max: number): number {
+function readInt(
+  data: ConfigData,
+  key: string,
+  fallback: string,
+  min: number,
+  max: number,
+): number {
   const n = parseInt(raw(data, key, fallback), 10);
   return isNaN(n) ? min : Math.min(max, Math.max(min, n));
 }
@@ -52,7 +64,9 @@ function FieldLabel({ label, description }: { label: string; description: string
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
       <span className="text-[13px] font-medium leading-none text-foreground">{label}</span>
-      <span className="truncate text-[11px] leading-none text-muted-foreground/60">{description}</span>
+      <span className="truncate text-[11px] leading-none text-muted-foreground/60">
+        {description}
+      </span>
     </div>
   );
 }
@@ -170,9 +184,7 @@ function PresetInput({
     <div className="px-4 py-3">
       <div className="mb-2 flex flex-wrap gap-1.5">
         {values.length === 0 && (
-          <span className="text-[11px] text-muted-foreground/40 italic">
-            No presets defined
-          </span>
+          <span className="text-[11px] text-muted-foreground/40 italic">No presets defined</span>
         )}
         {values.map((v, i) => (
           <span
@@ -258,8 +270,8 @@ export function ScrollerPanel() {
       <div className="mb-8">
         <h2 className="text-xl font-semibold tracking-tight text-foreground">Scroller</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Configure the scroller tiling layout: window proportions, focus behavior, edge
-          scrolling, and preset values.
+          Configure the scroller tiling layout: window proportions, focus behavior, edge scrolling,
+          and preset values.
         </p>
       </div>
 

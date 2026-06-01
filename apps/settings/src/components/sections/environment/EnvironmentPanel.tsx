@@ -22,14 +22,14 @@ function sanitizeKey(key: string): string {
 
 // --- Individual Row Component (Crucial for Performance & UX) ---
 // By isolating the row, we prevent global re-renders on every keystroke.
-function EnvRow({ 
-  raw, 
-  index, 
-  updateEntry, 
-  removeEntry 
-}: { 
-  raw: string; 
-  index: number; 
+function EnvRow({
+  raw,
+  index,
+  updateEntry,
+  removeEntry,
+}: {
+  raw: string;
+  index: number;
   updateEntry: (key: "env", idx: number, val: string) => void;
   removeEntry: (key: "env", idx: number) => void;
 }) {
@@ -104,7 +104,7 @@ export function EnvironmentPanel() {
 
   const [newKey, setNewKey] = useState("");
   const [newValue, setNewValue] = useState("");
-  
+
   const keyInputRef = useRef<HTMLInputElement>(null);
   const valueInputRef = useRef<HTMLInputElement>(null);
 
@@ -127,7 +127,7 @@ export function EnvironmentPanel() {
       const [pastedKey, ...pastedValueArr] = pastedText.split("=");
       setNewKey(sanitizeKey(pastedKey));
       setNewValue(pastedValueArr.join("=")); // Rejoin in case value contains '='
-      
+
       // Focus value or add button seamlessly
       setTimeout(() => valueInputRef.current?.focus(), 0);
     }
@@ -145,9 +145,9 @@ export function EnvironmentPanel() {
   return (
     <div className="mx-auto w-full max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
       <div className="mb-8 flex flex-col gap-1.5">
-         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-           Environment Variables
-         </h2>
+        <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+          Environment Variables
+        </h2>
         <p className="text-sm text-muted-foreground">
           Global variables injected into the mangowm session environment.
         </p>
@@ -155,12 +155,14 @@ export function EnvironmentPanel() {
 
       {/* --- ADD NEW VARIABLE (Form) --- */}
       <div className="mb-8 rounded-xl border border-border/50 bg-card p-1.5 shadow-sm">
-        <form 
+        <form
           onSubmit={handleAdd}
           className="flex flex-col sm:flex-row items-center gap-2 rounded-lg bg-muted/10 p-2"
         >
           <div className="flex w-full flex-1 items-center gap-2 rounded-md border border-border/40 bg-background/50 px-3 py-2 focus-within:bg-background focus-within:ring-2 focus-within:ring-ring/20 focus-within:border-ring/50 transition-all">
-            <span className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground select-none shrink-0">Key</span>
+            <span className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground select-none shrink-0">
+              Key
+            </span>
             <input
               ref={keyInputRef}
               value={newKey}
@@ -171,9 +173,11 @@ export function EnvironmentPanel() {
               spellCheck={false}
             />
           </div>
-          
+
           <div className="flex w-full flex-1 items-center gap-2 rounded-md border border-border/40 bg-background/50 px-3 py-2 focus-within:bg-background focus-within:ring-2 focus-within:ring-ring/20 focus-within:border-ring/50 transition-all">
-            <span className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground select-none shrink-0">Value</span>
+            <span className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground select-none shrink-0">
+              Value
+            </span>
             <input
               ref={valueInputRef}
               value={newValue}
@@ -184,8 +188,8 @@ export function EnvironmentPanel() {
             />
           </div>
 
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             disabled={!newKey.trim()}
             className="w-full sm:w-auto shrink-0 transition-all shadow-none"
           >
@@ -198,21 +202,24 @@ export function EnvironmentPanel() {
       {/* --- EXISTING VARIABLES LIST (Data Grid) --- */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between px-2 mb-2">
-          <h3 className="text-sm font-medium text-foreground">
-            Session Variables
-          </h3>
+          <h3 className="text-sm font-medium text-foreground">Session Variables</h3>
           <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
             {envVars.length}
           </span>
         </div>
-        
+
         {envVars.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 bg-muted/5 py-12 text-center">
             <h4 className="text-sm font-medium text-foreground">No variables defined</h4>
             <p className="mt-1 mb-5 text-sm text-muted-foreground max-w-[280px]">
               Set environment variables here to configure applications running under mangowm.
             </p>
-            <Button variant="secondary" size="sm" onClick={addWaylandDefaults} className="gap-2 text-xs">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={addWaylandDefaults}
+              className="gap-2 text-xs"
+            >
               <Sparkles className="size-3.5 text-blue-500" />
               Inject Wayland Defaults
             </Button>
@@ -220,10 +227,10 @@ export function EnvironmentPanel() {
         ) : (
           <div className="flex flex-col rounded-xl border border-border/50 bg-card p-1 shadow-sm">
             {envVars.map((raw, index) => (
-              <EnvRow 
-                key={`${index}-${raw.split(',')[0]}`} // Unique key forces reset if severely out of sync
-                raw={raw} 
-                index={index} 
+              <EnvRow
+                key={`${index}-${raw.split(",")[0]}`} // Unique key forces reset if severely out of sync
+                raw={raw}
+                index={index}
                 updateEntry={updateEntry}
                 removeEntry={removeEntry}
               />

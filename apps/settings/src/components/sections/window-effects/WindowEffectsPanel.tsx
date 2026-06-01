@@ -73,13 +73,7 @@ function AccentHover() {
   );
 }
 
-function Row({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+function Row({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <div
       className={
@@ -97,7 +91,9 @@ function FieldLabel({ label, description }: { label: string; description: string
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
       <span className="text-[13px] font-medium leading-none text-foreground">{label}</span>
-      <span className="truncate text-[11px] leading-none text-muted-foreground/60">{description}</span>
+      <span className="truncate text-[11px] leading-none text-muted-foreground/60">
+        {description}
+      </span>
     </div>
   );
 }
@@ -214,13 +210,7 @@ function SelectRow({
   );
 }
 
-function SectionCard({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-xl border border-border/40 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md">
       <div className="px-4 py-3">
@@ -247,7 +237,11 @@ export function WindowEffectsPanel() {
   const blurSaturation = readVal(data, "blur_params_saturation", DEFAULTS.blur_params_saturation);
 
   const radius = readVal(data, "border_radius", DEFAULTS.border_radius);
-  const radiusLoc = readVal(data, "border_radius_location_default", DEFAULTS.border_radius_location_default);
+  const radiusLoc = readVal(
+    data,
+    "border_radius_location_default",
+    DEFAULTS.border_radius_location_default,
+  );
 
   const shadowsOn = isEnabled(data, "shadows");
   const shadowsFloatingOn = isEnabled(data, "shadow_only_floating");
@@ -258,10 +252,14 @@ export function WindowEffectsPanel() {
   const shadowsPosY = readVal(data, "shadows_position_y", DEFAULTS.shadows_position_y);
 
   const focusedOpacity = clampFloat(
-    readVal(data, "focused_opacity", DEFAULTS.focused_opacity), 0.0, 1.0,
+    readVal(data, "focused_opacity", DEFAULTS.focused_opacity),
+    0.0,
+    1.0,
   );
   const unfocusedOpacity = clampFloat(
-    readVal(data, "unfocused_opacity", DEFAULTS.unfocused_opacity), 0.0, 1.0,
+    readVal(data, "unfocused_opacity", DEFAULTS.unfocused_opacity),
+    0.0,
+    1.0,
   );
 
   const tb = (k: string) => (v: boolean) => setValue(k, v ? "1" : "0");
@@ -275,7 +273,6 @@ export function WindowEffectsPanel() {
             Configure blur, shadows, border radius, and opacity for windows and surfaces.
           </p>
         </div>
-
       </div>
 
       <div className="mb-5">

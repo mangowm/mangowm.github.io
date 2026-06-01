@@ -29,14 +29,20 @@ interface ConfigData {
 }
 
 function val(data: ConfigData, key: string, fallback: string): string {
-  return (data[key as MangoConfigKey]?.[0]) ?? fallback;
+  return data[key as MangoConfigKey]?.[0] ?? fallback;
 }
 
 function enabled(data: ConfigData, key: string): boolean {
   return val(data, key, "0") === "1";
 }
 
-function readInt(data: ConfigData, key: string, fallback: string, min: number, max: number): number {
+function readInt(
+  data: ConfigData,
+  key: string,
+  fallback: string,
+  min: number,
+  max: number,
+): number {
   const n = parseInt(val(data, key, fallback), 10);
   return isNaN(n) ? min : Math.min(max, Math.max(min, n));
 }
@@ -49,7 +55,12 @@ function AccentHover() {
 
 function Row({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={"group relative flex items-center gap-4 px-4 py-2.5 transition-colors duration-150 hover:bg-muted/15 " + className}>
+    <div
+      className={
+        "group relative flex items-center gap-4 px-4 py-2.5 transition-colors duration-150 hover:bg-muted/15 " +
+        className
+      }
+    >
       <AccentHover />
       {children}
     </div>
@@ -60,19 +71,34 @@ function FieldLabel({ label, description }: { label: string; description: string
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
       <span className="text-[13px] font-medium leading-none text-foreground">{label}</span>
-      <span className="truncate text-[11px] leading-none text-muted-foreground/60">{description}</span>
+      <span className="truncate text-[11px] leading-none text-muted-foreground/60">
+        {description}
+      </span>
     </div>
   );
 }
 
-function ToggleRow({ label, description, value, onChange }: {
-  label: string; description: string; value: boolean; onChange: (v: boolean) => void;
+function ToggleRow({
+  label,
+  description,
+  value,
+  onChange,
+}: {
+  label: string;
+  description: string;
+  value: boolean;
+  onChange: (v: boolean) => void;
 }) {
   return (
     <Row>
       <FieldLabel label={label} description={description} />
       <div className="flex shrink-0 items-center gap-2">
-        <span className={"text-[10px] font-mono font-medium uppercase tracking-wider transition-colors duration-150 " + (value ? "text-primary" : "text-muted-foreground/30")}>
+        <span
+          className={
+            "text-[10px] font-mono font-medium uppercase tracking-wider transition-colors duration-150 " +
+            (value ? "text-primary" : "text-muted-foreground/30")
+          }
+        >
           {value ? "On" : "Off"}
         </span>
         <Switch checked={value} onCheckedChange={onChange} className="shrink-0" />
@@ -81,9 +107,24 @@ function ToggleRow({ label, description, value, onChange }: {
   );
 }
 
-function SliderRow({ label, description, value, min, max, step, unit, onChange }: {
-  label: string; description: string; value: number; min: number; max: number;
-  step?: number; unit?: string; onChange: (v: number) => void;
+function SliderRow({
+  label,
+  description,
+  value,
+  min,
+  max,
+  step,
+  unit,
+  onChange,
+}: {
+  label: string;
+  description: string;
+  value: number;
+  min: number;
+  max: number;
+  step?: number;
+  unit?: string;
+  onChange: (v: number) => void;
 }) {
   return (
     <Row>
@@ -102,7 +143,8 @@ function SliderRow({ label, description, value, min, max, step, unit, onChange }
           aria-label={label}
         />
         <span className="w-14 text-right font-mono text-[12px] tabular-nums text-foreground/80">
-          {value}{unit ?? ""}
+          {value}
+          {unit ?? ""}
         </span>
       </div>
     </Row>
@@ -130,7 +172,13 @@ export function GapsBordersPanel() {
   const gappiv = readInt(data, "gappiv", DEFAULTS.gappiv, LIMITS.gappiv.min, LIMITS.gappiv.max);
   const gappoh = readInt(data, "gappoh", DEFAULTS.gappoh, LIMITS.gappoh.min, LIMITS.gappoh.max);
   const gappov = readInt(data, "gappov", DEFAULTS.gappov, LIMITS.gappov.min, LIMITS.gappov.max);
-  const borderpx = readInt(data, "borderpx", DEFAULTS.borderpx, LIMITS.borderpx.min, LIMITS.borderpx.max);
+  const borderpx = readInt(
+    data,
+    "borderpx",
+    DEFAULTS.borderpx,
+    LIMITS.borderpx.min,
+    LIMITS.borderpx.max,
+  );
   const noBorderSingle = enabled(data, "no_border_when_single");
   const noRadiusSingle = enabled(data, "no_radius_when_single");
 
