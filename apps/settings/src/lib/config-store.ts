@@ -22,8 +22,8 @@
 //      Use these for keys like bind=, exec-once=, env= where every line
 //      is a distinct item.
 //
-// 5. undo/redo via zundo is limited to the config data shape and excludes
-//    transient UI state (loading, applying, error).
+// 5. undo/redo via zundo — partialize tracks only `files`; `data`/`dirty`
+//    re-synced via exported `undo()` / `redo()` wrappers.
 // ---------------------------------------------------------------------------
 
 import { create } from "zustand";
@@ -67,6 +67,16 @@ function patchFile(
   patchData: (prev: ConfigData) => ConfigData,
 ): SourceFile[] {
   return files.map((f, i) => (i === fileIdx ? { ...f, data: patchData(f.data) } : f));
+}
+
+/** Re-sync `data` and `dirty` after the temporal store moves to a new snapshot. */
+function syncDerivedState() {
+  const { files } = useConfigStore.getState();
+  const { pastStates } = useConfigStore.temporal.getState();
+  useConfigStore.setState({
+    data: mergeFileData(files),
+    dirty: pastStates.length > 0,
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -139,8 +149,7 @@ export const useConfigStore = create<ConfigStore>()(
         set({ loading: true, error: null });
         try {
           const files = await readAllConfigFiles();
-          const data = mergeFileData(files);
-          set({ files, data, loading: false, dirty: false });
+          set({ files, data: mergeFileData(files), loading: false, dirty: false });
           useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
           set({ error: String(e instanceof Error ? e.message : e), loading: false });
@@ -153,8 +162,8 @@ export const useConfigStore = create<ConfigStore>()(
         try {
           await writeAllConfigFiles(get().files);
           await reloadMango();
-          useConfigStore.temporal.getState().clear();
           set({ applying: false, dirty: false });
+          useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
           set({ error: String(e instanceof Error ? e.message : e), applying: false });
         }
@@ -167,12 +176,10 @@ export const useConfigStore = create<ConfigStore>()(
           const files = patchFile(state.files, fileIdx, (prev) => {
             const current = prev[key];
             if (current && current.length > 0) {
-              // Update the first (and expected only) occurrence.
               const next = [...current];
               next[0] = value;
               return { ...prev, [key]: next };
             }
-            // Key is new — append.
             return { ...prev, [key]: [value] };
           });
           return { files, data: mergeFileData(files), dirty: true };
@@ -200,7 +207,6 @@ export const useConfigStore = create<ConfigStore>()(
       // ---- multi-value: addEntry -------------------------------------------
       addEntry: (key, value) =>
         set((state) => {
-          // New interactive entries always go to the root file (index 0).
           const files = patchFile(state.files, 0, (prev) => ({
             ...prev,
             [key]: [...(prev[key] ?? []), value],
@@ -242,20 +248,39 @@ export const useConfigStore = create<ConfigStore>()(
 
     // ---- zundo options -----------------------------------------------------
     {
-      // Only track the parts that affect config state.
-      // Transient UI flags (loading, applying, error) are not undo-able.
-      partialize: (state) => ({
-        data: state.data,
-        files: state.files,
-        dirty: state.dirty,
-      }),
+      // Only `files` in history — `data` re-derived after undo/redo via
+      // the exported wrappers. Transient flags excluded.
+      partialize: (state) => ({ files: state.files }),
+
       limit: 100,
-      // Deep equality via JSON keeps undo from creating entries for
-      // no-op state transitions. Acceptable cost given config file sizes.
-      equality: (a, b) =>
-        a.dirty === b.dirty &&
-        JSON.stringify(a.data) === JSON.stringify(b.data) &&
-        JSON.stringify(a.files) === JSON.stringify(b.files),
+
+      // Identity check — patchFile returns same ref when nothing changes,
+      // so no-op transitions don't create history entries.
+      equality: (a, b) => {
+        const fa = a.files;
+        const fb = b.files;
+        return (
+          fa.length === fb.length &&
+          fa.every((f, i) => {
+            const g = fb[i];
+            return f.absPath === g.absPath && f.data === g.data;
+          })
+        );
+      },
     },
   ),
 );
+
+// ---------------------------------------------------------------------------
+// Undo / redo — wrappers keep `syncDerivedState` in one place.
+// ---------------------------------------------------------------------------
+
+export function undo() {
+  useConfigStore.temporal.getState().undo();
+  syncDerivedState();
+}
+
+export function redo() {
+  useConfigStore.temporal.getState().redo();
+  syncDerivedState();
+}

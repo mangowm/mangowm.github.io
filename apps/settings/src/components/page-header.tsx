@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import { Undo2, Redo2, AlertCircle, SearchIcon } from "lucide-react";
 import { useStore } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { useConfigStore } from "@/lib/config-store";
-import { useShallow } from "zustand/react/shallow";
+import { useConfigStore, undo, redo } from "@/lib/config-store";
 
 export function PageHeader({ title, onSearch }: { title?: string; onSearch?: () => void }) {
   const error = useConfigStore((s) => s.error);
@@ -53,36 +52,24 @@ export function PageHeader({ title, onSearch }: { title?: string; onSearch?: () 
 }
 
 function HistoryButtons() {
-  const canUndo = useStore(useConfigStore.temporal, (s) => s.pastStates.length > 0);
-  const canRedo = useStore(useConfigStore.temporal, (s) => s.futureStates.length > 0);
+  const { canUndo, canRedo } = useStore(
+    useConfigStore.temporal,
+    useShallow((s) => ({
+      canUndo: s.pastStates.length > 0,
+      canRedo: s.futureStates.length > 0,
+    })),
+  );
 
-  const dirty = useConfigStore((s) => s.dirty);
-  const loading = useConfigStore((s) => s.loading);
-  const load = useConfigStore((s) => s.load);
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      const isMod = e.metaKey || e.ctrlKey;
-      const { undo, redo } = useConfigStore.temporal.getState();
-      if (isMod && e.key === "z" && !e.shiftKey) {
-        e.preventDefault();
-        undo();
-      }
-      if (isMod && (e.key === "y" || (e.key === "z" && e.shiftKey))) {
-        e.preventDefault();
-        redo();
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
+  const { dirty, loading, load } = useConfigStore(
+    useShallow((s) => ({ dirty: s.dirty, loading: s.loading, load: s.load })),
+  );
 
   return (
     <>
       <Button
         variant="ghost"
         size="icon-sm"
-        onClick={() => useConfigStore.temporal.getState().undo()}
+        onClick={undo}
         disabled={!canUndo}
         title="Undo (Ctrl+Z)"
       >
@@ -91,7 +78,7 @@ function HistoryButtons() {
       <Button
         variant="ghost"
         size="icon-sm"
-        onClick={() => useConfigStore.temporal.getState().redo()}
+        onClick={redo}
         disabled={!canRedo}
         title="Redo (Ctrl+Shift+Z)"
       >
