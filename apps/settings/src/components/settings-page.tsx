@@ -70,7 +70,11 @@ export function SettingsPage() {
           <div className="flex flex-row gap-5 min-h-full">
             <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 overflow-y-auto p-6 relative">
               <div className="absolute top-3 right-3">
-                <SegmentedControl options={panelOptions} value={panelView} onChange={setPanelView} />
+                <SegmentedControl
+                  options={panelOptions}
+                  value={panelView}
+                  onChange={setPanelView}
+                />
               </div>
               {panelContent[panelView]}
             </div>

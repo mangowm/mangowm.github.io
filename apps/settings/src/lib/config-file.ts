@@ -45,12 +45,14 @@ export async function readAllConfigFiles(): Promise<SourceFile[]> {
   // If no config file exists yet, return a single placeholder entry so
   // store mutators (addEntry, setValue, etc.) always have a target file.
   if (rootText === null) {
-    return [{
-      absPath: rootPath,
-      refPath: "config.conf",
-      lines: [],
-      data: {},
-    }];
+    return [
+      {
+        absPath: rootPath,
+        refPath: "config.conf",
+        lines: [],
+        data: {},
+      },
+    ];
   }
 
   const seen: Set<string> = new Set();

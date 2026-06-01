@@ -17,8 +17,6 @@ const SPLIT_OPTIONS = [
   { value: "2", label: "Force" },
 ];
 
-
-
 export function DwindlePanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const data = useConfigStore((s) => s.data);

@@ -14,8 +14,6 @@ import {
   SliderRow,
 } from "@/components/sections/section-ui";
 
-
-
 function PresetInput({
   values,
   onChange,

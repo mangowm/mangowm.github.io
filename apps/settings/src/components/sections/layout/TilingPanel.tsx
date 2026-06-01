@@ -10,8 +10,6 @@ import {
   SliderRow,
 } from "@/components/sections/section-ui";
 
-
-
 export function TilingPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const data = useConfigStore((s) => s.data);
