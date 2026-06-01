@@ -1,122 +1,20 @@
 import { useState, useRef } from "react";
 import { useConfigStore } from "@/lib/config-store";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "@/lib/config-helpers";
-import { Switch } from "@/components/ui/switch";
-import { Slider } from "@/components/ui/slider";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
+import {
+  PanelShell,
+  PanelHeader,
+  SectionCard,
+  ToggleRow,
+  SliderRow,
+} from "@/components/sections/section-ui";
 
-function AccentHover() {
-  return (
-    <div className="absolute left-0 top-0 h-full w-[2px] scale-y-0 rounded-full bg-ring/50 transition-transform duration-200 group-hover:scale-y-100" />
-  );
-}
 
-function Row({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="group relative flex items-center gap-4 px-4 py-2.5 transition-colors duration-150 hover:bg-muted/15">
-      <AccentHover />
-      {children}
-    </div>
-  );
-}
-
-function FieldLabel({ label, description }: { label: string; description: string }) {
-  return (
-    <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-      <span className="text-[13px] font-medium leading-none text-foreground">{label}</span>
-      <span className="truncate text-[11px] leading-none text-muted-foreground/60">
-        {description}
-      </span>
-    </div>
-  );
-}
-
-function ToggleRow({
-  label,
-  description,
-  value,
-  onChange,
-}: {
-  label: string;
-  description: string;
-  value: boolean;
-  onChange: (v: boolean) => void;
-}) {
-  return (
-    <Row>
-      <FieldLabel label={label} description={description} />
-      <div className="flex shrink-0 items-center gap-2">
-        <span
-          className={
-            "text-[10px] font-mono font-medium uppercase tracking-wider transition-colors duration-150 " +
-            (value ? "text-primary" : "text-muted-foreground/30")
-          }
-        >
-          {value ? "On" : "Off"}
-        </span>
-        <Switch checked={value} onCheckedChange={onChange} className="shrink-0" />
-      </div>
-    </Row>
-  );
-}
-
-function SliderRow({
-  label,
-  description,
-  value,
-  min,
-  max,
-  step,
-  onChange,
-}: {
-  label: string;
-  description: string;
-  value: number;
-  min: number;
-  max: number;
-  step?: number;
-  onChange: (v: number) => void;
-}) {
-  return (
-    <Row>
-      <FieldLabel label={label} description={description} />
-      <div className="flex w-44 shrink-0 items-center gap-3">
-        <Slider
-          value={[value]}
-          min={min}
-          max={max}
-          step={step ?? 1}
-          onValueChange={(v) => {
-            const arr = Array.isArray(v) ? v : [v];
-            onChange(arr[0]);
-          }}
-          className="flex-1"
-          aria-label={label}
-        />
-        <span className="w-14 text-right font-mono text-[12px] tabular-nums text-foreground/80">
-          {value % 1 === 0 ? value : value.toFixed(2)}
-        </span>
-      </div>
-    </Row>
-  );
-}
-
-function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="rounded-xl border border-border/40 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md">
-      <div className="px-4 py-3">
-        <h3 className="text-sm font-semibold tracking-tight text-foreground">{title}</h3>
-      </div>
-      <Separator className="w-full" />
-      <div className="divide-y divide-border/10">{children}</div>
-    </div>
-  );
-}
 
 function PresetInput({
   values,
@@ -224,14 +122,12 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
   };
 
   return (
-    <div className="mx-auto w-full max-w-4xl pb-12">
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Scroller</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Configure the scroller tiling layout: window proportions, focus behavior, edge scrolling,
-          and preset values.
-        </p>
-      </div>
+    <PanelShell>
+      <PanelHeader
+        title="Scroller"
+        description="Configure the scroller tiling layout: window proportions, focus behavior, edge scrolling, and preset values."
+        separator={false}
+      />
 
       <div className="mb-5">
         <SectionCard title="Proportions">
@@ -342,6 +238,6 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
           <PresetInput values={presetValues} onChange={handlePresetChange} />
         </SectionCard>
       </div>
-    </div>
+    </PanelShell>
   );
 }
