@@ -41,7 +41,17 @@ export async function readAllConfigFiles(): Promise<SourceFile[]> {
   const home = await getHomePath();
   const rootPath = `${home}/${CONFIG_FILE}`;
   const rootText = await readFileText(rootPath);
-  if (rootText === null) return [];
+
+  // If no config file exists yet, return a single placeholder entry so
+  // store mutators (addEntry, setValue, etc.) always have a target file.
+  if (rootText === null) {
+    return [{
+      absPath: rootPath,
+      refPath: "config.conf",
+      lines: [],
+      data: {},
+    }];
+  }
 
   const seen: Set<string> = new Set();
   const result: SourceFile[] = [];
