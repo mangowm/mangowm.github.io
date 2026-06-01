@@ -12,29 +12,38 @@ export function PageHeader({ title, onSearch }: { title?: string; onSearch?: () 
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
-      <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
-        <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mx-2 h-4 data-vertical:self-auto" />
-        <h1 className="text-base font-medium">{title ?? "Settings"}</h1>
+      <div className="flex w-full items-center px-4 lg:px-6">
+        <div className="flex items-center gap-1 lg:gap-2">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mx-2 h-4 data-vertical:self-auto" />
+          <h1 className="text-base font-medium">{title ?? "Settings"}</h1>
 
-        {error && (
-          <div className="ml-4 flex items-center gap-1.5 text-sm text-destructive">
-            <AlertCircle className="size-4" />
-            <span className="truncate max-w-80">{error}</span>
-          </div>
-        )}
+          {error && (
+            <div className="ml-4 flex items-center gap-1.5 text-sm text-destructive">
+              <AlertCircle className="size-4" />
+              <span className="truncate max-w-80">{error}</span>
+            </div>
+          )}
+        </div>
 
-        <div className="ml-auto flex items-center gap-1">
+        <div className="flex-1 flex justify-center">
           {onSearch && (
-            <Button
-              variant="ghost"
-              size="icon-sm"
+            <button
               onClick={onSearch}
+              className="flex items-center gap-2 rounded-lg border border-border/40 bg-muted/30 px-3 py-1.5 text-xs text-muted-foreground/70 hover:border-border/70 hover:bg-muted/50 hover:text-muted-foreground transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
               title="Search settings (Ctrl+K)"
             >
-              <SearchIcon className="size-4" />
-            </Button>
+              <SearchIcon className="size-3.5 shrink-0" />
+              <span className="hidden sm:inline">Search settings…</span>
+              <span className="inline sm:hidden">Search…</span>
+              <kbd className="hidden sm:inline-flex items-center gap-0.5 rounded-md border border-border/30 bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground/60">
+                Ctrl+K
+              </kbd>
+            </button>
           )}
+        </div>
+
+        <div className="flex items-center gap-2">
           <HistoryButtons />
           <ApplyButton />
         </div>
