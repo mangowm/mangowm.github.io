@@ -17,6 +17,11 @@ import { pointerMeta } from "@/components/sections/input-devices/pointer/pointer
 import { trackpadMeta } from "@/components/sections/input-devices/trackpad/trackpad.meta";
 
 import { tabletMeta } from "@/components/sections/input-devices/tablet/tablet.meta";
+import { windowBehaviourMeta } from "@/components/sections/window-behaviour/window-behaviour.meta";
+import { focusMeta } from "@/components/sections/window-behaviour/focus/focus.meta";
+import { dragMeta } from "@/components/sections/window-behaviour/drag/drag.meta";
+import { workspaceMeta } from "@/components/sections/window-behaviour/workspace/workspace.meta";
+import { miscellaneousMeta } from "@/components/sections/window-behaviour/miscellaneous/miscellaneous.meta";
 
 export const SECTIONS: SectionMeta[] = [
   autostartMeta,
@@ -35,6 +40,11 @@ export const SECTIONS: SectionMeta[] = [
   pointerMeta,
   trackpadMeta,
   tabletMeta,
+  windowBehaviourMeta,
+  focusMeta,
+  dragMeta,
+  workspaceMeta,
+  miscellaneousMeta,
 ];
 
 export function getSectionById(id: string): SectionMeta | undefined {
