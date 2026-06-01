@@ -23,6 +23,24 @@ function fileIndexForKey(files: SourceFile[], key: string): number {
   return idx === -1 ? 0 : idx;
 }
 
+function resolveGlobalIndex(
+  files: SourceFile[],
+  key: string,
+  globalIndex: number,
+): { fileIdx: number; localIdx: number } | null {
+  let seen = 0;
+  for (let i = 0; i < files.length; i++) {
+    const current = files[i].data[key];
+    if (current) {
+      if (seen + current.length > globalIndex) {
+        return { fileIdx: i, localIdx: globalIndex - seen };
+      }
+      seen += current.length;
+    }
+  }
+  return null;
+}
+
 function patchFile(
   files: SourceFile[],
   fileIdx: number,
@@ -141,12 +159,12 @@ export const useConfigStore = create<ConfigStore>()(
 
       updateEntry: (key, index, value) =>
         set((state) => {
-          const fileIdx = fileIndexForKey(state.files, key);
-          const files = patchFile(state.files, fileIdx, (prev) => {
+          const target = resolveGlobalIndex(state.files, key, index);
+          if (!target) return state;
+          const files = patchFile(state.files, target.fileIdx, (prev) => {
             const current = prev[key] ?? [];
-            if (index < 0 || index >= current.length) return prev;
             const next = [...current];
-            next[index] = value;
+            next[target.localIdx] = value;
             return { ...prev, [key]: next };
           });
           return { files, data: mergeFileData(files), dirty: true };
@@ -154,11 +172,11 @@ export const useConfigStore = create<ConfigStore>()(
 
       removeEntry: (key, index) =>
         set((state) => {
-          const fileIdx = fileIndexForKey(state.files, key);
-          const files = patchFile(state.files, fileIdx, (prev) => {
+          const target = resolveGlobalIndex(state.files, key, index);
+          if (!target) return state;
+          const files = patchFile(state.files, target.fileIdx, (prev) => {
             const current = prev[key] ?? [];
-            if (index < 0 || index >= current.length) return prev;
-            const next = current.filter((_, i) => i !== index);
+            const next = current.filter((_, i) => i !== target.localIdx);
             if (next.length === 0) {
               const { [key]: _dropped, ...rest } = prev;
               return rest;
