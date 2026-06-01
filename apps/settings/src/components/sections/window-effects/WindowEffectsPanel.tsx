@@ -1,5 +1,5 @@
 import { useConfigStore } from "@/lib/config-store";
-import { useConfigSetter } from "@/lib/use-config-setter";
+import { cfgBool, cfgInt, cfgFloat, cfgStr } from "@/lib/config-helpers";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
@@ -10,30 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { MangoConfigKey } from "@/lib/config-types";
-
-const DEFAULTS = {
-  blur: "0",
-  blur_layer: "0",
-  blur_optimized: "1",
-  blur_params_num_passes: "1",
-  blur_params_radius: "5",
-  blur_params_noise: "0.02",
-  blur_params_brightness: "0.9",
-  blur_params_contrast: "0.9",
-  blur_params_saturation: "1.2",
-  shadows: "0",
-  shadow_only_floating: "1",
-  layer_shadows: "0",
-  shadows_size: "10",
-  shadows_blur: "15.0",
-  shadows_position_x: "0",
-  shadows_position_y: "0",
-  border_radius: "0",
-  border_radius_location_default: "15",
-  focused_opacity: "1.0",
-  unfocused_opacity: "1.0",
-} as const;
 
 const CORNER_LOCATIONS = [
   { value: "15", label: "All Corners" },
@@ -47,25 +23,6 @@ const CORNER_LOCATIONS = [
   { value: "8", label: "Bottom Left" },
   { value: "0", label: "None" },
 ] as const;
-
-function readVal(data: Record<string, string[]>, key: string, fallback: string): string {
-  const v = data[key as MangoConfigKey];
-  return v?.[0] ?? fallback;
-}
-
-function isEnabled(data: Record<string, string[]>, key: string): boolean {
-  return readVal(data, key, "0") === "1";
-}
-
-function clampInt(s: string, min: number, max: number): number {
-  const n = parseInt(s, 10);
-  return isNaN(n) ? min : Math.min(max, Math.max(min, n));
-}
-
-function clampFloat(s: string, min: number, max: number): number {
-  const n = parseFloat(s);
-  return isNaN(n) ? min : Math.min(max, Math.max(min, n));
-}
 
 function AccentHover() {
   return (
@@ -224,43 +181,31 @@ function SectionCard({ title, children }: { title: string; children: React.React
 
 export function WindowEffectsPanel() {
   const data = useConfigStore((s) => s.data);
-  const setValue = useConfigSetter();
+  const setValue = useConfigStore((s) => s.setValue);
 
-  const blurOn = isEnabled(data, "blur");
-  const blurLayerOn = isEnabled(data, "blur_layer");
-  const blurOptimizedOn = isEnabled(data, "blur_optimized");
-  const blurPasses = readVal(data, "blur_params_num_passes", DEFAULTS.blur_params_num_passes);
-  const blurRadius = readVal(data, "blur_params_radius", DEFAULTS.blur_params_radius);
-  const blurNoise = readVal(data, "blur_params_noise", DEFAULTS.blur_params_noise);
-  const blurBrightness = readVal(data, "blur_params_brightness", DEFAULTS.blur_params_brightness);
-  const blurContrast = readVal(data, "blur_params_contrast", DEFAULTS.blur_params_contrast);
-  const blurSaturation = readVal(data, "blur_params_saturation", DEFAULTS.blur_params_saturation);
+  const blurOn = cfgBool(data, "blur");
+  const blurLayerOn = cfgBool(data, "blur_layer");
+  const blurOptimizedOn = cfgBool(data, "blur_optimized", true);
+  const blurPasses = cfgInt(data, "blur_params_num_passes", 1, 1, 10);
+  const blurRadius = cfgInt(data, "blur_params_radius", 5, 1, 32);
+  const blurNoise = cfgFloat(data, "blur_params_noise", 0.02, 0, 1);
+  const blurBrightness = cfgFloat(data, "blur_params_brightness", 0.9, 0, 1);
+  const blurContrast = cfgFloat(data, "blur_params_contrast", 0.9, 0, 1);
+  const blurSaturation = cfgFloat(data, "blur_params_saturation", 1.2, 0, 1);
 
-  const radius = readVal(data, "border_radius", DEFAULTS.border_radius);
-  const radiusLoc = readVal(
-    data,
-    "border_radius_location_default",
-    DEFAULTS.border_radius_location_default,
-  );
+  const radius = cfgInt(data, "border_radius", 0, 0, 64);
+  const radiusLoc = cfgStr(data, "border_radius_location_default", "15");
 
-  const shadowsOn = isEnabled(data, "shadows");
-  const shadowsFloatingOn = isEnabled(data, "shadow_only_floating");
-  const layerShadowsOn = isEnabled(data, "layer_shadows");
-  const shadowsSize = readVal(data, "shadows_size", DEFAULTS.shadows_size);
-  const shadowsBlur = readVal(data, "shadows_blur", DEFAULTS.shadows_blur);
-  const shadowsPosX = readVal(data, "shadows_position_x", DEFAULTS.shadows_position_x);
-  const shadowsPosY = readVal(data, "shadows_position_y", DEFAULTS.shadows_position_y);
+  const shadowsOn = cfgBool(data, "shadows");
+  const shadowsFloatingOn = cfgBool(data, "shadow_only_floating", true);
+  const layerShadowsOn = cfgBool(data, "layer_shadows");
+  const shadowsSize = cfgInt(data, "shadows_size", 10, 0, 100);
+  const shadowsBlur = cfgFloat(data, "shadows_blur", 15.0, 0, 20);
+  const shadowsPosX = cfgInt(data, "shadows_position_x", 0, -100, 100);
+  const shadowsPosY = cfgInt(data, "shadows_position_y", 0, -100, 100);
 
-  const focusedOpacity = clampFloat(
-    readVal(data, "focused_opacity", DEFAULTS.focused_opacity),
-    0.0,
-    1.0,
-  );
-  const unfocusedOpacity = clampFloat(
-    readVal(data, "unfocused_opacity", DEFAULTS.unfocused_opacity),
-    0.0,
-    1.0,
-  );
+  const focusedOpacity = cfgFloat(data, "focused_opacity", 1.0, 0, 1);
+  const unfocusedOpacity = cfgFloat(data, "unfocused_opacity", 1.0, 0, 1);
 
   const tb = (k: string) => (v: boolean) => setValue(k, v ? "1" : "0");
 
@@ -301,7 +246,7 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Blur Passes"
                 description="Number of blur iterations — higher is smoother but more GPU work."
-                value={clampInt(blurPasses, 1, 10)}
+                value={blurPasses}
                 min={1}
                 max={10}
                 onChange={(v) => setValue("blur_params_num_passes", String(v))}
@@ -309,7 +254,7 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Blur Radius"
                 description="Pixel radius of the blur kernel."
-                value={clampInt(blurRadius, 1, 32)}
+                value={blurRadius}
                 min={1}
                 max={32}
                 onChange={(v) => setValue("blur_params_radius", String(v))}
@@ -317,7 +262,7 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Noise"
                 description="Adds grain to reduce banding artifacts (0.0 – 1.0)."
-                value={clampFloat(blurNoise, 0, 1)}
+                value={blurNoise}
                 min={0}
                 max={1}
                 step={0.01}
@@ -326,7 +271,7 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Brightness"
                 description="Brightness multiplier for the blurred layer (0.0 – 1.0)."
-                value={clampFloat(blurBrightness, 0, 1)}
+                value={blurBrightness}
                 min={0}
                 max={1}
                 step={0.01}
@@ -335,7 +280,7 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Contrast"
                 description="Contrast multiplier for the blurred layer (0.0 – 1.0)."
-                value={clampFloat(blurContrast, 0, 1)}
+                value={blurContrast}
                 min={0}
                 max={1}
                 step={0.01}
@@ -344,7 +289,7 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Saturation"
                 description="Saturation multiplier for the blurred layer (0.0 – 1.0)."
-                value={clampFloat(blurSaturation, 0, 1)}
+                value={blurSaturation}
                 min={0}
                 max={1}
                 step={0.01}
@@ -366,7 +311,7 @@ export function WindowEffectsPanel() {
           <SliderRow
             label="Radius"
             description="Corner rounding in pixels — 0 for sharp corners."
-            value={clampInt(radius, 0, 64)}
+            value={radius}
             min={0}
             max={64}
             onChange={(v) => setValue("border_radius", String(v))}
@@ -458,7 +403,7 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Size"
                 description="How far the shadow extends beyond the window edges."
-                value={clampInt(shadowsSize, 0, 100)}
+                value={shadowsSize}
                 min={0}
                 max={100}
                 onChange={(v) => setValue("shadows_size", String(v))}
@@ -466,7 +411,7 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Softness"
                 description="Gaussian blur sigma — higher values create softer shadows."
-                value={clampFloat(shadowsBlur, 0, 20)}
+                value={shadowsBlur}
                 min={0}
                 max={20}
                 step={0.1}
@@ -475,7 +420,7 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Offset X"
                 description="Horizontal shadow offset (negative = left, positive = right)."
-                value={clampInt(shadowsPosX, -100, 100)}
+                value={shadowsPosX}
                 min={-100}
                 max={100}
                 onChange={(v) => setValue("shadows_position_x", String(v))}
@@ -483,7 +428,7 @@ export function WindowEffectsPanel() {
               <SliderRow
                 label="Offset Y"
                 description="Vertical shadow offset (negative = up, positive = down)."
-                value={clampInt(shadowsPosY, -100, 100)}
+                value={shadowsPosY}
                 min={-100}
                 max={100}
                 onChange={(v) => setValue("shadows_position_y", String(v))}

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useConfigStore } from "@/lib/config-store";
-import { useConfigSetter } from "@/lib/use-config-setter";
+import { cfgBool, cfgFloat, cfgStr } from "@/lib/config-helpers";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
@@ -11,106 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { MangoConfigKey } from "@/lib/config-types";
-
-interface FieldDef {
-  key: string;
-  label: string;
-  description: string;
-  default: string;
-  parse: (raw: string) => unknown;
-}
-
-const FIELDS: FieldDef[] = [
-  {
-    key: "dwindle_vsplit",
-    label: "Vertical Split",
-    description: "Policy for vertical splits in the dwindle layout.",
-    default: "1",
-    parse: (v) => {
-      const n = parseInt(v, 10);
-      return isNaN(n) ? 1 : Math.min(2, Math.max(0, n));
-    },
-  },
-  {
-    key: "dwindle_hsplit",
-    label: "Horizontal Split",
-    description: "Policy for horizontal splits in the dwindle layout.",
-    default: "1",
-    parse: (v) => {
-      const n = parseInt(v, 10);
-      return isNaN(n) ? 1 : Math.min(2, Math.max(0, n));
-    },
-  },
-  {
-    key: "dwindle_preserve_split",
-    label: "Preserve Split",
-    description: "Preserve the current split direction when splitting a new window.",
-    default: "0",
-    parse: (v) => v === "1",
-  },
-  {
-    key: "dwindle_smart_split",
-    label: "Smart Split",
-    description: "Automatically choose the split direction based on window dimensions.",
-    default: "0",
-    parse: (v) => v === "1",
-  },
-  {
-    key: "dwindle_smart_resize",
-    label: "Smart Resize",
-    description: "Intelligently resize adjacent windows when resizing.",
-    default: "0",
-    parse: (v) => v === "1",
-  },
-  {
-    key: "dwindle_drop_simple_split",
-    label: "Drop Simple Split",
-    description: "Fall back to a simple split when smart split cannot determine direction.",
-    default: "1",
-    parse: (v) => v === "1",
-  },
-  {
-    key: "dwindle_manual_split",
-    label: "Manual Split",
-    description: "Require explicit split direction input instead of automatic.",
-    default: "0",
-    parse: (v) => v === "1",
-  },
-  {
-    key: "dwindle_split_ratio",
-    label: "Split Ratio",
-    description: "Proportion of space allocated to the first child when splitting (0.05 – 0.95).",
-    default: "0.5",
-    parse: (v) => {
-      const n = parseFloat(v);
-      return isNaN(n) ? 0.5 : Math.min(0.95, Math.max(0.05, n));
-    },
-  },
-];
 
 const SPLIT_OPTIONS = [
   { value: "0", label: "Off" },
   { value: "1", label: "Smart" },
   { value: "2", label: "Force" },
 ];
-
-interface ConfigData {
-  [key: string]: string[];
-}
-
-function raw(data: ConfigData, key: string): string {
-  return data[key as MangoConfigKey]?.[0] ?? FIELDS.find((f) => f.key === key)!.default;
-}
-
-function bool(data: ConfigData, key: string): boolean {
-  return raw(data, key) === "1";
-}
-
-function num(data: ConfigData, key: string): number {
-  const def = FIELDS.find((f) => f.key === key)!;
-  return (def.parse as (v: string) => number)(raw(data, key));
-}
 
 // Primitives
 
@@ -256,21 +162,21 @@ function SectionCard({ title, children }: { title: string; children: React.React
 
 export function DwindlePanel() {
   const data = useConfigStore((s) => s.data);
-  const setValue = useConfigSetter();
+  const setValue = useConfigStore((s) => s.setValue);
 
   const boolSetter = useCallback(
     (key: string) => (v: boolean) => setValue(key, v ? "1" : "0"),
     [setValue],
   );
 
-  const vsplit = raw(data, "dwindle_vsplit");
-  const hsplit = raw(data, "dwindle_hsplit");
-  const preserveSplit = bool(data, "dwindle_preserve_split");
-  const smartSplit = bool(data, "dwindle_smart_split");
-  const smartResize = bool(data, "dwindle_smart_resize");
-  const dropSimple = bool(data, "dwindle_drop_simple_split");
-  const manualSplit = bool(data, "dwindle_manual_split");
-  const splitRatio = num(data, "dwindle_split_ratio");
+  const vsplit = cfgStr(data, "dwindle_vsplit", "1");
+  const hsplit = cfgStr(data, "dwindle_hsplit", "1");
+  const preserveSplit = cfgBool(data, "dwindle_preserve_split");
+  const smartSplit = cfgBool(data, "dwindle_smart_split");
+  const smartResize = cfgBool(data, "dwindle_smart_resize");
+  const dropSimple = cfgBool(data, "dwindle_drop_simple_split", true);
+  const manualSplit = cfgBool(data, "dwindle_manual_split");
+  const splitRatio = cfgFloat(data, "dwindle_split_ratio", 0.5, 0.05, 0.95);
 
   return (
     <div className="mx-auto w-full max-w-4xl pb-12">

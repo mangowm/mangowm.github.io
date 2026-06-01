@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback, useMemo, memo } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
 import { useConfigStore } from "@/lib/config-store";
+import { cfgStr } from "@/lib/config-helpers";
 import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
-import type { MangoConfigKey } from "@/lib/config-types";
 
 interface ColorsConfig {
   rootcolor: string;
@@ -85,8 +85,7 @@ function readTheme(data: Record<string, string[]>): ColorsConfig {
   const defaults = defaultPalette.colors;
   return COLORS_FIELDS.reduce(
     (theme, field) => {
-      const values = data[field.key as MangoConfigKey];
-      if (values?.[0]) theme[field.key] = values[0];
+      theme[field.key] = cfgStr(data, field.key, defaults[field.key]);
       return theme;
     },
     { ...defaults },
@@ -310,24 +309,11 @@ export function ColorsPanel() {
   }, [theme]);
 
   const handlePaletteSelect = useCallback((palette: ColorPalette) => {
-    const state = useConfigStore.getState();
-    state.bulkUpdateEntries(
-      (Object.entries(palette.colors) as [keyof ColorsConfig, string][]).map(([key, value]) => ({
-        key: key as MangoConfigKey,
-        value,
-      })),
-    );
+    useConfigStore.getState().setValues(palette.colors as unknown as Record<string, string>);
   }, []);
 
   const handleColorChange = useCallback((key: keyof ColorsConfig, value: string) => {
-    const configKey = key as MangoConfigKey;
-    const state = useConfigStore.getState();
-    const existing = state.data[configKey];
-    if (existing?.[0]) {
-      state.updateEntry(configKey, 0, value);
-    } else {
-      state.addEntry(configKey, value);
-    }
+    useConfigStore.getState().setValue(key, value);
   }, []);
 
   const changeHandlers = useMemo(() => {

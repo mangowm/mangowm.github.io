@@ -1,49 +1,12 @@
 import { useCallback, useState, useRef } from "react";
 import { useConfigStore } from "@/lib/config-store";
-import { useConfigSetter } from "@/lib/use-config-setter";
+import { cfgBool, cfgInt, cfgFloat, cfgStr } from "@/lib/config-helpers";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
-import type { MangoConfigKey } from "@/lib/config-types";
-
-interface ConfigData {
-  [key: string]: string[];
-}
-
-function raw(data: ConfigData, key: string, fallback: string): string {
-  return data[key as MangoConfigKey]?.[0] ?? fallback;
-}
-
-function enabled(data: ConfigData, key: string, fallback = "0"): boolean {
-  return raw(data, key, fallback) === "1";
-}
-
-function readFloat(
-  data: ConfigData,
-  key: string,
-  fallback: string,
-  min: number,
-  max: number,
-): number {
-  const n = parseFloat(raw(data, key, fallback));
-  return isNaN(n) ? min : Math.min(max, Math.max(min, n));
-}
-
-function readInt(
-  data: ConfigData,
-  key: string,
-  fallback: string,
-  min: number,
-  max: number,
-): number {
-  const n = parseInt(raw(data, key, fallback), 10);
-  return isNaN(n) ? min : Math.min(max, Math.max(min, n));
-}
-
-// Primitives
 
 function AccentHover() {
   return (
@@ -232,25 +195,25 @@ function PresetInput({
 
 export function ScrollerPanel() {
   const data = useConfigStore((s) => s.data);
-  const setValue = useConfigSetter();
+  const setValue = useConfigStore((s) => s.setValue);
 
   const boolSetter = useCallback(
     (key: string) => (v: boolean) => setValue(key, v ? "1" : "0"),
     [setValue],
   );
 
-  const defaultProportion = readFloat(data, "scroller_default_proportion", "0.9", 0.1, 1.0);
-  const defaultSingle = readFloat(data, "scroller_default_proportion_single", "1.0", 0.1, 1.0);
-  const ignoreSingle = enabled(data, "scroller_ignore_proportion_single", "1");
-  const focusCenter = enabled(data, "scroller_focus_center");
-  const preferCenter = enabled(data, "scroller_prefer_center");
-  const preferOverspread = enabled(data, "scroller_prefer_overspread", "1");
-  const pointerFocus = enabled(data, "edge_scroller_pointer_focus", "1");
-  const allowSpeed = readFloat(data, "edge_scroller_focus_allow_speed", "0.0", 0.0, 1000.0);
-  const structs = readInt(data, "scroller_structs", "20", 0, 1000);
+  const defaultProportion = cfgFloat(data, "scroller_default_proportion", 0.9, 0.1, 1.0);
+  const defaultSingle = cfgFloat(data, "scroller_default_proportion_single", 1.0, 0.1, 1.0);
+  const ignoreSingle = cfgBool(data, "scroller_ignore_proportion_single", true);
+  const focusCenter = cfgBool(data, "scroller_focus_center");
+  const preferCenter = cfgBool(data, "scroller_prefer_center");
+  const preferOverspread = cfgBool(data, "scroller_prefer_overspread", true);
+  const pointerFocus = cfgBool(data, "edge_scroller_pointer_focus", true);
+  const allowSpeed = cfgFloat(data, "edge_scroller_focus_allow_speed", 0.0, 0.0, 1000.0);
+  const structs = cfgInt(data, "scroller_structs", 20, 0, 1000);
 
   // Parse proportion preset
-  const presetRaw = raw(data, "scroller_proportion_preset", "");
+  const presetRaw = cfgStr(data, "scroller_proportion_preset", "");
   const presetValues: number[] = presetRaw
     ? presetRaw.split(",").map((s) => {
         const n = parseFloat(s.trim());

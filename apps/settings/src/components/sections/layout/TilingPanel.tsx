@@ -1,79 +1,9 @@
 import { useCallback } from "react";
 import { useConfigStore } from "@/lib/config-store";
-import { useConfigSetter } from "@/lib/use-config-setter";
+import { cfgBool, cfgInt, cfgFloat } from "@/lib/config-helpers";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
-import type { MangoConfigKey } from "@/lib/config-types";
-
-interface FieldDef {
-  key: string;
-  label: string;
-  description: string;
-  default: string;
-  parse: (raw: string) => unknown;
-}
-
-const FIELDS: FieldDef[] = [
-  {
-    key: "new_is_master",
-    label: "New Windows as Master",
-    description: "New windows open in the master area instead of the stack.",
-    default: "1",
-    parse: (v) => v === "1",
-  },
-  {
-    key: "default_mfact",
-    label: "Master Area Factor",
-    description: "Proportion of screen width allocated to the master area (0.10 – 0.90).",
-    default: "0.55",
-    parse: (v) => {
-      const n = parseFloat(v);
-      return isNaN(n) ? 0.55 : Math.min(0.9, Math.max(0.1, n));
-    },
-  },
-  {
-    key: "default_nmaster",
-    label: "Number of Masters",
-    description: "How many windows are kept in the master area.",
-    default: "1",
-    parse: (v) => {
-      const n = parseInt(v, 10);
-      return isNaN(n) ? 1 : Math.min(1000, Math.max(1, n));
-    },
-  },
-  {
-    key: "center_master_overspread",
-    label: "Center Master Overspread",
-    description: "Center the master window when it overspreads the available space.",
-    default: "0",
-    parse: (v) => v === "1",
-  },
-  {
-    key: "center_when_single_stack",
-    label: "Center Single Stack",
-    description: "Center the single window in the stack area.",
-    default: "1",
-    parse: (v) => v === "1",
-  },
-];
-
-interface ConfigData {
-  [key: string]: string[];
-}
-
-function raw(data: ConfigData, key: string): string {
-  return data[key as MangoConfigKey]?.[0] ?? FIELDS.find((f) => f.key === key)!.default;
-}
-
-function bool(data: ConfigData, key: string): boolean {
-  return raw(data, key) === "1";
-}
-
-function num(data: ConfigData, key: string): number {
-  const def = FIELDS.find((f) => f.key === key)!;
-  return (def.parse as (v: string) => number)(raw(data, key));
-}
 
 // Primitives
 
@@ -190,18 +120,18 @@ function SectionCard({ title, children }: { title: string; children: React.React
 
 export function TilingPanel() {
   const data = useConfigStore((s) => s.data);
-  const setValue = useConfigSetter();
+  const setValue = useConfigStore((s) => s.setValue);
 
   const boolSetter = useCallback(
     (key: string) => (v: boolean) => setValue(key, v ? "1" : "0"),
     [setValue],
   );
 
-  const newIsMaster = bool(data, "new_is_master");
-  const mfact = num(data, "default_mfact");
-  const nmaster = num(data, "default_nmaster");
-  const centerOverspread = bool(data, "center_master_overspread");
-  const centerSingleStack = bool(data, "center_when_single_stack");
+  const newIsMaster = cfgBool(data, "new_is_master", true);
+  const mfact = cfgFloat(data, "default_mfact", 0.55, 0.1, 0.9);
+  const nmaster = cfgInt(data, "default_nmaster", 1, 1, 1000);
+  const centerOverspread = cfgBool(data, "center_master_overspread");
+  const centerSingleStack = cfgBool(data, "center_when_single_stack", true);
 
   return (
     <div className="mx-auto w-full max-w-4xl pb-12">

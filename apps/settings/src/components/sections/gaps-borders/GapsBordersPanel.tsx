@@ -1,51 +1,8 @@
 import { useConfigStore } from "@/lib/config-store";
-import { useConfigSetter } from "@/lib/use-config-setter";
+import { cfgBool, cfgInt } from "@/lib/config-helpers";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
-import type { MangoConfigKey } from "@/lib/config-types";
-
-const DEFAULTS = {
-  smartgaps: "0",
-  gappih: "5",
-  gappiv: "5",
-  gappoh: "10",
-  gappov: "10",
-  borderpx: "4",
-  no_border_when_single: "0",
-  no_radius_when_single: "0",
-} as const;
-
-const LIMITS = {
-  gappih: { min: 0, max: 1000 },
-  gappiv: { min: 0, max: 1000 },
-  gappoh: { min: 0, max: 1000 },
-  gappov: { min: 0, max: 1000 },
-  borderpx: { min: 0, max: 200 },
-} as const;
-
-interface ConfigData {
-  [key: string]: string[];
-}
-
-function val(data: ConfigData, key: string, fallback: string): string {
-  return data[key as MangoConfigKey]?.[0] ?? fallback;
-}
-
-function enabled(data: ConfigData, key: string): boolean {
-  return val(data, key, "0") === "1";
-}
-
-function readInt(
-  data: ConfigData,
-  key: string,
-  fallback: string,
-  min: number,
-  max: number,
-): number {
-  const n = parseInt(val(data, key, fallback), 10);
-  return isNaN(n) ? min : Math.min(max, Math.max(min, n));
-}
 
 function AccentHover() {
   return (
@@ -165,22 +122,16 @@ function SectionCard({ title, children }: { title: string; children: React.React
 
 export function GapsBordersPanel() {
   const data = useConfigStore((s) => s.data);
-  const setValue = useConfigSetter();
+  const setValue = useConfigStore((s) => s.setValue);
 
-  const smartgapsOn = enabled(data, "smartgaps");
-  const gappih = readInt(data, "gappih", DEFAULTS.gappih, LIMITS.gappih.min, LIMITS.gappih.max);
-  const gappiv = readInt(data, "gappiv", DEFAULTS.gappiv, LIMITS.gappiv.min, LIMITS.gappiv.max);
-  const gappoh = readInt(data, "gappoh", DEFAULTS.gappoh, LIMITS.gappoh.min, LIMITS.gappoh.max);
-  const gappov = readInt(data, "gappov", DEFAULTS.gappov, LIMITS.gappov.min, LIMITS.gappov.max);
-  const borderpx = readInt(
-    data,
-    "borderpx",
-    DEFAULTS.borderpx,
-    LIMITS.borderpx.min,
-    LIMITS.borderpx.max,
-  );
-  const noBorderSingle = enabled(data, "no_border_when_single");
-  const noRadiusSingle = enabled(data, "no_radius_when_single");
+  const smartgapsOn = cfgBool(data, "smartgaps");
+  const gappih = cfgInt(data, "gappih", 5, 0, 1000);
+  const gappiv = cfgInt(data, "gappiv", 5, 0, 1000);
+  const gappoh = cfgInt(data, "gappoh", 10, 0, 1000);
+  const gappov = cfgInt(data, "gappov", 10, 0, 1000);
+  const borderpx = cfgInt(data, "borderpx", 4, 0, 200);
+  const noBorderSingle = cfgBool(data, "no_border_when_single");
+  const noRadiusSingle = cfgBool(data, "no_radius_when_single");
 
   const tb = (k: string) => (v: boolean) => setValue(k, v ? "1" : "0");
 
@@ -205,8 +156,8 @@ export function GapsBordersPanel() {
             label="Inner Gap Horizontal"
             description="Horizontal gap between tiled windows."
             value={gappih}
-            min={LIMITS.gappih.min}
-            max={LIMITS.gappih.max}
+            min={0}
+            max={1000}
             unit="px"
             onChange={(v) => setValue("gappih", String(v))}
           />
@@ -214,8 +165,8 @@ export function GapsBordersPanel() {
             label="Inner Gap Vertical"
             description="Vertical gap between tiled windows."
             value={gappiv}
-            min={LIMITS.gappiv.min}
-            max={LIMITS.gappiv.max}
+            min={0}
+            max={1000}
             unit="px"
             onChange={(v) => setValue("gappiv", String(v))}
           />
@@ -223,8 +174,8 @@ export function GapsBordersPanel() {
             label="Outer Gap Horizontal"
             description="Horizontal gap between windows and screen edges."
             value={gappoh}
-            min={LIMITS.gappoh.min}
-            max={LIMITS.gappoh.max}
+            min={0}
+            max={1000}
             unit="px"
             onChange={(v) => setValue("gappoh", String(v))}
           />
@@ -232,8 +183,8 @@ export function GapsBordersPanel() {
             label="Outer Gap Vertical"
             description="Vertical gap between windows and screen edges."
             value={gappov}
-            min={LIMITS.gappov.min}
-            max={LIMITS.gappov.max}
+            min={0}
+            max={1000}
             unit="px"
             onChange={(v) => setValue("gappov", String(v))}
           />
@@ -246,8 +197,8 @@ export function GapsBordersPanel() {
             label="Border Width"
             description="Thickness of window borders in pixels."
             value={borderpx}
-            min={LIMITS.borderpx.min}
-            max={LIMITS.borderpx.max}
+            min={0}
+            max={200}
             unit="px"
             onChange={(v) => setValue("borderpx", String(v))}
           />

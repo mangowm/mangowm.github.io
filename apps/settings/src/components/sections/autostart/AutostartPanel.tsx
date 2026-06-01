@@ -3,7 +3,6 @@ import { useConfigStore } from "@/lib/config-store";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Trash2, Plus, TerminalSquare } from "lucide-react";
-import { MangoConfigKey } from "@/lib/config-types";
 
 function CommandSection({
   title,
@@ -13,7 +12,7 @@ function CommandSection({
 }: {
   title: string;
   description: string;
-  configKey: MangoConfigKey;
+  configKey: string;
   placeholder: string;
 }) {
   const commands = useConfigStore((state) => state.data[configKey]) ?? [];
