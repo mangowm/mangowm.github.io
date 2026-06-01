@@ -20,9 +20,12 @@
  */
 
 import React from "react";
+import { X, Plus } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -76,9 +79,7 @@ export interface FieldLabelProps {
 export function FieldLabel({ label, description }: FieldLabelProps) {
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-      <span className="text-[13px] font-medium leading-none text-foreground">
-        {label}
-      </span>
+      <span className="text-[13px] font-medium leading-none text-foreground">{label}</span>
       <span className="truncate text-[11px] leading-none text-muted-foreground/60">
         {description}
       </span>
@@ -96,9 +97,7 @@ export function SectionCard({ title, children }: SectionCardProps) {
   return (
     <div className="rounded-xl border border-border/40 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md">
       <div className="px-4 py-3">
-        <h3 className="text-sm font-semibold tracking-tight text-foreground">
-          {title}
-        </h3>
+        <h3 className="text-sm font-semibold tracking-tight text-foreground">{title}</h3>
       </div>
       <Separator className="w-full" />
       <div className="divide-y divide-border/10">{children}</div>
@@ -120,13 +119,7 @@ export interface ToggleRowProps {
 }
 
 /** A row with a Switch toggle and an on/off text indicator. */
-export function ToggleRow({
-  label,
-  description,
-  value,
-  onChange,
-  enabled,
-}: ToggleRowProps) {
+export function ToggleRow({ label, description, value, onChange, enabled }: ToggleRowProps) {
   const isOff = enabled === false;
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
@@ -141,12 +134,7 @@ export function ToggleRow({
         >
           {value ? "On" : "Off"}
         </span>
-        <Switch
-          checked={value}
-          onCheckedChange={onChange}
-          className="shrink-0"
-          disabled={isOff}
-        />
+        <Switch checked={value} onCheckedChange={onChange} className="shrink-0" disabled={isOff} />
       </div>
     </Row>
   );
@@ -186,8 +174,7 @@ export function SliderRow({
   onChange,
 }: SliderRowProps) {
   const isOff = enabled === false;
-  const display =
-    value % 1 === 0 ? String(value) : value.toFixed(2);
+  const display = value % 1 === 0 ? String(value) : value.toFixed(2);
 
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
@@ -243,11 +230,7 @@ export function SelectRow({
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
       <FieldLabel label={label} description={description} />
-      <Select
-        value={value}
-        onValueChange={(v) => v && onChange(v)}
-        disabled={isOff}
-      >
+      <Select value={value} onValueChange={(v) => v && onChange(v)} disabled={isOff}>
         <SelectTrigger className="w-28" aria-label={label}>
           <SelectValue />
         </SelectTrigger>
@@ -259,6 +242,153 @@ export function SelectRow({
           ))}
         </SelectContent>
       </Select>
+    </Row>
+  );
+}
+
+export interface TextInputRowProps {
+  label: string;
+  description: string;
+  value: string;
+  placeholder?: string;
+  onChange: (v: string) => void;
+  enabled?: boolean;
+}
+
+export interface MultiTagInputProps {
+  label: string;
+  description: string;
+  /** Comma-separated values */
+  value: string;
+  /** Placeholder for the add-input */
+  tagPlaceholder?: string;
+  onChange: (v: string) => void;
+  enabled?: boolean;
+}
+
+/**
+ * A row with a tag/chip input for comma-separated values.
+ * Each tag is one item; users add and remove them individually.
+ * The combined value is stored as a comma-separated string.
+ */
+export function MultiTagInput({
+  label,
+  description,
+  value,
+  tagPlaceholder = "Add…",
+  onChange,
+  enabled,
+}: MultiTagInputProps) {
+  const [text, setText] = React.useState("");
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const isOff = enabled === false;
+
+  const tags = value ? value.split(",").filter((t) => t.trim()) : [];
+
+  const addTag = () => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    const next = [...tags, trimmed];
+    onChange(next.join(","));
+    setText("");
+    inputRef.current?.focus();
+  };
+
+  const removeTag = (index: number) => {
+    const next = tags.filter((_, i) => i !== index);
+    onChange(next.join(","));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addTag();
+    }
+    if (e.key === "," || e.key === "Tab") {
+      e.preventDefault();
+      addTag();
+    }
+    if (e.key === "Backspace" && !text && tags.length > 0) {
+      removeTag(tags.length - 1);
+    }
+  };
+
+  return (
+    <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
+      <FieldLabel label={label} description={description} />
+      <div className="flex w-52 shrink-0 flex-col items-stretch gap-1.5">
+        {tags.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {tags.map((tag, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-0.5 font-mono text-[11px] text-foreground/80"
+              >
+                {tag}
+                <button
+                  type="button"
+                  onClick={() => removeTag(i)}
+                  disabled={isOff}
+                  className="inline-flex size-3.5 items-center justify-center rounded-sm text-muted-foreground/50 transition-colors hover:text-destructive hover:bg-destructive/10"
+                >
+                  <X className="size-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+        <div className="flex items-center gap-1.5">
+          <Input
+            ref={inputRef}
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={tagPlaceholder}
+            spellCheck={false}
+            disabled={isOff}
+            className="h-7 flex-1 font-mono text-[11px]"
+            aria-label={label}
+          />
+          <Button
+            type="button"
+            size="xs"
+            variant="secondary"
+            onClick={addTag}
+            disabled={isOff || !text.trim()}
+            className="h-7 shrink-0 px-2"
+          >
+            <Plus className="size-3" />
+          </Button>
+        </div>
+      </div>
+    </Row>
+  );
+}
+
+/** A row with a text input field. */
+export function TextInputRow({
+  label,
+  description,
+  value,
+  placeholder,
+  onChange,
+  enabled,
+}: TextInputRowProps) {
+  const isOff = enabled === false;
+  return (
+    <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
+      <FieldLabel label={label} description={description} />
+      <Input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        spellCheck={false}
+        className="w-44 shrink-0 font-mono text-[12px]"
+        disabled={isOff}
+        aria-label={label}
+      />
     </Row>
   );
 }
@@ -281,19 +411,12 @@ export interface PanelHeaderProps {
  * Handles the inconsistent sizing that existed across the old panels —
  * everything is now `text-xl` to match the majority.
  */
-export function PanelHeader({
-  title,
-  description,
-  separator = true,
-  actions,
-}: PanelHeaderProps) {
+export function PanelHeader({ title, description, separator = true, actions }: PanelHeaderProps) {
   return (
     <div className="mb-8">
       <div className="flex items-end justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">
-            {title}
-          </h2>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
         {actions && <div className="shrink-0">{actions}</div>}
@@ -316,15 +439,11 @@ export interface PanelShellProps {
  * Outer wrapper for all panels. Applies consistent max-width, horizontal
  * centering, bottom padding, and the entry animation.
  */
-export function PanelShell({
-  children,
-  maxWidth = "max-w-4xl",
-}: PanelShellProps) {
+export function PanelShell({ children, maxWidth = "max-w-4xl" }: PanelShellProps) {
   return (
     <div
       className={
-        "mx-auto w-full pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500 " +
-        maxWidth
+        "mx-auto w-full pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500 " + maxWidth
       }
     >
       {children}

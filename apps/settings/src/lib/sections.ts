@@ -11,6 +11,12 @@ import { layoutMeta } from "@/components/sections/layout/layout.meta";
 import { tilingMeta } from "@/components/sections/layout/tiling.meta";
 import { dwindleMeta } from "@/components/sections/layout/dwindle.meta";
 import { scrollerMeta } from "@/components/sections/layout/scroller.meta";
+import { inputDevicesMeta } from "@/components/sections/input-devices/input-devices.meta";
+import { keyboardMeta } from "@/components/sections/input-devices/keyboard/keyboard.meta";
+import { pointerMeta } from "@/components/sections/input-devices/pointer/pointer.meta";
+import { trackpadMeta } from "@/components/sections/input-devices/trackpad/trackpad.meta";
+
+import { tabletMeta } from "@/components/sections/input-devices/tablet/tablet.meta";
 
 export const SECTIONS: SectionMeta[] = [
   autostartMeta,
@@ -24,6 +30,11 @@ export const SECTIONS: SectionMeta[] = [
   tilingMeta,
   dwindleMeta,
   scrollerMeta,
+  inputDevicesMeta,
+  keyboardMeta,
+  pointerMeta,
+  trackpadMeta,
+  tabletMeta,
 ];
 
 export function getSectionById(id: string): SectionMeta | undefined {
