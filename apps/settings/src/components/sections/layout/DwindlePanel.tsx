@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useConfigStore } from "@/lib/config-store";
 import { cfgBool, cfgFloat, cfgStr } from "@/lib/config-helpers";
 import { Switch } from "@/components/ui/switch";
@@ -17,8 +16,6 @@ const SPLIT_OPTIONS = [
   { value: "1", label: "Smart" },
   { value: "2", label: "Force" },
 ];
-
-// Primitives
 
 function AccentHover() {
   return (
@@ -164,10 +161,7 @@ export function DwindlePanel() {
   const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const boolSetter = useCallback(
-    (key: string) => (v: boolean) => setValue(key, v ? "1" : "0"),
-    [setValue],
-  );
+  const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const vsplit = cfgStr(data, "dwindle_vsplit", "1");
   const hsplit = cfgStr(data, "dwindle_hsplit", "1");
@@ -208,7 +202,7 @@ export function DwindlePanel() {
             label="Preserve Split"
             description="Keep the current split direction when inserting a new window."
             value={preserveSplit}
-            onChange={boolSetter("dwindle_preserve_split")}
+            onChange={tb("dwindle_preserve_split")}
           />
         </SectionCard>
       </div>
@@ -219,25 +213,25 @@ export function DwindlePanel() {
             label="Smart Split"
             description="Automatically choose split direction based on the window's dimensions."
             value={smartSplit}
-            onChange={boolSetter("dwindle_smart_split")}
+            onChange={tb("dwindle_smart_split")}
           />
           <ToggleRow
             label="Smart Resize"
             description="Intelligently resize adjacent windows during resize operations."
             value={smartResize}
-            onChange={boolSetter("dwindle_smart_resize")}
+            onChange={tb("dwindle_smart_resize")}
           />
           <ToggleRow
             label="Drop Simple Split"
             description="Fall back to a simple split when smart split cannot determine a direction."
             value={dropSimple}
-            onChange={boolSetter("dwindle_drop_simple_split")}
+            onChange={tb("dwindle_drop_simple_split")}
           />
           <ToggleRow
             label="Manual Split"
             description="Require explicit split direction input instead of automatic detection."
             value={manualSplit}
-            onChange={boolSetter("dwindle_manual_split")}
+            onChange={tb("dwindle_manual_split")}
           />
         </SectionCard>
       </div>

@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { useConfigStore } from "@/lib/config-store";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "@/lib/config-helpers";
 import { Switch } from "@/components/ui/switch";
@@ -197,10 +197,7 @@ export function ScrollerPanel() {
   const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const boolSetter = useCallback(
-    (key: string) => (v: boolean) => setValue(key, v ? "1" : "0"),
-    [setValue],
-  );
+  const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const defaultProportion = cfgFloat(data, "scroller_default_proportion", 0.9, 0.1, 1.0);
   const defaultSingle = cfgFloat(data, "scroller_default_proportion_single", 1.0, 0.1, 1.0);
@@ -214,19 +211,16 @@ export function ScrollerPanel() {
 
   // Parse proportion preset
   const presetRaw = cfgStr(data, "scroller_proportion_preset", "");
-  const presetValues: number[] = presetRaw
+  const presetValues = presetRaw
     ? presetRaw.split(",").map((s) => {
         const n = parseFloat(s.trim());
         return isNaN(n) ? 0 : n;
       })
     : [];
 
-  const handlePresetChange = useCallback(
-    (values: number[]) => {
-      setValue("scroller_proportion_preset", values.join(","));
-    },
-    [setValue],
-  );
+  const handlePresetChange = (values: number[]) => {
+    setValue("scroller_proportion_preset", values.join(","));
+  };
 
   return (
     <div className="mx-auto w-full max-w-4xl pb-12">
@@ -262,7 +256,7 @@ export function ScrollerPanel() {
             label="Ignore Proportion When Solo"
             description="Ignore the proportion setting when only one window is visible."
             value={ignoreSingle}
-            onChange={boolSetter("scroller_ignore_proportion_single")}
+            onChange={tb("scroller_ignore_proportion_single")}
           />
         </SectionCard>
       </div>
@@ -273,19 +267,19 @@ export function ScrollerPanel() {
             label="Focus Center"
             description="Focus the window at the center of the viewport when scrolling."
             value={focusCenter}
-            onChange={boolSetter("scroller_focus_center")}
+            onChange={tb("scroller_focus_center")}
           />
           <ToggleRow
             label="Prefer Center"
             description="Prefer to keep the focused window centered in the viewport."
             value={preferCenter}
-            onChange={boolSetter("scroller_prefer_center")}
+            onChange={tb("scroller_prefer_center")}
           />
           <ToggleRow
             label="Prefer Overspread"
             description="Prefer to overspread windows across the available space."
             value={preferOverspread}
-            onChange={boolSetter("scroller_prefer_overspread")}
+            onChange={tb("scroller_prefer_overspread")}
           />
         </SectionCard>
       </div>
@@ -296,7 +290,7 @@ export function ScrollerPanel() {
             label="Pointer Focus at Edge"
             description="Automatically focus the adjacent window when the pointer reaches the screen edge."
             value={pointerFocus}
-            onChange={boolSetter("edge_scroller_pointer_focus")}
+            onChange={tb("edge_scroller_pointer_focus")}
           />
           <SliderRow
             label="Focus Allow Speed"

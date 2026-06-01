@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback, useMemo, memo } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
 import { useConfigStore } from "@/lib/config-store";
 import { cfgStr } from "@/lib/config-helpers";
+import type { ConfigData } from "@/lib/config-types";
 import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
 
@@ -74,14 +75,16 @@ interface ColorPalette {
   colors: ColorsConfig;
 }
 
-const paletteModules = import.meta.glob("./palettes/*.json", { eager: true });
-const PALETTES: ColorPalette[] = Object.values(paletteModules).map((m: any) => m.default);
+const paletteModules = import.meta.glob<{ default: ColorPalette }>("./palettes/*.json", {
+  eager: true,
+});
+const PALETTES: ColorPalette[] = Object.values(paletteModules).map((m) => m.default);
 
 const COLOR_MODES: ColorMode[] = ["hex", "rgb", "hsl"];
 
 const defaultPalette = PALETTES.find((p) => p.name === "Default")!;
 
-function readTheme(data: Record<string, string[]>): ColorsConfig {
+function readTheme(data: ConfigData): ColorsConfig {
   const defaults = defaultPalette.colors;
   return COLORS_FIELDS.reduce(
     (theme, field) => {

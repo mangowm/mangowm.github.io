@@ -1,11 +1,8 @@
-import { useCallback } from "react";
 import { useConfigStore } from "@/lib/config-store";
 import { cfgBool, cfgInt, cfgFloat } from "@/lib/config-helpers";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
-
-// Primitives
 
 function AccentHover() {
   return (
@@ -122,10 +119,7 @@ export function TilingPanel() {
   const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const boolSetter = useCallback(
-    (key: string) => (v: boolean) => setValue(key, v ? "1" : "0"),
-    [setValue],
-  );
+  const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const newIsMaster = cfgBool(data, "new_is_master", true);
   const mfact = cfgFloat(data, "default_mfact", 0.55, 0.1, 0.9);
@@ -149,7 +143,7 @@ export function TilingPanel() {
             label="New Windows as Master"
             description="When enabled, new windows open in the master area. Otherwise they join the stack."
             value={newIsMaster}
-            onChange={boolSetter("new_is_master")}
+            onChange={tb("new_is_master")}
           />
         </SectionCard>
       </div>
@@ -183,13 +177,13 @@ export function TilingPanel() {
             label="Center Master Overspread"
             description="Center the master window when it overspreads the available space."
             value={centerOverspread}
-            onChange={boolSetter("center_master_overspread")}
+            onChange={tb("center_master_overspread")}
           />
           <ToggleRow
             label="Center Single Stack"
             description="Center the single window in the stack area when there is only one."
             value={centerSingleStack}
-            onChange={boolSetter("center_when_single_stack")}
+            onChange={tb("center_when_single_stack")}
           />
         </SectionCard>
       </div>
