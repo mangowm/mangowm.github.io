@@ -1,0 +1,44 @@
+import { useEffect, useRef, useCallback } from "react";
+
+const HIGHLIGHT_DURATION_MS = 1800;
+const HIGHLIGHT_CLASS = "ring-2 ring-ring/60 ring-offset-1 rounded-lg transition-all duration-500";
+
+export function useFocusField(focusKey: string | undefined) {
+  const registry = useRef<Map<string, HTMLElement>>(new Map());
+  const timerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!focusKey) return;
+
+    const el = registry.current.get(focusKey);
+    if (!el) return;
+
+    // Scroll into view
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    // Apply highlight classes
+    el.classList.add(...HIGHLIGHT_CLASS.split(" "));
+
+    // Remove after duration
+    timerRef.current = setTimeout(() => {
+      el.classList.remove(...HIGHLIGHT_CLASS.split(" "));
+    }, HIGHLIGHT_DURATION_MS);
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [focusKey]);
+
+  const fieldRef = useCallback(
+    (configKey: string) => (el: HTMLElement | null) => {
+      if (el) {
+        registry.current.set(configKey, el);
+      } else {
+        registry.current.delete(configKey);
+      }
+    },
+    [],
+  );
+
+  return fieldRef;
+}

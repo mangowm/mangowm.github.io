@@ -5,6 +5,8 @@ import { cfgStr } from "@/lib/config-helpers";
 import type { ConfigData } from "@/lib/config-types";
 import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
+import type { PanelProps } from "@/lib/section-types";
+import { useFocusField } from "@/lib/use-focus-field";
 
 interface ColorsConfig {
   rootcolor: string;
@@ -285,7 +287,8 @@ const PaletteCard = memo(function PaletteCard({ palette, isActive, onSelect }: P
   );
 });
 
-export function ColorsPanel() {
+export function ColorsPanel({ focusKey }: PanelProps) {
+  const fieldRef = useFocusField(focusKey);
   const data = useConfigStore((state) => state.data);
   const loading = useConfigStore((state) => state.loading);
   const [mode, setMode] = useState<ColorMode>("hex");
@@ -388,8 +391,8 @@ export function ColorsPanel() {
       <div className="rounded-xl border border-border/40 bg-card shadow-sm">
         <div className="divide-y divide-border/20">
           {COLORS_FIELDS.map((field, i) => (
+            <div ref={fieldRef(field.key)} key={field.key}>
             <ColorInput
-              key={field.key}
               label={field.label}
               description={field.description}
               value={theme[field.key]}
@@ -397,6 +400,7 @@ export function ColorsPanel() {
               flipPopover={i >= total - 3}
               onChange={changeHandlers[field.key]!}
             />
+            </div>
           ))}
         </div>
       </div>

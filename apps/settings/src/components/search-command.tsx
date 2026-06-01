@@ -1,46 +1,55 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { Command } from "cmdk";
-import { SearchIcon } from "lucide-react";
-import { SEARCH_INDEX, type SearchItem } from "@/lib/search-index";
-import { SECTIONS } from "@/lib/sections";
+import { SearchIcon, SettingsIcon, TerminalSquareIcon } from "lucide-react";
+import { useSearch, type SearchResult } from "@/lib/search-engine";
+
+export interface SearchSelection {
+  sectionId: string;
+  configKey?: string;
+}
 
 interface SearchCommandProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSelect: (item: SearchItem) => void;
+  onSelect: (selection: SearchSelection) => void;
 }
 
-const keywordMap = new Map(SECTIONS.map((s) => [s.id, s.keywords ?? []]));
-
 export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandProps) {
+  const [query, setQuery] = useState("");
+  const search = useSearch();
   const listRef = useRef<HTMLDivElement>(null);
 
+  const results = query.trim() ? search(query) : [];
+  const staticResults  = results.filter((r) => r.tier === "static");
+  const dynamicResults = results.filter((r) => r.tier === "dynamic");
+
   const handleSelect = useCallback(
-    (item: SearchItem) => {
-      onSelect(item);
+    (item: SearchResult) => {
+      onSelect({ sectionId: item.sectionId, configKey: item.configKey || undefined });
       onOpenChange(false);
+      setQuery("");
     },
     [onSelect, onOpenChange],
   );
 
-  // cmdk's internal scrollIntoView uses { block: "nearest" }, which won't
-  // scroll the top result fully into view after you've scrolled down.
-  // rAF ensures our scroll wins after cmdk's own scroll in the same cycle.
-  const scrollToTop = useCallback(() => {
+  useEffect(() => {
+    if (open) {
+      setQuery("");
+      requestAnimationFrame(() => listRef.current?.scrollTo({ top: 0 }));
+    }
+  }, [open]);
+
+  const handleValueChange = useCallback((val: string) => {
+    setQuery(val);
     requestAnimationFrame(() => listRef.current?.scrollTo({ top: 0 }));
   }, []);
-
-  // cmdk keeps the DOM mounted when toggling open/closed, so scroll
-  // position persists — reset it on open.
-  useEffect(() => {
-    if (open) scrollToTop();
-  }, [open, scrollToTop]);
 
   return (
     <Command.Dialog
       open={open}
-      onOpenChange={onOpenChange}
+      onOpenChange={(o) => { onOpenChange(o); if (!o) setQuery(""); }}
       label="Search settings"
+      shouldFilter={false}
       overlayClassName="fixed inset-0 bg-black/60 backdrop-blur-sm"
       contentClassName="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]"
     >
@@ -48,71 +57,112 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
         <div className="flex items-center gap-2 border-b border-border/30 px-4">
           <SearchIcon className="size-4 shrink-0 text-muted-foreground/60" />
           <Command.Input
-            placeholder="Search settings…"
+            value={query}
+            onValueChange={handleValueChange}
+            placeholder="Search settings, commands, env vars…"
             className="h-11 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/40"
             autoFocus
-            onValueChange={scrollToTop}
           />
+          {query && (
+            <button
+              onClick={() => setQuery("")}
+              className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+            >
+              Clear
+            </button>
+          )}
         </div>
 
-        <Command.List ref={listRef} className="max-h-80 overflow-y-auto p-2">
-          <Command.Empty className="py-8 text-center text-sm text-muted-foreground/60">
-            No results found.
-          </Command.Empty>
+        <Command.List ref={listRef} className="max-h-96 overflow-y-auto p-2">
+          {query.trim() === "" && (
+            <div className="py-8 text-center text-sm text-muted-foreground/50">
+              Type to search settings, commands, env vars…
+            </div>
+          )}
 
-          {SEARCH_INDEX.map((item) => {
-            const keywords = keywordMap.get(item.sectionId) ?? [];
-            const searchValue = [
-              item.label,
-              item.description,
-              item.configKey,
-              item.sectionLabel,
-              ...keywords,
-            ]
-              .filter(Boolean)
-              .join(" ");
+          {query.trim() !== "" && results.length === 0 && (
+            <Command.Empty className="py-8 text-center text-sm text-muted-foreground/60">
+              No results for &ldquo;{query}&rdquo;
+            </Command.Empty>
+          )}
 
-            return (
-              <Command.Item
-                key={
-                  item.type === "field"
-                    ? `${item.sectionId}-${item.configKey}`
-                    : `section-${item.sectionId}`
-                }
-                value={searchValue}
-                onSelect={() => handleSelect(item)}
-                className="group flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground aria-selected:bg-accent aria-selected:text-accent-foreground transition-colors duration-100"
-              >
-                <div className="flex min-w-0 flex-1 flex-col">
-                  <span className="truncate font-medium text-foreground">{item.label}</span>
-                  {item.description && (
-                    <span className="truncate text-[11px] text-muted-foreground/60">
-                      {item.description}
-                    </span>
-                  )}
-                </div>
-                <span className="shrink-0 rounded-md border border-border/30 bg-muted/40 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/50">
-                  {item.sectionLabel}
+          {staticResults.length > 0 && (
+            <Command.Group
+              heading={
+                <span className="flex items-center gap-1.5 px-1 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">
+                  <SettingsIcon className="size-3" /> Settings
                 </span>
-                {item.type === "section" && (
-                  <kbd className="hidden shrink-0 items-center gap-0.5 rounded-md border border-border/20 bg-muted/30 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground/40 group-aria-selected:flex group-data-[selected=true]:flex">
-                    ↵
-                  </kbd>
-                )}
-              </Command.Item>
-            );
-          })}
+              }
+            >
+              {staticResults.map((item) => (
+                <ResultItem key={item.id} item={item} onSelect={handleSelect} />
+              ))}
+            </Command.Group>
+          )}
+
+          {dynamicResults.length > 0 && (
+            <Command.Group
+              heading={
+                <span className="flex items-center gap-1.5 px-1 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">
+                  <TerminalSquareIcon className="size-3" /> Your config
+                </span>
+              }
+            >
+              {dynamicResults.map((item) => (
+                <ResultItem key={item.id} item={item} onSelect={handleSelect} />
+              ))}
+            </Command.Group>
+          )}
         </Command.List>
+
+        <div className="border-t border-border/20 px-4 py-2 flex gap-4 text-[10px] text-muted-foreground/40">
+          <span><kbd className="font-mono">↑↓</kbd> navigate</span>
+          <span><kbd className="font-mono">↵</kbd> select</span>
+          <span><kbd className="font-mono">Esc</kbd> close</span>
+        </div>
       </div>
     </Command.Dialog>
+  );
+}
+
+function ResultItem({
+  item,
+  onSelect,
+}: {
+  item: SearchResult;
+  onSelect: (item: SearchResult) => void;
+}) {
+  return (
+    <Command.Item
+      key={item.id}
+      value={item.id}
+      onSelect={() => onSelect(item)}
+      className="group flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground aria-selected:bg-accent aria-selected:text-accent-foreground transition-colors duration-100"
+    >
+      <div className="flex min-w-0 flex-1 flex-col">
+        <span className="truncate font-medium text-foreground">{item.label}</span>
+        {item.description && (
+          <span className="truncate text-[11px] text-muted-foreground/60">
+            {item.description}
+          </span>
+        )}
+      </div>
+
+      <span className="shrink-0 rounded-md border border-border/30 bg-muted/40 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/50">
+        {item.sectionLabel}
+      </span>
+
+      <kbd className="hidden shrink-0 items-center gap-0.5 rounded-md border border-border/20 bg-muted/30 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground/40 group-aria-selected:flex group-data-[selected=true]:flex">
+        ↵
+      </kbd>
+    </Command.Item>
   );
 }
 
 export function useSearchShortcut(onOpen: () => void) {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      const isMod = e.metaKey || e.ctrlKey;
-      if (isMod && e.key === "k") {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         onOpen();
       }

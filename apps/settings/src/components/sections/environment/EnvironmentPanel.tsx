@@ -2,6 +2,8 @@ import { useState, useRef, KeyboardEvent, ClipboardEvent } from "react";
 import { useConfigStore } from "@/lib/config-store";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus, Sparkles } from "lucide-react";
+import type { PanelProps } from "@/lib/section-types";
+import { useFocusField } from "@/lib/use-focus-field";
 
 // --- Utility Functions ---
 function parseEntry(raw: string): [string, string] {
@@ -96,7 +98,8 @@ function EnvRow({
 }
 
 // --- Main Panel Component ---
-export function EnvironmentPanel() {
+export function EnvironmentPanel({ focusKey }: PanelProps) {
+  const fieldRef = useFocusField(focusKey);
   const envVars = useConfigStore((state) => state.data["env"]) ?? [];
   const addEntry = useConfigStore((state) => state.addEntry);
   const updateEntry = useConfigStore((state) => state.updateEntry);
@@ -200,7 +203,7 @@ export function EnvironmentPanel() {
       </div>
 
       {/* --- EXISTING VARIABLES LIST (Data Grid) --- */}
-      <div className="flex flex-col gap-2">
+      <div ref={fieldRef("env")} className="flex flex-col gap-2">
         <div className="flex items-center justify-between px-2 mb-2">
           <h3 className="text-sm font-medium text-foreground">Session Variables</h3>
           <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded-full">

@@ -3,6 +3,8 @@ import { useConfigStore } from "@/lib/config-store";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Trash2, Plus, TerminalSquare } from "lucide-react";
+import type { PanelProps } from "@/lib/section-types";
+import { useFocusField } from "@/lib/use-focus-field";
 
 function CommandSection({
   title,
@@ -108,7 +110,9 @@ function CommandSection({
   );
 }
 
-export function AutostartPanel() {
+export function AutostartPanel({ focusKey }: PanelProps) {
+  const fieldRef = useFocusField(focusKey);
+
   return (
     <div className="mx-auto w-full max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Sharper, more direct page header */}
@@ -121,19 +125,23 @@ export function AutostartPanel() {
       </div>
 
       <div className="flex flex-col gap-10">
+        <div ref={fieldRef("exec-once")}>
         <CommandSection
           title="exec-once"
           description="Commands that run only once when MangoWM launches. (e.g., status bars, authentication agents)"
           configKey="exec-once"
           placeholder="e.g., waybar &"
         />
+        </div>
 
+        <div ref={fieldRef("exec")}>
         <CommandSection
           title="exec"
           description="Commands that execute every time the configuration is reloaded. (e.g., background setters)"
           configKey="exec"
           placeholder="e.g., swaybg -i ~/wallpaper.png"
         />
+        </div>
       </div>
     </div>
   );

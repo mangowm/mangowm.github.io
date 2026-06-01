@@ -3,6 +3,8 @@ import { cfgBool, cfgInt, cfgFloat } from "@/lib/config-helpers";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
+import type { PanelProps } from "@/lib/section-types";
+import { useFocusField } from "@/lib/use-focus-field";
 
 function AccentHover() {
   return (
@@ -115,7 +117,8 @@ function SectionCard({ title, children }: { title: string; children: React.React
   );
 }
 
-export function TilingPanel() {
+export function TilingPanel({ focusKey }: PanelProps) {
+  const fieldRef = useFocusField(focusKey);
   const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
@@ -139,17 +142,20 @@ export function TilingPanel() {
 
       <div className="mb-5">
         <SectionCard title="Placement">
+          <div ref={fieldRef("new_is_master")}>
           <ToggleRow
             label="New Windows as Master"
             description="When enabled, new windows open in the master area. Otherwise they join the stack."
             value={newIsMaster}
             onChange={tb("new_is_master")}
           />
+          </div>
         </SectionCard>
       </div>
 
       <div className="mb-5">
         <SectionCard title="Master Area">
+          <div ref={fieldRef("default_mfact")}>
           <SliderRow
             label="Master Area Factor"
             description="Fraction of the screen width given to the master area."
@@ -159,6 +165,8 @@ export function TilingPanel() {
             step={0.01}
             onChange={(v) => setValue("default_mfact", v.toFixed(2))}
           />
+          </div>
+          <div ref={fieldRef("default_nmaster")}>
           <SliderRow
             label="Number of Masters"
             description="How many windows are kept in the master area."
@@ -168,23 +176,28 @@ export function TilingPanel() {
             step={1}
             onChange={(v) => setValue("default_nmaster", String(Math.round(v)))}
           />
+          </div>
         </SectionCard>
       </div>
 
       <div className="mb-5">
         <SectionCard title="Centering">
+          <div ref={fieldRef("center_master_overspread")}>
           <ToggleRow
             label="Center Master Overspread"
             description="Center the master window when it overspreads the available space."
             value={centerOverspread}
             onChange={tb("center_master_overspread")}
           />
+          </div>
+          <div ref={fieldRef("center_when_single_stack")}>
           <ToggleRow
             label="Center Single Stack"
             description="Center the single window in the stack area when there is only one."
             value={centerSingleStack}
             onChange={tb("center_when_single_stack")}
           />
+          </div>
         </SectionCard>
       </div>
     </div>
