@@ -64,11 +64,6 @@ export const windowEffectsMeta: SectionMeta = {
       aliases: ["rounded", "corners", "rounding"],
     },
     {
-      configKey: "border_radius_location_default",
-      label: "Affected Corners",
-      description: "Which corners receive the radius",
-    },
-    {
       configKey: "focused_opacity",
       label: "Focused Opacity",
       description: "Opacity of the currently focused window",

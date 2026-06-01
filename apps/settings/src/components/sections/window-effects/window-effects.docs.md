@@ -17,7 +17,6 @@ Controls the visual polish of windows: blur, shadows, and rounded corners.
 ### Border Radius
 
 - **`border_radius`** – Radius (in px) applied to window corners. Set to `0` for sharp corners.
-- **`border_radius_location_default`** – Bitmask selecting which corners are rounded. Defaults to `All Corners`.
 
 ### Shadows
 

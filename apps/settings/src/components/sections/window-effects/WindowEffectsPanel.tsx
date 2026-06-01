@@ -1,30 +1,10 @@
 import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgInt, cfgFloat, cfgStr } from "@/lib/config-helpers";
+import { cfgBool, cfgInt, cfgFloat } from "@/lib/config-helpers";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
-
-const CORNER_LOCATIONS = [
-  { value: "15", label: "All Corners" },
-  { value: "3", label: "Top Only" },
-  { value: "12", label: "Bottom Only" },
-  { value: "5", label: "Left Only" },
-  { value: "10", label: "Right Only" },
-  { value: "1", label: "Top Left" },
-  { value: "2", label: "Top Right" },
-  { value: "4", label: "Bottom Right" },
-  { value: "8", label: "Bottom Left" },
-  { value: "0", label: "None" },
-] as const;
 
 function AccentHover() {
   return (
@@ -134,41 +114,6 @@ function SliderRow({
   );
 }
 
-function SelectRow({
-  label,
-  description,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  description: string;
-  value: string;
-  options: readonly { value: string; label: string }[];
-  onChange: (v: string) => void;
-}) {
-  const active = options.find((o) => o.value === value);
-  return (
-    <Row>
-      <FieldLabel label={label} description={description} />
-      <div className="shrink-0">
-        <Select value={value} onValueChange={(v) => v !== null && onChange(v)}>
-          <SelectTrigger className="w-44" aria-label={label}>
-            <SelectValue>{active?.label ?? value}</SelectValue>
-          </SelectTrigger>
-          <SelectContent side="bottom" align="start">
-            {options.map((opt) => (
-              <SelectItem key={opt.value} value={opt.value}>
-                <span>{opt.label}</span>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </Row>
-  );
-}
-
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-xl border border-border/40 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md">
@@ -197,7 +142,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
   const blurSaturation = cfgFloat(data, "blur_params_saturation", 1.2, 0, 1);
 
   const radius = cfgInt(data, "border_radius", 0, 0, 64);
-  const radiusLoc = cfgStr(data, "border_radius_location_default", "15");
 
   const shadowsOn = cfgBool(data, "shadows");
   const shadowsFloatingOn = cfgBool(data, "shadow_only_floating", true);
@@ -337,15 +281,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               min={0}
               max={64}
               onChange={(v) => setValue("border_radius", String(v))}
-            />
-          </div>
-          <div ref={fieldRef("border_radius_location_default")}>
-            <SelectRow
-              label="Affected Corners"
-              description="Which corners receive the radius."
-              value={radiusLoc}
-              options={CORNER_LOCATIONS}
-              onChange={(v) => setValue("border_radius_location_default", v)}
             />
           </div>
         </SectionCard>
