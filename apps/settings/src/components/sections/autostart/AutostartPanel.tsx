@@ -35,15 +35,12 @@ function CommandSection({
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Clean, icon-less header */}
       <div className="flex flex-col px-1">
         <h3 className="text-base font-medium font-mono text-foreground">{title}</h3>
         <p className="mt-1 text-[13px] text-muted-foreground">{description}</p>
       </div>
 
-      {/* The List Group */}
       <div className="flex flex-col overflow-hidden rounded-xl border border-border/50 bg-card shadow-sm divide-y divide-border/50">
-        {/* Empty State */}
         {commands.length === 0 && (
           <div className="flex flex-col items-center justify-center py-10 text-sm text-muted-foreground bg-muted/5">
             <TerminalSquare className="mb-3 size-5 opacity-20" />
@@ -51,7 +48,6 @@ function CommandSection({
           </div>
         )}
 
-        {/* Existing Commands */}
         {commands.map((cmd, index) => (
           <div
             key={index}
@@ -77,7 +73,6 @@ function CommandSection({
           </div>
         ))}
 
-        {/* Add New Command Row */}
         <div className="flex items-center gap-3 bg-muted/30 px-4 py-2.5">
           <span className="mt-0.5 text-muted-foreground/30 font-mono text-sm select-none">$</span>
           <input
@@ -115,7 +110,6 @@ export function AutostartPanel({ focusKey }: PanelProps) {
 
   return (
     <div className="mx-auto w-full max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {/* Sharper, more direct page header */}
       <div className="mb-8 flex flex-col gap-2">
         <h2 className="text-3xl font-semibold tracking-tight">Autostart</h2>
         <p className="text-sm text-muted-foreground">
@@ -126,21 +120,21 @@ export function AutostartPanel({ focusKey }: PanelProps) {
 
       <div className="flex flex-col gap-10">
         <div ref={fieldRef("exec-once")}>
-        <CommandSection
-          title="exec-once"
-          description="Commands that run only once when MangoWM launches. (e.g., status bars, authentication agents)"
-          configKey="exec-once"
-          placeholder="e.g., waybar &"
-        />
+          <CommandSection
+            title="exec-once"
+            description="Commands that run only once when MangoWM launches. (e.g., status bars, authentication agents)"
+            configKey="exec-once"
+            placeholder="e.g., waybar &"
+          />
         </div>
 
         <div ref={fieldRef("exec")}>
-        <CommandSection
-          title="exec"
-          description="Commands that execute every time the configuration is reloaded. (e.g., background setters)"
-          configKey="exec"
-          placeholder="e.g., swaybg -i ~/wallpaper.png"
-        />
+          <CommandSection
+            title="exec"
+            description="Commands that execute every time the configuration is reloaded. (e.g., background setters)"
+            configKey="exec"
+            placeholder="e.g., swaybg -i ~/wallpaper.png"
+          />
         </div>
       </div>
     </div>

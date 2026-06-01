@@ -1,41 +1,12 @@
-// ---------------------------------------------------------------------------
-// config-store.ts
-// Single Zustand store for the entire mango config state.
-//
-// Key design decisions:
-//
-// 1. `data` is the merged view across all files — what the UI reads.
-// 2. `files` is the authoritative source — what gets written to disk.
-//    Mutations always go into `files`; `data` is always re-derived from them.
-//
-// 3. Multi-value keys are fully supported.
-//    bind=, exec-once=, env= etc. all have multiple entries in their
-//    string[] array. The index in that array is the stable handle for
-//    update and remove operations.
-//
-// 4. Two mutation modes exist for a reason:
-//    - `setValue(key, value)`   — scalar upsert. Sets exactly one value
-//      for a key. Use this for every key where only one value makes sense
-//      (blur_radius, borderpx, focused_opacity, …). Always reads the live
-//      store state so it is safe to call multiple times in one event.
-//    - `addEntry / updateEntry / removeEntry` — multi-value list ops.
-//      Use these for keys like bind=, exec-once=, env= where every line
-//      is a distinct item.
-//
-// 5. undo/redo via zundo — partialize tracks only `files`; `data`/`dirty`
-//    re-synced via exported `undo()` / `redo()` wrappers.
-// ---------------------------------------------------------------------------
-
 import { create } from "zustand";
 import { temporal } from "zundo";
 import { readAllConfigFiles, writeAllConfigFiles, reloadMango } from "./config-file";
 import type { ConfigData, SourceFile } from "./config-types";
 
-// ---------------------------------------------------------------------------
-// Internal helpers (not exported — store callers never need them)
-// ---------------------------------------------------------------------------
+// `data` is the merged view across all files (UI reads this).
+// `files` is the authoritative source (written to disk).
+// Mutations always go into `files`; `data` is re-derived.
 
-/** Merge all SourceFile data maps into a single flat ConfigData. */
 function mergeFileData(files: SourceFile[]): ConfigData {
   const merged: ConfigData = {};
   for (const file of files) {
@@ -47,20 +18,11 @@ function mergeFileData(files: SourceFile[]): ConfigData {
   return merged;
 }
 
-/**
- * Returns the index of the first SourceFile that owns the given key.
- * Falls back to 0 (root file) for keys that don't exist yet.
- */
 function fileIndexForKey(files: SourceFile[], key: string): number {
   const idx = files.findIndex((f) => key in f.data);
   return idx === -1 ? 0 : idx;
 }
 
-/**
- * Produce a new files array with one file's data replaced.
- * All other files are shallow-cloned; only the target file gets a new
- * data object so Zustand sees the change.
- */
 function patchFile(
   files: SourceFile[],
   fileIdx: number,
@@ -69,7 +31,6 @@ function patchFile(
   return files.map((f, i) => (i === fileIdx ? { ...f, data: patchData(f.data) } : f));
 }
 
-/** Re-sync `data` and `dirty` after the temporal store moves to a new snapshot. */
 function syncDerivedState() {
   const { files } = useConfigStore.getState();
   const { pastStates } = useConfigStore.temporal.getState();
@@ -79,60 +40,29 @@ function syncDerivedState() {
   });
 }
 
-// ---------------------------------------------------------------------------
-// Store interface
-// ---------------------------------------------------------------------------
-
 interface ConfigStore {
-  // ---- state ---------------------------------------------------------------
-  data: ConfigData; // merged view across all files — read by UI
-  files: SourceFile[]; // per-file state — written to disk
+  data: ConfigData; // merged — read by UI
+  files: SourceFile[]; // per-file — written to disk
   loading: boolean;
   applying: boolean;
   dirty: boolean;
   error: string | null;
 
-  // ---- lifecycle -----------------------------------------------------------
   load: () => Promise<void>;
   apply: () => Promise<void>;
 
-  // ---- scalar mutations (single-value keys) --------------------------------
-  /**
-   * Set exactly one value for a key.
-   * If the key already exists the first occurrence is updated in-place.
-   * If the key is absent a new entry is appended to the root file.
-   * Safe to call multiple times per event — always reads live store state.
-   */
+  // Scalar upsert: sets exactly one value for a key.
+  // Use for singletons (blur_radius, borderpx, …).
   setValue: (key: string, value: string) => void;
-
-  /**
-   * Set multiple scalar keys in one atomic store update.
-   * Equivalent to calling setValue() for each pair but produces a single
-   * undo history entry and a single re-render.
-   */
+  // Atomic batch update for multiple scalar keys (one history entry).
   setValues: (entries: Record<string, string>) => void;
 
-  // ---- multi-value mutations (list keys) -----------------------------------
-  /**
-   * Append a new value for `key`.
-   * Always goes to the root file so sourced files are not polluted with
-   * entries that the user added interactively.
-   */
+  // Multi-value list ops: use for keys where every line is a distinct entry
+  // (bind=, exec-once=, env=, …).
   addEntry: (key: string, value: string) => void;
-  /**
-   * Replace the value at position `index` within `key`'s value list.
-   * The index is into the merged `data` array.
-   */
   updateEntry: (key: string, index: number, value: string) => void;
-  /**
-   * Remove the entry at position `index` from `key`'s value list.
-   */
   removeEntry: (key: string, index: number) => void;
 }
-
-// ---------------------------------------------------------------------------
-// Store implementation
-// ---------------------------------------------------------------------------
 
 export const useConfigStore = create<ConfigStore>()(
   temporal(
@@ -144,7 +74,6 @@ export const useConfigStore = create<ConfigStore>()(
       dirty: false,
       error: null,
 
-      // ---- load ------------------------------------------------------------
       load: async () => {
         set({ loading: true, error: null });
         try {
@@ -156,7 +85,6 @@ export const useConfigStore = create<ConfigStore>()(
         }
       },
 
-      // ---- apply -----------------------------------------------------------
       apply: async () => {
         set({ applying: true, error: null });
         try {
@@ -169,7 +97,6 @@ export const useConfigStore = create<ConfigStore>()(
         }
       },
 
-      // ---- scalar: setValue ------------------------------------------------
       setValue: (key, value) =>
         set((state) => {
           const fileIdx = fileIndexForKey(state.files, key);
@@ -185,7 +112,6 @@ export const useConfigStore = create<ConfigStore>()(
           return { files, data: mergeFileData(files), dirty: true };
         }),
 
-      // ---- scalar: setValues -----------------------------------------------
       setValues: (entries) =>
         set((state) => {
           let files = state.files;
@@ -204,7 +130,6 @@ export const useConfigStore = create<ConfigStore>()(
           return { files, data: mergeFileData(files), dirty: true };
         }),
 
-      // ---- multi-value: addEntry -------------------------------------------
       addEntry: (key, value) =>
         set((state) => {
           const files = patchFile(state.files, 0, (prev) => ({
@@ -214,7 +139,6 @@ export const useConfigStore = create<ConfigStore>()(
           return { files, data: mergeFileData(files), dirty: true };
         }),
 
-      // ---- multi-value: updateEntry ----------------------------------------
       updateEntry: (key, index, value) =>
         set((state) => {
           const fileIdx = fileIndexForKey(state.files, key);
@@ -228,7 +152,6 @@ export const useConfigStore = create<ConfigStore>()(
           return { files, data: mergeFileData(files), dirty: true };
         }),
 
-      // ---- multi-value: removeEntry ----------------------------------------
       removeEntry: (key, index) =>
         set((state) => {
           const fileIdx = fileIndexForKey(state.files, key);
@@ -246,16 +169,9 @@ export const useConfigStore = create<ConfigStore>()(
         }),
     }),
 
-    // ---- zundo options -----------------------------------------------------
     {
-      // Only `files` in history — `data` re-derived after undo/redo via
-      // the exported wrappers. Transient flags excluded.
       partialize: (state) => ({ files: state.files }),
-
       limit: 100,
-
-      // Identity check — patchFile returns same ref when nothing changes,
-      // so no-op transitions don't create history entries.
       equality: (a, b) => {
         const fa = a.files;
         const fb = b.files;
@@ -270,10 +186,6 @@ export const useConfigStore = create<ConfigStore>()(
     },
   ),
 );
-
-// ---------------------------------------------------------------------------
-// Undo / redo — wrappers keep `syncDerivedState` in one place.
-// ---------------------------------------------------------------------------
 
 export function undo() {
   useConfigStore.temporal.getState().undo();

@@ -20,12 +20,14 @@ const SIDEBAR_STYLES = {
 
 export function SettingsPage() {
   const [activeSection, setActiveSection] = useState(DEFAULT_SECTION);
-  const [focusKey, setFocusKey]     = useState<string | undefined>(undefined);
-  const [docsOpen, setDocsOpen]     = useState(false);
+  const [focusKey, setFocusKey] = useState<string | undefined>(undefined);
+  const [docsOpen, setDocsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const load = useConfigStore((s) => s.load);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   useSearchShortcut(useCallback(() => setSearchOpen(true), []));
 
@@ -44,11 +46,7 @@ export function SettingsPage() {
 
   return (
     <SidebarProvider style={SIDEBAR_STYLES}>
-      <SearchCommand
-        open={searchOpen}
-        onOpenChange={setSearchOpen}
-        onSelect={handleSearchSelect}
-      />
+      <SearchCommand open={searchOpen} onOpenChange={setSearchOpen} onSelect={handleSearchSelect} />
       <SettingsSidebar
         variant="inset"
         activeSection={activeSection}
@@ -60,19 +58,30 @@ export function SettingsPage() {
           <div className="flex flex-row gap-5 min-h-full">
             <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 overflow-y-auto p-6 relative">
               <div className="absolute top-3 right-3 z-10 flex items-center rounded-lg bg-card ring-1 ring-foreground/10 p-0.5">
-                <Button variant={docsOpen ? "ghost" : "default"} size="icon-sm"
-                  onClick={() => setDocsOpen(false)} title="Settings" className="rounded-md">
+                <Button
+                  variant={docsOpen ? "ghost" : "default"}
+                  size="icon-sm"
+                  onClick={() => setDocsOpen(false)}
+                  title="Settings"
+                  className="rounded-md"
+                >
                   <SettingsIcon className="size-4" />
                 </Button>
-                <Button variant={docsOpen ? "default" : "ghost"} size="icon-sm"
-                  onClick={() => setDocsOpen(true)} title="Docs" className="rounded-md">
+                <Button
+                  variant={docsOpen ? "default" : "ghost"}
+                  size="icon-sm"
+                  onClick={() => setDocsOpen(true)}
+                  title="Docs"
+                  className="rounded-md"
+                >
                   <BookOpenTextIcon className="size-4" />
                 </Button>
               </div>
-              {docsOpen
-                ? <SectionDocsPage markdown={getDocs(activeSection)} />
-                : Panel && <Panel focusKey={focusKey} />
-              }
+              {docsOpen ? (
+                <SectionDocsPage markdown={getDocs(activeSection)} />
+              ) : (
+                Panel && <Panel focusKey={focusKey} />
+              )}
             </div>
           </div>
         </div>

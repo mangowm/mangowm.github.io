@@ -20,7 +20,7 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
   const listRef = useRef<HTMLDivElement>(null);
 
   const results = query.trim() ? search(query) : [];
-  const staticResults  = results.filter((r) => r.tier === "static");
+  const staticResults = results.filter((r) => r.tier === "static");
   const dynamicResults = results.filter((r) => r.tier === "dynamic");
 
   const handleSelect = useCallback(
@@ -47,7 +47,10 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
   return (
     <Command.Dialog
       open={open}
-      onOpenChange={(o) => { onOpenChange(o); if (!o) setQuery(""); }}
+      onOpenChange={(o) => {
+        onOpenChange(o);
+        if (!o) setQuery("");
+      }}
       label="Search settings"
       shouldFilter={false}
       overlayClassName="fixed inset-0 bg-black/60 backdrop-blur-sm"
@@ -116,9 +119,15 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
         </Command.List>
 
         <div className="border-t border-border/20 px-4 py-2 flex gap-4 text-[10px] text-muted-foreground/40">
-          <span><kbd className="font-mono">↑↓</kbd> navigate</span>
-          <span><kbd className="font-mono">↵</kbd> select</span>
-          <span><kbd className="font-mono">Esc</kbd> close</span>
+          <span>
+            <kbd className="font-mono">↑↓</kbd> navigate
+          </span>
+          <span>
+            <kbd className="font-mono">↵</kbd> select
+          </span>
+          <span>
+            <kbd className="font-mono">Esc</kbd> close
+          </span>
         </div>
       </div>
     </Command.Dialog>
@@ -142,9 +151,7 @@ function ResultItem({
       <div className="flex min-w-0 flex-1 flex-col">
         <span className="truncate font-medium text-foreground">{item.label}</span>
         {item.description && (
-          <span className="truncate text-[11px] text-muted-foreground/60">
-            {item.description}
-          </span>
+          <span className="truncate text-[11px] text-muted-foreground/60">{item.description}</span>
         )}
       </div>
 

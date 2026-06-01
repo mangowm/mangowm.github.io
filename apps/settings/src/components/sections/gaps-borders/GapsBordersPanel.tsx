@@ -150,56 +150,56 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Window Gaps">
           <div ref={fieldRef("smartgaps")}>
-          <ToggleRow
-            label="Smart Gaps"
-            description="Only show gaps when there are multiple windows on the same tag."
-            value={smartgapsOn}
-            onChange={tb("smartgaps")}
-          />
+            <ToggleRow
+              label="Smart Gaps"
+              description="Only show gaps when there are multiple windows on the same tag."
+              value={smartgapsOn}
+              onChange={tb("smartgaps")}
+            />
           </div>
           <div ref={fieldRef("gappih")}>
-          <SliderRow
-            label="Inner Gap Horizontal"
-            description="Horizontal gap between tiled windows."
-            value={gappih}
-            min={0}
-            max={1000}
-            unit="px"
-            onChange={(v) => setValue("gappih", String(v))}
-          />
+            <SliderRow
+              label="Inner Gap Horizontal"
+              description="Horizontal gap between tiled windows."
+              value={gappih}
+              min={0}
+              max={1000}
+              unit="px"
+              onChange={(v) => setValue("gappih", String(v))}
+            />
           </div>
           <div ref={fieldRef("gappiv")}>
-          <SliderRow
-            label="Inner Gap Vertical"
-            description="Vertical gap between tiled windows."
-            value={gappiv}
-            min={0}
-            max={1000}
-            unit="px"
-            onChange={(v) => setValue("gappiv", String(v))}
-          />
+            <SliderRow
+              label="Inner Gap Vertical"
+              description="Vertical gap between tiled windows."
+              value={gappiv}
+              min={0}
+              max={1000}
+              unit="px"
+              onChange={(v) => setValue("gappiv", String(v))}
+            />
           </div>
           <div ref={fieldRef("gappoh")}>
-          <SliderRow
-            label="Outer Gap Horizontal"
-            description="Horizontal gap between windows and screen edges."
-            value={gappoh}
-            min={0}
-            max={1000}
-            unit="px"
-            onChange={(v) => setValue("gappoh", String(v))}
-          />
+            <SliderRow
+              label="Outer Gap Horizontal"
+              description="Horizontal gap between windows and screen edges."
+              value={gappoh}
+              min={0}
+              max={1000}
+              unit="px"
+              onChange={(v) => setValue("gappoh", String(v))}
+            />
           </div>
           <div ref={fieldRef("gappov")}>
-          <SliderRow
-            label="Outer Gap Vertical"
-            description="Vertical gap between windows and screen edges."
-            value={gappov}
-            min={0}
-            max={1000}
-            unit="px"
-            onChange={(v) => setValue("gappov", String(v))}
-          />
+            <SliderRow
+              label="Outer Gap Vertical"
+              description="Vertical gap between windows and screen edges."
+              value={gappov}
+              min={0}
+              max={1000}
+              unit="px"
+              onChange={(v) => setValue("gappov", String(v))}
+            />
           </div>
         </SectionCard>
       </div>
@@ -207,31 +207,31 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Border">
           <div ref={fieldRef("borderpx")}>
-          <SliderRow
-            label="Border Width"
-            description="Thickness of window borders in pixels."
-            value={borderpx}
-            min={0}
-            max={200}
-            unit="px"
-            onChange={(v) => setValue("borderpx", String(v))}
-          />
+            <SliderRow
+              label="Border Width"
+              description="Thickness of window borders in pixels."
+              value={borderpx}
+              min={0}
+              max={200}
+              unit="px"
+              onChange={(v) => setValue("borderpx", String(v))}
+            />
           </div>
           <div ref={fieldRef("no_border_when_single")}>
-          <ToggleRow
-            label="Hide Border When Solo"
-            description="Remove window borders when only one window is visible on the tag."
-            value={noBorderSingle}
-            onChange={tb("no_border_when_single")}
-          />
+            <ToggleRow
+              label="Hide Border When Solo"
+              description="Remove window borders when only one window is visible on the tag."
+              value={noBorderSingle}
+              onChange={tb("no_border_when_single")}
+            />
           </div>
           <div ref={fieldRef("no_radius_when_single")}>
-          <ToggleRow
-            label="Hide Radius When Solo"
-            description="Remove corner radius when only one window is visible on the tag."
-            value={noRadiusSingle}
-            onChange={tb("no_radius_when_single")}
-          />
+            <ToggleRow
+              label="Hide Radius When Solo"
+              description="Remove corner radius when only one window is visible on the tag."
+              value={noRadiusSingle}
+              onChange={tb("no_radius_when_single")}
+            />
           </div>
         </SectionCard>
       </div>

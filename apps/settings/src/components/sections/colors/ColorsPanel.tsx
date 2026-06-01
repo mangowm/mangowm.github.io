@@ -392,14 +392,14 @@ export function ColorsPanel({ focusKey }: PanelProps) {
         <div className="divide-y divide-border/20">
           {COLORS_FIELDS.map((field, i) => (
             <div ref={fieldRef(field.key)} key={field.key}>
-            <ColorInput
-              label={field.label}
-              description={field.description}
-              value={theme[field.key]}
-              mode={mode}
-              flipPopover={i >= total - 3}
-              onChange={changeHandlers[field.key]!}
-            />
+              <ColorInput
+                label={field.label}
+                description={field.description}
+                value={theme[field.key]}
+                mode={mode}
+                flipPopover={i >= total - 3}
+                onChange={changeHandlers[field.key]!}
+              />
             </div>
           ))}
         </div>

@@ -5,38 +5,34 @@ import { SECTIONS } from "./sections";
 import type { ConfigData } from "./config-types";
 import type { DynamicIndexSource, DynamicSearchItem } from "./section-types";
 
-export interface SearchDocument {
-  /** Globally unique — static fields use "s:{sectionId}:{configKey}", dynamic use sourceId:N */
+interface SearchDocument {
   id: string;
-  /** Main match text — the human label */
   label: string;
-  /** Secondary match text */
   description: string;
-  /** Config key — used for deep-link navigation */
   configKey: string;
-  /** Section-level keywords forwarded to every document in that section */
   sectionKeywords: string;
-  /** Extra per-field aliases */
   aliases: string;
-  /** The section to navigate to */
   sectionId: string;
-  /** Badge text in the result row */
   sectionLabel: string;
-  /** "static" | "dynamic" — cosmetic only, for result group headers */
   tier: "static" | "dynamic";
-  /** For dynamic tier: the actual runtime value (e.g. the command string) */
   runtimeValue?: string;
 }
 
 const ms = new MiniSearch<SearchDocument>({
   fields: ["label", "description", "configKey", "sectionKeywords", "aliases", "runtimeValue"],
-  storeFields: ["id", "label", "description", "configKey", "sectionId", "sectionLabel", "tier", "runtimeValue"],
+  storeFields: [
+    "id",
+    "label",
+    "description",
+    "configKey",
+    "sectionId",
+    "sectionLabel",
+    "tier",
+    "runtimeValue",
+  ],
   searchOptions: {
-    // Fuzzy: up to 20% of term length as edit distance — catches typos like "blr" → "blur"
     fuzzy: 0.2,
-    // Prefix: "bord" matches "border_radius"
     prefix: true,
-    // Boost exact label matches heavily, penalise deep fields slightly less
     boost: { label: 3, configKey: 2, description: 1.5, aliases: 1.2 },
     combineWith: "OR",
   },
@@ -46,7 +42,6 @@ const staticDocs: SearchDocument[] = SECTIONS.flatMap((section) => {
   const sectionKeywords = section.keywords?.join(" ") ?? "";
   const docs: SearchDocument[] = [];
 
-  // Section-level entry (navigates to the section, no specific field)
   docs.push({
     id: `s:${section.id}:__section__`,
     label: section.label,
@@ -59,7 +54,6 @@ const staticDocs: SearchDocument[] = SECTIONS.flatMap((section) => {
     tier: "static",
   });
 
-  // One entry per field
   for (const field of section.fields ?? []) {
     docs.push({
       id: `s:${section.id}:${field.configKey}`,
@@ -80,7 +74,6 @@ const staticDocs: SearchDocument[] = SECTIONS.flatMap((section) => {
 ms.addAll(staticDocs);
 
 export const DYNAMIC_SOURCES: DynamicIndexSource[] = [
-  // exec-once commands
   {
     sourceId: "exec-once",
     watchKeys: ["exec-once"],
@@ -94,8 +87,6 @@ export const DYNAMIC_SOURCES: DynamicIndexSource[] = [
         configKey: "exec-once",
       })),
   },
-
-  // exec commands (run on every reload)
   {
     sourceId: "exec",
     watchKeys: ["exec"],
@@ -109,8 +100,6 @@ export const DYNAMIC_SOURCES: DynamicIndexSource[] = [
         configKey: "exec",
       })),
   },
-
-  // env vars — index both key and value so "wayland" finds MOZ_ENABLE_WAYLAND
   {
     sourceId: "env",
     watchKeys: ["env"],
@@ -157,7 +146,10 @@ function rebuildDynamicSource(source: DynamicIndexSource, data: ConfigData) {
   }));
 
   ms.addAll(docs);
-  dynamicIndexed.set(source.sourceId, docs.map((d) => d.id));
+  dynamicIndexed.set(
+    source.sourceId,
+    docs.map((d) => d.id),
+  );
 }
 
 export interface SearchResult {
@@ -177,9 +169,6 @@ export function useSearch(): (query: string) => SearchResult[] {
   const data = useConfigStore((s) => s.data);
   const lastData = useRef(data);
 
-  // Synchronize the MiniSearch dynamic index with the latest store data
-  // during render, so the index is always consistent before event handlers
-  // (like search keystrokes) run.
   if (data !== lastData.current) {
     lastData.current = data;
     for (const source of DYNAMIC_SOURCES) {

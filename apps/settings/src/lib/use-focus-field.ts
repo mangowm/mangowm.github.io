@@ -5,7 +5,7 @@ const HIGHLIGHT_CLASS = "ring-2 ring-ring/60 ring-offset-1 rounded-lg transition
 
 export function useFocusField(focusKey: string | undefined) {
   const registry = useRef<Map<string, HTMLElement>>(new Map());
-  const timerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!focusKey) return;
@@ -13,13 +13,10 @@ export function useFocusField(focusKey: string | undefined) {
     const el = registry.current.get(focusKey);
     if (!el) return;
 
-    // Scroll into view
     el.scrollIntoView({ behavior: "smooth", block: "center" });
-
-    // Apply highlight classes
     el.classList.add(...HIGHLIGHT_CLASS.split(" "));
 
-    // Remove after duration
+    // Auto-remove highlight after duration
     timerRef.current = setTimeout(() => {
       el.classList.remove(...HIGHLIGHT_CLASS.split(" "));
     }, HIGHLIGHT_DURATION_MS);

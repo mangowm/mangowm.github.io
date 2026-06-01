@@ -1,17 +1,10 @@
-// ---------------------------------------------------------------------------
-// config-parse.ts
-// Parses and serializes the mango flat key=value config format.
-//
-// Format rules:
-//   - Lines starting with # are comments.
-//   - Blank lines are preserved.
-//   - All other lines must match:  key = value  (whitespace around = is optional)
-//   - Any key may appear multiple times; each occurrence is a separate entry.
-//   - Lines without an = are treated as unparseable and preserved as comments.
-// ---------------------------------------------------------------------------
-
 import type { ConfigData, ConfigLine, ParsedConfig } from "./config-types";
 
+/**
+ * Parses the mango flat key=value config format.
+ * Lines starting with # are comments. Blank lines are preserved.
+ * Lines without = are preserved as comments to avoid data loss.
+ */
 export function parseConfig(text: string): ParsedConfig {
   const data: ConfigData = {};
   const lines: ConfigLine[] = [];
@@ -31,7 +24,6 @@ export function parseConfig(text: string): ParsedConfig {
 
     const eq = trimmed.indexOf("=");
     if (eq === -1) {
-      // Preserve unparseable lines verbatim as comments so nothing is lost.
       lines.push({ type: "comment", text: trimmed, raw });
       continue;
     }
@@ -49,20 +41,12 @@ export function parseConfig(text: string): ParsedConfig {
 }
 
 /**
- * Serializes a ParsedConfig back to text.
- *
- * Strategy:
- *   1. Walk the original line list in order.
- *   2. For every "entry" line, consume the next value for that key from
- *      a working buffer (FIFO per key). This preserves original line
- *      positions for values that existed before.
- *   3. Any values left in the buffer after the walk (newly added entries
- *      that have no existing line slot) are appended at the end.
- *   4. If an entry line's key no longer exists in data (i.e. all values
- *      were removed), that line is dropped.
+ * Serializes back to text, preserving original line order.
+ * Walks the original lines; for each entry line consumes the next value
+ * from a per-key FIFO buffer. Remaining values (new additions) are
+ * appended at the end. Dropped keys cause their lines to be removed.
  */
 export function serializeConfig({ data, lines }: ParsedConfig): string {
-  // Build a per-key FIFO queue from the current data.
   const buffer = new Map<string, string[]>();
   for (const [key, values] of Object.entries(data)) {
     buffer.set(key, [...values]);
@@ -77,16 +61,11 @@ export function serializeConfig({ data, lines }: ParsedConfig): string {
     }
 
     const queue = buffer.get(line.key);
-    if (!queue || queue.length === 0) {
-      // This key was fully removed — drop the line.
-      continue;
-    }
+    if (!queue || queue.length === 0) continue;
 
-    // Take the next value for this key and emit the canonical form.
     out.push(`${line.key} = ${queue.shift()}`);
   }
 
-  // Append values that were added and have no existing line slot.
   for (const [key, remaining] of buffer) {
     for (const value of remaining) {
       out.push(`${key} = ${value}`);

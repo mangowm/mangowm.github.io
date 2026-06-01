@@ -5,7 +5,6 @@ import { Trash2, Plus, Sparkles } from "lucide-react";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 
-// --- Utility Functions ---
 function parseEntry(raw: string): [string, string] {
   const idx = raw.indexOf(",");
   return idx === -1 ? [raw, ""] : [raw.slice(0, idx), raw.slice(idx + 1)];
@@ -15,15 +14,12 @@ function formatEntry(name: string, value: string): string {
   return `${name},${value}`;
 }
 
-/**
- * Enforces valid ENV key formatting: Uppercase, no spaces, only A-Z, 0-9, and _
- */
 function sanitizeKey(key: string): string {
   return key.toUpperCase().replace(/[^A-Z0-9_]/g, "");
 }
 
-// --- Individual Row Component (Crucial for Performance & UX) ---
-// By isolating the row, we prevent global re-renders on every keystroke.
+// Uses local state with commit-on-blur so typing doesn't re-render the
+// entire list on every keystroke — only this row re-renders.
 function EnvRow({
   raw,
   index,
@@ -39,11 +35,9 @@ function EnvRow({
   const [localKey, setLocalKey] = useState(initialKey);
   const [localValue, setLocalValue] = useState(initialValue);
 
-  // Sync with global store only on blur or explicit submit, not on keystroke
   const commitChanges = () => {
     const cleanKey = sanitizeKey(localKey);
     if (!cleanKey) {
-      // If user clears the key, revert to initial to prevent broken state
       setLocalKey(initialKey);
       setLocalValue(initialValue);
       return;
@@ -52,9 +46,7 @@ function EnvRow({
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.currentTarget.blur(); // Triggers the onBlur commit
-    }
+    if (e.key === "Enter") e.currentTarget.blur();
   };
 
   return (
@@ -85,11 +77,11 @@ function EnvRow({
         variant="ghost"
         size="icon"
         onMouseDown={(e) => {
-          e.preventDefault(); // Prevents blur from committing right as we delete
+          e.preventDefault();
           removeEntry("env", index);
         }}
         className="size-8 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 text-muted-foreground hover:bg-destructive/10 hover:text-destructive shrink-0"
-        tabIndex={-1} // Keeps tabbing flow clean (key -> value -> next key)
+        tabIndex={-1}
       >
         <Trash2 className="size-3.5" />
       </Button>
@@ -97,7 +89,6 @@ function EnvRow({
   );
 }
 
-// --- Main Panel Component ---
 export function EnvironmentPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const envVars = useConfigStore((state) => state.data["env"]) ?? [];
@@ -122,16 +113,13 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
     }
   };
 
-  // Smart Paste: Intercept pasting like "MOZ_ENABLE_WAYLAND=1"
   const handleSmartPaste = (e: ClipboardEvent<HTMLInputElement>) => {
     const pastedText = e.clipboardData.getData("text");
     if (pastedText.includes("=")) {
       e.preventDefault();
       const [pastedKey, ...pastedValueArr] = pastedText.split("=");
       setNewKey(sanitizeKey(pastedKey));
-      setNewValue(pastedValueArr.join("=")); // Rejoin in case value contains '='
-
-      // Focus value or add button seamlessly
+      setNewValue(pastedValueArr.join("="));
       setTimeout(() => valueInputRef.current?.focus(), 0);
     }
   };
@@ -156,7 +144,6 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
         </p>
       </div>
 
-      {/* --- ADD NEW VARIABLE (Form) --- */}
       <div className="mb-8 rounded-xl border border-border/50 bg-card p-1.5 shadow-sm">
         <form
           onSubmit={handleAdd}
@@ -202,7 +189,6 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
         </form>
       </div>
 
-      {/* --- EXISTING VARIABLES LIST (Data Grid) --- */}
       <div ref={fieldRef("env")} className="flex flex-col gap-2">
         <div className="flex items-center justify-between px-2 mb-2">
           <h3 className="text-sm font-medium text-foreground">Session Variables</h3>
@@ -231,7 +217,7 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
           <div className="flex flex-col rounded-xl border border-border/50 bg-card p-1 shadow-sm">
             {envVars.map((raw, index) => (
               <EnvRow
-                key={`${index}-${raw.split(",")[0]}`} // Unique key forces reset if severely out of sync
+                key={`${index}-${raw.split(",")[0]}`}
                 raw={raw}
                 index={index}
                 updateEntry={updateEntry}
