@@ -1,9 +1,6 @@
-import { useState, useRef } from "react";
+import { useCallback } from "react";
 import { useConfigStore } from "@/lib/config-store";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "@/lib/config-helpers";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { X } from "lucide-react";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -12,81 +9,24 @@ import {
   SectionCard,
   ToggleRow,
   SliderRow,
+  MultiTagInput,
 } from "@/components/sections/section-ui";
 
-function PresetInput({
-  values,
-  onChange,
-}: {
-  values: number[];
-  onChange: (values: number[]) => void;
-}) {
-  const [text, setText] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const addValue = () => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-    const n = parseFloat(trimmed);
-    if (!isNaN(n) && n >= 0.1 && n <= 1.0) {
-      onChange([...values, Math.round(n * 100) / 100]);
-      setText("");
-    }
-    inputRef.current?.focus();
-  };
-
-  const removeValue = (index: number) => {
-    onChange(values.filter((_, i) => i !== index));
-  };
-
-  return (
-    <div className="px-4 py-3">
-      <div className="mb-2 flex flex-wrap gap-1.5">
-        {values.length === 0 && (
-          <span className="text-[11px] text-muted-foreground/40 italic">No presets defined</span>
-        )}
-        {values.map((v, i) => (
-          <span
-            key={i}
-            className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-0.5 font-mono text-[12px] text-foreground/80"
-          >
-            {v.toFixed(2)}
-            <button
-              type="button"
-              onClick={() => removeValue(i)}
-              className="inline-flex size-3.5 items-center justify-center rounded-sm text-muted-foreground/50 transition-colors hover:text-destructive hover:bg-destructive/10"
-            >
-              <X className="size-3" />
-            </button>
-          </span>
-        ))}
-      </div>
-      <div className="flex items-center gap-2">
-        <Input
-          ref={inputRef}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              addValue();
-            }
-          }}
-          placeholder="0.50"
-          className="h-7 w-24 font-mono text-[12px]"
-        />
-        <Button
-          type="button"
-          size="xs"
-          variant="secondary"
-          onClick={addValue}
-          disabled={!text.trim() || isNaN(parseFloat(text.trim()))}
-        >
-          Add
-        </Button>
-      </div>
-    </div>
-  );
+/**
+ * Keep only valid proportion values (0.1–1.0, 2-decimal precision).
+ * Silently drops anything that doesn't parse as a number in range.
+ */
+function sanitizePresetValue(raw: string): string {
+  const cleaned = raw
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => {
+      const n = parseFloat(s);
+      return !isNaN(n) && n >= 0.1 && n <= 1.0;
+    })
+    .map((s) => Math.round(parseFloat(s) * 100) / 100)
+    .join(",");
+  return cleaned;
 }
 
 export function ScrollerPanel({ focusKey }: PanelProps) {
@@ -106,18 +46,14 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
   const allowSpeed = cfgFloat(data, "edge_scroller_focus_allow_speed", 0.0, 0.0, 1000.0);
   const structs = cfgInt(data, "scroller_structs", 20, 0, 1000);
 
-  // Parse proportion preset
-  const presetRaw = cfgStr(data, "scroller_proportion_preset", "");
-  const presetValues = presetRaw
-    ? presetRaw.split(",").map((s) => {
-        const n = parseFloat(s.trim());
-        return isNaN(n) ? 0 : n;
-      })
-    : [];
+  const presetValue = cfgStr(data, "scroller_proportion_preset", "");
 
-  const handlePresetChange = (values: number[]) => {
-    setValue("scroller_proportion_preset", values.join(","));
-  };
+  const handlePresetChange = useCallback(
+    (raw: string) => {
+      setValue("scroller_proportion_preset", sanitizePresetValue(raw));
+    },
+    [setValue],
+  );
 
   return (
     <PanelShell>
@@ -157,6 +93,15 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
               description="Ignore the proportion setting when only one window is visible."
               value={ignoreSingle}
               onChange={tb("scroller_ignore_proportion_single")}
+            />
+          </div>
+          <div ref={fieldRef("scroller_proportion_preset")}>
+            <MultiTagInput
+              label="Proportion Presets"
+              description="Comma-separated preset proportion values (0.1–1.0) for quick switching"
+              value={presetValue}
+              tagPlaceholder="0.50"
+              onChange={handlePresetChange}
             />
           </div>
         </SectionCard>
@@ -231,11 +176,6 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
         </SectionCard>
       </div>
 
-      <div className="mb-5">
-        <SectionCard title="Proportion Presets">
-          <PresetInput values={presetValues} onChange={handlePresetChange} />
-        </SectionCard>
-      </div>
     </PanelShell>
   );
 }

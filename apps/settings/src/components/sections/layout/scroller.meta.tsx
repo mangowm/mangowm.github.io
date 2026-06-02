@@ -55,5 +55,11 @@ export const scrollerMeta: SectionMeta = {
       label: "Scroller Structs",
       description: "Number of structural positions in the scroller",
     },
+    {
+      configKey: "scroller_proportion_preset",
+      label: "Proportion Presets",
+      description: "Comma-separated preset proportion values (0.1–1.0) for quick switching",
+      aliases: ["preset", "proportion list", "quick proportion"],
+    },
   ],
 };
