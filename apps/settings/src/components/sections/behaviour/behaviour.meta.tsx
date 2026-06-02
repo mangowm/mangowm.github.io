@@ -1,20 +1,18 @@
-import { CrosshairIcon } from "lucide-react";
+import { SlidersHorizontalIcon } from "lucide-react";
 import type { SectionMeta } from "@/lib/section-types";
 
-export const windowBehaviourMeta: SectionMeta = {
-  id: "window-behaviour",
-  label: "Window Behaviour",
-  icon: <CrosshairIcon />,
+export const behaviourMeta: SectionMeta = {
+  id: "behaviour",
+  label: "Behaviour",
+  icon: <SlidersHorizontalIcon />,
   keywords: [
     "focus",
     "behaviour",
     "behavior",
-    "cursor",
     "warp",
     "sloppy",
     "drag",
     "corner",
-    "workspace",
     "scratchpad",
     "tag",
     "monitor",
@@ -23,6 +21,8 @@ export const windowBehaviourMeta: SectionMeta = {
     "inhibit",
     "lock",
     "idle",
-    "miscellaneous",
+    "performance",
+    "xwayland",
+    "syncobj",
   ],
 };

@@ -10,52 +10,33 @@ import {
   SelectRow,
 } from "@/components/sections/section-ui";
 
-const TEARING_OPTIONS = [
-  { value: "0", label: "Disabled" },
-  { value: "1", label: "Always" },
-  { value: "2", label: "Fullscreen Only" },
-];
-
 const INHIBIT_OPTIONS = [
   { value: "0", label: "Disabled" },
   { value: "1", label: "Enabled" },
 ];
 
-export function MiscellaneousPanel({ focusKey }: PanelProps) {
+export function SecurityPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const idleInhibitIgnore = cfgBool(data, "idleinhibit_ignore_visible");
+  // mango: CLAMP_INT(allow_shortcuts_inhibit, 0, 1), default SHORTCUTS_INHIBIT_ENABLE
   const shortcutsInhibit = cfgStr(data, "allow_shortcuts_inhibit", "1");
+  // mango: CLAMP_INT(allow_lock_transparent, 0, 1), default 0
   const lockTransparent = cfgBool(data, "allow_lock_transparent");
-  const tearing = cfgStr(data, "allow_tearing", "0");
 
   return (
     <PanelShell>
       <PanelHeader
-        title="Miscellaneous"
-        description="System-level policies for idle inhibition, security, and rendering."
+        title="Security"
+        description="Control how applications can interact with the compositor — keyboard shortcut inhibition and lockscreen transparency."
         separator={false}
       />
 
       <div className="mb-5">
-        <SectionCard title="Idle & Power">
-          <div ref={fieldRef("idleinhibit_ignore_visible")}>
-            <ToggleRow
-              label="Idle Inhibit Ignore Visible"
-              description="Only fullscreen windows may inhibit the idle inhibitor (DPMS/screen blanking). Requests from tiled or floating windows are ignored."
-              value={idleInhibitIgnore}
-              onChange={tb("idleinhibit_ignore_visible")}
-            />
-          </div>
-        </SectionCard>
-      </div>
-
-      <div className="mb-5">
-        <SectionCard title="Security">
+        <SectionCard title="Keyboard">
           <div ref={fieldRef("allow_shortcuts_inhibit")}>
             <SelectRow
               label="Allow Shortcuts Inhibit"
@@ -65,26 +46,17 @@ export function MiscellaneousPanel({ focusKey }: PanelProps) {
               onChange={(v) => setValue("allow_shortcuts_inhibit", v)}
             />
           </div>
+        </SectionCard>
+      </div>
+
+      <div className="mb-5">
+        <SectionCard title="Lockscreen">
           <div ref={fieldRef("allow_lock_transparent")}>
             <ToggleRow
               label="Allow Lock Transparent"
               description="Permit transparent or translucent lockscreen surfaces. Disable to enforce fully opaque lockscreens for privacy and security."
               value={lockTransparent}
               onChange={tb("allow_lock_transparent")}
-            />
-          </div>
-        </SectionCard>
-      </div>
-
-      <div className="mb-5">
-        <SectionCard title="Rendering">
-          <div ref={fieldRef("allow_tearing")}>
-            <SelectRow
-              label="Allow Tearing"
-              description="Reduce input latency by permitting screen tearing. Disabled = smooth (vsync), Always = maximum responsiveness, Fullscreen Only = compromise for games and video."
-              value={tearing}
-              options={TEARING_OPTIONS}
-              onChange={(v) => setValue("allow_tearing", v)}
             />
           </div>
         </SectionCard>

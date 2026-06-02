@@ -16,6 +16,7 @@ export function FocusPanel({ focusKey }: PanelProps) {
   const focusOnActivate = cfgBool(data, "focus_on_activate", true);
   const focusCrossMon = cfgBool(data, "focus_cross_monitor");
   const focusCrossTag = cfgBool(data, "focus_cross_tag");
+  const exchangeCrossMon = cfgBool(data, "exchange_cross_monitor");
 
   return (
     <PanelShell>
@@ -26,7 +27,7 @@ export function FocusPanel({ focusKey }: PanelProps) {
       />
 
       <div className="mb-5">
-        <SectionCard title="Focus Behaviour">
+        <SectionCard title="Behaviour">
           <div ref={fieldRef("sloppyfocus")}>
             <ToggleRow
               label="Sloppy Focus"
@@ -55,13 +56,21 @@ export function FocusPanel({ focusKey }: PanelProps) {
       </div>
 
       <div className="mb-5">
-        <SectionCard title="Boundaries">
+        <SectionCard title="Cross-Monitor">
           <div ref={fieldRef("focus_cross_monitor")}>
             <ToggleRow
               label="Cross-Monitor Focus"
               description="Allow directional focus changes (focusdir, focusstack) to move between monitors."
               value={focusCrossMon}
               onChange={tb("focus_cross_monitor")}
+            />
+          </div>
+          <div ref={fieldRef("exchange_cross_monitor")}>
+            <ToggleRow
+              label="Cross-Monitor Exchange"
+              description="Allow swapping window positions between different monitors."
+              value={exchangeCrossMon}
+              onChange={tb("exchange_cross_monitor")}
             />
           </div>
           <div ref={fieldRef("focus_cross_tag")}>

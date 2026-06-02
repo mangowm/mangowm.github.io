@@ -7,8 +7,8 @@ export const focusMeta: SectionMeta = {
   label: "Focus",
   icon: <FocusIcon />,
   panel: FocusPanel,
-  parentId: "window-behaviour",
-  keywords: ["sloppy", "warp", "cursor", "activate", "urgency", "monitor", "tag", "cross"],
+  parentId: "behaviour",
+  keywords: ["sloppy", "warp", "cursor", "activate", "urgency", "monitor", "tag", "cross", "exchange", "swap"],
   fields: [
     {
       configKey: "sloppyfocus",
@@ -39,6 +39,12 @@ export const focusMeta: SectionMeta = {
       label: "Cross-Tag Focus",
       description: "Allow focus to move between windows on different tags",
       aliases: ["across tags", "tag crossing"],
+    },
+    {
+      configKey: "exchange_cross_monitor",
+      label: "Cross-Monitor Exchange",
+      description: "Allow swapping windows between monitors",
+      aliases: ["swap across monitors", "exchange"],
     },
   ],
 };
