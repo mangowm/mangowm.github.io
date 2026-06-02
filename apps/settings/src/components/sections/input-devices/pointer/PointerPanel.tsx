@@ -1,5 +1,5 @@
 import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgFloat, cfgStr } from "@/lib/config-helpers";
+import { cfgBool, cfgFloat, cfgInt, cfgStr } from "@/lib/config-helpers";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -70,6 +70,8 @@ export function PointerPanel({ focusKey }: PanelProps) {
   const accelSpeed = cfgFloat(data, "mouse_accel_speed", 0.0, -1.0, 1.0);
   // mango: CLAMP_FLOAT(axis_scroll_factor, 0.1, 10.0), default 1.0
   const scrollFactor = cfgFloat(data, "axis_scroll_factor", 1.0, 0.1, 10.0);
+  // mango: CLAMP_INT(axis_bind_apply_timeout, 0, 1000), default 100
+  const axisBindTimeout = cfgInt(data, "axis_bind_apply_timeout", 100, 0, 1000);
   // mango: CLAMP_INT(scroll_method, 0, 4), default SCROLL_2FG=1
   const scrollMethod = cfgStr(data, "scroll_method", "1");
   // mango: CLAMP_INT(scroll_button, 272, 279), default 274
@@ -109,6 +111,18 @@ export function PointerPanel({ focusKey }: PanelProps) {
               max={10.0}
               step={0.1}
               onChange={(v) => setValue("axis_scroll_factor", v.toFixed(1))}
+            />
+          </div>
+          <div ref={fieldRef("axis_bind_apply_timeout")}>
+            <SliderRow
+              label="Axis Bind Apply Timeout"
+              description="How long (ms) a scroll axis must be held before its binding fires. Prevents accidental triggers. Mango range: 0–1000."
+              value={axisBindTimeout}
+              min={0}
+              max={1000}
+              step={10}
+              unit=" ms"
+              onChange={(v) => setValue("axis_bind_apply_timeout", String(v))}
             />
           </div>
           <div ref={fieldRef("scroll_method")}>

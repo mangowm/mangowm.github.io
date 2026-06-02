@@ -1,5 +1,5 @@
 import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgFloat, cfgStr } from "@/lib/config-helpers";
+import { cfgBool, cfgFloat, cfgInt, cfgStr } from "@/lib/config-helpers";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -45,6 +45,8 @@ export function TrackpadPanel({ focusKey }: PanelProps) {
   const dragLock = cfgBool(data, "drag_lock", true);
   // mango: CLAMP_INT(button_map, 0, 1), default TAP_MAP_LRM=1
   const buttonMap = cfgStr(data, "button_map", "1");
+  // mango: CLAMP_INT(swipe_min_threshold, 1, 1000), default 1
+  const swipeThreshold = cfgInt(data, "swipe_min_threshold", 1, 1, 1000);
 
   return (
     <PanelShell>
@@ -136,6 +138,17 @@ export function TrackpadPanel({ focusKey }: PanelProps) {
               value={buttonMap}
               options={BUTTON_MAP_OPTIONS}
               onChange={(v) => setValue("button_map", v)}
+            />
+          </div>
+          <div ref={fieldRef("swipe_min_threshold")}>
+            <SliderRow
+              label="Swipe Minimum Threshold"
+              description="Minimum pointer movement in pixels to trigger a swipe gesture. Higher values reduce accidental triggers. Mango range: 1–1000."
+              value={swipeThreshold}
+              min={1}
+              max={200}
+              unit=" px"
+              onChange={(v) => setValue("swipe_min_threshold", String(v))}
             />
           </div>
         </SectionCard>

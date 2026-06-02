@@ -76,5 +76,11 @@ export const pointerMeta: SectionMeta = {
       label: "Middle Button Emulation",
       description: "Emulate middle-click by pressing left+right simultaneously",
     },
+    {
+      configKey: "axis_bind_apply_timeout",
+      label: "Axis Bind Apply Timeout",
+      description: "Milliseconds before a scroll axis binding fires (0–1000)",
+      aliases: ["scroll bind", "axis bind", "scroll timeout"],
+    },
   ],
 };

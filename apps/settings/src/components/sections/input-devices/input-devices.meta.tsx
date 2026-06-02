@@ -21,5 +21,9 @@ export const inputDevicesMeta: SectionMeta = {
     "repeat",
     "acceleration",
     "natural scrolling",
+    "swipe",
+    "gesture",
+    "threshold",
+    "axis bind",
   ],
 };

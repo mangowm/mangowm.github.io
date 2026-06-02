@@ -55,5 +55,11 @@ export const trackpadMeta: SectionMeta = {
       label: "Button Map",
       description: "Tap gesture button mapping — LMR or LRM",
     },
+    {
+      configKey: "swipe_min_threshold",
+      label: "Swipe Minimum Threshold",
+      description: "Minimum distance in pixels to trigger a swipe gesture (1–1000)",
+      aliases: ["swipe", "gesture threshold", "swipe sensitivity"],
+    },
   ],
 };
