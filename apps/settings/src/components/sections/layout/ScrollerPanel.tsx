@@ -175,7 +175,6 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
           </div>
         </SectionCard>
       </div>
-
     </PanelShell>
   );
 }

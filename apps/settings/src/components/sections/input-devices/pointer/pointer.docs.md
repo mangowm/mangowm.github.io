@@ -10,7 +10,7 @@ Configure mouse and pointer device behavior.
 | `axis_scroll_factor`      | Multiplier for axis (wheel) scroll events. Mango range: 0.1–10.0. Default: 1.0.                                                 |
 | `scroll_method`           | Trackpad scroll method: `0` = No scroll, `1` = Two-Finger, `2` = Edge, `3` = On-Button-Down, `4` = Custom. Default: Two-Finger. |
 | `scroll_button`           | Button code for on-button-down scrolling. Linux input event codes 272–279. Default: 274 (BTN_MIDDLE).                           |
-| `axis_bind_apply_timeout` | Milliseconds before a scroll axis binding fires. Prevents accidental triggers. Mango range: 0–1000. Default: 100.                |
+| `axis_bind_apply_timeout` | Milliseconds before a scroll axis binding fires. Prevents accidental triggers. Mango range: 0–1000. Default: 100.               |
 
 ## Acceleration
 

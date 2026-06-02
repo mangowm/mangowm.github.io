@@ -8,7 +8,18 @@ export const focusMeta: SectionMeta = {
   icon: <FocusIcon />,
   panel: FocusPanel,
   parentId: "behaviour",
-  keywords: ["sloppy", "warp", "cursor", "activate", "urgency", "monitor", "tag", "cross", "exchange", "swap"],
+  keywords: [
+    "sloppy",
+    "warp",
+    "cursor",
+    "activate",
+    "urgency",
+    "monitor",
+    "tag",
+    "cross",
+    "exchange",
+    "swap",
+  ],
   fields: [
     {
       configKey: "sloppyfocus",
