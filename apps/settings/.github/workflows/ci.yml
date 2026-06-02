@@ -60,19 +60,29 @@ jobs:
         with:
           workspaces: src-tauri
       - run: pnpm tauri build
+      - name: Get app version
+        run: echo "APP_VERSION=$(jq -r .version src-tauri/tauri.conf.json)" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v4
         with:
-          name: mangowm-settings-linux
-          path: |
-            src-tauri/target/release/bundle/appimage/*.AppImage
-            src-tauri/target/release/bundle/deb/*.deb
-            src-tauri/target/release/bundle/rpm/*.rpm
+          name: mangowm-settings-appimage
+          path: src-tauri/target/release/bundle/appimage/mangowm-settings_${{ env.APP_VERSION }}_amd64.AppImage
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mangowm-settings-deb
+          path: src-tauri/target/release/bundle/deb/mangowm-settings_${{ env.APP_VERSION }}_amd64.deb
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mangowm-settings-rpm
+          path: src-tauri/target/release/bundle/rpm/mangowm-settings-${{ env.APP_VERSION }}-1.x86_64.rpm
+          if-no-files-found: warn
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            src-tauri/target/release/bundle/appimage/*.AppImage
-            src-tauri/target/release/bundle/deb/*.deb
-            src-tauri/target/release/bundle/rpm/*.rpm
+            src-tauri/target/release/bundle/appimage/mangowm-settings_${{ env.APP_VERSION }}_amd64.AppImage
+            src-tauri/target/release/bundle/deb/mangowm-settings_${{ env.APP_VERSION }}_amd64.deb
+            src-tauri/target/release/bundle/rpm/mangowm-settings-${{ env.APP_VERSION }}-1.x86_64.rpm
           generate_release_notes: true
