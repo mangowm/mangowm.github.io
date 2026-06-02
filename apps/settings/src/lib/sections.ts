@@ -11,6 +11,7 @@ import { layoutMeta } from "@/components/sections/layout/layout.meta";
 import { tilingMeta } from "@/components/sections/layout/tiling.meta";
 import { dwindleMeta } from "@/components/sections/layout/dwindle.meta";
 import { scrollerMeta } from "@/components/sections/layout/scroller.meta";
+import { overviewMeta } from "@/components/sections/layout/overview.meta";
 import { inputDevicesMeta } from "@/components/sections/input-devices/input-devices.meta";
 import { keyboardMeta } from "@/components/sections/input-devices/keyboard/keyboard.meta";
 import { pointerMeta } from "@/components/sections/input-devices/pointer/pointer.meta";
@@ -39,6 +40,7 @@ export const SECTIONS: SectionMeta[] = [
   tilingMeta,
   dwindleMeta,
   scrollerMeta,
+  overviewMeta,
   inputDevicesMeta,
   keyboardMeta,
   pointerMeta,
