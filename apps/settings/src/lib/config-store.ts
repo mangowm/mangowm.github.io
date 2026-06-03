@@ -1,26 +1,30 @@
 import { create } from "zustand";
 import { temporal } from "zundo";
 import { readAllConfigFiles, writeAllConfigFiles, reloadMango } from "./config-file";
-import type { ConfigData, SourceFile } from "./config-types";
+import { type ConfigData, type SourceFile, countLines } from "./config-types";
+import { makeEntryLine } from "./config-parse";
 
 // `data` is the merged view across all files (UI reads this).
 // `files` is the authoritative source (written to disk).
-// Mutations always go into `files`; `data` is re-derived.
+// `data` is ALWAYS derived from `files[].lines` — never stored separately.
 
 function mergeFileData(files: SourceFile[]): ConfigData {
   const merged: ConfigData = {};
   for (const file of files) {
-    for (const [key, values] of Object.entries(file.data)) {
-      if (!merged[key]) merged[key] = [];
-      merged[key].push(...values);
+    for (const line of file.lines) {
+      if (line.type === "entry") {
+        (merged[line.key] ??= []).push(line.value);
+      }
     }
   }
   return merged;
 }
 
 function fileIndexForKey(files: SourceFile[], key: string): number {
-  const idx = files.findIndex((f) => key in f.data);
-  return idx === -1 ? 0 : idx;
+  for (let i = 0; i < files.length; i++) {
+    if (files[i].lines.some(l => l.type === "entry" && l.key === key)) return i;
+  }
+  return 0;
 }
 
 function resolveGlobalIndex(
@@ -30,23 +34,13 @@ function resolveGlobalIndex(
 ): { fileIdx: number; localIdx: number } | null {
   let seen = 0;
   for (let i = 0; i < files.length; i++) {
-    const current = files[i].data[key];
-    if (current) {
-      if (seen + current.length > globalIndex) {
-        return { fileIdx: i, localIdx: globalIndex - seen };
-      }
-      seen += current.length;
+    const n = countLines(files[i].lines, key);
+    if (seen + n > globalIndex) {
+      return { fileIdx: i, localIdx: globalIndex - seen };
     }
+    seen += n;
   }
   return null;
-}
-
-function patchFile(
-  files: SourceFile[],
-  fileIdx: number,
-  patchData: (prev: ConfigData) => ConfigData,
-): SourceFile[] {
-  return files.map((f, i) => (i === fileIdx ? { ...f, data: patchData(f.data) } : f));
 }
 
 function syncDerivedState() {
@@ -76,8 +70,11 @@ interface ConfigStore {
   setValues: (entries: Record<string, string>) => void;
 
   // Multi-value list ops: use for keys where every line is a distinct entry
-  // (bind=, exec-once=, env=, …).
+  // (bind=, exec-once=, env=, …).  All mutations operate on `file.lines`
+  // only — `data` is re-derived from lines automatically.
   addEntry: (key: string, value: string) => void;
+  /** Insert a new entry at a specific line position in a specific file. */
+  insertEntry: (key: string, value: string, options: { fileIdx: number; afterLineIdx: number }) => void;
   updateEntry: (key: string, index: number, value: string) => void;
   removeEntry: (key: string, index: number) => void;
 }
@@ -118,14 +115,16 @@ export const useConfigStore = create<ConfigStore>()(
       setValue: (key, value) =>
         set((state) => {
           const fileIdx = fileIndexForKey(state.files, key);
-          const files = patchFile(state.files, fileIdx, (prev) => {
-            const current = prev[key];
-            if (current && current.length > 0) {
-              const next = [...current];
-              next[0] = value;
-              return { ...prev, [key]: next };
+          const files = state.files.map((f, i) => {
+            if (i !== fileIdx) return f;
+            const newLines = [...f.lines];
+            const idx = newLines.findIndex(l => l.type === "entry" && l.key === key);
+            if (idx >= 0) {
+              newLines[idx] = makeEntryLine(key, value);
+            } else {
+              newLines.push(makeEntryLine(key, value));
             }
-            return { ...prev, [key]: [value] };
+            return { ...f, lines: newLines };
           });
           return { files, data: mergeFileData(files), dirty: true };
         }),
@@ -135,14 +134,16 @@ export const useConfigStore = create<ConfigStore>()(
           let files = state.files;
           for (const [key, value] of Object.entries(entries)) {
             const fileIdx = fileIndexForKey(files, key);
-            files = patchFile(files, fileIdx, (prev) => {
-              const current = prev[key];
-              if (current && current.length > 0) {
-                const next = [...current];
-                next[0] = value;
-                return { ...prev, [key]: next };
+            files = files.map((f, i) => {
+              if (i !== fileIdx) return f;
+              const newLines = [...f.lines];
+              const idx = newLines.findIndex(l => l.type === "entry" && l.key === key);
+              if (idx >= 0) {
+                newLines[idx] = makeEntryLine(key, value);
+              } else {
+                newLines.push(makeEntryLine(key, value));
               }
-              return { ...prev, [key]: [value] };
+              return { ...f, lines: newLines };
             });
           }
           return { files, data: mergeFileData(files), dirty: true };
@@ -150,10 +151,24 @@ export const useConfigStore = create<ConfigStore>()(
 
       addEntry: (key, value) =>
         set((state) => {
-          const files = patchFile(state.files, 0, (prev) => ({
-            ...prev,
-            [key]: [...(prev[key] ?? []), value],
-          }));
+          const fileIdx = fileIndexForKey(state.files, key);
+          const files = state.files.map((f, i) =>
+            i === fileIdx
+              ? { ...f, lines: [...f.lines, makeEntryLine(key, value)] }
+              : f,
+          );
+          return { files, data: mergeFileData(files), dirty: true };
+        }),
+
+      insertEntry: (key, value, { fileIdx, afterLineIdx }) =>
+        set((state) => {
+          const file = state.files[fileIdx];
+          if (!file) return state;
+          const newLines = [...file.lines];
+          newLines.splice(afterLineIdx + 1, 0, makeEntryLine(key, value));
+          const files = state.files.map((f, i) =>
+            i === fileIdx ? { ...f, lines: newLines } : f,
+          );
           return { files, data: mergeFileData(files), dirty: true };
         }),
 
@@ -161,11 +176,17 @@ export const useConfigStore = create<ConfigStore>()(
         set((state) => {
           const target = resolveGlobalIndex(state.files, key, index);
           if (!target) return state;
-          const files = patchFile(state.files, target.fileIdx, (prev) => {
-            const current = prev[key] ?? [];
-            const next = [...current];
-            next[target.localIdx] = value;
-            return { ...prev, [key]: next };
+          const files = state.files.map((f, i) => {
+            if (i !== target.fileIdx) return f;
+            let count = -1;
+            const newLines = f.lines.map(l => {
+              if (l.type === "entry" && l.key === key) {
+                count++;
+                if (count === target.localIdx) return makeEntryLine(key, value);
+              }
+              return l;
+            });
+            return { ...f, lines: newLines };
           });
           return { files, data: mergeFileData(files), dirty: true };
         }),
@@ -174,14 +195,17 @@ export const useConfigStore = create<ConfigStore>()(
         set((state) => {
           const target = resolveGlobalIndex(state.files, key, index);
           if (!target) return state;
-          const files = patchFile(state.files, target.fileIdx, (prev) => {
-            const current = prev[key] ?? [];
-            const next = current.filter((_, i) => i !== target.localIdx);
-            if (next.length === 0) {
-              const { [key]: _dropped, ...rest } = prev;
-              return rest;
-            }
-            return { ...prev, [key]: next };
+          const files = state.files.map((f, i) => {
+            if (i !== target.fileIdx) return f;
+            let count = -1;
+            const newLines = f.lines.filter(l => {
+              if (l.type === "entry" && l.key === key) {
+                count++;
+                return count !== target.localIdx;
+              }
+              return true;
+            });
+            return { ...f, lines: newLines };
           });
           return { files, data: mergeFileData(files), dirty: true };
         }),
@@ -197,7 +221,7 @@ export const useConfigStore = create<ConfigStore>()(
           fa.length === fb.length &&
           fa.every((f, i) => {
             const g = fb[i];
-            return f.absPath === g.absPath && f.data === g.data;
+            return f.absPath === g.absPath && f.lines === g.lines;
           })
         );
       },
