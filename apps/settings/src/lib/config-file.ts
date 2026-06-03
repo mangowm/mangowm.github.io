@@ -7,13 +7,9 @@ import type { SourceFile } from "./config-types";
 const CONFIG_DIR = ".config/mango";
 const CONFIG_FILE = `${CONFIG_DIR}/config.conf`;
 
-async function getHomePath(): Promise<string> {
-  return homeDir();
-}
-
 async function resolveSourcePath(sourcePath: string, fileDir: string): Promise<string> {
   const p = sourcePath.trim();
-  if (p.startsWith("~/")) return (await getHomePath()) + p.slice(1);
+  if (p.startsWith("~/")) return (await homeDir()) + p.slice(1);
   if (p.startsWith("/")) return p;
   return `${fileDir}/${p}`;
 }
@@ -38,7 +34,7 @@ async function writeFileText(absPath: string, text: string): Promise<void> {
  * Returns files in order: root first, then sourced children as encountered.
  */
 export async function readAllConfigFiles(): Promise<SourceFile[]> {
-  const home = await getHomePath();
+  const home = await homeDir();
   const rootPath = `${home}/${CONFIG_FILE}`;
   const rootText = await readFileText(rootPath);
 
@@ -50,7 +46,6 @@ export async function readAllConfigFiles(): Promise<SourceFile[]> {
         absPath: rootPath,
         refPath: "config.conf",
         lines: [],
-        data: {},
       },
     ];
   }
@@ -65,7 +60,7 @@ export async function readAllConfigFiles(): Promise<SourceFile[]> {
     const parsed = parseConfig(text);
     const fileDir = absPath.slice(0, absPath.lastIndexOf("/"));
 
-    result.push({ absPath, refPath, lines: parsed.lines, data: parsed.data });
+    result.push({ absPath, refPath, lines: parsed.lines });
 
     for (const srcRef of parsed.data["source"] ?? []) {
       const childPath = await resolveSourcePath(srcRef, fileDir);
@@ -80,7 +75,7 @@ export async function readAllConfigFiles(): Promise<SourceFile[]> {
 
 export async function writeAllConfigFiles(files: SourceFile[]): Promise<void> {
   for (const file of files) {
-    const text = serializeConfig({ data: file.data, lines: file.lines });
+    const text = serializeConfig(file.lines);
     await writeFileText(file.absPath, text);
   }
 }
