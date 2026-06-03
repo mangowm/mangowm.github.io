@@ -1,4 +1,3 @@
-// Keys may appear multiple times; every value is a plain string.
 export type ConfigData = Record<string, string[]>;
 
 // Raw text preserved so serialization reproduces comments,
@@ -17,5 +16,13 @@ export interface SourceFile {
   absPath: string;
   refPath: string;
   lines: ConfigLine[];
-  data: ConfigData;
+}
+
+/** Count how many entry lines for a given key exist in `lines`. */
+export function countLines(lines: ConfigLine[], key: string): number {
+  let n = 0;
+  for (const line of lines) {
+    if (line.type === "entry" && line.key === key) n++;
+  }
+  return n;
 }
