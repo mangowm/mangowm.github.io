@@ -22,7 +22,7 @@ function mergeFileData(files: SourceFile[]): ConfigData {
 
 function fileIndexForKey(files: SourceFile[], key: string): number {
   for (let i = 0; i < files.length; i++) {
-    if (files[i].lines.some(l => l.type === "entry" && l.key === key)) return i;
+    if (files[i].lines.some((l) => l.type === "entry" && l.key === key)) return i;
   }
   return 0;
 }
@@ -74,7 +74,11 @@ interface ConfigStore {
   // only — `data` is re-derived from lines automatically.
   addEntry: (key: string, value: string) => void;
   /** Insert a new entry at a specific line position in a specific file. */
-  insertEntry: (key: string, value: string, options: { fileIdx: number; afterLineIdx: number }) => void;
+  insertEntry: (
+    key: string,
+    value: string,
+    options: { fileIdx: number; afterLineIdx: number },
+  ) => void;
   updateEntry: (key: string, index: number, value: string) => void;
   removeEntry: (key: string, index: number) => void;
 }
@@ -118,7 +122,7 @@ export const useConfigStore = create<ConfigStore>()(
           const files = state.files.map((f, i) => {
             if (i !== fileIdx) return f;
             const newLines = [...f.lines];
-            const idx = newLines.findIndex(l => l.type === "entry" && l.key === key);
+            const idx = newLines.findIndex((l) => l.type === "entry" && l.key === key);
             if (idx >= 0) {
               newLines[idx] = makeEntryLine(key, value);
             } else {
@@ -137,7 +141,7 @@ export const useConfigStore = create<ConfigStore>()(
             files = files.map((f, i) => {
               if (i !== fileIdx) return f;
               const newLines = [...f.lines];
-              const idx = newLines.findIndex(l => l.type === "entry" && l.key === key);
+              const idx = newLines.findIndex((l) => l.type === "entry" && l.key === key);
               if (idx >= 0) {
                 newLines[idx] = makeEntryLine(key, value);
               } else {
@@ -153,9 +157,7 @@ export const useConfigStore = create<ConfigStore>()(
         set((state) => {
           const fileIdx = fileIndexForKey(state.files, key);
           const files = state.files.map((f, i) =>
-            i === fileIdx
-              ? { ...f, lines: [...f.lines, makeEntryLine(key, value)] }
-              : f,
+            i === fileIdx ? { ...f, lines: [...f.lines, makeEntryLine(key, value)] } : f,
           );
           return { files, data: mergeFileData(files), dirty: true };
         }),
@@ -166,9 +168,7 @@ export const useConfigStore = create<ConfigStore>()(
           if (!file) return state;
           const newLines = [...file.lines];
           newLines.splice(afterLineIdx + 1, 0, makeEntryLine(key, value));
-          const files = state.files.map((f, i) =>
-            i === fileIdx ? { ...f, lines: newLines } : f,
-          );
+          const files = state.files.map((f, i) => (i === fileIdx ? { ...f, lines: newLines } : f));
           return { files, data: mergeFileData(files), dirty: true };
         }),
 
@@ -179,7 +179,7 @@ export const useConfigStore = create<ConfigStore>()(
           const files = state.files.map((f, i) => {
             if (i !== target.fileIdx) return f;
             let count = -1;
-            const newLines = f.lines.map(l => {
+            const newLines = f.lines.map((l) => {
               if (l.type === "entry" && l.key === key) {
                 count++;
                 if (count === target.localIdx) return makeEntryLine(key, value);
@@ -198,7 +198,7 @@ export const useConfigStore = create<ConfigStore>()(
           const files = state.files.map((f, i) => {
             if (i !== target.fileIdx) return f;
             let count = -1;
-            const newLines = f.lines.filter(l => {
+            const newLines = f.lines.filter((l) => {
               if (l.type === "entry" && l.key === key) {
                 count++;
                 return count !== target.localIdx;

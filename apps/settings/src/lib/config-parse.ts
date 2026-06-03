@@ -42,7 +42,7 @@ export function parseConfig(text: string): ParsedConfig {
 
 /** Serialize lines back to text (values live in `raw` on each line). */
 export function serializeConfig(lines: ConfigLine[]): string {
-  return lines.map(l => l.raw).join("\n");
+  return lines.map((l) => l.raw).join("\n");
 }
 
 /** Create an entry line with `raw` in sync. */
