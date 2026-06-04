@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   ChevronsUpDown,
   Check,
@@ -90,16 +90,16 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
   const [popoverWidth, setPopoverWidth] = useState<number>();
   const triggerRef = useRef<HTMLButtonElement>(null);
 
-  const categories = useMemo(() => getDispatchersByCategory(), []);
+  const categories = getDispatchersByCategory();
 
-  const selectedDispatcher = useMemo(() => {
+  const selectedDispatcher = (() => {
     if (!value) return null;
     for (const [, items] of categories) {
       const found = items.find((i) => i.name === value);
       if (found) return found;
     }
     return null;
-  }, [value, categories]);
+  })();
 
   useEffect(() => {
     if (open && triggerRef.current) {
@@ -111,7 +111,7 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
   const q = searchQuery.toLowerCase().trim();
   type ScoredItem = { d: DispatcherInfo; score: number };
 
-  const filtered = useMemo(() => {
+  const filtered = (() => {
     const result: { category: string; items: ScoredItem[] }[] = [];
 
     if (!q) {
@@ -150,7 +150,7 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
     }
 
     return result;
-  }, [categories, q]);
+  })();
 
   const hasResults = filtered.some((g) => g.items.length > 0);
 

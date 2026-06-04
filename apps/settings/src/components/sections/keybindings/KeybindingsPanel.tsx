@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Search, AlertTriangle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useConfigStore } from "@/lib/config-store";
@@ -32,42 +32,29 @@ export function KeybindingsPanel({ focusKey }: PanelProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<Keybinding | null>(null);
 
-  const conflictIds = useMemo(() => {
-    const signatureMap = new Map<string, string[]>();
-    const ids = new Set<string>();
+  const conflictIds = new Set<string>();
+  const signatureMap = new Map<string, string[]>();
+  allEntries.forEach((e) => {
+    const mods = serializeModifiers(parseModifiers(e.mods));
+    const signature = `${e.mode}|${mods}|${e.key}`;
+    const existing = signatureMap.get(signature) || [];
+    existing.push(e.id);
+    signatureMap.set(signature, existing);
+  });
+  signatureMap.forEach((matchedIds) => {
+    if (matchedIds.length > 1) {
+      matchedIds.forEach((id) => conflictIds.add(id));
+    }
+  });
 
-    allEntries.forEach((e) => {
-      const mods = serializeModifiers(parseModifiers(e.mods));
-      const signature = `${e.mode}|${mods}|${e.key}`;
-
-      const existing = signatureMap.get(signature) || [];
-      existing.push(e.id);
-      signatureMap.set(signature, existing);
-    });
-
-    signatureMap.forEach((matchedIds) => {
-      if (matchedIds.length > 1) {
-        matchedIds.forEach((id) => ids.add(id));
-      }
-    });
-
-    return ids;
-  }, [allEntries]);
-
-  const { cats, modes } = useMemo(() => {
-    const categories = new Set<string>();
-    const availableModes = new Set<string>();
-
-    allEntries.forEach((e) => {
-      categories.add(DISPATCHER_MAP.get(e.func)?.category ?? "other");
-      availableModes.add(e.mode);
-    });
-
-    return {
-      cats: ["All", ...Array.from(categories).sort()],
-      modes: ["All", ...Array.from(availableModes).sort()],
-    };
-  }, [allEntries]);
+  const categoriesSet = new Set<string>();
+  const modesSet = new Set<string>();
+  allEntries.forEach((e) => {
+    categoriesSet.add(DISPATCHER_MAP.get(e.func)?.category ?? "other");
+    modesSet.add(e.mode);
+  });
+  const cats = ["All", ...Array.from(categoriesSet).sort()];
+  const modes = ["All", ...Array.from(modesSet).sort()];
 
   useEffect(() => {
     if (activeMode !== "All" && !modes.includes(activeMode)) {
@@ -84,43 +71,37 @@ export function KeybindingsPanel({ focusKey }: PanelProps) {
   const baseFiltered = useFilterBindings(allEntries, search, activeCategory, activeMode);
   const filtered = showConflicts ? baseFiltered.filter((e) => conflictIds.has(e.id)) : baseFiltered;
 
-  const grouped = useMemo(() => {
-    const groupMap = new Map<string, Keybinding[]>();
-    filtered.forEach((e) => {
-      const cat = DISPATCHER_MAP.get(e.func)?.category ?? "other";
-      const arr = groupMap.get(cat) ?? [];
-      arr.push(e);
-      groupMap.set(cat, arr);
-    });
-    return groupMap;
-  }, [filtered]);
+  const grouped = new Map<string, Keybinding[]>();
+  filtered.forEach((e) => {
+    const cat = DISPATCHER_MAP.get(e.func)?.category ?? "other";
+    const arr = grouped.get(cat) ?? [];
+    arr.push(e);
+    grouped.set(cat, arr);
+  });
 
   const hasMultipleModes = modes.length > 2;
-  const existingModes = useMemo(() => modes.filter((m) => m !== "All"), [modes]);
+  const existingModes = modes.filter((m) => m !== "All");
 
-  const handleDelete = useCallback(
-    (entry: Keybinding) => {
-      removeEntry(entry.keyword, entry.ordinal);
-    },
-    [removeEntry],
-  );
+  const handleDelete = (entry: Keybinding) => {
+    removeEntry(entry.keyword, entry.ordinal);
+  };
 
-  const handleOpenDialog = useCallback((entry?: Keybinding) => {
+  const handleOpenDialog = (entry?: Keybinding) => {
     setEditingEntry(entry ?? null);
     setDialogOpen(true);
-  }, []);
+  };
 
-  const handleDialogClose = useCallback((open: boolean) => {
+  const handleDialogClose = (open: boolean) => {
     setDialogOpen(open);
     if (!open) setEditingEntry(null);
-  }, []);
+  };
 
-  const clearAllFilters = useCallback(() => {
+  const clearAllFilters = () => {
     setSearch("");
     setActiveCategory("All");
     setActiveMode("All");
     setShowConflicts(false);
-  }, []);
+  };
 
   return (
     <div ref={fieldRef("keybindings")} className="flex flex-col h-full gap-6">

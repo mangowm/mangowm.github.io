@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -129,32 +129,20 @@ export function EditDialog({
     }
   }, [open, editingEntry]);
 
-  const currentSchema = useMemo(() => DISPATCHER_MAP.get(func)?.args ?? [], [func]);
-  const [argValues, setArgValues] = useState<Record<string, string>>({});
+  const currentSchema = DISPATCHER_MAP.get(func)?.args ?? [];
+  const argValues = parseArgValues(args, currentSchema);
 
-  useEffect(() => {
-    setArgValues(parseArgValues(args, currentSchema));
-  }, [args, currentSchema]);
+  const handleArgChange = (argName: string, value: string) => {
+    const nextArgValues = { ...argValues, [argName]: value };
+    setArgs(serializeArgValues(nextArgValues, currentSchema));
+    const err = validateAllArgs(nextArgValues, currentSchema);
+    setArgErrors((prev) =>
+      err[argName] !== prev[argName] ? { ...prev, [argName]: err[argName] ?? null } : prev,
+    );
+  };
 
-  const handleArgChange = useCallback(
-    (argName: string, value: string) => {
-      setArgValues((prev) => {
-        const next = { ...prev, [argName]: value };
-        setArgs(serializeArgValues(next, currentSchema));
-        const err = validateAllArgs(next, currentSchema);
-        setArgErrors((prevErr) =>
-          err[argName] !== prevErr[argName]
-            ? { ...prevErr, [argName]: err[argName] ?? null }
-            : prevErr,
-        );
-        return next;
-      });
-    },
-    [currentSchema],
-  );
-
-  const configKey = useMemo(() => bindKeyFromFlags(flags), [flags]);
-  const modString = useMemo(() => serializeModifiers(selectedMods), [selectedMods]);
+  const configKey = bindKeyFromFlags(flags);
+  const modString = serializeModifiers(selectedMods);
 
   const conflicts = useConflictCheck(allEntries, mode, modString, key, editingEntry?.id);
 

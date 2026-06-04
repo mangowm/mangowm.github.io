@@ -1,4 +1,3 @@
-import { useMemo, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { useConfigStore } from "@/lib/config-store";
 import { cfgStr } from "@/lib/config-helpers";
@@ -10,32 +9,22 @@ export function LayoutToggleGroup() {
 
   const raw = cfgStr(data, "circle_layout", "");
 
-  const activeLayouts = useMemo(
-    () =>
-      raw
-        .split(",")
-        .map((s) => s.trim().toLowerCase())
-        .filter(Boolean),
-    [raw],
-  );
+  const activeLayouts = raw
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
 
-  const activeSet = useMemo(() => new Set(activeLayouts), [activeLayouts]);
+  const activeSet = new Set(activeLayouts);
 
-  const inactiveLayouts = useMemo(
-    () => LAYOUT_NAMES.filter((name) => !activeSet.has(name)),
-    [activeSet],
-  );
+  const inactiveLayouts = LAYOUT_NAMES.filter((name) => !activeSet.has(name));
 
-  const toggle = useCallback(
-    (name: string) => {
-      if (activeSet.has(name)) {
-        setValue("circle_layout", activeLayouts.filter((l) => l !== name).join(","));
-      } else {
-        setValue("circle_layout", [...activeLayouts, name].join(","));
-      }
-    },
-    [activeLayouts, activeSet, setValue],
-  );
+  const toggle = (name: string) => {
+    if (activeSet.has(name)) {
+      setValue("circle_layout", activeLayouts.filter((l) => l !== name).join(","));
+    } else {
+      setValue("circle_layout", [...activeLayouts, name].join(","));
+    }
+  };
 
   return (
     <div className="flex flex-wrap gap-1.5 px-4 py-3">

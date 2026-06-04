@@ -25,7 +25,6 @@ export function KeyRecorder({ mods, capturedKey, onModsChange, onKeyChange }: Ke
   const [isRecording, setIsRecording] = useState(false);
   const [isKeySearchOpen, setIsKeySearchOpen] = useState(false);
   const [showRawInput, setShowRawInput] = useState(false);
-  const captureBoxRef = useRef<HTMLDivElement>(null);
   const captureInputRef = useRef<HTMLInputElement>(null);
 
   const keyRecorder = useKeyRecorder((combo) => {
@@ -196,7 +195,6 @@ export function KeyRecorder({ mods, capturedKey, onModsChange, onKeyChange }: Ke
       />
 
       <div
-        ref={captureBoxRef}
         className={cn(
           "relative flex flex-col p-4 transition-colors duration-500 ease-out cursor-pointer",
           isRecording ? "bg-primary/[0.02]" : "bg-transparent hover:bg-muted/5",
