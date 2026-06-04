@@ -61,6 +61,32 @@ const JS_TO_XKB: Record<string, string> = {
   "*": "asterisk",
   "(": "parenleft",
   ")": "parenright",
+
+  /* Multimedia / media keys */
+  AudioVolumeMute: "XF86AudioMute",
+  AudioVolumeDown: "XF86AudioLowerVolume",
+  AudioVolumeUp: "XF86AudioRaiseVolume",
+  MediaPlayPause: "XF86AudioPlay",
+  MediaTrackNext: "XF86AudioNext",
+  MediaTrackPrevious: "XF86AudioPrev",
+  MediaStop: "XF86AudioStop",
+
+  /* Brightness */
+  BrightnessDown: "XF86MonBrightnessDown",
+  BrightnessUp: "XF86MonBrightnessUp",
+
+  /* Launch / application keys */
+  LaunchMail: "XF86Mail",
+  LaunchApplication1: "XF86WWW",
+  LaunchApplication2: "XF86Calculator",
+  LaunchMediaPlayer: "XF86AudioMedia",
+
+  /* Other common system keys */
+  Eject: "XF86Eject",
+  Sleep: "XF86Sleep",
+  Power: "XF86PowerOff",
+  Search: "XF86Search",
+  Tools: "XF86Tools",
 };
 
 export function jsKeyToXkb(jsKey: string): string | null {
