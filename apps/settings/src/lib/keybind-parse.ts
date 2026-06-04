@@ -175,6 +175,9 @@ export function parseFlagsFromKey(key: string): KeybindFlags {
   };
 }
 
+/** Canonical modifier order used for serialization and display. */
+export const MODIFIER_ORDER = ["super", "ctrl", "alt", "shift", "hyper"] as const;
+
 /** Split "super+ctrl" into ["super", "ctrl"]. Empty/none → []. */
 export function parseModifiers(modStr: string): string[] {
   if (!modStr || modStr.toLowerCase() === "none") return [];
@@ -242,8 +245,11 @@ export function insertModeAwareBinding(
   }
 }
 
-/** Join ["super", "ctrl"] into "super+ctrl". Empty → "none". */
+/** Join ["super", "ctrl"] into "super+ctrl" in canonical order. Empty → "none". */
 export function serializeModifiers(mods: string[]): string {
   if (mods.length === 0) return "none";
-  return mods.join("+");
+  const ordered = [...mods].sort(
+    (a, b) => MODIFIER_ORDER.indexOf(a as any) - MODIFIER_ORDER.indexOf(b as any),
+  );
+  return ordered.join("+");
 }
