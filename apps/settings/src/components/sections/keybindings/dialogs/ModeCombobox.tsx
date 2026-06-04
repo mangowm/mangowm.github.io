@@ -30,7 +30,7 @@ export function ModeCombobox({ value, existingModes, onChange }: ModeComboboxPro
   }, [open, search, onChange]);
 
   const filtered = existingModes.filter(
-    (m) => m !== "default" && m.toLowerCase().includes(search.toLowerCase()),
+    (m) => m.toLowerCase().includes(search.toLowerCase()),
   );
   const isNew = search.trim() && !existingModes.includes(search.trim());
 
@@ -42,7 +42,7 @@ export function ModeCombobox({ value, existingModes, onChange }: ModeComboboxPro
           setOpen(!open);
           if (!open) setTimeout(() => inputRef.current?.focus(), 0);
         }}
-        className="flex w-full items-center justify-between rounded-md border border-border/50 bg-background px-3 py-2 text-sm font-mono shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-ring/50"
+        className="flex w-full items-center justify-between h-11 rounded-lg px-3.5 text-sm font-mono transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
       >
         <span className={value ? "text-foreground" : "text-muted-foreground/60"}>
           {value || "default"}
