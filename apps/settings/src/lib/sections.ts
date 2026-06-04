@@ -18,6 +18,7 @@ import { pointerMeta } from "@/components/sections/input-devices/pointer/pointer
 import { trackpadMeta } from "@/components/sections/input-devices/trackpad/trackpad.meta";
 
 import { tabletMeta } from "@/components/sections/input-devices/tablet/tablet.meta";
+import { keybindingsMeta } from "@/components/sections/keybindings/keybindings.meta";
 import { animationsMeta } from "@/components/sections/animations/animations.meta";
 import { generalMeta } from "@/components/sections/animations/general/general.meta";
 import { timingMeta } from "@/components/sections/animations/timing/timing.meta";
@@ -36,6 +37,7 @@ import { xwaylandMeta } from "@/components/sections/behaviour/xwayland/xwayland.
 export const SECTIONS: SectionMeta[] = [
   autostartMeta,
   environmentMeta,
+  keybindingsMeta,
   appearanceMeta,
   colorsMeta,
   windowEffectsMeta,

@@ -4,6 +4,8 @@ import { useConfigStore } from "./config-store";
 import { SECTIONS } from "./sections";
 import type { ConfigData } from "./config-types";
 import type { DynamicIndexSource, DynamicSearchItem } from "./section-types";
+import { parseKeybindings } from "./keybind-parse";
+import { DISPATCHER_MAP } from "./dispatchers";
 
 interface SearchDocument {
   id: string;
@@ -12,14 +14,21 @@ interface SearchDocument {
   configKey: string;
   sectionKeywords: string;
   aliases: string;
-  sectionId: string;
   sectionLabel: string;
+  sectionId: string;
   tier: "static" | "dynamic";
   runtimeValue?: string;
 }
 
 const ms = new MiniSearch<SearchDocument>({
-  fields: ["label", "description", "configKey", "sectionKeywords", "aliases", "runtimeValue"],
+  fields: [
+    "label",
+    "description",
+    "configKey",
+    "sectionKeywords",
+    "aliases",
+    "sectionLabel",
+  ],
   storeFields: [
     "id",
     "label",
@@ -33,7 +42,14 @@ const ms = new MiniSearch<SearchDocument>({
   searchOptions: {
     fuzzy: 0.2,
     prefix: true,
-    boost: { label: 3, configKey: 2, description: 1.5, aliases: 1.2 },
+    boost: {
+      label: 4,
+      configKey: 3,
+      sectionLabel: 2,
+      description: 1.2,
+      aliases: 1.2,
+      sectionKeywords: 0.6,
+    },
     combineWith: "OR",
   },
 });
@@ -118,31 +134,52 @@ export const DYNAMIC_SOURCES: DynamicIndexSource[] = [
         };
       }),
   },
+  {
+    sourceId: "keybindings",
+    watchKeys: ["bind", "binds", "bindl", "bindr", "bindp"],
+    buildItems: (data) =>
+      parseKeybindings(data).map((b, i) => ({
+        id: `keybind:${i}`,
+        label: `${b.func} (${b.mods || "none"} + ${b.key})`,
+        description: DISPATCHER_MAP.get(b.func)?.description ?? b.func,
+        sectionLabel: "Keybindings",
+        sectionId: "keybindings",
+        configKey: b.id,
+      })),
+  },
 ];
 
 const dynamicIndexed = new Map<string, string[]>(); // sourceId → current doc ids
 
+function getSectionKeywords(sectionId: string): string {
+  for (const section of SECTIONS) {
+    if (section.id === sectionId) {
+      return section.keywords?.join(" ") ?? "";
+    }
+  }
+  return "";
+}
+
 function rebuildDynamicSource(source: DynamicIndexSource, data: ConfigData) {
   const items: DynamicSearchItem[] = source.buildItems(data);
 
-  // Remove stale docs for this source
   const prevIds = dynamicIndexed.get(source.sourceId) ?? [];
   if (prevIds.length > 0) {
     ms.discardAll(prevIds);
   }
 
-  // Add fresh docs
+  const sectionKeywords = getSectionKeywords(items[0]?.sectionId ?? "");
+
   const docs: SearchDocument[] = items.map((item) => ({
     id: item.id,
     label: item.label,
     description: item.description ?? "",
     configKey: item.configKey ?? "",
-    sectionKeywords: "",
+    sectionKeywords,
     aliases: "",
     sectionId: item.sectionId,
     sectionLabel: item.sectionLabel,
     tier: "dynamic",
-    runtimeValue: item.label, // make the actual value text searchable
   }));
 
   ms.addAll(docs);
@@ -161,37 +198,45 @@ export interface SearchResult {
   sectionLabel: string;
   tier: "static" | "dynamic";
   runtimeValue?: string;
-  /** MiniSearch relevance score */
   score: number;
+}
+
+function search(query: string): SearchResult[] {
+  if (!query.trim()) return [];
+  return ms.search(query).map((r) => ({
+    id: r.id as string,
+    label: r.label as string,
+    description: r.description as string,
+    configKey: r.configKey as string,
+    sectionId: r.sectionId as string,
+    sectionLabel: r.sectionLabel as string,
+    tier: r.tier as "static" | "dynamic",
+    runtimeValue: r.runtimeValue as string | undefined,
+    score: r.score,
+  }));
 }
 
 export function useSearch(): (query: string) => SearchResult[] {
   const data = useConfigStore((s) => s.data);
   const lastData = useRef(data);
+  const lastValues = useRef<Map<string, string>>(new Map());
 
   if (data !== lastData.current) {
     lastData.current = data;
     for (const source of DYNAMIC_SOURCES) {
-      const hasData = source.watchKeys.some((k) => (data[k]?.length ?? 0) > 0);
-      if (hasData || (dynamicIndexed.get(source.sourceId)?.length ?? 0) > 0) {
+      let changed = false;
+      for (const key of source.watchKeys) {
+        const serialized = JSON.stringify(data[key] ?? []);
+        if (lastValues.current.get(key) !== serialized) {
+          lastValues.current.set(key, serialized);
+          changed = true;
+        }
+      }
+      if (changed) {
         rebuildDynamicSource(source, data);
       }
     }
   }
 
-  return useCallback((query: string): SearchResult[] => {
-    if (!query.trim()) return [];
-
-    return ms.search(query).map((r) => ({
-      id: r.id as string,
-      label: r.label as string,
-      description: r.description as string,
-      configKey: r.configKey as string,
-      sectionId: r.sectionId as string,
-      sectionLabel: r.sectionLabel as string,
-      tier: r.tier as "static" | "dynamic",
-      runtimeValue: r.runtimeValue as string | undefined,
-      score: r.score,
-    }));
-  }, []);
+  return useCallback((query: string): SearchResult[] => search(query), []);
 }
