@@ -142,16 +142,15 @@ export function findBlockEnd(lines: ConfigLine[], keymodeIdx: number): number {
  */
 export function findInsertPosition(
   lines: ConfigLine[],
-  fileIdx: number,
   targetMode: string,
-): { fileIdx: number; afterLineIdx: number } | null {
+): { afterLineIdx: number } | null {
   if (targetMode === "default") {
     const firstKm = lines.findIndex((ln) => ln.type === "entry" && ln.key === "keymode");
-    if (firstKm >= 0) return { fileIdx, afterLineIdx: firstKm - 1 };
+    if (firstKm >= 0) return { afterLineIdx: firstKm - 1 };
     return null;
   }
   const kmIdx = findLastKeymodeLine(lines, targetMode);
-  if (kmIdx >= 0) return { fileIdx, afterLineIdx: findBlockEnd(lines, kmIdx) };
+  if (kmIdx >= 0) return { afterLineIdx: findBlockEnd(lines, kmIdx) };
   return null;
 }
 
@@ -180,6 +179,67 @@ export function parseFlagsFromKey(key: string): KeybindFlags {
 export function parseModifiers(modStr: string): string[] {
   if (!modStr || modStr.toLowerCase() === "none") return [];
   return modStr.split("+").map((s) => s.trim().toLowerCase()).filter(Boolean);
+}
+
+/** Find the first file containing an entry matching the given key.
+ *  For bind keys (bind, binds, bindlr, etc.), matches any bind variant.
+ *  For other keys, uses exact match. */
+function findFileForConfigKey(files: SourceFile[], key: string): number {
+  const isBind = isBindKey(key);
+  for (let i = 0; i < files.length; i++) {
+    for (const line of files[i].lines) {
+      if (line.type === "entry" && (isBind ? isBindKey(line.key) : line.key === key)) {
+        return i;
+      }
+    }
+  }
+  return 0;
+}
+
+/**
+ * Insert a keybinding entry respecting mode blocks.
+ * Handles bind-key pattern matching for file discovery.
+ * When `knownFileIdx` is provided, uses that file directly.
+ *
+ * This is a utility that composes the store's generic `insertEntry`.
+ * It lives here to keep the store configuration-agnostic.
+ */
+export function insertModeAwareBinding(
+  files: SourceFile[],
+  insertEntry: (
+    key: string,
+    value: string,
+    options: { fileIdx: number; afterLineIdx: number },
+  ) => void,
+  key: string,
+  value: string,
+  mode: string,
+  knownFileIdx?: number,
+): void {
+  const targetFileIdx = knownFileIdx ?? findFileForConfigKey(files, key);
+  const file = files[targetFileIdx];
+  if (!file) return;
+
+  const pos = findInsertPosition(file.lines, mode);
+
+  if (pos) {
+    insertEntry(key, value, { fileIdx: targetFileIdx, ...pos });
+  } else if (mode !== "default") {
+    // No existing block for this mode — create it at the end of the file.
+    insertEntry("keymode", mode, {
+      fileIdx: targetFileIdx,
+      afterLineIdx: file.lines.length - 1,
+    });
+    insertEntry(key, value, {
+      fileIdx: targetFileIdx,
+      afterLineIdx: file.lines.length,
+    });
+  } else {
+    insertEntry(key, value, {
+      fileIdx: targetFileIdx,
+      afterLineIdx: file.lines.length - 1,
+    });
+  }
 }
 
 /** Join ["super", "ctrl"] into "super+ctrl". Empty → "none". */
