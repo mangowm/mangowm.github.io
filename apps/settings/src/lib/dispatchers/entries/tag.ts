@@ -10,7 +10,7 @@ export const TAG_ENTRIES: DispatcherInfo[] = [
       {
         name: "tag",
         type: "tag",
-        label: "Tag",
+        label: "Target Tag",
         description: "Tag number (1-9)",
         options: [...TAG_NUMBERS],
         required: true,
@@ -29,7 +29,7 @@ export const TAG_ENTRIES: DispatcherInfo[] = [
   {
     name: "tagsilent",
     category: "tag",
-    args: namedArg("tag", "tag", "Tag", "Tag number (1-9)", {
+    args: namedArg("tag", "tag", "Target Tag", "Tag number (1-9)", {
       options: [...TAG_NUMBERS],
       required: true,
     }),
@@ -58,7 +58,7 @@ export const TAG_ENTRIES: DispatcherInfo[] = [
       {
         name: "tag",
         type: "tag",
-        label: "Tag",
+        label: "Target Tag",
         description: "Tag number (1-9)",
         options: [...TAG_NUMBERS],
         required: true,
@@ -76,7 +76,7 @@ export const TAG_ENTRIES: DispatcherInfo[] = [
   {
     name: "toggletag",
     category: "tag",
-    args: namedArg("tag", "tag", "Tag", "Tag to toggle (1-9)", {
+    args: namedArg("tag", "tag", "Toggle Tag", "Tag to toggle on the focused window (1-9)", {
       options: [...TAG_NUMBERS],
       required: true,
     }),

@@ -66,7 +66,7 @@ export const VIEW_ENTRIES: DispatcherInfo[] = [
       {
         name: "tag",
         type: "tag",
-        label: "Tag",
+        label: "Target Tag",
         description: "Tag number (1-9)",
         options: [...TAG_NUMBERS],
         required: true,
@@ -84,7 +84,7 @@ export const VIEW_ENTRIES: DispatcherInfo[] = [
   {
     name: "toggleview",
     category: "view",
-    args: namedArg("tag", "tag", "Tag", "Tag to toggle (1-9)", {
+    args: namedArg("tag", "tag", "Toggle Tag", "Tag whose visibility to toggle (1-9)", {
       options: [...TAG_NUMBERS],
       required: true,
     }),
@@ -93,7 +93,7 @@ export const VIEW_ENTRIES: DispatcherInfo[] = [
   {
     name: "comboview",
     category: "view",
-    args: namedArg("tag", "tag", "Tag", "Combo-tag (1-9)", {
+    args: namedArg("tag", "tag", "Combo Tag", "Tag number (1-9) for combo-key navigation", {
       options: [...TAG_NUMBERS],
       required: true,
     }),

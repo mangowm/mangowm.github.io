@@ -17,7 +17,7 @@ export const LAYOUT_ENTRIES: DispatcherInfo[] = [
     name: "switch_layout",
     category: "layout",
     args: [],
-    description: "Cycle through available layouts",
+    description: "Cycle through layouts. The circle_layout option (settable per-binding in the edit dialog) restricts which layouts are cycled.",
   },
   {
     name: "incnmaster",
