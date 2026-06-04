@@ -3,7 +3,6 @@ import { temporal } from "zundo";
 import { readAllConfigFiles, writeAllConfigFiles, reloadMango } from "./config-file";
 import { type ConfigData, type SourceFile, countLines } from "./config-types";
 import { makeEntryLine } from "./config-parse";
-
 // `data` is the merged view across all files (UI reads this).
 // `files` is the authoritative source (written to disk).
 // `data` is ALWAYS derived from `files[].lines` — never stored separately.
@@ -27,7 +26,7 @@ function fileIndexForKey(files: SourceFile[], key: string): number {
   return 0;
 }
 
-function resolveGlobalIndex(
+export function resolveGlobalIndex(
   files: SourceFile[],
   key: string,
   globalIndex: number,
