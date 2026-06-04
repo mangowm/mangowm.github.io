@@ -41,6 +41,10 @@ const XKB_TO_DISPLAY: Record<string, string> = {
 };
 
 export function xkbToDisplay(xkbKey: string): string {
+  // Handle raw keycodes like "code:133"
+  const codeMatch = xkbKey.match(/^code:(\d+)$/);
+  if (codeMatch) return `Key ${codeMatch[1]}`;
+
   const mapped = XKB_TO_DISPLAY[xkbKey];
   if (mapped) return mapped;
 

@@ -253,3 +253,16 @@ export function serializeModifiers(mods: string[]): string {
   );
   return ordered.join("+");
 }
+
+const RAW_KEYCODE_RE = /^code:(\d+)$/;
+
+/** Check whether a key string is a raw keycode like "code:133". */
+export function isRawKeycode(key: string): boolean {
+  return RAW_KEYCODE_RE.test(key);
+}
+
+/** Extract the numeric keycode from "code:133". Returns null if not a raw keycode. */
+export function parseRawKeycode(key: string): number | null {
+  const m = key.match(RAW_KEYCODE_RE);
+  return m ? parseInt(m[1], 10) : null;
+}
