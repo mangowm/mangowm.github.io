@@ -4,12 +4,6 @@ import { useConfigStore } from "@/lib/config-store";
 import { cfgStr } from "@/lib/config-helpers";
 import { LAYOUT_NAMES } from "@/lib/dispatchers/types";
 
-/**
- * Toggle-button group for choosing which layouts switch_layout cycles through.
- *
- * Active pills (included in the cycle) are shown first, followed by inactive
- * pills separated by a thin divider. Click any pill to toggle it on/off.
- */
 export function LayoutToggleGroup() {
   const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
@@ -17,7 +11,11 @@ export function LayoutToggleGroup() {
   const raw = cfgStr(data, "circle_layout", "");
 
   const activeLayouts = useMemo(
-    () => raw.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean),
+    () =>
+      raw
+        .split(",")
+        .map((s) => s.trim().toLowerCase())
+        .filter(Boolean),
     [raw],
   );
 

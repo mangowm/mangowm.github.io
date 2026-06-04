@@ -181,7 +181,10 @@ export const MODIFIER_ORDER = ["super", "ctrl", "alt", "shift", "hyper"] as cons
 /** Split "super+ctrl" into ["super", "ctrl"]. Empty/none → []. */
 export function parseModifiers(modStr: string): string[] {
   if (!modStr || modStr.toLowerCase() === "none") return [];
-  return modStr.split("+").map((s) => s.trim().toLowerCase()).filter(Boolean);
+  return modStr
+    .split("+")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
 }
 
 /** Find the first file containing an entry matching the given key.

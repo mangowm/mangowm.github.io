@@ -21,14 +21,7 @@ interface SearchDocument {
 }
 
 const ms = new MiniSearch<SearchDocument>({
-  fields: [
-    "label",
-    "description",
-    "configKey",
-    "sectionKeywords",
-    "aliases",
-    "sectionLabel",
-  ],
+  fields: ["label", "description", "configKey", "sectionKeywords", "aliases", "sectionLabel"],
   storeFields: [
     "id",
     "label",

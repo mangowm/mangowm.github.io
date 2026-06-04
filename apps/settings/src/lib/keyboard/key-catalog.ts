@@ -156,9 +156,7 @@ export const KEY_GROUPS: KeyGroup[] = [
   },
 ];
 
-export function searchKeyNames(
-  query: string,
-): { name: string; groupLabel: string }[] {
+export function searchKeyNames(query: string): { name: string; groupLabel: string }[] {
   if (!query.trim()) return [];
   const lower = query.toLowerCase();
   const results: { name: string; groupLabel: string }[] = [];

@@ -29,9 +29,7 @@ export function ModeCombobox({ value, existingModes, onChange }: ModeComboboxPro
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open, search, onChange]);
 
-  const filtered = existingModes.filter(
-    (m) => m.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filtered = existingModes.filter((m) => m.toLowerCase().includes(search.toLowerCase()));
   const isNew = search.trim() && !existingModes.includes(search.trim());
 
   return (

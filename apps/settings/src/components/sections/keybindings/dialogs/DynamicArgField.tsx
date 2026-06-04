@@ -22,12 +22,14 @@ interface DynamicArgFieldProps {
 export function DynamicArgField({ arg, value, error, onChange }: DynamicArgFieldProps) {
   const id = `arg-${arg.name}`;
 
-  // Special styling for bash/shell commands
   if (arg.type === "command") {
     return (
       <div className="flex flex-col gap-2 p-3 bg-black/40 border-b border-border/20 last:border-0 relative group transition-colors">
         <div className="flex items-center justify-between">
-          <Label htmlFor={id} className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5 uppercase tracking-wider">
+          <Label
+            htmlFor={id}
+            className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5 uppercase tracking-wider"
+          >
             <TerminalSquare className="size-3.5" />
             {arg.label}
             {arg.required && <span className="text-destructive">*</span>}
@@ -39,11 +41,13 @@ export function DynamicArgField({ arg, value, error, onChange }: DynamicArgField
             </span>
           )}
         </div>
-        
-        <div className={cn(
-          "relative flex items-start rounded-md border border-border/20 bg-background/50 focus-within:border-primary/50 focus-within:bg-background transition-all",
-          error && "border-destructive/50 focus-within:border-destructive/70"
-        )}>
+
+        <div
+          className={cn(
+            "relative flex items-start rounded-md border border-border/20 bg-background/50 focus-within:border-primary/50 focus-within:bg-background transition-all",
+            error && "border-destructive/50 focus-within:border-destructive/70",
+          )}
+        >
           <div className="px-3 py-2.5 text-muted-foreground/40 font-mono text-xs select-none shrink-0 border-r border-border/10">
             $
           </div>
@@ -57,7 +61,7 @@ export function DynamicArgField({ arg, value, error, onChange }: DynamicArgField
             rows={2}
           />
         </div>
-        
+
         {arg.description && (
           <span className="text-[11px] text-muted-foreground/50">{arg.description}</span>
         )}
@@ -65,15 +69,11 @@ export function DynamicArgField({ arg, value, error, onChange }: DynamicArgField
     );
   }
 
-  // Standard Property Inspector Layout (Grid: Label Left, Control Right)
   return (
     <div className="grid grid-cols-[1fr_auto] gap-6 items-center p-3 border-b border-border/20 last:border-0 hover:bg-muted/10 transition-colors">
       <div className="flex flex-col min-w-0">
         <div className="flex items-center gap-2">
-          <Label
-            htmlFor={id}
-            className="text-[13px] font-semibold text-foreground leading-snug"
-          >
+          <Label htmlFor={id} className="text-[13px] font-semibold text-foreground leading-snug">
             {arg.label}
             {arg.required && <span className="text-destructive ml-0.5">*</span>}
           </Label>
@@ -90,7 +90,7 @@ export function DynamicArgField({ arg, value, error, onChange }: DynamicArgField
           </span>
         )}
       </div>
-      
+
       <div className="shrink-0 w-[180px] flex justify-end">
         {arg.options ? (
           <Select value={value || ""} onValueChange={(v) => onChange(v || "")}>
@@ -98,7 +98,9 @@ export function DynamicArgField({ arg, value, error, onChange }: DynamicArgField
               id={id}
               className={cn(
                 "h-8 w-full text-xs font-mono font-medium shadow-sm transition-all",
-                error ? "border-destructive/60 ring-1 ring-destructive/20" : "border-border/50 bg-background hover:bg-accent/50"
+                error
+                  ? "border-destructive/60 ring-1 ring-destructive/20"
+                  : "border-border/50 bg-background hover:bg-accent/50",
               )}
             >
               <SelectValue placeholder={arg.placeholder || "Select..."} />
@@ -129,7 +131,9 @@ export function DynamicArgField({ arg, value, error, onChange }: DynamicArgField
               placeholder={arg.placeholder}
               className={cn(
                 "h-8 w-14 text-center text-xs font-mono font-medium shadow-sm",
-                error ? "border-destructive/60 ring-1 ring-destructive/20" : "bg-background border-border/50"
+                error
+                  ? "border-destructive/60 ring-1 ring-destructive/20"
+                  : "bg-background border-border/50",
               )}
             />
           </div>
@@ -142,7 +146,9 @@ export function DynamicArgField({ arg, value, error, onChange }: DynamicArgField
             placeholder={arg.placeholder}
             className={cn(
               "h-8 w-full text-xs font-mono font-medium shadow-sm transition-colors",
-              error ? "border-destructive/60 ring-1 ring-destructive/20 focus-visible:ring-destructive/30" : "bg-background border-border/50 focus-visible:border-primary/50"
+              error
+                ? "border-destructive/60 ring-1 ring-destructive/20 focus-visible:ring-destructive/30"
+                : "bg-background border-border/50 focus-visible:border-primary/50",
             )}
           />
         )}

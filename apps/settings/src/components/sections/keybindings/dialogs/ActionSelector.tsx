@@ -1,25 +1,21 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { 
-  ChevronsUpDown, 
-  Check, 
-  Terminal, 
-  Monitor, 
-  Tag, 
-  LayoutGrid, 
-  Layers, 
-  Eye, 
-  MousePointer2, 
-  Settings, 
-  AppWindow, 
+import {
+  ChevronsUpDown,
+  Check,
+  Terminal,
+  Monitor,
+  Tag,
+  LayoutGrid,
+  Layers,
+  Eye,
+  MousePointer2,
+  Settings,
+  AppWindow,
   Navigation,
   Search,
-  Zap
+  Zap,
 } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -37,38 +33,41 @@ interface ActionSelectorProps {
   onChange: (v: string) => void;
 }
 
-// 1. Helper to safely escape search queries for RegExp
 function escapeRegExp(string: string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-// 2. Helper component to highlight matching text
 function HighlightMatch({ text, query }: { text: string; query: string }) {
   if (!query.trim()) return <>{text}</>;
 
   const escapedQuery = escapeRegExp(query.trim());
-  const parts = text.split(new RegExp(`(${escapedQuery})`, 'gi'));
+  const parts = text.split(new RegExp(`(${escapedQuery})`, "gi"));
 
   return (
     <>
       {parts.map((part, i) =>
         part.toLowerCase() === query.trim().toLowerCase() ? (
-          <span 
-            key={i} 
+          <span
+            key={i}
             className="bg-primary/25 text-primary-foreground font-bold rounded-[2px] px-[1px]"
           >
             {part}
           </span>
         ) : (
           <span key={i}>{part}</span>
-        )
+        ),
       )}
     </>
   );
 }
 
-// Map categories to specific icons for better visual scanning
-const CategoryIcon = ({ category, className }: { category: DispatcherCategory | string; className?: string }) => {
+const CategoryIcon = ({
+  category,
+  className,
+}: {
+  category: DispatcherCategory | string;
+  className?: string;
+}) => {
   const icons: Record<string, React.ElementType> = {
     window: AppWindow,
     scratchpad: Layers,
@@ -90,14 +89,13 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [popoverWidth, setPopoverWidth] = useState<number>();
   const triggerRef = useRef<HTMLButtonElement>(null);
-  
+
   const categories = useMemo(() => getDispatchersByCategory(), []);
-  
-  // Find the currently selected dispatcher info to display rich details
+
   const selectedDispatcher = useMemo(() => {
     if (!value) return null;
     for (const [, items] of categories) {
-      const found = items.find(i => i.name === value);
+      const found = items.find((i) => i.name === value);
       if (found) return found;
     }
     return null;
@@ -112,7 +110,7 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
 
   const q = searchQuery.toLowerCase().trim();
   type ScoredItem = { d: DispatcherInfo; score: number };
-  
+
   const filtered = useMemo(() => {
     const result: { category: string; items: ScoredItem[] }[] = [];
 
@@ -158,50 +156,43 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <button
-          ref={triggerRef}
-          role="combobox"
-          aria-expanded={open}
-          className={cn(
-            "flex w-full items-center justify-between rounded-lg border border-border/40 text-left transition-all",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
-            selectedDispatcher 
-              ? "bg-card hover:bg-accent/40 p-3 shadow-sm" 
-              : "bg-muted/30 hover:bg-muted/50 p-3 border-dashed"
-          )}
-        >
-          {selectedDispatcher ? (
-            <div className="flex items-center gap-3.5 min-w-0 flex-1">
-              <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <CategoryIcon category={selectedDispatcher.category} className="size-4.5" />
-              </div>
-              <div className="flex flex-col min-w-0 gap-0.5">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-sm font-bold text-foreground truncate">
-                    {selectedDispatcher.name}
-                  </span>
-                  <span className="text-[9px] uppercase tracking-wider font-semibold text-muted-foreground/60 bg-muted px-1.5 py-0.5 rounded-sm">
-                    {selectedDispatcher.category}
-                  </span>
-                </div>
-                <span className="text-xs text-muted-foreground truncate">
-                  {selectedDispatcher.description}
-                </span>
-              </div>
+      <PopoverTrigger
+        ref={triggerRef}
+        role="combobox"
+        aria-expanded={open}
+        className={cn(
+          "flex w-full items-center justify-between rounded-lg border border-border/40 text-left transition-all",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+          selectedDispatcher
+            ? "bg-card hover:bg-accent/40 p-3 shadow-sm"
+            : "bg-muted/30 hover:bg-muted/50 p-3 border-dashed",
+        )}
+      >
+        {selectedDispatcher ? (
+          <div className="flex items-center gap-3.5 min-w-0 flex-1">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <CategoryIcon category={selectedDispatcher.category} className="size-4.5" />
             </div>
-          ) : (
-            <div className="flex items-center gap-3 text-muted-foreground">
-              <div className="flex size-8 items-center justify-center rounded-md bg-muted text-muted-foreground/50">
-                <Search className="size-4" />
-              </div>
-              <span className="text-sm font-medium">Search and select a system action...</span>
+            <div className="flex min-w-0 flex-1 flex-col">
+              <span className="truncate text-sm font-medium text-foreground">
+                {selectedDispatcher.name}
+              </span>
+              <span className="truncate text-xs text-muted-foreground/70">
+                {selectedDispatcher.description}
+              </span>
             </div>
-          )}
-          <ChevronsUpDown className="ml-3 size-4 shrink-0 opacity-40" />
-        </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3 text-muted-foreground">
+            <div className="flex size-8 items-center justify-center rounded-md bg-muted text-muted-foreground/50">
+              <Search className="size-4" />
+            </div>
+            <span className="text-sm font-medium">Search and select a system action...</span>
+          </div>
+        )}
+        <ChevronsUpDown className="ml-3 size-4 shrink-0 opacity-40" />
       </PopoverTrigger>
-      
+
       <PopoverContent
         className="p-0 rounded-xl shadow-xl border-border/60 backdrop-blur-xl bg-background/95"
         align="start"
@@ -246,26 +237,30 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
                     }}
                     className={cn(
                       "flex-col items-start cursor-pointer rounded-lg mx-1 my-0.5 px-3 py-2 transition-colors",
-                      value === d.name ? "bg-primary/10 data-[selected]:bg-primary/15" : "data-[selected]:bg-muted/50"
+                      value === d.name
+                        ? "bg-primary/10 data-[selected]:bg-primary/15"
+                        : "data-[selected]:bg-muted/50",
                     )}
                   >
                     <div className="flex items-center w-full gap-2">
-                      <span className={cn(
-                        "font-mono text-[13px] font-semibold truncate transition-colors",
-                        value === d.name ? "text-primary" : "text-foreground"
-                      )}>
-                        {/* Highlights the Name */}
+                      <span
+                        className={cn(
+                          "font-mono text-[13px] font-semibold truncate transition-colors",
+                          value === d.name ? "text-primary" : "text-foreground",
+                        )}
+                      >
                         <HighlightMatch text={d.name} query={searchQuery} />
                       </span>
                       {value === d.name && (
                         <Check className="ml-auto size-3.5 shrink-0 text-primary" strokeWidth={3} />
                       )}
                     </div>
-                    <span className={cn(
-                      "text-[11px] mt-0.5 line-clamp-1 transition-colors",
-                      value === d.name ? "text-primary/80" : "text-muted-foreground/70"
-                    )}>
-                      {/* Highlights the Description */}
+                    <span
+                      className={cn(
+                        "text-[11px] mt-0.5 line-clamp-1 transition-colors",
+                        value === d.name ? "text-primary/80" : "text-muted-foreground/70",
+                      )}
+                    >
                       <HighlightMatch text={d.description} query={searchQuery} />
                     </span>
                   </CommandItem>

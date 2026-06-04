@@ -10,9 +10,19 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { LayoutGridIcon, Zap, Settings2, ShieldAlert, ChevronDown } from "lucide-react";
-import { bindKeyFromFlags, parseModifiers, serializeModifiers, insertModeAwareBinding } from "@/lib/keybind-parse";
+import {
+  bindKeyFromFlags,
+  parseModifiers,
+  serializeModifiers,
+  insertModeAwareBinding,
+} from "@/lib/keybind-parse";
 import { resolveGlobalIndex } from "@/lib/config-store";
-import { DISPATCHER_MAP, parseArgValues, serializeArgValues, validateAllArgs } from "@/lib/dispatchers";
+import {
+  DISPATCHER_MAP,
+  parseArgValues,
+  serializeArgValues,
+  validateAllArgs,
+} from "@/lib/dispatchers";
 import type { Keybinding, KeybindFlags } from "@/lib/keybind-types";
 import type { SourceFile } from "@/lib/config-types";
 import { useConflictCheck } from "../hooks/useConflictCheck";
@@ -21,7 +31,7 @@ import { ActionSelector } from "./ActionSelector";
 import { DynamicArgField } from "./DynamicArgField";
 import { ModeCombobox } from "./ModeCombobox";
 import { LayoutToggleGroup } from "./LayoutToggleGroup";
-import { cn } from "@/lib/utils"; // Ensure you have this utility imported
+import { cn } from "@/lib/utils";
 
 interface FormProps {
   open: boolean;
@@ -39,7 +49,13 @@ interface FormProps {
   editingEntry?: Keybinding | null;
 }
 
-function SectionLabel({ children, icon: Icon }: { children: React.ReactNode, icon?: React.ElementType }) {
+function SectionLabel({
+  children,
+  icon: Icon,
+}: {
+  children: React.ReactNode;
+  icon?: React.ElementType;
+}) {
   return (
     <div className="flex items-center gap-1.5 px-1 mb-1">
       {Icon && <Icon className="size-3.5 text-primary/70" />}
@@ -81,8 +97,7 @@ export function EditDialog({
     onRelease: false,
     pass: false,
   });
-  
-  // NEW: State to control the visibility of advanced settings
+
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   useEffect(() => {
@@ -95,15 +110,13 @@ export function EditDialog({
       setArgs(editingEntry.args ?? "");
       setFlags({ ...editingEntry.flags });
 
-      // SMART EXPANSION: Open advanced settings if they are actively using them
-      const hasAdvancedConfig = 
-        editingEntry.mode !== "default" || 
-        editingEntry.flags.symOnly || 
-        editingEntry.flags.onLock || 
-        editingEntry.flags.onRelease || 
+      const hasAdvancedConfig =
+        editingEntry.mode !== "default" ||
+        editingEntry.flags.symOnly ||
+        editingEntry.flags.onLock ||
+        editingEntry.flags.onRelease ||
         editingEntry.flags.pass;
       setShowAdvanced(hasAdvancedConfig);
-
     } else {
       setMode("default");
       setSelectedMods([]);
@@ -112,7 +125,7 @@ export function EditDialog({
       setArgs("");
       setFlags({ symOnly: false, onLock: false, onRelease: false, pass: false });
       setArgErrors({});
-      setShowAdvanced(false); // Reset to hidden on new entry
+      setShowAdvanced(false);
     }
   }, [open, editingEntry]);
 
@@ -141,10 +154,7 @@ export function EditDialog({
   );
 
   const configKey = useMemo(() => bindKeyFromFlags(flags), [flags]);
-  const modString = useMemo(
-    () => serializeModifiers(selectedMods),
-    [selectedMods],
-  );
+  const modString = useMemo(() => serializeModifiers(selectedMods), [selectedMods]);
 
   const conflicts = useConflictCheck(allEntries, mode, modString, key, editingEntry?.id);
 
@@ -154,21 +164,16 @@ export function EditDialog({
     setArgErrors(errors);
     if (Object.values(errors).some(Boolean)) return;
 
-    const value = [modString, key.trim(), func.trim(), args.trim()].filter((s) => s !== "").join(",");
+    const value = [modString, key.trim(), func.trim(), args.trim()]
+      .filter((s) => s !== "")
+      .join(",");
     const resolvedEditing = editingEntry ? allEntries.find((e) => e.id === editingEntry.id) : null;
 
     if (resolvedEditing) {
       if (configKey !== resolvedEditing.keyword || mode !== resolvedEditing.mode) {
         const loc = resolveGlobalIndex(files, resolvedEditing.keyword, resolvedEditing.ordinal);
         removeEntry(resolvedEditing.keyword, resolvedEditing.ordinal);
-        insertModeAwareBinding(
-          files,
-          insertEntry,
-          configKey,
-          value,
-          mode,
-          loc?.fileIdx,
-        );
+        insertModeAwareBinding(files, insertEntry, configKey, value, mode, loc?.fileIdx);
       } else {
         updateEntry(resolvedEditing.keyword, resolvedEditing.ordinal, value);
       }
@@ -202,10 +207,7 @@ export function EditDialog({
           </DialogDescription>
         </DialogHeader>
 
-        {/* The main scrollable body */}
         <div className="flex flex-col gap-5 px-5 py-5 overflow-y-auto scrollbar-thin">
-          
-          {/* shrink-0 protects the canvas from being squished by flexbox! */}
           <div className="shrink-0">
             <KeyRecorder
               mods={selectedMods}
@@ -224,7 +226,7 @@ export function EditDialog({
                   setFunc(v);
                 }}
               />
-              
+
               {func && currentSchema.length > 0 && (
                 <div className="animate-in fade-in slide-in-from-top-2 duration-300">
                   <div className="rounded-xl border border-border/40 bg-card shadow-sm overflow-hidden flex flex-col">
@@ -274,7 +276,6 @@ export function EditDialog({
             </section>
           )}
 
-          {/* ADVANCED SETTINGS COLLAPSIBLE */}
           <section className="flex flex-col shrink-0 mt-2">
             <button
               type="button"
@@ -287,25 +288,27 @@ export function EditDialog({
                   Advanced Context &amp; Flags
                 </span>
               </div>
-              <ChevronDown 
+              <ChevronDown
                 className={cn(
-                  "size-4 text-muted-foreground/50 transition-transform duration-300", 
-                  showAdvanced && "rotate-180"
-                )} 
+                  "size-4 text-muted-foreground/50 transition-transform duration-300",
+                  showAdvanced && "rotate-180",
+                )}
               />
             </button>
 
-            <div 
+            <div
               className={cn(
-                "grid transition-all duration-300 ease-in-out", 
-                showAdvanced ? "grid-rows-[1fr] opacity-100 pt-2" : "grid-rows-[0fr] opacity-0"
+                "grid transition-all duration-300 ease-in-out",
+                showAdvanced ? "grid-rows-[1fr] opacity-100 pt-2" : "grid-rows-[0fr] opacity-0",
               )}
             >
               <div className="overflow-hidden">
                 <Card>
                   <div className="flex items-center justify-between px-4 py-3 bg-muted/5 border-b border-border/20">
                     <div className="flex flex-col gap-1 pr-4">
-                      <Label className="text-[13px] font-medium leading-none text-foreground">Mode</Label>
+                      <Label className="text-[13px] font-medium leading-none text-foreground">
+                        Mode
+                      </Label>
                       <span className="text-[11px] text-muted-foreground/70">
                         Restrict this binding to a specific context.
                       </span>
@@ -380,7 +383,6 @@ export function EditDialog({
           </section>
         </div>
 
-        {/* Fixed Bottom Action Bar */}
         <div className="border-t border-border/40 bg-muted/20 shrink-0">
           {conflicts.length > 0 && (
             <div className="px-5 py-3 bg-destructive/10 border-b border-destructive/20 flex items-start gap-2.5 text-xs text-destructive">
@@ -396,16 +398,19 @@ export function EditDialog({
                     </code>
                   </span>
                 ))}
-                {conflicts.length > 3 && (
-                  <span> and {conflicts.length - 3} more</span>
-                )}
-                . Saving will replace existing.
+                {conflicts.length > 3 && <span> and {conflicts.length - 3} more</span>}. Saving will
+                replace existing.
               </p>
             </div>
           )}
 
           <div className="flex items-center justify-end gap-3 px-5 py-3.5">
-            <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)} className="hover:bg-muted/50">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onOpenChange(false)}
+              className="hover:bg-muted/50"
+            >
               Cancel
             </Button>
             <Button
