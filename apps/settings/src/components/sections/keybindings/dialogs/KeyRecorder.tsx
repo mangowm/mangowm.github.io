@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown, Plus, Settings2, X } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -28,14 +28,14 @@ interface KeyRecorderProps {
 export function KeyRecorder({ mods, capturedKey, onModsChange, onKeyChange }: KeyRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [isKeySearchOpen, setIsKeySearchOpen] = useState(false);
+  const [showRawInput, setShowRawInput] = useState(false);
   const captureBoxRef = useRef<HTMLDivElement>(null);
   const captureInputRef = useRef<HTMLInputElement>(null);
-  const keyRecorder = useKeyRecorder(
-    (combo) => {
-      onKeyChange(combo.key);
-      setIsRecording(false);
-    },
-  );
+
+  const keyRecorder = useKeyRecorder((combo) => {
+    onKeyChange(combo.key);
+    setIsRecording(false);
+  });
 
   useEffect(() => {
     if (isRecording && !isKeySearchOpen) {
@@ -47,11 +47,11 @@ export function KeyRecorder({ mods, capturedKey, onModsChange, onKeyChange }: Ke
 
   const [rawInput, setRawInput] = useState("");
 
-  // Sync raw input when editing an existing code:NNN binding
   useEffect(() => {
     if (isRawKeycode(capturedKey)) {
       const code = parseRawKeycode(capturedKey);
       setRawInput(code !== null ? String(code) : "");
+      setShowRawInput(true);
     } else {
       setRawInput("");
     }
@@ -71,21 +71,119 @@ export function KeyRecorder({ mods, capturedKey, onModsChange, onKeyChange }: Ke
     }
   };
 
+  const renderKeyEquation = () => {
+    const activeMods = MODIFIER_ORDER.filter(m => mods.includes(m));
+    
+    return (
+      <div className="flex flex-wrap items-center justify-center gap-2.5 w-full min-h-[4rem]">
+        {activeMods.map((m) => (
+          <div key={m} className="flex items-center gap-2.5 animate-in zoom-in duration-200">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleMod(m);
+              }}
+              className="group relative flex h-10 min-w-[3.5rem] items-center justify-center overflow-hidden rounded-lg border-b-4 border-primary/20 bg-primary px-3 font-mono text-xs font-bold uppercase shadow-sm transition-all hover:-translate-y-0.5 hover:border-destructive/30 hover:bg-destructive hover:shadow-destructive/20"
+              title={`Remove ${m}`}
+            >
+              <span className="text-primary-foreground transition-transform duration-200 group-hover:-translate-y-8">
+                {m}
+              </span>
+              <span className="absolute inset-0 flex items-center justify-center text-destructive-foreground translate-y-8 transition-transform duration-200 group-hover:translate-y-0">
+                <X className="size-4" strokeWidth={3} />
+              </span>
+            </button>
+            <Plus className="size-3.5 text-muted-foreground/40" />
+          </div>
+        ))}
+
+        <div className="relative group flex items-center shadow-sm">
+          {capturedKey ? (
+            <kbd
+              onClick={() => setIsRecording(true)}
+              className={cn(
+                "flex h-10 items-center justify-center rounded-l-lg border-y-2 border-l-2 border-b-4 px-5 font-mono text-base font-black uppercase tracking-widest transition-all cursor-pointer",
+                isRecording
+                  ? "border-primary bg-primary/10 text-primary animate-pulse border-solid"
+                  : isRawKeycode(capturedKey)
+                  ? "border-amber-500/30 bg-amber-500/10 text-amber-600 hover:border-amber-500/50 hover:bg-amber-500/20"
+                  : "border-border bg-card text-foreground hover:border-primary/50 hover:bg-muted"
+              )}
+            >
+              {isRawKeycode(capturedKey) ? capturedKey : xkbToDisplay(capturedKey)}
+            </kbd>
+          ) : (
+            <kbd
+              onClick={() => setIsRecording(true)}
+              className={cn(
+                "flex h-10 min-w-[7rem] items-center justify-center rounded-l-lg border-y-2 border-l-2 border-dashed px-4 font-sans text-[11px] font-bold uppercase tracking-widest transition-all cursor-pointer",
+                isRecording
+                  ? "border-primary/60 bg-primary/5 text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)] animate-pulse"
+                  : "border-muted-foreground/30 bg-muted/10 text-muted-foreground/50 hover:border-primary/40 hover:bg-muted/30"
+              )}
+            >
+              {isRecording ? "Listening..." : "Press Key"}
+            </kbd>
+          )}
+
+          <Popover open={isKeySearchOpen} onOpenChange={setIsKeySearchOpen}>
+            <PopoverTrigger
+              className={cn(
+                "flex h-10 w-8 items-center justify-center rounded-r-lg border-y-2 border-r-2 border-b-4 transition-all z-10",
+                capturedKey
+                  ? isRawKeycode(capturedKey)
+                    ? "border-amber-500/30 bg-amber-500/5 hover:bg-amber-500/20 text-amber-600/70"
+                    : "border-border bg-card hover:bg-muted text-muted-foreground/60"
+                  : "border-dashed border-muted-foreground/30 bg-muted/10 hover:bg-muted/30 hover:border-primary/40",
+                isRecording && "border-primary/60 bg-primary/5 border-solid"
+              )}
+              title="Search Keys"
+            >
+              <ChevronsUpDown className="size-3.5" />
+            </PopoverTrigger>
+            <PopoverContent className="w-64 p-0 rounded-xl shadow-2xl border-border" align="end" sideOffset={8}>
+              <Command className="border-0">
+                <CommandInput placeholder="Search keys (e.g., Space)..." className="h-10 text-sm border-none focus:ring-0" />
+                <CommandList className="max-h-[200px] scrollbar-thin">
+                  <CommandEmpty className="py-4 text-center text-sm text-muted-foreground">
+                    No keys found.
+                  </CommandEmpty>
+                  {KEY_GROUPS.map((group) => (
+                    <CommandGroup key={group.label} heading={group.label} className="text-muted-foreground/70">
+                      {group.keys.map((k) => (
+                        <CommandItem
+                          key={k.name}
+                          value={`${k.name} ${k.aliases?.join(" ")}`}
+                          onSelect={() => {
+                            onKeyChange(k.name);
+                            setIsKeySearchOpen(false);
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <span className="font-mono text-sm font-medium">{k.name}</span>
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  ))}
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <section className="flex flex-col gap-2">
-      <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/45">
-        Combination
-      </span>
+    <section className="flex flex-col w-full rounded-xl border border-border/50 bg-background shadow-sm overflow-hidden transition-all duration-300 focus-within:border-primary/40 focus-within:shadow-md">
       <input
         ref={captureInputRef}
         className="sr-only"
         aria-label="Key capture input"
         onKeyDown={(e) => {
-          if (e.key === "Escape") {
-            setIsRecording(false);
-          } else {
-            keyRecorder.handleKeyEvent(e.nativeEvent);
-          }
+          if (e.key === "Escape") setIsRecording(false);
+          else keyRecorder.handleKeyEvent(e.nativeEvent);
         }}
         readOnly
       />
@@ -93,10 +191,8 @@ export function KeyRecorder({ mods, capturedKey, onModsChange, onKeyChange }: Ke
       <div
         ref={captureBoxRef}
         className={cn(
-          "relative flex flex-col items-center justify-center rounded-xl border py-6 transition-all cursor-pointer gap-4",
-          isRecording
-            ? "border-primary/50 bg-primary/5 ring-4 ring-primary/10"
-            : "border-border/50 bg-muted/20 hover:border-border hover:bg-muted/40",
+          "relative flex flex-col p-4 transition-colors duration-500 ease-out cursor-pointer",
+          isRecording ? "bg-primary/[0.02]" : "bg-transparent hover:bg-muted/5"
         )}
         onClick={(e) => {
           if ((e.target as HTMLElement).closest('[data-slot="popover-trigger"]')) return;
@@ -104,12 +200,33 @@ export function KeyRecorder({ mods, capturedKey, onModsChange, onKeyChange }: Ke
           captureInputRef.current?.focus();
         }}
       >
-        <div className="flex flex-col items-center gap-2.5">
+        <div className="flex items-center justify-between mb-4">
+          <button 
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowRawInput(!showRawInput);
+            }}
+            className={cn(
+              "p-1 rounded-md transition-colors",
+              showRawInput ? "bg-primary/10 text-primary" : "hover:bg-muted text-muted-foreground/50 hover:text-foreground"
+            )}
+            title="Toggle Raw Keycode Input"
+          >
+            <Settings2 className="size-3.5" />
+          </button>
+        </div>
+
+        <div className="py-1">
+          {renderKeyEquation()}
+        </div>
+
+        <div className="mt-5 flex flex-col items-center gap-2.5">
           <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/40">
-            Modifiers
+            Available Modifiers
           </span>
-          <div className="flex flex-wrap justify-center items-center gap-2">
-            {MODIFIER_ORDER.map((m) => (
+          <div className="flex flex-wrap justify-center gap-1.5">
+            {MODIFIER_ORDER.filter(m => !mods.includes(m)).map((m) => (
               <button
                 key={m}
                 type="button"
@@ -117,161 +234,44 @@ export function KeyRecorder({ mods, capturedKey, onModsChange, onKeyChange }: Ke
                   e.stopPropagation();
                   toggleMod(m);
                 }}
-                className={cn(
-                  "flex items-center justify-center h-9 min-w-[3.5rem] rounded-lg border font-semibold tracking-widest select-none transition-all duration-100 text-[11px] uppercase px-3",
-                  mods.includes(m)
-                    ? "bg-primary text-primary-foreground border-primary/30 shadow-sm"
-                    : "border-dashed border-muted-foreground/25 text-muted-foreground/45 bg-transparent hover:bg-muted/30 hover:border-muted-foreground/50 hover:text-muted-foreground/70",
-                )}
+                className="flex h-7 items-center justify-center rounded-md border border-dashed border-muted-foreground/30 bg-transparent px-2.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60 transition-all hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
               >
-                {m}
+                + {m}
               </button>
             ))}
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center gap-2.5">
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/40">
-            Key
-          </span>
-          <div className="flex items-center gap-0">
-            {capturedKey ? (
-              <div
-                className={cn(
-                  "relative flex h-11 items-center justify-center rounded-l-lg border border-r-0 px-3.5 transition-all cursor-pointer select-none font-sans font-bold tracking-widest text-sm group",
-                  "border-border/50 bg-card",
-                  isRecording
-                    ? "border-primary/40 bg-primary/5"
-                    : "hover:border-primary/30 hover:bg-primary/[0.03]",
-                )}
-                onClick={() => setIsRecording(true)}
-                role="button"
-                tabIndex={0}
-              >
-                <span>{xkbToDisplay(capturedKey)}</span>
-                {!isRecording && (
-                  <span className="ml-2 text-[9px] font-normal uppercase tracking-wider text-muted-foreground/25 transition-all group-hover:text-primary/60">
-                    change
-                  </span>
-                )}
-              </div>
-            ) : (
-              <div
-                className={cn(
-                  "flex h-11 min-w-[5.5rem] items-center justify-center rounded-l-lg border-2 border-r-0 px-3.5 transition-colors cursor-pointer select-none",
-                  isRecording
-                    ? "border-primary/40 bg-background/50"
-                    : "border-border/50 bg-background/30 hover:bg-muted/30",
-                )}
-                onClick={() => setIsRecording(true)}
-                role="button"
-                tabIndex={0}
-              >
-                <span
-                  className={cn(
-                    "text-xs font-semibold tracking-widest uppercase",
-                    isRecording
-                      ? "animate-pulse text-primary/80"
-                      : "text-muted-foreground/50",
-                  )}
-                >
-                  {isRecording ? "Listening" : "No Key"}
-                </span>
-              </div>
+            {MODIFIER_ORDER.every(m => mods.includes(m)) && (
+              <span className="text-xs text-muted-foreground/30 italic">All modifiers active</span>
             )}
-
-            <Popover
-              open={isKeySearchOpen}
-              onOpenChange={(open) => {
-                setIsKeySearchOpen(open);
-              }}
-            >
-              <PopoverTrigger
-                render={
-                  <button
-                    className={cn(
-                      "flex items-center justify-center h-11 w-7 rounded-r-lg border transition-colors shrink-0",
-                      capturedKey
-                        ? "border-l-0 border-border/50 bg-card hover:bg-muted"
-                        : "border-l-0 border-2",
-                      isRecording && (capturedKey
-                        ? "border-primary/40 bg-primary/5"
-                        : "border-primary/40 bg-background/50"),
-                    )}
-                    onClick={(e) => e.stopPropagation()}
-                    title="Choose from key list"
-                  >
-                    <ChevronsUpDown className="size-3.5 text-muted-foreground/40" />
-                  </button>
-                }
-              />
-              <PopoverContent
-                className="w-64 p-0 rounded-xl shadow-lg border-border/50"
-                align="center"
-                sideOffset={6}
-              >
-                <Command className="border-0">
-                  <CommandInput
-                    placeholder="Search keys..."
-                    className="h-10 text-sm border-none focus:ring-0"
-                  />
-                  <CommandList className="max-h-[220px]">
-                    <CommandEmpty className="py-4 text-center text-xs text-muted-foreground">
-                      No keys found.
-                    </CommandEmpty>
-                    {KEY_GROUPS.map((group) => (
-                      <CommandGroup key={group.label} heading={group.label}>
-                        {group.keys.map((k) => (
-                          <CommandItem
-                            key={k.name}
-                            value={`${k.name} ${k.aliases?.join(" ")}`}
-                            onSelect={() => {
-                              onKeyChange(k.name);
-                              setIsKeySearchOpen(false);
-                            }}
-                          >
-                            <span className="font-mono text-sm">{k.name}</span>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    ))}
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
           </div>
         </div>
-
-        {!isRecording && !capturedKey && (
-          <span className="text-[10px] text-muted-foreground/40">
-            Click any area above or press a key to start
-          </span>
-        )}
       </div>
 
-      {/* Raw keycode row — outside the capture box so clicks don't trigger recording */}
-      <div className="flex items-center justify-between rounded-xl border border-border/50 bg-card px-4 py-3 shadow-sm">
-        <div className="flex flex-col gap-0.5 pr-4">
-          <span className="text-sm font-medium leading-none text-foreground">
-            Raw keycode
-          </span>
-          <span className="text-xs text-muted-foreground/60">
-            Alternative to pressing a key — enter a raw XKB keycode (8–255)
-          </span>
-        </div>
-        <div className="flex items-center gap-1.5 shrink-0">
-          <span className="text-xs font-mono text-muted-foreground/50">code:</span>
-          <Input
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            min={8}
-            max={255}
-            value={rawInput}
-            onChange={handleRawInputChange}
-            placeholder="8–255"
-            className="w-24 font-mono text-xs [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-          />
+      <div 
+        className={cn(
+          "grid transition-all duration-300 ease-in-out bg-muted/20",
+          showRawInput ? "grid-rows-[1fr] opacity-100 border-t border-border/50" : "grid-rows-[0fr] opacity-0 border-t-0"
+        )}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3">
+            <div className="flex flex-col">
+              <span className="text-[11px] font-semibold text-foreground tracking-wide">Raw XKB Code</span>
+              <span className="text-[10px] text-muted-foreground/60">Override with a system code</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-background border border-border/50 rounded-md pl-2 focus-within:ring-2 focus-within:ring-primary/20 shadow-sm">
+              <span className="text-[11px] font-mono font-medium text-muted-foreground/50">code:</span>
+              <Input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={rawInput}
+                onChange={handleRawInputChange}
+                placeholder="91"
+                className="w-16 h-7 border-none bg-transparent shadow-none focus-visible:ring-0 font-mono text-xs px-1 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
