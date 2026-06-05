@@ -9,12 +9,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { LayoutGridIcon, Zap, Settings2, ShieldAlert, ChevronDown } from "lucide-react";
+import {
+  LayoutGridIcon,
+  Zap,
+  Settings2,
+  ShieldAlert,
+  ChevronDown,
+  Keyboard,
+  MousePointer2,
+  Move,
+  FlipHorizontal,
+  Hand,
+} from "lucide-react";
 import {
   bindKeyFromFlags,
   parseModifiers,
   serializeModifiers,
   insertModeAwareBinding,
+  serializeBinding,
+  TYPE_TO_KEYWORD,
 } from "@/lib/keybind-parse";
 import { resolveGlobalIndex } from "@/lib/config-store";
 import {
@@ -23,31 +36,23 @@ import {
   serializeArgValues,
   validateAllArgs,
 } from "@/lib/dispatchers";
-import type { Keybinding, KeybindFlags } from "@/lib/keybind-types";
+import type { Keybinding, KeybindFlags, BindingType } from "@/lib/keybind-types";
 import type { SourceFile } from "@/lib/config-types";
 import { useConflictCheck } from "../hooks/useConflictCheck";
-import { KeyRecorder } from "./KeyRecorder";
 import { ActionSelector } from "./ActionSelector";
 import { DynamicArgField } from "./DynamicArgField";
 import { ModeCombobox } from "./ModeCombobox";
 import { LayoutToggleGroup } from "./LayoutToggleGroup";
+import { ComboInput } from "../components/ComboInput";
 import { cn } from "@/lib/utils";
 
-interface FormProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  insertEntry: (
-    key: string,
-    value: string,
-    options: { fileIdx: number; afterLineIdx: number },
-  ) => void;
-  updateEntry: (key: string, index: number, value: string) => void;
-  removeEntry: (key: string, index: number) => void;
-  files: SourceFile[];
-  existingModes: string[];
-  allEntries: Keybinding[];
-  editingEntry?: Keybinding | null;
-}
+const TYPE_OPTIONS: { type: BindingType; label: string; icon: React.ReactNode }[] = [
+  { type: "keyboard", label: "Keyboard", icon: <Keyboard className="size-3.5" /> },
+  { type: "mouse", label: "Mouse", icon: <MousePointer2 className="size-3.5" /> },
+  { type: "axis", label: "Scroll", icon: <Move className="size-3.5" /> },
+  { type: "switch", label: "Lid Switch", icon: <FlipHorizontal className="size-3.5" /> },
+  { type: "gesture", label: "Gesture", icon: <Hand className="size-3.5" /> },
+];
 
 function SectionLabel({
   children,
@@ -74,6 +79,22 @@ function Card({ children }: { children: React.ReactNode }) {
   );
 }
 
+interface FormProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  insertEntry: (
+    key: string,
+    value: string,
+    options: { fileIdx: number; afterLineIdx: number },
+  ) => void;
+  updateEntry: (key: string, index: number, value: string) => void;
+  removeEntry: (key: string, index: number) => void;
+  files: SourceFile[];
+  existingModes: string[];
+  allEntries: Keybinding[];
+  editingEntry?: Keybinding | null;
+}
+
 export function EditDialog({
   open,
   onOpenChange,
@@ -85,6 +106,7 @@ export function EditDialog({
   allEntries,
   editingEntry,
 }: FormProps) {
+  const [bindingType, setBindingType] = useState<BindingType>("keyboard");
   const [selectedMods, setSelectedMods] = useState<string[]>([]);
   const [key, setKey] = useState("");
   const [func, setFunc] = useState("");
@@ -97,37 +119,57 @@ export function EditDialog({
     onRelease: false,
     pass: false,
   });
-
+  const [fingers, setFingers] = useState("3");
   const [showAdvanced, setShowAdvanced] = useState(false);
+
+  const isKeyboard = bindingType === "keyboard";
 
   useEffect(() => {
     if (!open) return;
+
     if (editingEntry) {
-      setMode(editingEntry.mode);
+      setBindingType(editingEntry.type);
       setSelectedMods(parseModifiers(editingEntry.mods));
       setKey(editingEntry.key);
       setFunc(editingEntry.func);
       setArgs(editingEntry.args ?? "");
+      setFingers(editingEntry.fingers || "3");
+      setMode(editingEntry.mode);
       setFlags({ ...editingEntry.flags });
 
-      const hasAdvancedConfig =
-        editingEntry.mode !== "default" ||
-        editingEntry.flags.symOnly ||
-        editingEntry.flags.onLock ||
-        editingEntry.flags.onRelease ||
-        editingEntry.flags.pass;
-      setShowAdvanced(hasAdvancedConfig);
+      setShowAdvanced(
+        editingEntry.type === "keyboard" &&
+          (editingEntry.mode !== "default" ||
+            editingEntry.flags.symOnly ||
+            editingEntry.flags.onLock ||
+            editingEntry.flags.onRelease ||
+            editingEntry.flags.pass),
+      );
     } else {
-      setMode("default");
+      setBindingType("keyboard");
       setSelectedMods([]);
       setKey("");
       setFunc("");
       setArgs("");
+      setFingers("3");
+      setMode("default");
       setFlags({ symOnly: false, onLock: false, onRelease: false, pass: false });
       setArgErrors({});
       setShowAdvanced(false);
     }
   }, [open, editingEntry]);
+
+  const configKey = isKeyboard ? bindKeyFromFlags(flags) : TYPE_TO_KEYWORD[bindingType];
+
+  const modString = serializeModifiers(selectedMods);
+
+  const conflicts = useConflictCheck(
+    isKeyboard ? allEntries : [],
+    mode,
+    modString,
+    key,
+    editingEntry?.id,
+  );
 
   const currentSchema = DISPATCHER_MAP.get(func)?.args ?? [];
   const argValues = parseArgValues(args, currentSchema);
@@ -141,44 +183,70 @@ export function EditDialog({
     );
   };
 
-  const configKey = bindKeyFromFlags(flags);
-  const modString = serializeModifiers(selectedMods);
-
-  const conflicts = useConflictCheck(allEntries, mode, modString, key, editingEntry?.id);
-
   const handleSubmit = () => {
     if (!key.trim() || !func.trim()) return;
+
+    if (bindingType === "gesture") {
+      if (!/^\d+$/.test(fingers) || parseInt(fingers, 10) < 1) {
+        return;
+      }
+    }
+
     const errors = validateAllArgs(argValues, currentSchema);
     setArgErrors(errors);
     if (Object.values(errors).some(Boolean)) return;
 
-    const value = [modString, key.trim(), func.trim(), args.trim()]
-      .filter((s) => s !== "")
-      .join(",");
+    const binding: Keybinding = {
+      id: "",
+      keyword: configKey,
+      ordinal: 0,
+      type: bindingType,
+      mods: modString,
+      key: key.trim(),
+      func: func.trim(),
+      args: args.trim(),
+      mode: isKeyboard ? mode : "default",
+      flags: isKeyboard ? flags : { symOnly: false, onLock: false, onRelease: false, pass: false },
+      fingers: bindingType === "gesture" ? fingers || "3" : "",
+    };
+
+    const value = serializeBinding(binding);
     const resolvedEditing = editingEntry ? allEntries.find((e) => e.id === editingEntry.id) : null;
 
     if (resolvedEditing) {
-      if (configKey !== resolvedEditing.keyword || mode !== resolvedEditing.mode) {
+      if (isKeyboard && configKey === resolvedEditing.keyword && mode === resolvedEditing.mode) {
+        updateEntry(resolvedEditing.keyword, resolvedEditing.ordinal, value);
+      } else if (!isKeyboard && configKey === resolvedEditing.keyword) {
+        updateEntry(resolvedEditing.keyword, resolvedEditing.ordinal, value);
+      } else {
         const loc = resolveGlobalIndex(files, resolvedEditing.keyword, resolvedEditing.ordinal);
         removeEntry(resolvedEditing.keyword, resolvedEditing.ordinal);
-        insertModeAwareBinding(files, insertEntry, configKey, value, mode, loc?.fileIdx);
-      } else {
-        updateEntry(resolvedEditing.keyword, resolvedEditing.ordinal, value);
+        insertModeAwareBinding(
+          files,
+          insertEntry,
+          configKey,
+          value,
+          mode,
+          isKeyboard,
+          loc?.fileIdx,
+        );
       }
     } else {
-      const byKeyword = new Map<string, typeof conflicts>();
-      for (const c of conflicts) {
-        const group = byKeyword.get(c.keyword) ?? [];
-        group.push(c);
-        byKeyword.set(c.keyword, group);
-      }
-      for (const [, group] of byKeyword) {
-        group.sort((a, b) => b.ordinal - a.ordinal);
-        for (const c of group) {
-          removeEntry(c.keyword, c.ordinal);
+      if (isKeyboard) {
+        const byKeyword = new Map<string, typeof conflicts>();
+        for (const c of conflicts) {
+          const group = byKeyword.get(c.keyword) ?? [];
+          group.push(c);
+          byKeyword.set(c.keyword, group);
+        }
+        for (const [, group] of byKeyword) {
+          group.sort((a, b) => b.ordinal - a.ordinal);
+          for (const c of group) {
+            removeEntry(c.keyword, c.ordinal);
+          }
         }
       }
-      insertModeAwareBinding(files, insertEntry, configKey, value, mode);
+      insertModeAwareBinding(files, insertEntry, configKey, value, mode, isKeyboard);
     }
     onOpenChange(false);
   };
@@ -188,22 +256,70 @@ export function EditDialog({
       <DialogContent className="sm:max-w-xl overflow-hidden p-0 shadow-2xl border-border/60 bg-background/95 backdrop-blur-md flex flex-col max-h-[90vh]">
         <DialogHeader className="px-5 pt-5 pb-3 border-b border-border/30 bg-muted/20 shrink-0">
           <DialogTitle className="text-lg tracking-tight">
-            {editingEntry ? "Edit Shortcut" : "New Shortcut"}
+            {editingEntry ? "Edit Binding" : "New Binding"}
           </DialogTitle>
           <DialogDescription className="text-xs">
-            Define a keyboard combination and configure the action it triggers.
+            {editingEntry
+              ? "Change the trigger or action."
+              : "Choose what kind of binding, the trigger, and the action it runs."}
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-5 px-5 py-5 overflow-y-auto scrollbar-thin">
-          <div className="shrink-0">
-            <KeyRecorder
+          <section className="flex flex-col gap-2 shrink-0">
+            <SectionLabel>Binding Type</SectionLabel>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {TYPE_OPTIONS.map(({ type, label, icon }) => {
+                const active = bindingType === type;
+                return (
+                  <button
+                    key={type}
+                    type="button"
+                    disabled={!!editingEntry}
+                    onClick={() => {
+                      setBindingType(type);
+                      setKey("");
+                      setSelectedMods(type === "switch" ? [] : selectedMods);
+                    }}
+                    className={cn(
+                      "flex h-8 items-center gap-1.5 rounded-lg border px-3 text-xs font-medium transition-all",
+                      active
+                        ? "border-primary/40 bg-primary/10 text-primary shadow-sm"
+                        : "border-border/50 text-muted-foreground/70 hover:border-primary/30 hover:text-primary hover:bg-primary/5",
+                      editingEntry && "opacity-60 cursor-not-allowed",
+                    )}
+                  >
+                    {icon}
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="flex flex-col gap-2 shrink-0">
+            <SectionLabel icon={bindingType === "keyboard" ? undefined : Zap}>
+              {bindingType === "keyboard"
+                ? "Key Combination"
+                : bindingType === "mouse"
+                  ? "Mouse Button"
+                  : bindingType === "axis"
+                    ? "Scroll Direction"
+                    : bindingType === "switch"
+                      ? "Lid Event"
+                      : "Gesture"}
+            </SectionLabel>
+
+            <ComboInput
+              type={bindingType}
               mods={selectedMods}
-              capturedKey={key}
               onModsChange={setSelectedMods}
-              onKeyChange={setKey}
+              trigger={key}
+              onTriggerChange={setKey}
+              fingers={fingers}
+              onFingersChange={setFingers}
             />
-          </div>
+          </section>
 
           <section className="flex flex-col gap-2 shrink-0 relative z-10">
             <SectionLabel icon={Zap}>Trigger Action</SectionLabel>
@@ -240,7 +356,7 @@ export function EditDialog({
             </div>
           </section>
 
-          {func === "switch_layout" && (
+          {isKeyboard && func === "switch_layout" && (
             <section className="flex flex-col gap-2 shrink-0">
               <SectionLabel icon={LayoutGridIcon}>Layout Cycle</SectionLabel>
               <Card>
@@ -264,111 +380,117 @@ export function EditDialog({
             </section>
           )}
 
-          <section className="flex flex-col shrink-0 mt-2">
-            <button
-              type="button"
-              onClick={() => setShowAdvanced(!showAdvanced)}
-              className="flex items-center justify-between w-full p-2 -mx-2 rounded-lg hover:bg-muted/50 transition-colors group"
-            >
-              <div className="flex items-center gap-1.5">
-                <Settings2 className="size-3.5 text-primary/70" />
-                <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground/80 group-hover:text-foreground transition-colors">
-                  Advanced Context &amp; Flags
-                </span>
-              </div>
-              <ChevronDown
+          {isKeyboard && (
+            <section className="flex flex-col shrink-0 mt-2">
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="flex items-center justify-between w-full p-2 -mx-2 rounded-lg hover:bg-muted/50 transition-colors group"
+              >
+                <div className="flex items-center gap-1.5">
+                  <Settings2 className="size-3.5 text-primary/70" />
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground/80 group-hover:text-foreground transition-colors">
+                    Advanced Context &amp; Flags
+                  </span>
+                </div>
+                <ChevronDown
+                  className={cn(
+                    "size-4 text-muted-foreground/50 transition-transform duration-300",
+                    showAdvanced && "rotate-180",
+                  )}
+                />
+              </button>
+
+              <div
                 className={cn(
-                  "size-4 text-muted-foreground/50 transition-transform duration-300",
-                  showAdvanced && "rotate-180",
+                  "grid transition-all duration-300 ease-in-out",
+                  showAdvanced ? "grid-rows-[1fr] opacity-100 pt-2" : "grid-rows-[0fr] opacity-0",
                 )}
-              />
-            </button>
+              >
+                <div className="overflow-hidden">
+                  <Card>
+                    <div className="flex items-center justify-between px-4 py-3 bg-muted/5 border-b border-border/20">
+                      <div className="flex flex-col gap-1 pr-4">
+                        <Label className="text-[13px] font-medium leading-none text-foreground">
+                          Mode
+                        </Label>
+                        <span className="text-[11px] text-muted-foreground/70">
+                          Restrict this binding to a specific context.
+                        </span>
+                      </div>
+                      <div className="w-40">
+                        <ModeCombobox
+                          value={mode}
+                          existingModes={existingModes}
+                          onChange={setMode}
+                        />
+                      </div>
+                    </div>
 
-            <div
-              className={cn(
-                "grid transition-all duration-300 ease-in-out",
-                showAdvanced ? "grid-rows-[1fr] opacity-100 pt-2" : "grid-rows-[0fr] opacity-0",
-              )}
-            >
-              <div className="overflow-hidden">
-                <Card>
-                  <div className="flex items-center justify-between px-4 py-3 bg-muted/5 border-b border-border/20">
-                    <div className="flex flex-col gap-1 pr-4">
-                      <Label className="text-[13px] font-medium leading-none text-foreground">
-                        Mode
-                      </Label>
-                      <span className="text-[11px] text-muted-foreground/70">
-                        Restrict this binding to a specific context.
-                      </span>
+                    <div className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-muted/10 border-b border-border/20">
+                      <div className="flex flex-col gap-1 pr-4">
+                        <Label className="text-[13px] font-medium leading-none text-foreground">
+                          Lockscreen Passthrough
+                        </Label>
+                        <span className="text-[11px] text-muted-foreground/70">
+                          Execute while the system is locked.
+                        </span>
+                      </div>
+                      <Switch
+                        checked={flags.onLock}
+                        onCheckedChange={(c) => setFlags({ ...flags, onLock: c })}
+                      />
                     </div>
-                    <div className="w-40">
-                      <ModeCombobox value={mode} existingModes={existingModes} onChange={setMode} />
-                    </div>
-                  </div>
 
-                  <div className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-muted/10 border-b border-border/20">
-                    <div className="flex flex-col gap-1 pr-4">
-                      <Label className="text-[13px] font-medium leading-none text-foreground">
-                        Lockscreen Passthrough
-                      </Label>
-                      <span className="text-[11px] text-muted-foreground/70">
-                        Execute while the system is locked.
-                      </span>
+                    <div className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-muted/10 border-b border-border/20">
+                      <div className="flex flex-col gap-1 pr-4">
+                        <Label className="text-[13px] font-medium leading-none text-foreground">
+                          Symbol Only Match
+                        </Label>
+                        <span className="text-[11px] text-muted-foreground/70">
+                          Ignore keyboard layouts and strictly match the keysym.
+                        </span>
+                      </div>
+                      <Switch
+                        checked={flags.symOnly}
+                        onCheckedChange={(c) => setFlags({ ...flags, symOnly: c })}
+                      />
                     </div>
-                    <Switch
-                      checked={flags.onLock}
-                      onCheckedChange={(c) => setFlags({ ...flags, onLock: c })}
-                    />
-                  </div>
 
-                  <div className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-muted/10 border-b border-border/20">
-                    <div className="flex flex-col gap-1 pr-4">
-                      <Label className="text-[13px] font-medium leading-none text-foreground">
-                        Symbol Only Match
-                      </Label>
-                      <span className="text-[11px] text-muted-foreground/70">
-                        Ignore keyboard layouts and strictly match the keysym.
-                      </span>
+                    <div className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-muted/10 border-b border-border/20">
+                      <div className="flex flex-col gap-1 pr-4">
+                        <Label className="text-[13px] font-medium leading-none text-foreground">
+                          Trigger on Release
+                        </Label>
+                        <span className="text-[11px] text-muted-foreground/70">
+                          Execute the action when the key is released instead of pressed.
+                        </span>
+                      </div>
+                      <Switch
+                        checked={flags.onRelease}
+                        onCheckedChange={(c) => setFlags({ ...flags, onRelease: c })}
+                      />
                     </div>
-                    <Switch
-                      checked={flags.symOnly}
-                      onCheckedChange={(c) => setFlags({ ...flags, symOnly: c })}
-                    />
-                  </div>
 
-                  <div className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-muted/10 border-b border-border/20">
-                    <div className="flex flex-col gap-1 pr-4">
-                      <Label className="text-[13px] font-medium leading-none text-foreground">
-                        Trigger on Release
-                      </Label>
-                      <span className="text-[11px] text-muted-foreground/70">
-                        Execute the action when the key is released instead of pressed.
-                      </span>
+                    <div className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-muted/10">
+                      <div className="flex flex-col gap-1 pr-4">
+                        <Label className="text-[13px] font-medium leading-none text-foreground">
+                          Pass to Application
+                        </Label>
+                        <span className="text-[11px] text-muted-foreground/70">
+                          Allow the currently focused window to also receive this keypress.
+                        </span>
+                      </div>
+                      <Switch
+                        checked={flags.pass}
+                        onCheckedChange={(c) => setFlags({ ...flags, pass: c })}
+                      />
                     </div>
-                    <Switch
-                      checked={flags.onRelease}
-                      onCheckedChange={(c) => setFlags({ ...flags, onRelease: c })}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-muted/10">
-                    <div className="flex flex-col gap-1 pr-4">
-                      <Label className="text-[13px] font-medium leading-none text-foreground">
-                        Pass to Application
-                      </Label>
-                      <span className="text-[11px] text-muted-foreground/70">
-                        Allow the currently focused window to also receive this keypress.
-                      </span>
-                    </div>
-                    <Switch
-                      checked={flags.pass}
-                      onCheckedChange={(c) => setFlags({ ...flags, pass: c })}
-                    />
-                  </div>
-                </Card>
+                  </Card>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
         </div>
 
         <div className="border-t border-border/40 bg-muted/20 shrink-0">
@@ -407,7 +529,7 @@ export function EditDialog({
               onClick={handleSubmit}
               className="shadow-md transition-transform active:scale-95"
             >
-              {editingEntry ? "Update Shortcut" : "Save Shortcut"}
+              {editingEntry ? "Update Binding" : "Save Binding"}
             </Button>
           </div>
         </div>

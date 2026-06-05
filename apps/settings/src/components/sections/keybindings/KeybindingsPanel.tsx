@@ -35,6 +35,7 @@ export function KeybindingsPanel({ focusKey }: PanelProps) {
   const conflictIds = new Set<string>();
   const signatureMap = new Map<string, string[]>();
   allEntries.forEach((e) => {
+    if (e.type !== "keyboard") return;
     const mods = serializeModifiers(parseModifiers(e.mods));
     const signature = `${e.mode}|${mods}|${e.key}`;
     const existing = signatureMap.get(signature) || [];
@@ -51,7 +52,7 @@ export function KeybindingsPanel({ focusKey }: PanelProps) {
   const modesSet = new Set<string>();
   allEntries.forEach((e) => {
     categoriesSet.add(DISPATCHER_MAP.get(e.func)?.category ?? "other");
-    modesSet.add(e.mode);
+    if (e.type === "keyboard") modesSet.add(e.mode);
   });
   const cats = ["All", ...Array.from(categoriesSet).sort()];
   const modes = ["All", ...Array.from(modesSet).sort()];

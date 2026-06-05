@@ -6,29 +6,58 @@ export interface KeybindFlags {
   pass: boolean;
 }
 
-/**
- * A keybinding parsed from the config file.
- * The value after `=` is split on commas: [mods, key, func, …args].
- */
-export interface Keybinding {
-  /** Stable content hash of (keyword, mode, mods, key, func, args) */
-  readonly id: string;
-  /** The config key, e.g. "bind", "binds", "bindlr" */
-  readonly keyword: string;
-  /** Nth binding with this keyword across all loaded files */
-  readonly ordinal: number;
+export type BindingType = "keyboard" | "mouse" | "axis" | "switch" | "gesture";
 
-  /** Modifier string like "super+ctrl" or "none" */
+/**
+ * All 8 named mouse buttons mango's C parser supports,
+ * plus raw `code:<N>` handled as a string fallback.
+ */
+export const MOUSE_BUTTONS = [
+  "btn_left",
+  "btn_right",
+  "btn_middle",
+  "btn_side",
+  "btn_extra",
+  "btn_forward",
+  "btn_back",
+  "btn_task",
+] as const;
+
+export type NamedMouseButton = (typeof MOUSE_BUTTONS)[number];
+
+/** Suffix → human label for mouse buttons */
+export const MOUSE_BUTTON_LABELS: Record<string, string> = {
+  btn_left: "Left",
+  btn_right: "Right",
+  btn_middle: "Middle / Scroll",
+  btn_side: "Side",
+  btn_extra: "Extra",
+  btn_forward: "Forward",
+  btn_back: "Back",
+  btn_task: "Task",
+};
+
+/** C-level directions for axis and gesture bindings */
+export const BINDING_DIRECTIONS = ["up", "down", "left", "right"] as const;
+
+/** Fold states for switch bindings */
+export const BINDING_FOLD_STATES = ["fold", "unfold"] as const;
+
+/** Gesture motions (same as directions, different semantics for UI label) */
+export const BINDING_MOTIONS = ["up", "down", "left", "right"] as const;
+
+export interface Keybinding {
+  readonly id: string;
+  readonly keyword: string;
+  readonly ordinal: number;
+  readonly type: BindingType;
+
   readonly mods: string;
-  /** XKB key name like "Return", "Left", "a" */
   readonly key: string;
-  /** Dispatch function name like "spawn", "focusdir" */
   readonly func: string;
-  /** Comma-joined argument tokens after func; empty if none */
   readonly args: string;
 
-  /** "default", "common", or a custom submap name */
   readonly mode: string;
-  /** Flags parsed from the keyword suffix */
   readonly flags: KeybindFlags;
+  readonly fingers: string;
 }

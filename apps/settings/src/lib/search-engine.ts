@@ -4,7 +4,7 @@ import { useConfigStore } from "./config-store";
 import { SECTIONS } from "./sections";
 import type { ConfigData } from "./config-types";
 import type { DynamicIndexSource, DynamicSearchItem } from "./section-types";
-import { parseKeybindings } from "./keybind-parse";
+import { parseKeybindings, ALL_BIND_VARIANTS } from "./keybind-parse";
 import { DISPATCHER_MAP } from "./dispatchers";
 
 interface SearchDocument {
@@ -129,16 +129,19 @@ export const DYNAMIC_SOURCES: DynamicIndexSource[] = [
   },
   {
     sourceId: "keybindings",
-    watchKeys: ["bind", "binds", "bindl", "bindr", "bindp"],
+    watchKeys: [...ALL_BIND_VARIANTS, "mousebind", "axisbind", "switchbind", "gesturebind"],
     buildItems: (data) =>
-      parseKeybindings(data).map((b, i) => ({
-        id: `keybind:${i}`,
-        label: `${b.func} (${b.mods || "none"} + ${b.key})`,
-        description: DISPATCHER_MAP.get(b.func)?.description ?? b.func,
-        sectionLabel: "Keybindings",
-        sectionId: "keybindings",
-        configKey: b.id,
-      })),
+      parseKeybindings(data).map((b, i) => {
+        const prefix = b.type === "keyboard" ? "keybind" : b.type;
+        return {
+          id: `${prefix}:${i}`,
+          label: `${b.func} (${b.type === "switch" ? b.key : `${b.mods || "none"} + ${b.key}`})`,
+          description: DISPATCHER_MAP.get(b.func)?.description ?? b.func,
+          sectionLabel: "Keybindings",
+          sectionId: "keybindings",
+          configKey: b.id,
+        };
+      }),
   },
 ];
 

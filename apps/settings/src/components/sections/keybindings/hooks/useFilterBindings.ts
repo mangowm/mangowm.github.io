@@ -15,7 +15,8 @@ export function useFilterBindings(
         const info = DISPATCHER_MAP.get(e.func);
         if ((info?.category ?? "other") !== category) return false;
       }
-      if (mode !== "All" && e.mode !== mode) return false;
+      // Mode filter only applies to keyboard bindings
+      if (mode !== "All" && e.type === "keyboard" && e.mode !== mode) return false;
       if (!q) return true;
       const desc = DISPATCHER_MAP.get(e.func)?.description ?? "";
       return (
@@ -23,8 +24,10 @@ export function useFilterBindings(
         desc.toLowerCase().includes(q) ||
         e.key.toLowerCase().includes(q) ||
         e.mods.toLowerCase().includes(q) ||
-        e.mode.toLowerCase().includes(q) ||
-        e.args.toLowerCase().includes(q)
+        (e.type === "keyboard" && e.mode.toLowerCase().includes(q)) ||
+        e.args.toLowerCase().includes(q) ||
+        e.type.toLowerCase().includes(q) ||
+        (e.type === "gesture" && e.fingers.toLowerCase().includes(q))
       );
     });
   }, [entries, search, category, mode]);

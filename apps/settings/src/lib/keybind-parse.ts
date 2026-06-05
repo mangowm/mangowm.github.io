@@ -1,17 +1,26 @@
 import type { ConfigData, ConfigLine, SourceFile } from "./config-types";
-import type { Keybinding, KeybindFlags } from "./keybind-types";
+import type { Keybinding, KeybindFlags, BindingType } from "./keybind-types";
 
-/** Deterministic hash of (keyword, mode, mods, key, func, args). Same inputs → same id. */
-export function makeKeybindingId(
+type TokenResult = {
+  mods: string;
+  trigger: string;
+  func: string;
+  args: string;
+  fingers?: string;
+};
+
+/** Stable hash of (keyword, type, mods, trigger, func, args, fingers). */
+export function makeBindingId(
   keyword: string,
-  mode: string,
+  type: BindingType,
   mods: string,
-  key: string,
+  trigger: string,
   func: string,
   args: string,
+  fingers = "",
 ): string {
   let h = 5381;
-  const s = `${keyword}|${mode}|${mods}|${key}|${func}|${args}`;
+  const s = `${keyword}|${type}|${mods}|${trigger}|${func}|${args}|${fingers}`;
   for (let i = 0; i < s.length; i++) {
     h = (h << 5) + h + s.charCodeAt(i);
     h = h & h;
@@ -20,25 +29,106 @@ export function makeKeybindingId(
 }
 
 const BIND_KEY_RE = /^bind[slrp]*$/;
+const MOUSEBIND_KEY = "mousebind";
+const AXISBIND_KEY = "axisbind";
+const SWITCHBIND_KEY = "switchbind";
+const GESTUREBIND_KEY = "gesturebind";
+
+export const NON_KEYBOARD_KEYS = [
+  MOUSEBIND_KEY,
+  AXISBIND_KEY,
+  SWITCHBIND_KEY,
+  GESTUREBIND_KEY,
+] as const;
+
+/** All 16 canonical bind key variants (s→l→r→p flag order). */
+export const ALL_BIND_VARIANTS: readonly string[] = (() => {
+  const letters = ["s", "l", "r", "p"] as const;
+  const keys: string[] = ["bind"];
+  for (let mask = 1; mask < 16; mask++) {
+    let key = "bind";
+    for (let i = 0; i < 4; i++) {
+      if (mask & (1 << i)) key += letters[i];
+    }
+    keys.push(key);
+  }
+  return keys;
+})();
 
 export function isBindKey(key: string): boolean {
   return BIND_KEY_RE.test(key);
 }
 
-function tokenizeBinding(value: string): {
-  mods: string;
-  key: string;
-  func: string;
-  args: string;
-} | null {
+export function isMouseBindKey(key: string): boolean {
+  return key === MOUSEBIND_KEY;
+}
+
+export function isAxisBindKey(key: string): boolean {
+  return key === AXISBIND_KEY;
+}
+
+export function isSwitchBindKey(key: string): boolean {
+  return key === SWITCHBIND_KEY;
+}
+
+export function isGestureBindKey(key: string): boolean {
+  return key === GESTUREBIND_KEY;
+}
+
+export function isNonKeyboardBindKey(key: string): boolean {
+  return (NON_KEYBOARD_KEYS as readonly string[]).includes(key);
+}
+
+const KEYWORD_TO_TYPE: Record<string, BindingType> = {
+  mousebind: "mouse",
+  axisbind: "axis",
+  switchbind: "switch",
+  gesturebind: "gesture",
+};
+
+export function detectBindingType(keyword: string): BindingType {
+  return KEYWORD_TO_TYPE[keyword] ?? "keyboard";
+}
+
+export const TYPE_TO_KEYWORD: Record<BindingType, string> = {
+  keyboard: "bind",
+  mouse: "mousebind",
+  axis: "axisbind",
+  switch: "switchbind",
+  gesture: "gesturebind",
+};
+
+/**
+ * Tokenise a comma-separated binding value.
+ * Structure varies by type:
+ *   keyboard/mouse/axis: mods, trigger, func, args…
+ *   switch:              trigger (no mods), func, args…
+ *   gesture:             mods, motion, fingers, func, args…
+ */
+function tokenizeBinding(keyword: string, value: string): TokenResult | null {
   const parts = value.split(",");
-  if (parts.length < 3) return null;
-  return {
-    mods: parts[0],
-    key: parts[1],
-    func: parts[2],
-    args: parts.slice(3).join(","),
-  };
+  const type = detectBindingType(keyword);
+
+  switch (type) {
+    case "switch": {
+      if (parts.length < 2) return null;
+      return { mods: "none", trigger: parts[0], func: parts[1], args: parts.slice(2).join(",") };
+    }
+    case "gesture": {
+      if (parts.length < 4) return null;
+      return {
+        mods: parts[0],
+        trigger: parts[1],
+        func: parts[3],
+        args: parts.slice(4).join(","),
+        fingers: parts[2],
+      };
+    }
+    default: {
+      if (parts.length < 3) return null;
+      return { mods: parts[0], trigger: parts[1], func: parts[2], args: parts.slice(3).join(",") };
+    }
+  }
 }
 
 export function parseSingleBinding(
@@ -47,23 +137,48 @@ export function parseSingleBinding(
   value: string,
   mode = "default",
 ): Keybinding | null {
-  const tokens = tokenizeBinding(value);
+  const tokens = tokenizeBinding(keyword, value);
   if (!tokens) return null;
+
+  const type = detectBindingType(keyword);
+  const isKbd = type === "keyboard";
+
   return {
-    id: makeKeybindingId(keyword, mode, tokens.mods, tokens.key, tokens.func, tokens.args),
+    id: makeBindingId(
+      keyword,
+      type,
+      tokens.mods,
+      tokens.trigger,
+      tokens.func,
+      tokens.args,
+      tokens.fingers ?? "",
+    ),
     keyword,
     ordinal,
+    type,
     mods: tokens.mods,
-    key: tokens.key,
+    key: tokens.trigger,
     func: tokens.func,
     args: tokens.args,
-    mode,
-    flags: parseFlagsFromKey(keyword),
+    mode: isKbd ? mode : "default",
+    flags: isKbd
+      ? parseFlagsFromKey(keyword)
+      : { symOnly: false, onLock: false, onRelease: false, pass: false },
+    fingers: tokens.fingers ?? "",
   };
 }
 
 export function serializeBinding(b: Keybinding): string {
-  const parts = [b.mods, b.key, b.func];
+  const parts: string[] = [];
+
+  if (b.type === "switch") {
+    parts.push(b.key, b.func);
+  } else if (b.type === "gesture") {
+    parts.push(b.mods, b.key, b.fingers || "3", b.func);
+  } else {
+    parts.push(b.mods, b.key, b.func);
+  }
+
   if (b.args) parts.push(b.args);
   return parts.join(",");
 }
@@ -71,7 +186,9 @@ export function serializeBinding(b: Keybinding): string {
 /** Parse bindings from a flat ConfigData map (mode-less, for search engine). */
 export function parseKeybindings(data: ConfigData): Keybinding[] {
   const entries: Keybinding[] = [];
-  const keys = Object.keys(data).filter(isBindKey).sort();
+  const keys = Object.keys(data)
+    .filter((k) => isBindKey(k) || isNonKeyboardBindKey(k))
+    .sort();
   for (const key of keys) {
     const values = data[key];
     for (let i = 0; i < values.length; i++) {
@@ -82,7 +199,7 @@ export function parseKeybindings(data: ConfigData): Keybinding[] {
   return entries;
 }
 
-/** Parse bindings from SourceFiles, tracking keymode= lines for mode context. */
+/** Parse bindings from SourceFiles, tracking `keymode` entries for mode context. */
 export function parseKeybindingsFromFiles(files: SourceFile[]): Keybinding[] {
   const entries: Keybinding[] = [];
   let currentMode = "default";
@@ -95,7 +212,7 @@ export function parseKeybindingsFromFiles(files: SourceFile[]): Keybinding[] {
         currentMode = value;
         continue;
       }
-      if (!isBindKey(key)) continue;
+      if (!isBindKey(key) && !isNonKeyboardBindKey(key)) continue;
       const ordinal = globalIdx[key] ?? 0;
       const entry = parseSingleBinding(key, ordinal, value, currentMode);
       if (entry) entries.push(entry);
@@ -105,7 +222,7 @@ export function parseKeybindingsFromFiles(files: SourceFile[]): Keybinding[] {
   return entries;
 }
 
-/** Effective mode at the end of all loaded files (the last keymode= value). */
+/** Effective mode at the end of all loaded files (the last `keymode` value). */
 export function getActiveModeAtEnd(files: SourceFile[]): string {
   let mode = "default";
   for (const file of files) {
@@ -116,7 +233,7 @@ export function getActiveModeAtEnd(files: SourceFile[]): string {
   return mode;
 }
 
-/** Index of the last `keymode=<mode>` line, or -1. */
+/** Index of the last `keymode <mode>` line, or -1. */
 export function findLastKeymodeLine(lines: ConfigLine[], mode?: string): number {
   for (let i = lines.length - 1; i >= 0; i--) {
     const ln = lines[i];
@@ -187,9 +304,7 @@ export function parseModifiers(modStr: string): string[] {
     .filter(Boolean);
 }
 
-/** Find the first file containing an entry matching the given key.
- *  For bind keys (bind, binds, bindlr, etc.), matches any bind variant.
- *  For other keys, uses exact match. */
+/** Find the first file containing an entry matching the given key. */
 function findFileForConfigKey(files: SourceFile[], key: string): number {
   const isBind = isBindKey(key);
   for (let i = 0; i < files.length; i++) {
@@ -202,14 +317,7 @@ function findFileForConfigKey(files: SourceFile[], key: string): number {
   return 0;
 }
 
-/**
- * Insert a keybinding entry respecting mode blocks.
- * Handles bind-key pattern matching for file discovery.
- * When `knownFileIdx` is provided, uses that file directly.
- *
- * This is a utility that composes the store's generic `insertEntry`.
- * It lives here to keep the store configuration-agnostic.
- */
+/** Insert a binding; keyboard binds respect mode blocks, non-keyboard appends. */
 export function insertModeAwareBinding(
   files: SourceFile[],
   insertEntry: (
@@ -220,8 +328,23 @@ export function insertModeAwareBinding(
   key: string,
   value: string,
   mode: string,
+  isKeyboard: boolean,
   knownFileIdx?: number,
 ): void {
+  if (!isKeyboard) {
+    const idx = (() => {
+      if (knownFileIdx !== undefined) return knownFileIdx;
+      const found = files.findIndex((f) =>
+        f.lines.some((l) => l.type === "entry" && l.key === key),
+      );
+      return found >= 0 ? found : files.length - 1;
+    })();
+    const file = files[idx];
+    if (!file) return;
+    insertEntry(key, value, { fileIdx: idx, afterLineIdx: file.lines.length - 1 });
+    return;
+  }
+
   const targetFileIdx = knownFileIdx ?? findFileForConfigKey(files, key);
   const file = files[targetFileIdx];
   if (!file) return;
@@ -231,7 +354,6 @@ export function insertModeAwareBinding(
   if (pos) {
     insertEntry(key, value, { fileIdx: targetFileIdx, ...pos });
   } else if (mode !== "default") {
-    // No existing block for this mode — create it at the end of the file.
     insertEntry("keymode", mode, {
       fileIdx: targetFileIdx,
       afterLineIdx: file.lines.length - 1,
@@ -257,15 +379,15 @@ export function serializeModifiers(mods: string[]): string {
   return ordered.join("+");
 }
 
-const RAW_KEYCODE_RE = /^code:(\d+)$/;
+const RAW_CODE_RE = /^code:(\d+)$/;
 
-/** Check whether a key string is a raw keycode like "code:133". */
-export function isRawKeycode(key: string): boolean {
-  return RAW_KEYCODE_RE.test(key);
+/** Check whether a string is a raw numeric code like "code:133" (keys, buttons, etc.). */
+export function isRawCode(code: string): boolean {
+  return RAW_CODE_RE.test(code);
 }
 
-/** Extract the numeric keycode from "code:133". Returns null if not a raw keycode. */
-export function parseRawKeycode(key: string): number | null {
-  const m = key.match(RAW_KEYCODE_RE);
+/** Extract the numeric value from "code:133". Returns null if not a raw code. */
+export function parseRawCode(code: string): number | null {
+  const m = code.match(RAW_CODE_RE);
   return m ? parseInt(m[1], 10) : null;
 }

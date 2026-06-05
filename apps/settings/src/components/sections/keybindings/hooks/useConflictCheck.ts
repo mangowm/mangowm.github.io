@@ -17,6 +17,7 @@ export function useConflictCheck(
     if (!key.trim()) return [];
     const needle = normalizeMods(mods);
     return entries.filter((e) => {
+      if (e.type !== "keyboard") return false;
       if (editingId && e.id === editingId) return false;
       return e.mode === mode && normalizeMods(e.mods) === needle && e.key === key;
     });
