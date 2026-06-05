@@ -1,10 +1,20 @@
 # Keybindings
 
-Define keyboard shortcuts that control every aspect of mangowm — window management, navigation, layout control, spawning applications, and more.
+Define keyboard shortcuts, mouse buttons, scroll actions, lid switch events, and touchpad gestures that control every aspect of mangowm — window management, navigation, layout control, spawning applications, and more.
 
 ## Config Syntax
 
-Each binding follows the format:
+Mangowm supports five binding types, each with its own keyword:
+
+| Keyword        | Binding Type | Syntax                                             |
+| :------------- | :----------- | :------------------------------------------------- |
+| `bind`         | Keyboard     | `bind`…`modifiers+key,dispatcher,arg1,…`           |
+| `mousebind`    | Mouse        | `mousebind = modifiers+button,dispatcher,arg1,…`   |
+| `axisbind`     | Scroll Axis  | `axisbind = modifiers+direction,dispatcher,arg1,…` |
+| `switchbind`   | Lid Switch   | `switchbind = state,dispatcher,arg1,…`             |
+| `gesturebind`  | Gesture      | `gesturebind = modifiers+motion,fingers,dispatcher,arg1,…` |
+
+### Keyboard
 
 ```
 bind[flags] = modifiers+key,dispatcher,arg1,arg2,...
@@ -17,27 +27,104 @@ bind[flags] = modifiers+key,dispatcher,arg1,arg2,...
 | `modifiers`  | Modifier key combination, e.g. `super+ctrl+alt`. Use `none` for bare. |
 | `key`        | XKB keysym name, e.g. `Return`, `Left`, `a`, `space`, `Escape`.       |
 | `dispatcher` | Action to execute, e.g. `spawn`, `focusdir`, `killclient`.            |
-| `arg1,...`   | Comma-separated arguments passed to the dispatcher.                   |
+| `arg1,…`     | Comma-separated arguments passed to the dispatcher.                   |
+
+### Mouse
+
+```
+mousebind = modifiers+button,dispatcher,arg1,...
+```
+
+| Part         | Description                                                                           |
+| :----------- | :------------------------------------------------------------------------------------ |
+| `mousebind`  | Config key for mouse button bindings.                                                 |
+| `modifiers`  | Modifier key combination held while clicking. Use `none` for unmodified clicks.       |
+| `button`     | Named mouse button: `btn_left`, `btn_right`, `btn_middle`, `btn_side`, `btn_extra`, `btn_forward`, `btn_back`, `btn_task`, or a raw `code:<N>`. |
+| `dispatcher` | Action to execute.                                                                    |
+| `arg1,…`     | Comma-separated arguments passed to the dispatcher.                                   |
+
+> Left and right mouse buttons require at least one modifier to avoid conflicts with normal click behaviour.
+
+### Scroll Axis
+
+```
+axisbind = modifiers+direction,dispatcher,arg1,...
+```
+
+| Part         | Description                                                                       |
+| :----------- | :-------------------------------------------------------------------------------- |
+| `axisbind`   | Config key for scroll axis bindings.                                              |
+| `modifiers`  | Modifier key combination held while scrolling. Use `none` for unmodified scrolls. |
+| `direction`  | Scroll direction: `up`, `down`, `left`, `right`.                                  |
+| `dispatcher` | Action to execute.                                                                |
+| `arg1,…`     | Comma-separated arguments passed to the dispatcher.                               |
+
+### Lid Switch
+
+```
+switchbind = state,dispatcher,arg1,...
+```
+
+| Part         | Description                                                       |
+| :----------- | :---------------------------------------------------------------- |
+| `switchbind` | Config key for laptop lid switch bindings.                        |
+| `state`      | Lid event: `fold` (lid closed) or `unfold` (lid opened).          |
+| `dispatcher` | Action to execute.                                                |
+| `arg1,…`     | Comma-separated arguments passed to the dispatcher.               |
+
+> Switch bindings do **not** accept modifiers.
+
+### Gesture
+
+```
+gesturebind = modifiers+motion,fingers,dispatcher,arg1,...
+```
+
+| Part         | Description                                                              |
+| :----------- | :----------------------------------------------------------------------- |
+| `gesturebind`| Config key for touchpad gesture bindings.                                |
+| `modifiers`  | Modifier key combination held during the gesture. Use `none` for bare.   |
+| `motion`     | Gesture direction: `up`, `down`, `left`, `right`.                        |
+| `fingers`    | Number of fingers (positive integer, typically 3 or 4).                  |
+| `dispatcher` | Action to execute.                                                       |
+| `arg1,…`     | Comma-separated arguments passed to the dispatcher.                      |
 
 ### Examples
 
 ```ini
-# Launch a terminal with Super+Return
+# Keyboard — launch a terminal with Super+Return
 bind = super,Return,spawn,foot
 
-# Focus the window to the left with Super+Left
+# Keyboard — focus the window to the left with Super+Left
 bind = super,Left,focusdir,left
 
-# Switch to tag 3 with super+3
+# Keyboard — switch to tag 3 with Super+3
 bind = super,3,view,3
 
-# Close focused window with Super+Q
+# Keyboard — close focused window with Super+Q
 bind = super,q,killclient
+
+# Mouse — resize window with Super+right-click
+mousebind = super,btn_right,moveresize,curresize
+
+# Mouse — move window with Super+left-click
+mousebind = super,btn_left,moveresize,curmove
+
+# Scroll axis — switch workspace with Ctrl+Scroll
+axisbind = ctrl,up,view,prev
+axisbind = ctrl,down,view,next
+
+# Lid switch — suspend on lid close
+switchbind = fold,spawn,systemctl suspend
+
+# Gesture — navigate workspaces with 3-finger swipe
+gesturebind = none,right,3,view,next
+gesturebind = none,left,3,view,prev
 ```
 
 ## Bind Keyword Flags
 
-Append letters to `bind` to change firing behaviour:
+Append letters to `bind` to change firing behaviour (keyboard-only — `mousebind`, `axisbind`, `switchbind`, and `gesturebind` do not support flags):
 
 | Keyword  | Flags         | Behaviour                                                         |
 | :------- | :------------ | :---------------------------------------------------------------- |
