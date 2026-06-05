@@ -41,7 +41,7 @@ export const SCRATCHPAD_ENTRIES: DispatcherInfo[] = [
       {
         name: "spawn",
         type: "command",
-        label: "Fallback Command",
+        label: "Command",
         description: "Launch this command if no window matches",
         placeholder: "e.g. foot",
       },
