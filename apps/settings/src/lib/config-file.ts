@@ -6,6 +6,7 @@ import type { SourceFile } from "./config-types";
 
 const CONFIG_DIR = ".config/mango";
 const CONFIG_FILE = `${CONFIG_DIR}/config.conf`;
+const SYSCONFDIR = "/etc";
 
 async function resolveSourcePath(sourcePath: string, fileDir: string): Promise<string> {
   const p = sourcePath.trim();
@@ -36,9 +37,18 @@ async function writeFileText(absPath: string, text: string): Promise<void> {
 export async function readAllConfigFiles(): Promise<SourceFile[]> {
   const home = await homeDir();
   const rootPath = `${home}/${CONFIG_FILE}`;
-  const rootText = await readFileText(rootPath);
+  const fallbackPath = `${SYSCONFDIR}/mango/config.conf`;
 
-  // If no config file exists yet, return a single placeholder entry so
+  let rootText = await readFileText(rootPath);
+
+  // Fallback to /etc/mango/config.conf if ~/.config/mango/config.conf doesn't exist.
+  let actualRootPath = rootPath;
+  if (rootText === null) {
+    rootText = await readFileText(fallbackPath);
+    if (rootText !== null) actualRootPath = fallbackPath;
+  }
+
+  // If no config file exists at all, return a single placeholder entry so
   // store mutators (addEntry, setValue, etc.) always have a target file.
   if (rootText === null) {
     return [
@@ -69,7 +79,7 @@ export async function readAllConfigFiles(): Promise<SourceFile[]> {
     }
   }
 
-  await readOne(rootPath, "config.conf", rootText);
+  await readOne(actualRootPath, "config.conf", rootText);
   return result;
 }
 
