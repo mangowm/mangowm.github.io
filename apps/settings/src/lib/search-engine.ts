@@ -128,7 +128,7 @@ export const DYNAMIC_SOURCES: DynamicIndexSource[] = [
       }),
   },
   {
-    sourceId: "keybindings",
+    sourceId: "bindings",
     watchKeys: [...ALL_BIND_VARIANTS, "mousebind", "axisbind", "switchbind", "gesturebind"],
     buildItems: (data) =>
       parseKeybindings(data).map((b, i) => {
@@ -137,8 +137,8 @@ export const DYNAMIC_SOURCES: DynamicIndexSource[] = [
           id: `${prefix}:${i}`,
           label: `${b.func} (${b.type === "switch" ? b.key : `${b.mods || "none"} + ${b.key}`})`,
           description: DISPATCHER_MAP.get(b.func)?.description ?? b.func,
-          sectionLabel: "Keybindings",
-          sectionId: "keybindings",
+          sectionLabel: "Bindings",
+          sectionId: "bindings",
           configKey: b.id,
         };
       }),

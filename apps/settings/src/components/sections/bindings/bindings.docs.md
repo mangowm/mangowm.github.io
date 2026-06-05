@@ -1,4 +1,4 @@
-# Keybindings
+# Bindings
 
 Define keyboard shortcuts, mouse buttons, scroll actions, lid switch events, and touchpad gestures that control every aspect of mangowm — window management, navigation, layout control, spawning applications, and more.
 
@@ -149,9 +149,9 @@ Append letters to `bind` to change firing behaviour (keyboard-only — `mousebin
 
 Modifiers are joined with `+`. Use `none` (or omit) when no modifier is required (e.g. `bind = none,F11,fullscreen`).
 
-## Keybinding Modes (Submaps)
+## Keyboard Binding Modes (Submaps)
 
-Group bindings under named modes with the `keymode` directive. Bindings outside any `keymode` belong to the `default` mode.
+Group keyboard bindings under named modes with the `keymode` directive. Bindings outside any `keymode` belong to the `default` mode. Non-keyboard bindings (`mousebind`, `axisbind`, etc.) are unaffected by modes.
 
 ```ini
 # Default mode (used unless another mode is active)

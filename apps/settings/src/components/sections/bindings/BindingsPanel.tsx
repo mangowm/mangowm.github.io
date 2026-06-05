@@ -14,7 +14,7 @@ import { BindingRow } from "./components/BindingRow";
 import { EditDialog } from "./dialogs/EditDialog";
 import { Button } from "@/components/ui/button";
 
-export function KeybindingsPanel({ focusKey }: PanelProps) {
+export function BindingsPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
 
   const files = useConfigStore((s) => s.files);
@@ -105,13 +105,13 @@ export function KeybindingsPanel({ focusKey }: PanelProps) {
   };
 
   return (
-    <div ref={fieldRef("keybindings")} className="flex flex-col h-full gap-6">
+    <div ref={fieldRef("bindings")} className="flex flex-col h-full gap-6">
       <div className="flex flex-col gap-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col gap-1">
-            <h2 className="text-lg font-semibold tracking-tight text-foreground">Keybindings</h2>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-prose">
-              Manage system shortcuts, window rules, and custom shell scripts.
+            <h2 className="text-lg font-semibold tracking-tight text-foreground">Bindings</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Configure keyboard shortcuts, mouse buttons, scroll actions, and gesture bindings.
             </p>
           </div>
         </div>
@@ -173,7 +173,7 @@ export function KeybindingsPanel({ focusKey }: PanelProps) {
             onClick={() => handleOpenDialog()}
           >
             <Plus className="size-4" />
-            <span>Add Binding</span>
+            <span>New Binding</span>
           </Button>
 
           {conflictIds.size > 0 && (
@@ -219,10 +219,10 @@ export function KeybindingsPanel({ focusKey }: PanelProps) {
             <div className="max-w-[200px]">
               <h3 className="text-sm font-medium text-foreground mb-1">No bindings yet</h3>
               <p className="text-xs text-muted-foreground mb-4">
-                Create your first custom keybinding to get started.
+                Create your first custom binding to get started.
               </p>
               <Button size="sm" className="w-full" onClick={() => handleOpenDialog()}>
-                Add Keybinding
+                Add Binding
               </Button>
             </div>
           </div>

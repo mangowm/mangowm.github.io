@@ -93,7 +93,7 @@ export function BindingRow({ entry, hasConflict, onEdit, onDelete }: BindingRowP
         {hasConflict && (
           <span
             className="flex items-center gap-1 rounded-md bg-destructive/10 px-2 py-1.5 text-destructive"
-            title="Conflicting keybinding"
+            title="Conflicting binding"
           >
             <AlertTriangle className="h-3.5 w-3.5" />
             <span className="text-[11px] font-medium leading-none hidden sm:inline">Conflict</span>
@@ -122,7 +122,7 @@ export function BindingRow({ entry, hasConflict, onEdit, onDelete }: BindingRowP
         >
           <button
             onClick={onEdit}
-            aria-label={`Edit keybinding for ${entry.func}`}
+            aria-label={`Edit binding for ${entry.func}`}
             className="rounded-md p-1.5 text-muted-foreground hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
           >
             <Pencil className="h-4 w-4" />
