@@ -19,14 +19,15 @@ const logoPaths: Array<{ fill: string; d: string }> = (() => {
   return result;
 })();
 
+const groupRegex = /^\(.+\)$/;
+
 function getSlugs(filePath: string, baseDir: string): string[] {
   const rel = relative(baseDir, filePath);
   const parsed = parse(rel);
   const parts = parsed.dir ? parsed.dir.split(sep) : [];
-  if (parsed.name !== "index") {
-    parts.push(parsed.name);
-  }
-  return parts.filter(Boolean);
+  const slugs = parts.filter((seg) => seg.length > 0 && !groupRegex.test(seg));
+  if (parsed.name !== "index") slugs.push(parsed.name);
+  return slugs;
 }
 
 function parseFrontmatter(content: string): Record<string, string> {
