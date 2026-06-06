@@ -66,9 +66,9 @@ export function SettingsPage() {
       />
       <SidebarInset>
         <PageHeader title={section?.label ?? "Settings"} onSearch={() => setSearchOpen(true)} />
-        <div className="flex-1 overflow-y-auto p-5">
+        <div className="flex-1 overflow-y-auto scrollbar-gutter-stable p-5">
           <div className="flex flex-row gap-5 min-h-full">
-            <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 overflow-y-auto p-6 relative">
+            <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 p-6 relative">
               <div className="absolute top-3 right-3">
                 <SegmentedControl
                   options={panelOptions}

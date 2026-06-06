@@ -373,7 +373,8 @@ export const windowOverrides: OverrideMeta[] = [
     type: "string",
     category: "Input & Shortcuts",
     pattern: "^[A-Za-z0-9_+]+-[a-zA-Z]+$",
-    patternError: "Must match format Modifier-Keysym (e.g. Super_L-Escape). Keysym must be alpha-only (no digits).",
+    patternError:
+      "Must match format Modifier-Keysym (e.g. Super_L-Escape). Keysym must be alpha-only (no digits).",
     appliesTo: ["windowrule"],
     aliases: ["global shortcut", "keyboard shortcut", "global bind"],
   },

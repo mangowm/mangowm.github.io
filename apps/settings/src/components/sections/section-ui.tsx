@@ -232,9 +232,7 @@ export function SelectRow({
       <FieldLabel label={label} description={description} />
       <Select value={value} onValueChange={(v) => v && onChange(v)} disabled={isOff}>
         <SelectTrigger className="w-28" aria-label={label}>
-          <SelectValue>
-            {options.find((o) => o.value === value)?.label ?? value}
-          </SelectValue>
+          <SelectValue>{options.find((o) => o.value === value)?.label ?? value}</SelectValue>
         </SelectTrigger>
         <SelectContent>
           {options.map((opt) => (
@@ -445,7 +443,7 @@ export function PanelShell({ children, maxWidth = "max-w-4xl" }: PanelShellProps
   return (
     <div
       className={
-        "mx-auto w-full pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500 " + maxWidth
+        "mx-auto w-full pb-12 animate-in fade-in slide-in-from-bottom-4 duration-200 " + maxWidth
       }
     >
       {children}
