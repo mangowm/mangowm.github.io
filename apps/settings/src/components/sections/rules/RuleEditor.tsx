@@ -182,7 +182,9 @@ function MatcherInput({
         <span className="text-[13px] font-medium text-foreground">{label}</span>
         <Select value={currentValue} onValueChange={(v) => v !== null && onChange(v)}>
           <SelectTrigger className="w-64 h-9 text-[12px] bg-background/50 font-medium shadow-sm transition-colors hover:border-border/80 focus:ring-1 focus:ring-primary/30" aria-label={label}>
-            <SelectValue />
+            <SelectValue>
+              {options.find((o) => o.value === currentValue)?.label ?? currentValue}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent className="rounded-xl shadow-lg">
             {options.map((opt) => (

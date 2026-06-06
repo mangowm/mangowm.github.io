@@ -232,7 +232,9 @@ export function SelectRow({
       <FieldLabel label={label} description={description} />
       <Select value={value} onValueChange={(v) => v && onChange(v)} disabled={isOff}>
         <SelectTrigger className="w-28" aria-label={label}>
-          <SelectValue />
+          <SelectValue>
+            {options.find((o) => o.value === value)?.label ?? value}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {options.map((opt) => (
