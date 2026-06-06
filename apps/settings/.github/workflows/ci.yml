@@ -62,6 +62,23 @@ jobs:
       - run: pnpm tauri build
       - name: Get app version
         run: echo "APP_VERSION=$(jq -r .version src-tauri/tauri.conf.json)" >> $GITHUB_ENV
+      - name: Fix AppImage Wayland compatibility
+        shell: bash
+        run: |
+          APPIMAGE="src-tauri/target/release/bundle/appimage/mangowm-settings_${APP_VERSION}_amd64.AppImage"
+          if [ ! -f "$APPIMAGE" ]; then
+            echo "no AppImage found, skipping"
+            exit 0
+          fi
+          ORIG_DIR="$PWD"
+          cd /tmp
+          mkdir -p appimage-fix
+          cd appimage-fix
+          "$ORIG_DIR/$APPIMAGE" --appimage-extract
+          rm -f squashfs-root/usr/lib/libwayland-client.so*
+          curl -sL https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -o appimagetool
+          chmod +x appimagetool
+          ARCH=x86_64 ./appimagetool --appimage-extract-and-run squashfs-root "$ORIG_DIR/$APPIMAGE"
       - uses: actions/upload-artifact@v4
         with:
           name: mangowm-settings-appimage
