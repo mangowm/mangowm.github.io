@@ -6,6 +6,8 @@ import type { ConfigData } from "./config-types";
 import type { DynamicIndexSource, DynamicSearchItem } from "./section-types";
 import { parseKeybindings, ALL_BIND_VARIANTS } from "./keybind-parse";
 import { DISPATCHER_MAP } from "./dispatchers";
+import { getOverridesForRuleType, RULE_LABELS } from "./rules/metadata";
+import { parseRuleString } from "@/lib/rules/parser";
 
 interface SearchDocument {
   id: string;
@@ -82,7 +84,7 @@ const staticDocs: SearchDocument[] = SECTIONS.flatMap((section) => {
 
 ms.addAll(staticDocs);
 
-export const DYNAMIC_SOURCES: DynamicIndexSource[] = [
+const DYNAMIC_SOURCES: DynamicIndexSource[] = [
   {
     sourceId: "exec-once",
     watchKeys: ["exec-once"],
@@ -143,7 +145,69 @@ export const DYNAMIC_SOURCES: DynamicIndexSource[] = [
         };
       }),
   },
+
+  ...buildRuleDynamicSources("windowrule", "window-rules"),
+  ...buildRuleDynamicSources("monitorrule", "monitor-rules"),
+  ...buildRuleDynamicSources("tagrule", "tag-rules"),
+  ...buildRuleDynamicSources("layerrule", "layer-rules"),
 ];
+
+/**
+ * Each rule type gets TWO dynamic sources:
+ * 1. One indexes the rule's matching criteria so searching "foot" finds the rule
+ * 2. One indexes individual override entries so searching "floating" finds the rule
+ */
+function buildRuleDynamicSources(
+  ruleType: "windowrule" | "monitorrule" | "tagrule" | "layerrule",
+  sectionId: string,
+): DynamicIndexSource[] {
+  const sectionLabel = RULE_LABELS[ruleType];
+  return [
+    {
+      sourceId: `${ruleType}-matchers`,
+      watchKeys: [ruleType],
+      buildItems: (data) =>
+        (data[ruleType] ?? []).flatMap((raw, ruleIdx) => {
+          const parsed = parseRuleString(ruleType, raw);
+          const items: DynamicSearchItem[] = [];
+          for (const [key, val] of Object.entries(parsed.matchers)) {
+            if (val?.trim()) {
+              items.push({
+                id: `${ruleType}:${ruleIdx}:matcher:${key}`,
+                label: val,
+                description: `${key} matches "${val}"`,
+                sectionLabel,
+                sectionId,
+                configKey: ruleType,
+              });
+            }
+          }
+          return items;
+        }),
+    },
+    {
+      sourceId: `${ruleType}-overrides`,
+      watchKeys: [ruleType],
+      buildItems: (data) =>
+        (data[ruleType] ?? []).flatMap((raw, ruleIdx) => {
+          const parsed = parseRuleString(ruleType, raw);
+          const overridesMeta = getOverridesForRuleType(ruleType);
+          const metaMap = new Map(overridesMeta.map((m) => [m.key, m]));
+          return Object.entries(parsed.overrides).map(([key, val]) => {
+            const meta = metaMap.get(key);
+            return {
+              id: `${ruleType}:${ruleIdx}:override:${key}`,
+              label: meta?.label ?? key,
+              description: `Rule #${ruleIdx + 1}: ${key} = ${val}`,
+              sectionLabel,
+              sectionId,
+              configKey: ruleType,
+            };
+          });
+        }),
+    },
+  ];
+}
 
 const dynamicIndexed = new Map<string, string[]>(); // sourceId → current doc ids
 

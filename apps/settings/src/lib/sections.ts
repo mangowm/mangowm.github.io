@@ -34,6 +34,12 @@ import { idleMeta } from "@/components/sections/behaviour/idle/idle.meta";
 import { renderingMeta } from "@/components/sections/behaviour/rendering/rendering.meta";
 import { xwaylandMeta } from "@/components/sections/behaviour/xwayland/xwayland.meta";
 
+import { rulesMeta } from "@/components/sections/rules/rules.meta";
+import { windowRulesMeta } from "@/components/sections/rules/window-rules.meta";
+import { monitorRulesMeta } from "@/components/sections/rules/monitor-rules.meta";
+import { tagRulesMeta } from "@/components/sections/rules/tag-rules.meta";
+import { layerRulesMeta } from "@/components/sections/rules/layer-rules.meta";
+
 export const SECTIONS: SectionMeta[] = [
   autostartMeta,
   environmentMeta,
@@ -67,6 +73,12 @@ export const SECTIONS: SectionMeta[] = [
   idleMeta,
   renderingMeta,
   xwaylandMeta,
+
+  rulesMeta,
+  monitorRulesMeta,
+  tagRulesMeta,
+  windowRulesMeta,
+  layerRulesMeta,
 ];
 
 export function getSectionById(id: string): SectionMeta | undefined {
