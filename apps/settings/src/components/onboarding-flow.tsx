@@ -1,35 +1,29 @@
 import { useState, useEffect, useCallback } from "react";
-import {
-  exists,
-  readDir,
-  copyFile,
-  mkdir,
-  writeTextFile,
-  BaseDirectory,
-} from "@tauri-apps/plugin-fs";
+import { exists, readDir, copyFile, mkdir, BaseDirectory } from "@tauri-apps/plugin-fs";
 import { join } from "@tauri-apps/api/path";
+import { AlertCircle, ArrowRight, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { completeOnboarding, SETTINGS } from "@/lib/onboarding";
+import { completeOnboarding } from "@/lib/onboarding";
+import { updateSettings } from "@/lib/settings";
 import mangowmLogo from "@/assets/mangowm-logo.svg";
 
 const BASE = ".config/mango";
-const BACKUP = ".config/mango/backup";
 const BD = BaseDirectory.Home;
 
-async function copyRecursive(rel: string) {
+async function copyRecursive(rel: string, dstRoot: string) {
   const src = rel ? await join(BASE, rel) : BASE;
   const entries = await readDir(src, { baseDir: BD });
 
   for (const entry of entries) {
-    if (entry.name === "backup") continue;
     const childRel = rel ? await join(rel, entry.name) : entry.name;
     const childSrc = await join(BASE, childRel);
-    const childDst = await join(BACKUP, childRel);
+    const childDst = await join(dstRoot, childRel);
+
+    if (entry.name === "backups") continue;
 
     if (entry.isDirectory) {
       await mkdir(childDst, { baseDir: BD, recursive: true });
-      await copyRecursive(childRel);
+      await copyRecursive(childRel, dstRoot);
     } else {
       await copyFile(childSrc, childDst, {
         fromPathBaseDir: BD,
@@ -44,23 +38,28 @@ interface OnboardingFlowProps {
 }
 
 export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
-  const [step, setStep] = useState<"welcome" | "backup">("welcome");
+  const [isInitializing, setIsInitializing] = useState(true);
   const [status, setStatus] = useState<"checking" | "none" | "ready" | "running" | "success">(
     "checking",
   );
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const splash = setTimeout(() => setStep("backup"), 2000);
-    (async () => {
+    // Keep splash incredibly brief, just enough to prevent a jarring flash
+    const minSplashTime = new Promise((resolve) => setTimeout(resolve, 800));
+    const checkDir = async () => {
       try {
         const dirExists = await exists(BASE, { baseDir: BD });
-        setStatus(dirExists ? "ready" : "none");
+        return dirExists ? "ready" : "none";
       } catch {
-        setStatus("ready");
+        return "ready";
       }
-    })();
-    return () => clearTimeout(splash);
+    };
+
+    Promise.all([minSplashTime, checkDir()]).then(([_, dirStatus]) => {
+      setStatus(dirStatus as any);
+      setIsInitializing(false);
+    });
   }, []);
 
   const startBackup = useCallback(async () => {
@@ -69,106 +68,130 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
     try {
       const minDelay = new Promise<void>((resolve) => setTimeout(resolve, 600));
+      const now = new Date();
+      const ts = (n: number) => n.toString().padStart(2, "0");
+      const timestamp = `${now.getFullYear()}-${ts(now.getMonth() + 1)}-${ts(now.getDate())}_${ts(now.getHours())}${ts(now.getMinutes())}${ts(now.getSeconds())}`;
+      const dstRoot = `.config/mango/backups/${timestamp}`;
 
-      await mkdir(BACKUP, { baseDir: BD, recursive: true });
-      await copyRecursive("");
-      await writeTextFile(
-        SETTINGS,
-        JSON.stringify(
-          {
-            backup: { createdAt: new Date().toISOString() },
-            onboardingCompleted: true,
-          },
-          null,
-          2,
-        ),
-        { baseDir: BD },
-      );
+      await mkdir(dstRoot, { baseDir: BD, recursive: true });
+      await copyRecursive("", dstRoot);
+      await updateSettings({
+        backup: { createdAt: new Date().toISOString(), path: dstRoot },
+        onboardingCompleted: true,
+      });
 
       await minDelay;
       setStatus("success");
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      setError(e instanceof Error ? e.message : "Failed to create backup.");
       setStatus("ready");
     }
   }, []);
 
-  const handleContinue = async () => {
+  const handleFinish = async () => {
     await completeOnboarding();
     onComplete();
   };
 
   return (
-    <main className="dark min-h-screen bg-background text-foreground flex items-center justify-center p-6 selection:bg-primary selection:text-primary-foreground">
-      <div className="w-full max-w-lg">
-        {step === "welcome" && (
-          <div className="flex items-center justify-center gap-5">
-            <img
-              src={mangowmLogo}
-              alt="mangowm logo"
-              className="size-16 animate-in fade-in zoom-in duration-500 fill-mode-both"
-            />
-            <h1 className="text-5xl font-semibold tracking-tight text-foreground animate-in fade-in slide-in-from-left-2 duration-500 delay-150 fill-mode-both">
-              mangowm
-            </h1>
+    <main className="dark min-h-screen bg-background text-foreground flex items-center justify-center p-8 antialiased selection:bg-primary selection:text-primary-foreground">
+      <div className="w-full max-w-sm flex flex-col">
+        {/* Branding Header */}
+        <header className="flex items-center gap-4 mb-8">
+          <img
+            src={mangowmLogo}
+            alt="mangowm"
+            className="size-12 opacity-90 animate-in fade-in zoom-in-95 duration-500"
+          />
+          <div className="animate-in fade-in slide-in-from-left-2 duration-500">
+            <h1 className="text-xl font-medium tracking-tight">mangowm settings</h1>
+            <p className="text-sm text-muted-foreground">Initial Setup</p>
           </div>
-        )}
+        </header>
 
-        {step === "backup" && (
-          <Card className="p-8 border-border bg-card/50 backdrop-blur-sm animate-in slide-in-from-bottom-4 fade-in duration-500 shadow-2xl">
-            <div className="flex flex-col items-center text-center space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-xl font-medium tracking-tight">Secure Configuration</h2>
-                <p className="text-sm text-muted-foreground max-w-sm">
-                  Create a restoration point for your existing environment before modifying core
-                  parameters.
-                </p>
+        {/* Dynamic Content Section */}
+        <section className="flex flex-col justify-center min-h-[140px]">
+          {isInitializing ? (
+            <div className="flex items-center gap-3 text-muted-foreground animate-in fade-in">
+              <Loader2 className="size-4 animate-spin" />
+              <span className="text-sm">Verifying environment...</span>
+            </div>
+          ) : status === "none" ? (
+            <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-500">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                No existing configuration found. We will start with a fresh default environment.
+              </p>
+            </div>
+          ) : status === "success" ? (
+            <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-right-4 duration-500">
+              <div className="flex items-center gap-2.5 text-emerald-500">
+                <Check className="size-5" />
+                <span className="font-medium">Backup Complete</span>
               </div>
-
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Your previous configuration has been safely archived.
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-500">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                An existing configuration was detected. Would you like to back it up before applying
+                new settings?
+              </p>
               {error && (
-                <div className="p-3 w-full border border-destructive/50 bg-destructive/10 text-destructive text-sm rounded-md animate-in fade-in">
-                  {error}
+                <div className="flex items-center gap-2 text-sm text-destructive">
+                  <AlertCircle className="size-4 shrink-0" />
+                  <span>{error}</span>
                 </div>
               )}
-
-              <div className="w-full pt-4 min-h-[40px] flex items-center justify-center">
-                {
-                  {
-                    checking: (
-                      <Button disabled className="w-full" variant="outline">
-                        Verifying Environment...
-                      </Button>
-                    ),
-                    none: (
-                      <Button className="w-full" onClick={handleContinue}>
-                        No Config Found — Continue
-                      </Button>
-                    ),
-                    ready: (
-                      <Button className="w-full" onClick={startBackup}>
-                        Create Backup
-                      </Button>
-                    ),
-                    running: (
-                      <Button disabled className="w-full">
-                        <span className="animate-pulse">Securing Backup...</span>
-                      </Button>
-                    ),
-                    success: (
-                      <Button
-                        className="w-full bg-green-900/20 text-green-500 border-green-900/50 border hover:bg-green-900/30 hover:text-green-400"
-                        variant="outline"
-                        onClick={handleContinue}
-                      >
-                        Continue to Settings
-                      </Button>
-                    ),
-                  }[status]
-                }
-              </div>
             </div>
-          </Card>
-        )}
+          )}
+        </section>
+
+        {/* Actions Footer */}
+        <footer className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-border/40">
+          {!isInitializing && (
+            <>
+              {status === "none" && (
+                <Button className="gap-2" onClick={handleFinish}>
+                  Start Setup
+                  <ArrowRight className="size-4" />
+                </Button>
+              )}
+
+              {(status === "ready" || status === "running") && (
+                <>
+                  <Button
+                    variant="ghost"
+                    className="text-muted-foreground hover:text-foreground"
+                    onClick={handleFinish}
+                    disabled={status === "running"}
+                  >
+                    Skip
+                  </Button>
+                  <Button
+                    className="w-32 transition-all"
+                    onClick={startBackup}
+                    disabled={status === "running"}
+                  >
+                    {status === "running" ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      "Backup Config"
+                    )}
+                  </Button>
+                </>
+              )}
+
+              {status === "success" && (
+                <Button className="gap-2" onClick={handleFinish}>
+                  Continue
+                  <ArrowRight className="size-4" />
+                </Button>
+              )}
+            </>
+          )}
+        </footer>
       </div>
     </main>
   );

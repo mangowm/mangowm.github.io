@@ -1,7 +1,8 @@
-import { mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { readTextFile } from "@tauri-apps/plugin-fs";
 import { BaseDirectory } from "@tauri-apps/api/path";
+import { updateSettings } from "./settings";
 
-export const SETTINGS = ".config/mango/.settings";
+const SETTINGS = ".config/mango/.settings";
 const BD = BaseDirectory.Home;
 
 export async function isOnboardingCompleted(): Promise<boolean> {
@@ -14,16 +15,5 @@ export async function isOnboardingCompleted(): Promise<boolean> {
 }
 
 export async function completeOnboarding() {
-  try {
-    const existing = await readTextFile(SETTINGS, { baseDir: BD });
-    const data = JSON.parse(existing);
-    data.onboardingCompleted = true;
-    await writeTextFile(SETTINGS, JSON.stringify(data, null, 2), { baseDir: BD });
-  } catch {
-    // Ensure parent directory exists before writing .settings
-    await mkdir(".config/mango", { baseDir: BD, recursive: true });
-    await writeTextFile(SETTINGS, JSON.stringify({ onboardingCompleted: true }, null, 2), {
-      baseDir: BD,
-    });
-  }
+  await updateSettings({ onboardingCompleted: true });
 }
