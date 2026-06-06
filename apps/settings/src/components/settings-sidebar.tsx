@@ -12,6 +12,18 @@ import {
 } from "@/components/ui/sidebar";
 import { ROOT_SECTIONS, getChildren } from "@/lib/sections";
 
+const NAV_ITEMS = ROOT_SECTIONS.map((s) => {
+  const children = getChildren(s.id);
+  return {
+    title: s.label,
+    id: s.id,
+    icon: s.icon,
+    ...(children.length > 0
+      ? { children: children.map((c) => ({ title: c.label, id: c.id, icon: c.icon })) }
+      : {}),
+  };
+});
+
 export function SettingsSidebar({
   activeSection,
   onSectionChange,
@@ -20,18 +32,6 @@ export function SettingsSidebar({
   activeSection: string;
   onSectionChange: (section: string) => void;
 }) {
-  const navItems = ROOT_SECTIONS.map((s) => {
-    const children = getChildren(s.id);
-    return {
-      title: s.label,
-      id: s.id,
-      icon: s.icon,
-      ...(children.length > 0
-        ? { children: children.map((c) => ({ title: c.label, id: c.id, icon: c.icon })) }
-        : {}),
-    };
-  });
-
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -46,7 +46,7 @@ export function SettingsSidebar({
       </SidebarHeader>
       <SidebarContent>
         <SidebarNav
-          items={navItems}
+          items={NAV_ITEMS}
           activeSection={activeSection}
           onSectionChange={onSectionChange}
         />

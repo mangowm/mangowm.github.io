@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useTransition } from "react";
 import { BookOpenTextIcon, SettingsIcon } from "lucide-react";
 import { SettingsSidebar } from "@/components/settings-sidebar";
 import { PageHeader } from "@/components/page-header";
@@ -25,6 +25,7 @@ export function SettingsPage() {
   const [focusKey, setFocusKey] = useState<string | undefined>(undefined);
   const [panelView, setPanelView] = useState<PanelView>("settings");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const load = useConfigStore((s) => s.load);
 
   useEffect(() => {
@@ -34,13 +35,17 @@ export function SettingsPage() {
   useSearchShortcut(useCallback(() => setSearchOpen(true), []));
 
   const handleSearchSelect = useCallback((selection: SearchSelection) => {
-    setActiveSection(selection.sectionId);
-    setFocusKey(selection.configKey);
+    startTransition(() => {
+      setActiveSection(selection.sectionId);
+      setFocusKey(selection.configKey);
+    });
   }, []);
 
   const handleSectionChange = useCallback((id: string) => {
-    setActiveSection(id);
-    setFocusKey(undefined);
+    startTransition(() => {
+      setActiveSection(id);
+      setFocusKey(undefined);
+    });
   }, []);
 
   const section = getSectionById(activeSection);
@@ -67,8 +72,10 @@ export function SettingsPage() {
       <SidebarInset>
         <PageHeader title={section?.label ?? "Settings"} onSearch={() => setSearchOpen(true)} />
         <div className="flex-1 overflow-y-auto scrollbar-gutter-stable p-5">
-          <div className="flex flex-row gap-5 min-h-full">
-            <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 p-6 relative">
+          <div
+            className={`flex flex-row gap-5 min-h-[calc(100vh-120px)] transition-opacity duration-200 ${isPending ? "opacity-50" : "opacity-100"}`}
+          >
+            <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 p-6 relative flex flex-col">
               <div className="absolute top-3 right-3">
                 <SegmentedControl
                   options={panelOptions}

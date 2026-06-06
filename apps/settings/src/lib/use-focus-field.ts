@@ -13,7 +13,9 @@ export function useFocusField(focusKey: string | undefined) {
     const el = registry.current.get(focusKey);
     if (!el) return;
 
-    el.scrollIntoView({ behavior: "instant", block: "center" });
+    requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: "instant", block: "center" });
+    });
     el.classList.add(...HIGHLIGHT_CLASS.split(" "));
 
     // Auto-remove highlight after duration
