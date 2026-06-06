@@ -12,7 +12,7 @@ tagrule=id:...,layout_name:...,monitor_name:...,property:value,...
 
 | Key              | Description                                             |
 | ---------------- | ------------------------------------------------------- |
-| `id`             | Tag index (0-based)                                      |
+| `id`             | Tag index (0-based)                                     |
 | `layout_name`    | Layout name (`master`, `dwindle`, `scroller`, `circle`) |
 | `monitor_name`   | Monitor name (regex match)                              |
 | `monitor_make`   | Monitor manufacturer (exact match)                      |

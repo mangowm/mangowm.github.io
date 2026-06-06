@@ -10,7 +10,7 @@ export function WindowRulesPanel(_props: PanelProps) {
         description="Match windows by app ID or title to apply visual and behavioural overrides."
         separator={false}
       />
-      
+
       <RuleList ruleType="windowrule" />
     </PanelShell>
   );

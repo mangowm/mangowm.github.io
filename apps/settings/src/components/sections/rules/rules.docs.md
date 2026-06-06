@@ -100,23 +100,23 @@ When the compositor evaluates rules, it iterates the list in order and applies t
 
 ### Appearance
 
-| Property                     | Type          | Description                       |
-| ---------------------------- | ------------- | --------------------------------- |
-| `isfloating`                 | boolean       | Force floating or tiled           |
-| `isfullscreen`               | boolean       | Force fullscreen mode             |
-| `isfakefullscreen`           | boolean       | Fake fullscreen (geometry only)   |
-| `isnoborder`                 | boolean       | Remove window border              |
-| `isnoshadow`                 | boolean       | Disable shadow                    |
-| `isnoradius`                 | boolean       | Remove corner radius              |
-| `focused_opacity`            | float [0–1]   | Opacity when focused              |
-| `unfocused_opacity`          | float [0–1]   | Opacity when unfocused            |
-| `scroller_proportion`        | float [0–1]   | Scroller layout proportion (0=inherit)        |
-| `scroller_proportion_single` | float [0–1]   | Scroller single-window proportion (0=inherit) |
-| `allow_csd`                  | boolean       | Allow client-side decorations     |
-| `force_fakemaximize`         | boolean       | Force fake maximize               |
-| `force_tearing`              | boolean       | Allow tearing                     |
-| `force_tiled_state`          | boolean       | Force tiled state                 |
-| `isterm`                     | boolean       | Mark as terminal                  |
+| Property                     | Type        | Description                                   |
+| ---------------------------- | ----------- | --------------------------------------------- |
+| `isfloating`                 | boolean     | Force floating or tiled                       |
+| `isfullscreen`               | boolean     | Force fullscreen mode                         |
+| `isfakefullscreen`           | boolean     | Fake fullscreen (geometry only)               |
+| `isnoborder`                 | boolean     | Remove window border                          |
+| `isnoshadow`                 | boolean     | Disable shadow                                |
+| `isnoradius`                 | boolean     | Remove corner radius                          |
+| `focused_opacity`            | float [0–1] | Opacity when focused                          |
+| `unfocused_opacity`          | float [0–1] | Opacity when unfocused                        |
+| `scroller_proportion`        | float [0–1] | Scroller layout proportion (0=inherit)        |
+| `scroller_proportion_single` | float [0–1] | Scroller single-window proportion (0=inherit) |
+| `allow_csd`                  | boolean     | Allow client-side decorations                 |
+| `force_fakemaximize`         | boolean     | Force fake maximize                           |
+| `force_tearing`              | boolean     | Allow tearing                                 |
+| `force_tiled_state`          | boolean     | Force tiled state                             |
+| `isterm`                     | boolean     | Mark as terminal                              |
 
 ### Behaviour
 
@@ -147,10 +147,10 @@ When the compositor evaluates rules, it iterates the list in order and applies t
 
 ### Input & Shortcuts
 
-| Property                  | Type    | Description                                    |
-| ------------------------- | ------- | ---------------------------------------------- |
-| `allow_shortcuts_inhibit` | boolean | Allow shortcut inhibition                      |
-| `globalkeybinding`        | string  | Global hotkey (format: `Modifier-Keysym`)      |
+| Property                  | Type    | Description                               |
+| ------------------------- | ------- | ----------------------------------------- |
+| `allow_shortcuts_inhibit` | boolean | Allow shortcut inhibition                 |
+| `globalkeybinding`        | string  | Global hotkey (format: `Modifier-Keysym`) |
 
 ### Tags & Monitor
 
@@ -161,12 +161,12 @@ When the compositor evaluates rules, it iterates the list in order and applies t
 
 ### Geometry
 
-| Property  | Type    | Applies To | Description       |
-| --------- | ------- | ---------- | ----------------- |
-| `offsetx` | integer | windowrule | Horizontal percentage offset |
-| `offsety` | integer | windowrule | Vertical percentage offset   |
-| `width`   | float   | windowrule | Width ratio (0=inherit, >1 = absolute px)    |
-| `height`  | float   | windowrule | Height ratio (0=inherit, >1 = absolute px)   |
+| Property  | Type    | Applies To | Description                                |
+| --------- | ------- | ---------- | ------------------------------------------ |
+| `offsetx` | integer | windowrule | Horizontal percentage offset               |
+| `offsety` | integer | windowrule | Vertical percentage offset                 |
+| `width`   | float   | windowrule | Width ratio (0=inherit, >1 = absolute px)  |
+| `height`  | float   | windowrule | Height ratio (0=inherit, >1 = absolute px) |
 
 ### Monitor Properties
 

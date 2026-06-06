@@ -24,7 +24,7 @@ export function RuleCard({ rule, ruleType, index, onEdit, onDelete }: RuleCardPr
     <div
       className={cn(
         "group relative flex flex-col overflow-hidden rounded-xl border border-border/50 bg-card text-card-foreground shadow-sm transition-all duration-200",
-        "hover:border-border/80 hover:shadow-md"
+        "hover:border-border/80 hover:shadow-md",
       )}
     >
       {/* Action Bar - Hidden until hover for a cleaner default state */}
@@ -57,9 +57,7 @@ export function RuleCard({ rule, ruleType, index, onEdit, onDelete }: RuleCardPr
                 key={key}
                 className="inline-flex items-center gap-1.5 rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary"
               >
-                <span className="font-semibold opacity-70">
-                  {RULE_MATCHER_LABELS[key] ?? key}:
-                </span>
+                <span className="font-semibold opacity-70">{RULE_MATCHER_LABELS[key] ?? key}:</span>
                 <span className="max-w-[160px] truncate font-mono text-[11px]">
                   {truncate(val, 30)}
                 </span>
@@ -94,7 +92,15 @@ export function RuleCard({ rule, ruleType, index, onEdit, onDelete }: RuleCardPr
   );
 }
 
-function OverridePill({ keyName, value, ruleType }: { keyName: string; value: string; ruleType: RuleType }) {
+function OverridePill({
+  keyName,
+  value,
+  ruleType,
+}: {
+  keyName: string;
+  value: string;
+  ruleType: RuleType;
+}) {
   const meta = getOverrideMeta(keyName, ruleType);
   const label = meta?.label ?? keyName;
   const displayValue = meta ? formatValue(meta.type, value) : truncate(value, 15);
@@ -114,9 +120,7 @@ function OverridePill({ keyName, value, ruleType }: { keyName: string; value: st
       <span className="border-r border-border/60 bg-muted/40 px-2.5 py-1.5 font-medium text-muted-foreground">
         {label}
       </span>
-      <span className={cn("px-2.5 py-1.5 font-mono font-medium", valueStyle)}>
-        {displayValue}
-      </span>
+      <span className={cn("px-2.5 py-1.5 font-mono font-medium", valueStyle)}>{displayValue}</span>
     </div>
   );
 }

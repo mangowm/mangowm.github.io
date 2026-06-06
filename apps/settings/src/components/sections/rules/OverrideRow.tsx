@@ -37,7 +37,7 @@ export function OverrideRow({
         label={meta?.label ?? propertyKey}
         description={meta?.description ?? "Unknown property"}
       />
-      
+
       <div className="flex items-center gap-2">
         {meta ? (
           <OverrideInput meta={meta} value={value} ruleType={ruleType} onChange={onChange} />
@@ -51,7 +51,7 @@ export function OverrideRow({
             aria-label={propertyKey}
           />
         )}
-        
+
         <Button
           variant="ghost"
           size="icon-sm"
@@ -99,11 +99,13 @@ function OverrideInput({
         <div className="flex shrink-0 overflow-hidden rounded-lg border border-border/40 bg-muted/30 p-1 shadow-inner">
           {opts.map((opt) => {
             const isActive = opt.value === current.value;
-            
-            const activeStyle = 
-              opt.value === "1" ? "bg-emerald-500/15 text-emerald-600 border-emerald-500/20 dark:text-emerald-400" :
-              opt.value === "0" ? "bg-red-500/15 text-red-600 border-red-500/20 dark:text-red-400" :
-              "bg-background text-foreground border-border/50 shadow-sm";
+
+            const activeStyle =
+              opt.value === "1"
+                ? "bg-emerald-500/15 text-emerald-600 border-emerald-500/20 dark:text-emerald-400"
+                : opt.value === "0"
+                  ? "bg-red-500/15 text-red-600 border-red-500/20 dark:text-red-400"
+                  : "bg-background text-foreground border-border/50 shadow-sm";
 
             return (
               <button
@@ -112,9 +114,9 @@ function OverrideInput({
                 onClick={() => onChange(opt.value)}
                 className={cn(
                   "cursor-pointer rounded-md border border-transparent px-3 py-1 text-[11px] font-semibold tracking-wide transition-all duration-200",
-                  isActive 
-                    ? activeStyle 
-                    : "text-muted-foreground/60 hover:text-foreground/80 hover:bg-muted/50"
+                  isActive
+                    ? activeStyle
+                    : "text-muted-foreground/60 hover:text-foreground/80 hover:bg-muted/50",
                 )}
               >
                 {opt.label}
@@ -131,7 +133,7 @@ function OverrideInput({
       const step = meta.step ?? 0.01;
       const numVal = parseFloat(value);
       const display = isNaN(numVal) ? min : numVal;
-      
+
       return (
         <div className="flex w-48 shrink-0 items-center gap-3">
           <Slider
@@ -156,7 +158,7 @@ function OverrideInput({
       const display = isNaN(numVal) ? 0 : numVal;
       const min = meta.range?.[0] ?? 0;
       const max = meta.range?.[1] ?? 100;
-      
+
       return (
         <div className="flex w-48 shrink-0 items-center gap-3">
           <Slider
@@ -164,9 +166,7 @@ function OverrideInput({
             min={min}
             max={max}
             step={1}
-            onValueChange={(v) =>
-              onChange(String(Math.round((Array.isArray(v) ? v : [v])[0])))
-            }
+            onValueChange={(v) => onChange(String(Math.round((Array.isArray(v) ? v : [v])[0])))}
             className="flex-1 cursor-grab active:cursor-grabbing"
             aria-label={meta.label}
           />
@@ -185,7 +185,10 @@ function OverrideInput({
 
       return (
         <Select value={currentValue} onValueChange={(v) => v && onChange(v)}>
-          <SelectTrigger className="w-36 h-8 text-[12px] bg-background/50 font-medium shadow-sm transition-colors hover:border-border/80 focus:ring-1 focus:ring-primary/30" aria-label={meta.label}>
+          <SelectTrigger
+            className="w-36 h-8 text-[12px] bg-background/50 font-medium shadow-sm transition-colors hover:border-border/80 focus:ring-1 focus:ring-primary/30"
+            aria-label={meta.label}
+          >
             <SelectValue>
               {(val) => meta.options?.find((o) => o.value === val)?.label ?? String(val)}
             </SelectValue>
@@ -213,7 +216,7 @@ function OverrideInput({
             onChange={(e) => onChange(e.target.value)}
             className={cn(
               "w-48 h-8 shrink-0 bg-background/50 font-mono text-[12px] shadow-sm transition-colors hover:border-border/80 focus-visible:bg-background focus-visible:ring-1 focus-visible:ring-primary/30",
-              hasError && "border-red-500/60 focus-visible:ring-red-500/30"
+              hasError && "border-red-500/60 focus-visible:ring-red-500/30",
             )}
             spellCheck={false}
             placeholder={meta.description}

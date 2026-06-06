@@ -23,21 +23,30 @@ export function RuleList({ ruleType }: RuleListProps) {
 
   const handleAdd = useCallback(() => setEditing({ mode: "creating" }), []);
   const handleEdit = useCallback((index: number) => setEditing({ mode: "editing", index }), []);
-  
-  const handleDelete = useCallback((index: number) => {
-    removeRule(index);
-    setEditing({ mode: "idle" });
-  }, [removeRule]);
 
-  const handleSaveNew = useCallback((rule: ParsedRule) => {
-    addRule(rule);
-    setEditing({ mode: "idle" });
-  }, [addRule]);
+  const handleDelete = useCallback(
+    (index: number) => {
+      removeRule(index);
+      setEditing({ mode: "idle" });
+    },
+    [removeRule],
+  );
 
-  const handleSaveEdit = useCallback((index: number, rule: ParsedRule) => {
-    updateRule(index, rule);
-    setEditing({ mode: "idle" });
-  }, [updateRule]);
+  const handleSaveNew = useCallback(
+    (rule: ParsedRule) => {
+      addRule(rule);
+      setEditing({ mode: "idle" });
+    },
+    [addRule],
+  );
+
+  const handleSaveEdit = useCallback(
+    (index: number, rule: ParsedRule) => {
+      updateRule(index, rule);
+      setEditing({ mode: "idle" });
+    },
+    [updateRule],
+  );
 
   const handleCancel = useCallback(() => setEditing({ mode: "idle" }), []);
 
@@ -72,7 +81,8 @@ export function RuleList({ ruleType }: RuleListProps) {
           </div>
           <h3 className="text-base font-semibold text-foreground tracking-tight">No Rules Yet</h3>
           <p className="mt-1.5 mb-6 max-w-sm text-sm text-muted-foreground/60 leading-relaxed">
-            Rules let you selectively override behaviour based on exact criteria. Add your first rule to get started.
+            Rules let you selectively override behaviour based on exact criteria. Add your first
+            rule to get started.
           </p>
           <Button variant="default" onClick={handleAdd} className="gap-1.5 shadow-md">
             <Plus className="size-4" />

@@ -2,9 +2,7 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": [
-    "main"
-  ],
+  "windows": ["main"],
   "permissions": [
     "core:default",
     "opener:default",
@@ -14,10 +12,7 @@
         {
           "name": "mmsg",
           "cmd": "mmsg",
-          "args": [
-            "dispatch",
-            "reload_config"
-          ]
+          "args": ["dispatch", "reload_config"]
         }
       ]
     },

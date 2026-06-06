@@ -61,7 +61,6 @@ export function RuleEditor({ ruleType, initialRule, onSave, onCancel, index }: R
 
   return (
     <div className="relative flex flex-col overflow-hidden rounded-xl border border-border/50 bg-card shadow-sm transition-all">
-      
       {/* Editor Top Bar */}
       <div className="flex items-center justify-between border-b border-border/40 bg-muted/10 px-5 py-3">
         <div className="flex items-center gap-3">
@@ -90,7 +89,6 @@ export function RuleEditor({ ruleType, initialRule, onSave, onCancel, index }: R
 
       {/* Form Content - No internal borders! */}
       <div className="flex flex-col">
-        
         {/* Matchers Block - Subtle tinted background */}
         <div className="bg-muted/10 px-5 py-4">
           <div className="flex flex-col gap-1">
@@ -112,7 +110,6 @@ export function RuleEditor({ ruleType, initialRule, onSave, onCancel, index }: R
 
         {/* Overrides Block - Plain background */}
         <div className="px-5 py-4">
-          
           <div className="flex flex-col gap-1">
             {overrideKeys.length === 0 ? (
               <div className="py-4 text-sm italic text-muted-foreground/50">
@@ -173,15 +170,16 @@ function MatcherInput({
   onChange: (v: string) => void;
 }) {
   if (options) {
-    const currentValue = options.find((o) => o.value === value)
-      ? value
-      : options[0]?.value ?? "";
+    const currentValue = options.find((o) => o.value === value) ? value : (options[0]?.value ?? "");
 
     return (
       <div className="group flex items-center justify-between gap-3 rounded-md px-2 py-1.5 transition-colors hover:bg-muted/30">
         <span className="text-[13px] font-medium text-foreground">{label}</span>
         <Select value={currentValue} onValueChange={(v) => v !== null && onChange(v)}>
-          <SelectTrigger className="w-64 h-9 text-[12px] bg-background/50 font-medium shadow-sm transition-colors hover:border-border/80 focus:ring-1 focus:ring-primary/30" aria-label={label}>
+          <SelectTrigger
+            className="w-64 h-9 text-[12px] bg-background/50 font-medium shadow-sm transition-colors hover:border-border/80 focus:ring-1 focus:ring-primary/30"
+            aria-label={label}
+          >
             <SelectValue>
               {options.find((o) => o.value === currentValue)?.label ?? currentValue}
             </SelectValue>

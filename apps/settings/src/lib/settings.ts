@@ -2,7 +2,7 @@ import { readTextFile, writeTextFile, exists, mkdir } from "@tauri-apps/plugin-f
 import { BaseDirectory } from "@tauri-apps/api/path";
 
 const SETTINGS_FILE = ".config/mango/.settings";
-const CURRENT_SETTINGS_VERSION = "0.1.0";
+const CURRENT_SETTINGS_VERSION = "0.1.1";
 
 export async function updateSettings(newConfig: Record<string, any>) {
   let currentSettings: Record<string, any> = { version: CURRENT_SETTINGS_VERSION };

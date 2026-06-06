@@ -42,7 +42,7 @@ export function OverridePalette({ ruleType, usedKeys, onSelect, onClose }: Overr
       onSelect(meta);
       onClose();
     },
-    [onSelect, onClose]
+    [onSelect, onClose],
   );
 
   return (
@@ -58,12 +58,16 @@ export function OverridePalette({ ruleType, usedKeys, onSelect, onClose }: Overr
           {query.trim() ? (
             <>
               <p className="font-medium text-foreground">No matches for &ldquo;{query}&rdquo;</p>
-              <p className="mt-1 text-xs text-muted-foreground/60">Try searching by property name or description</p>
+              <p className="mt-1 text-xs text-muted-foreground/60">
+                Try searching by property name or description
+              </p>
             </>
           ) : (
             <>
               <p className="font-medium text-foreground">All available properties added</p>
-              <p className="mt-1 text-xs text-muted-foreground/60">Remove an existing override to add it again</p>
+              <p className="mt-1 text-xs text-muted-foreground/60">
+                Remove an existing override to add it again
+              </p>
             </>
           )}
         </CommandEmpty>

@@ -6,13 +6,13 @@ Define keyboard shortcuts, mouse buttons, scroll actions, lid switch events, and
 
 Mangowm supports five binding types, each with its own keyword:
 
-| Keyword        | Binding Type | Syntax                                             |
-| :------------- | :----------- | :------------------------------------------------- |
-| `bind`         | Keyboard     | `bind`…`modifiers+key,dispatcher,arg1,…`           |
-| `mousebind`    | Mouse        | `mousebind = modifiers+button,dispatcher,arg1,…`   |
-| `axisbind`     | Scroll Axis  | `axisbind = modifiers+direction,dispatcher,arg1,…` |
-| `switchbind`   | Lid Switch   | `switchbind = state,dispatcher,arg1,…`             |
-| `gesturebind`  | Gesture      | `gesturebind = modifiers+motion,fingers,dispatcher,arg1,…` |
+| Keyword       | Binding Type | Syntax                                                     |
+| :------------ | :----------- | :--------------------------------------------------------- |
+| `bind`        | Keyboard     | `bind`…`modifiers+key,dispatcher,arg1,…`                   |
+| `mousebind`   | Mouse        | `mousebind = modifiers+button,dispatcher,arg1,…`           |
+| `axisbind`    | Scroll Axis  | `axisbind = modifiers+direction,dispatcher,arg1,…`         |
+| `switchbind`  | Lid Switch   | `switchbind = state,dispatcher,arg1,…`                     |
+| `gesturebind` | Gesture      | `gesturebind = modifiers+motion,fingers,dispatcher,arg1,…` |
 
 ### Keyboard
 
@@ -35,13 +35,13 @@ bind[flags] = modifiers+key,dispatcher,arg1,arg2,...
 mousebind = modifiers+button,dispatcher,arg1,...
 ```
 
-| Part         | Description                                                                           |
-| :----------- | :------------------------------------------------------------------------------------ |
-| `mousebind`  | Config key for mouse button bindings.                                                 |
-| `modifiers`  | Modifier key combination held while clicking. Use `none` for unmodified clicks.       |
+| Part         | Description                                                                                                                                     |
+| :----------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mousebind`  | Config key for mouse button bindings.                                                                                                           |
+| `modifiers`  | Modifier key combination held while clicking. Use `none` for unmodified clicks.                                                                 |
 | `button`     | Named mouse button: `btn_left`, `btn_right`, `btn_middle`, `btn_side`, `btn_extra`, `btn_forward`, `btn_back`, `btn_task`, or a raw `code:<N>`. |
-| `dispatcher` | Action to execute.                                                                    |
-| `arg1,…`     | Comma-separated arguments passed to the dispatcher.                                   |
+| `dispatcher` | Action to execute.                                                                                                                              |
+| `arg1,…`     | Comma-separated arguments passed to the dispatcher.                                                                                             |
 
 > Left and right mouse buttons require at least one modifier to avoid conflicts with normal click behaviour.
 
@@ -65,12 +65,12 @@ axisbind = modifiers+direction,dispatcher,arg1,...
 switchbind = state,dispatcher,arg1,...
 ```
 
-| Part         | Description                                                       |
-| :----------- | :---------------------------------------------------------------- |
-| `switchbind` | Config key for laptop lid switch bindings.                        |
-| `state`      | Lid event: `fold` (lid closed) or `unfold` (lid opened).          |
-| `dispatcher` | Action to execute.                                                |
-| `arg1,…`     | Comma-separated arguments passed to the dispatcher.               |
+| Part         | Description                                              |
+| :----------- | :------------------------------------------------------- |
+| `switchbind` | Config key for laptop lid switch bindings.               |
+| `state`      | Lid event: `fold` (lid closed) or `unfold` (lid opened). |
+| `dispatcher` | Action to execute.                                       |
+| `arg1,…`     | Comma-separated arguments passed to the dispatcher.      |
 
 > Switch bindings do **not** accept modifiers.
 
@@ -80,14 +80,14 @@ switchbind = state,dispatcher,arg1,...
 gesturebind = modifiers+motion,fingers,dispatcher,arg1,...
 ```
 
-| Part         | Description                                                              |
-| :----------- | :----------------------------------------------------------------------- |
-| `gesturebind`| Config key for touchpad gesture bindings.                                |
-| `modifiers`  | Modifier key combination held during the gesture. Use `none` for bare.   |
-| `motion`     | Gesture direction: `up`, `down`, `left`, `right`.                        |
-| `fingers`    | Number of fingers (positive integer, typically 3 or 4).                  |
-| `dispatcher` | Action to execute.                                                       |
-| `arg1,…`     | Comma-separated arguments passed to the dispatcher.                      |
+| Part          | Description                                                            |
+| :------------ | :--------------------------------------------------------------------- |
+| `gesturebind` | Config key for touchpad gesture bindings.                              |
+| `modifiers`   | Modifier key combination held during the gesture. Use `none` for bare. |
+| `motion`      | Gesture direction: `up`, `down`, `left`, `right`.                      |
+| `fingers`     | Number of fingers (positive integer, typically 3 or 4).                |
+| `dispatcher`  | Action to execute.                                                     |
+| `arg1,…`      | Comma-separated arguments passed to the dispatcher.                    |
 
 ### Examples
 
