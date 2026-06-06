@@ -2,28 +2,92 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
     "opener:default",
-    "fs:allow-exists",
-    "fs:allow-read-dir",
-    "fs:allow-copy-file",
-    "fs:allow-mkdir",
-    "fs:allow-write-text-file",
-    "fs:allow-read-text-file",
     {
       "identifier": "shell:allow-execute",
       "allow": [
-        { "name": "mmsg", "cmd": "mmsg", "args": ["dispatch", "reload_config"], "sidecar": false }
+        {
+          "name": "mmsg",
+          "cmd": "mmsg",
+          "args": [
+            "dispatch",
+            "reload_config"
+          ]
+        }
       ]
     },
     {
-      "identifier": "fs:scope",
+      "identifier": "fs:allow-exists",
       "allow": [
-        { "path": "$HOME/.config/mango" },
-        { "path": "$HOME/.config/mango/**/*" },
-        { "path": "$HOME/.config/mango/**/.*" }
+        {
+          "path": "$HOME/.config/mango"
+        },
+        {
+          "path": "$HOME/.config/mango/.settings"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-read-dir",
+      "allow": [
+        {
+          "path": "$HOME/.config/mango"
+        },
+        {
+          "path": "$HOME/.config/mango/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-copy-file",
+      "allow": [
+        {
+          "path": "$HOME/.config/mango/**/*"
+        },
+        {
+          "path": "$HOME/.config/mango/**/.*"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-mkdir",
+      "allow": [
+        {
+          "path": "$HOME/.config/mango"
+        },
+        {
+          "path": "$HOME/.config/mango/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-write-text-file",
+      "allow": [
+        {
+          "path": "$HOME/.config/mango/**/*"
+        },
+        {
+          "path": "$HOME/.config/mango/**/.*"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-read-text-file",
+      "allow": [
+        {
+          "path": "$HOME/.config/mango/**/*"
+        },
+        {
+          "path": "$HOME/.config/mango/**/.*"
+        },
+        {
+          "path": "/etc/mango/config.conf"
+        }
       ]
     }
   ]
