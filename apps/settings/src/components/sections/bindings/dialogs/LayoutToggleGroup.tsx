@@ -1,13 +1,11 @@
 import { cn } from "@/lib/utils";
-import { useConfigStore } from "@/lib/config-store";
-import { cfgStr } from "@/lib/config-helpers";
+import { useConfigStore, useConfigStr } from "@/lib/config-store";
 import { LAYOUT_NAMES } from "@/lib/dispatchers/types";
 
 export function LayoutToggleGroup() {
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const raw = cfgStr(data, "circle_layout", "");
+  const raw = useConfigStr("circle_layout", "");
 
   const activeLayouts = raw
     .split(",")

@@ -1,19 +1,17 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgInt } from "@/lib/config-helpers";
+import { useConfigStore, useConfigInt } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import { PanelShell, PanelHeader, SectionCard, SliderRow } from "@/components/sections/section-ui";
 
 export function TimingPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const durMove = cfgInt(data, "animation_duration_move", 500, 1, 50000);
-  const durOpen = cfgInt(data, "animation_duration_open", 400, 1, 50000);
-  const durClose = cfgInt(data, "animation_duration_close", 300, 1, 50000);
-  const durTag = cfgInt(data, "animation_duration_tag", 300, 1, 50000);
-  const durFocus = cfgInt(data, "animation_duration_focus", 0, 1, 50000);
+  const durMove = useConfigInt("animation_duration_move", 500, 1, 50000);
+  const durOpen = useConfigInt("animation_duration_open", 400, 1, 50000);
+  const durClose = useConfigInt("animation_duration_close", 300, 1, 50000);
+  const durTag = useConfigInt("animation_duration_tag", 300, 1, 50000);
+  const durFocus = useConfigInt("animation_duration_focus", 0, 1, 50000);
 
   return (
     <PanelShell>

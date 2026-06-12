@@ -1,23 +1,21 @@
 import { useState, useRef } from "react";
-import { useConfigStore } from "@/lib/config-store";
+import { useConfigStore, useConfigValues } from "@/lib/config-store";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Trash2, Plus, TerminalSquare } from "lucide-react";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
+import { PanelShell, PanelHeader, SectionCard } from "@/components/sections/section-ui";
 
 function CommandSection({
   title,
-  description,
   configKey,
   placeholder,
 }: {
   title: string;
-  description: string;
   configKey: string;
   placeholder: string;
 }) {
-  const commands = useConfigStore((state) => state.data[configKey]) ?? [];
+  const commands = useConfigValues(configKey);
   const addEntry = useConfigStore((state) => state.addEntry);
   const updateEntry = useConfigStore((state) => state.updateEntry);
   const removeEntry = useConfigStore((state) => state.removeEntry);
@@ -34,13 +32,8 @@ function CommandSection({
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-col px-1">
-        <h3 className="text-base font-medium font-mono text-foreground">{title}</h3>
-        <p className="mt-1 text-[13px] text-muted-foreground">{description}</p>
-      </div>
-
-      <div className="flex flex-col overflow-hidden rounded-xl border border-border/50 bg-card shadow-sm divide-y divide-border/50">
+    <SectionCard title={title}>
+      <div className="flex flex-col">
         {commands.length === 0 && (
           <div className="flex flex-col items-center justify-center py-10 text-sm text-muted-foreground bg-muted/5">
             <TerminalSquare className="mb-3 size-5 opacity-20" />
@@ -101,7 +94,7 @@ function CommandSection({
           </Button>
         </div>
       </div>
-    </div>
+    </SectionCard>
   );
 }
 
@@ -109,34 +102,26 @@ export function AutostartPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
 
   return (
-    <div className="mx-auto w-full max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="mb-8 flex flex-col gap-2">
-        <h2 className="text-3xl font-semibold tracking-tight">Autostart</h2>
-        <p className="text-sm text-muted-foreground">
-          Define applications and scripts to execute on compositor startup or reload.
-        </p>
-        <Separator className="mt-4" />
-      </div>
+    <PanelShell maxWidth="max-w-3xl">
+      <PanelHeader
+        title="Autostart"
+        description="Define applications and scripts to execute on compositor startup or reload."
+        separator={false}
+      />
 
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-5">
         <div ref={fieldRef("exec-once")}>
-          <CommandSection
-            title="exec-once"
-            description="Commands that run only once when MangoWM launches. (e.g., status bars, authentication agents)"
-            configKey="exec-once"
-            placeholder="e.g., waybar &"
-          />
+          <CommandSection title="exec-once" configKey="exec-once" placeholder="e.g., waybar &" />
         </div>
 
         <div ref={fieldRef("exec")}>
           <CommandSection
             title="exec"
-            description="Commands that execute every time the configuration is reloaded. (e.g., background setters)"
             configKey="exec"
             placeholder="e.g., swaybg -i ~/wallpaper.png"
           />
         </div>
       </div>
-    </div>
+    </PanelShell>
   );
 }

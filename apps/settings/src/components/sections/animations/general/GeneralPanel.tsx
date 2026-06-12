@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgFloat, cfgStr } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool, useConfigFloat, useConfigStr } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -29,30 +28,29 @@ const DIRECTION_OPTIONS = [
 
 export function GeneralPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const animationsOn = cfgBool(data, "animations", true);
-  const layerAnimationsOn = cfgBool(data, "layer_animations");
-  const animFadeIn = cfgBool(data, "animation_fade_in", true);
-  const animFadeOut = cfgBool(data, "animation_fade_out", true);
+  const animationsOn = useConfigBool("animations", true);
+  const layerAnimationsOn = useConfigBool("layer_animations");
+  const animFadeIn = useConfigBool("animation_fade_in", true);
+  const animFadeOut = useConfigBool("animation_fade_out", true);
 
   // animation_type_* have no explicit default in set_value_default();
   // they remain empty string after memset — use "" as fallback
-  const animTypeOpen = cfgStr(data, "animation_type_open", "");
-  const animTypeClose = cfgStr(data, "animation_type_close", "");
-  const layerAnimTypeOpen = cfgStr(data, "layer_animation_type_open", "");
-  const layerAnimTypeClose = cfgStr(data, "layer_animation_type_close", "");
+  const animTypeOpen = useConfigStr("animation_type_open", "");
+  const animTypeClose = useConfigStr("animation_type_close", "");
+  const layerAnimTypeOpen = useConfigStr("layer_animation_type_open", "");
+  const layerAnimTypeClose = useConfigStr("layer_animation_type_close", "");
 
   // Default: HORIZONTAL = 1
-  const tagDir = cfgStr(data, "tag_animation_direction", "1");
+  const tagDir = useConfigStr("tag_animation_direction", "1");
 
-  const zoomInitial = cfgFloat(data, "zoom_initial_ratio", 0.4, 0.1, 1.0);
-  const zoomEnd = cfgFloat(data, "zoom_end_ratio", 0.8, 0.1, 1.0);
-  const fadeInOpacity = cfgFloat(data, "fadein_begin_opacity", 0.5, 0.0, 1.0);
-  const fadeOutOpacity = cfgFloat(data, "fadeout_begin_opacity", 0.5, 0.0, 1.0);
+  const zoomInitial = useConfigFloat("zoom_initial_ratio", 0.4, 0.1, 1.0);
+  const zoomEnd = useConfigFloat("zoom_end_ratio", 0.8, 0.1, 1.0);
+  const fadeInOpacity = useConfigFloat("fadein_begin_opacity", 0.5, 0.0, 1.0);
+  const fadeOutOpacity = useConfigFloat("fadeout_begin_opacity", 0.5, 0.0, 1.0);
 
   return (
     <PanelShell>

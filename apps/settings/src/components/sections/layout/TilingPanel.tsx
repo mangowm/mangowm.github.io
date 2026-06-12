@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgInt, cfgFloat } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool, useConfigInt, useConfigFloat } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -12,16 +11,15 @@ import {
 
 export function TilingPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const newIsMaster = cfgBool(data, "new_is_master", true);
-  const mfact = cfgFloat(data, "default_mfact", 0.55, 0.1, 0.9);
-  const nmaster = cfgInt(data, "default_nmaster", 1, 1, 1000);
-  const centerOverspread = cfgBool(data, "center_master_overspread");
-  const centerSingleStack = cfgBool(data, "center_when_single_stack", true);
+  const newIsMaster = useConfigBool("new_is_master", true);
+  const mfact = useConfigFloat("default_mfact", 0.55, 0.1, 0.9);
+  const nmaster = useConfigInt("default_nmaster", 1, 1, 1000);
+  const centerOverspread = useConfigBool("center_master_overspread");
+  const centerSingleStack = useConfigBool("center_when_single_stack", true);
 
   return (
     <PanelShell>

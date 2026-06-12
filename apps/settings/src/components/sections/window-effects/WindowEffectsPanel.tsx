@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgInt, cfgFloat } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool, useConfigInt, useConfigFloat } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -12,31 +11,30 @@ import {
 
 export function WindowEffectsPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const blurOn = cfgBool(data, "blur");
-  const blurLayerOn = cfgBool(data, "blur_layer");
-  const blurOptimizedOn = cfgBool(data, "blur_optimized", true);
-  const blurPasses = cfgInt(data, "blur_params_num_passes", 1, 1, 10);
-  const blurRadius = cfgInt(data, "blur_params_radius", 5, 1, 32);
-  const blurNoise = cfgFloat(data, "blur_params_noise", 0.02, 0, 1);
-  const blurBrightness = cfgFloat(data, "blur_params_brightness", 0.9, 0, 1);
-  const blurContrast = cfgFloat(data, "blur_params_contrast", 0.9, 0, 1);
-  const blurSaturation = cfgFloat(data, "blur_params_saturation", 1.2, 0, 1);
+  const blurOn = useConfigBool("blur");
+  const blurLayerOn = useConfigBool("blur_layer");
+  const blurOptimizedOn = useConfigBool("blur_optimized", true);
+  const blurPasses = useConfigInt("blur_params_num_passes", 1, 1, 10);
+  const blurRadius = useConfigInt("blur_params_radius", 5, 1, 32);
+  const blurNoise = useConfigFloat("blur_params_noise", 0.02, 0, 1);
+  const blurBrightness = useConfigFloat("blur_params_brightness", 0.9, 0, 1);
+  const blurContrast = useConfigFloat("blur_params_contrast", 0.9, 0, 1);
+  const blurSaturation = useConfigFloat("blur_params_saturation", 1.2, 0, 1);
 
-  const radius = cfgInt(data, "border_radius", 0, 0, 64);
+  const radius = useConfigInt("border_radius", 0, 0, 64);
 
-  const shadowsOn = cfgBool(data, "shadows");
-  const shadowsFloatingOn = cfgBool(data, "shadow_only_floating", true);
-  const layerShadowsOn = cfgBool(data, "layer_shadows");
-  const shadowsSize = cfgInt(data, "shadows_size", 10, 0, 100);
-  const shadowsBlur = cfgFloat(data, "shadows_blur", 15.0, 0, 20);
-  const shadowsPosX = cfgInt(data, "shadows_position_x", 0, -100, 100);
-  const shadowsPosY = cfgInt(data, "shadows_position_y", 0, -100, 100);
+  const shadowsOn = useConfigBool("shadows");
+  const shadowsFloatingOn = useConfigBool("shadow_only_floating", true);
+  const layerShadowsOn = useConfigBool("layer_shadows");
+  const shadowsSize = useConfigInt("shadows_size", 10, 0, 100);
+  const shadowsBlur = useConfigFloat("shadows_blur", 15.0, 0, 20);
+  const shadowsPosX = useConfigInt("shadows_position_x", 0, -100, 100);
+  const shadowsPosY = useConfigInt("shadows_position_y", 0, -100, 100);
 
-  const focusedOpacity = cfgFloat(data, "focused_opacity", 1.0, 0, 1);
-  const unfocusedOpacity = cfgFloat(data, "unfocused_opacity", 1.0, 0, 1);
+  const focusedOpacity = useConfigFloat("focused_opacity", 1.0, 0, 1);
+  const unfocusedOpacity = useConfigFloat("unfocused_opacity", 1.0, 0, 1);
 
   const tb = (k: string) => (v: boolean) => setValue(k, v ? "1" : "0");
 

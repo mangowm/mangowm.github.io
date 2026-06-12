@@ -1,6 +1,11 @@
 import { useCallback } from "react";
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgInt, cfgFloat, cfgStr } from "@/lib/config-helpers";
+import {
+  useConfigStore,
+  useConfigBool,
+  useConfigInt,
+  useConfigFloat,
+  useConfigStr,
+} from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -31,22 +36,21 @@ function sanitizePresetValue(raw: string): string {
 
 export function ScrollerPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const defaultProportion = cfgFloat(data, "scroller_default_proportion", 0.9, 0.1, 1.0);
-  const defaultSingle = cfgFloat(data, "scroller_default_proportion_single", 1.0, 0.1, 1.0);
-  const ignoreSingle = cfgBool(data, "scroller_ignore_proportion_single", true);
-  const focusCenter = cfgBool(data, "scroller_focus_center");
-  const preferCenter = cfgBool(data, "scroller_prefer_center");
-  const preferOverspread = cfgBool(data, "scroller_prefer_overspread", true);
-  const pointerFocus = cfgBool(data, "edge_scroller_pointer_focus", true);
-  const allowSpeed = cfgFloat(data, "edge_scroller_focus_allow_speed", 0.0, 0.0, 1000.0);
-  const structs = cfgInt(data, "scroller_structs", 20, 0, 1000);
+  const defaultProportion = useConfigFloat("scroller_default_proportion", 0.9, 0.1, 1.0);
+  const defaultSingle = useConfigFloat("scroller_default_proportion_single", 1.0, 0.1, 1.0);
+  const ignoreSingle = useConfigBool("scroller_ignore_proportion_single", true);
+  const focusCenter = useConfigBool("scroller_focus_center");
+  const preferCenter = useConfigBool("scroller_prefer_center");
+  const preferOverspread = useConfigBool("scroller_prefer_overspread", true);
+  const pointerFocus = useConfigBool("edge_scroller_pointer_focus", true);
+  const allowSpeed = useConfigFloat("edge_scroller_focus_allow_speed", 0.0, 0.0, 1000.0);
+  const structs = useConfigInt("scroller_structs", 20, 0, 1000);
 
-  const presetValue = cfgStr(data, "scroller_proportion_preset", "");
+  const presetValue = useConfigStr("scroller_proportion_preset", "");
 
   const handlePresetChange = useCallback(
     (raw: string) => {

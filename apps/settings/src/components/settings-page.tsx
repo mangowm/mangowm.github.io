@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { BookOpenTextIcon, SettingsIcon } from "lucide-react";
 import { SettingsSidebar } from "@/components/settings-sidebar";
 import { PageHeader } from "@/components/page-header";
@@ -12,6 +12,10 @@ import { SearchCommand, useSearchShortcut } from "@/components/search-command";
 import type { SearchSelection } from "@/components/search-command";
 
 const DEFAULT_SECTION = SECTIONS[0].id;
+const PANEL_OPTIONS = [
+  { value: "settings" as const, label: "Settings", icon: SettingsIcon },
+  { value: "docs" as const, label: "Docs", icon: BookOpenTextIcon },
+];
 
 type PanelView = "settings" | "docs";
 
@@ -32,42 +36,32 @@ export function SettingsPage() {
     load();
   }, [load]);
 
-  useSearchShortcut(useCallback(() => setSearchOpen(true), []));
-
-  const handleSearchSelect = useCallback((selection: SearchSelection) => {
-    startTransition(() => {
-      setActiveSection(selection.sectionId);
-      setFocusKey(selection.configKey);
-    });
-  }, []);
-
-  const handleSectionChange = useCallback((id: string) => {
-    startTransition(() => {
-      setActiveSection(id);
-      setFocusKey(undefined);
-    });
-  }, []);
+  useSearchShortcut(() => setSearchOpen(true));
 
   const section = getSectionById(activeSection);
   const Panel = section?.panel ?? null;
 
-  const panelOptions = [
-    { value: "settings" as const, label: "Settings", icon: SettingsIcon },
-    { value: "docs" as const, label: "Docs", icon: BookOpenTextIcon },
-  ];
-
-  const panelContent: Record<PanelView, React.ReactNode> = {
-    settings: Panel && <Panel focusKey={focusKey} />,
-    docs: <SectionDocsPage markdown={getDocs(activeSection)} />,
-  };
-
   return (
     <SidebarProvider style={SIDEBAR_STYLES}>
-      <SearchCommand open={searchOpen} onOpenChange={setSearchOpen} onSelect={handleSearchSelect} />
+      <SearchCommand
+        open={searchOpen}
+        onOpenChange={setSearchOpen}
+        onSelect={(selection: SearchSelection) => {
+          startTransition(() => {
+            setActiveSection(selection.sectionId);
+            setFocusKey(selection.configKey);
+          });
+        }}
+      />
       <SettingsSidebar
         variant="inset"
         activeSection={activeSection}
-        onSectionChange={handleSectionChange}
+        onSectionChange={(id: string) => {
+          startTransition(() => {
+            setActiveSection(id);
+            setFocusKey(undefined);
+          });
+        }}
       />
       <SidebarInset>
         <PageHeader title={section?.label ?? "Settings"} onSearch={() => setSearchOpen(true)} />
@@ -78,12 +72,16 @@ export function SettingsPage() {
             <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 p-6 relative flex flex-col">
               <div className="absolute top-3 right-3">
                 <SegmentedControl
-                  options={panelOptions}
+                  options={PANEL_OPTIONS}
                   value={panelView}
                   onChange={setPanelView}
                 />
               </div>
-              {panelContent[panelView]}
+              {panelView === "settings" ? (
+                Panel && <Panel focusKey={focusKey} />
+              ) : (
+                <SectionDocsPage markdown={getDocs(activeSection)} />
+              )}
             </div>
           </div>
         </div>

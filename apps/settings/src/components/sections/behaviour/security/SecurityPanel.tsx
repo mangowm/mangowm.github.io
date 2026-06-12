@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgStr } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool, useConfigStr } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -17,15 +16,14 @@ const INHIBIT_OPTIONS = [
 
 export function SecurityPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   // mango: CLAMP_INT(allow_shortcuts_inhibit, 0, 1), default SHORTCUTS_INHIBIT_ENABLE
-  const shortcutsInhibit = cfgStr(data, "allow_shortcuts_inhibit", "1");
+  const shortcutsInhibit = useConfigStr("allow_shortcuts_inhibit", "1");
   // mango: CLAMP_INT(allow_lock_transparent, 0, 1), default 0
-  const lockTransparent = cfgBool(data, "allow_lock_transparent");
+  const lockTransparent = useConfigBool("allow_lock_transparent");
 
   return (
     <PanelShell>

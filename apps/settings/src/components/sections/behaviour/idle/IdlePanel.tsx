@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgInt } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool, useConfigInt } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -12,15 +11,14 @@ import {
 
 export function IdlePanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   // mango: CLAMP_INT(idleinhibit_ignore_visible, 0, 1), default 0
-  const idleInhibitIgnore = cfgBool(data, "idleinhibit_ignore_visible");
+  const idleInhibitIgnore = useConfigBool("idleinhibit_ignore_visible");
   // mango: CLAMP_INT(cursor_hide_timeout, 0, 36000), default 0
-  const cursorTimeout = cfgInt(data, "cursor_hide_timeout", 0, 0, 36000);
+  const cursorTimeout = useConfigInt("cursor_hide_timeout", 0, 0, 36000);
 
   return (
     <PanelShell>

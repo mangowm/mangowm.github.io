@@ -1,5 +1,10 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgFloat, cfgInt, cfgStr } from "@/lib/config-helpers";
+import {
+  useConfigStore,
+  useConfigBool,
+  useConfigFloat,
+  useConfigInt,
+  useConfigStr,
+} from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -27,26 +32,25 @@ const BUTTON_MAP_OPTIONS = [
 
 export function TrackpadPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   // mango defaults: trackpad_natural_scrolling=0, disable_trackpad=0
   // tap_to_click=1, tap_and_drag=1, drag_lock=1, button_map=LRM (1)
-  const naturalScroll = cfgBool(data, "trackpad_natural_scrolling");
-  const accelProfile = cfgStr(data, "trackpad_accel_profile", "1");
-  const accelSpeed = cfgFloat(data, "trackpad_accel_speed", 0.0, -1.0, 1.0);
+  const naturalScroll = useConfigBool("trackpad_natural_scrolling");
+  const accelProfile = useConfigStr("trackpad_accel_profile", "1");
+  const accelSpeed = useConfigFloat("trackpad_accel_speed", 0.0, -1.0, 1.0);
   // mango: CLAMP_FLOAT(trackpad_scroll_factor, 0.1, 10.0), default 1.0
-  const scrollFactor = cfgFloat(data, "trackpad_scroll_factor", 1.0, 0.1, 10.0);
-  const disabled = cfgBool(data, "disable_trackpad");
-  const tapToClick = cfgBool(data, "tap_to_click", true);
-  const tapAndDrag = cfgBool(data, "tap_and_drag", true);
-  const dragLock = cfgBool(data, "drag_lock", true);
+  const scrollFactor = useConfigFloat("trackpad_scroll_factor", 1.0, 0.1, 10.0);
+  const disabled = useConfigBool("disable_trackpad");
+  const tapToClick = useConfigBool("tap_to_click", true);
+  const tapAndDrag = useConfigBool("tap_and_drag", true);
+  const dragLock = useConfigBool("drag_lock", true);
   // mango: CLAMP_INT(button_map, 0, 1), default TAP_MAP_LRM=1
-  const buttonMap = cfgStr(data, "button_map", "1");
+  const buttonMap = useConfigStr("button_map", "1");
   // mango: CLAMP_INT(swipe_min_threshold, 1, 1000), default 1
-  const swipeThreshold = cfgInt(data, "swipe_min_threshold", 1, 1, 1000);
+  const swipeThreshold = useConfigInt("swipe_min_threshold", 1, 1, 1000);
 
   return (
     <PanelShell>

@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgFloat } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool, useConfigFloat } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -12,16 +11,15 @@ import {
 
 export function ScratchpadPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const scratchpadCrossMon = cfgBool(data, "scratchpad_cross_monitor");
-  const singleScratchpad = cfgBool(data, "single_scratchpad", true);
+  const scratchpadCrossMon = useConfigBool("scratchpad_cross_monitor");
+  const singleScratchpad = useConfigBool("single_scratchpad", true);
 
-  const scratchpadWidth = cfgFloat(data, "scratchpad_width_ratio", 0.8, 0.1, 1.0);
-  const scratchpadHeight = cfgFloat(data, "scratchpad_height_ratio", 0.9, 0.1, 1.0);
+  const scratchpadWidth = useConfigFloat("scratchpad_width_ratio", 0.8, 0.1, 1.0);
+  const scratchpadHeight = useConfigFloat("scratchpad_height_ratio", 0.9, 0.1, 1.0);
 
   return (
     <PanelShell>

@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgInt } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool, useConfigInt } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -12,17 +11,16 @@ import {
 
 export function GapsBordersPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const smartgapsOn = cfgBool(data, "smartgaps");
-  const gappih = cfgInt(data, "gappih", 5, 0, 1000);
-  const gappiv = cfgInt(data, "gappiv", 5, 0, 1000);
-  const gappoh = cfgInt(data, "gappoh", 10, 0, 1000);
-  const gappov = cfgInt(data, "gappov", 10, 0, 1000);
-  const borderpx = cfgInt(data, "borderpx", 4, 0, 200);
-  const noBorderSingle = cfgBool(data, "no_border_when_single");
-  const noRadiusSingle = cfgBool(data, "no_radius_when_single");
+  const smartgapsOn = useConfigBool("smartgaps");
+  const gappih = useConfigInt("gappih", 5, 0, 1000);
+  const gappiv = useConfigInt("gappiv", 5, 0, 1000);
+  const gappoh = useConfigInt("gappoh", 10, 0, 1000);
+  const gappov = useConfigInt("gappov", 10, 0, 1000);
+  const borderpx = useConfigInt("borderpx", 4, 0, 200);
+  const noBorderSingle = useConfigBool("no_border_when_single");
+  const noRadiusSingle = useConfigBool("no_radius_when_single");
 
   const tb = (k: string) => (v: boolean) => setValue(k, v ? "1" : "0");
 

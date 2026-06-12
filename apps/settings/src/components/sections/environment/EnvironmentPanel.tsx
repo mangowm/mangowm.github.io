@@ -1,9 +1,10 @@
-import { useState, useRef, KeyboardEvent, ClipboardEvent } from "react";
-import { useConfigStore } from "@/lib/config-store";
+import { useState, useRef } from "react";
+import { useConfigStore, useConfigValues } from "@/lib/config-store";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus, Sparkles } from "lucide-react";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
+import { PanelShell, PanelHeader } from "@/components/sections/section-ui";
 
 function parseEntry(raw: string): [string, string] {
   const idx = raw.indexOf(",");
@@ -18,8 +19,6 @@ function sanitizeKey(key: string): string {
   return key.toUpperCase().replace(/[^A-Z0-9_]/g, "");
 }
 
-// Uses local state with commit-on-blur so typing doesn't re-render the
-// entire list on every keystroke — only this row re-renders.
 function EnvRow({
   raw,
   index,
@@ -45,10 +44,6 @@ function EnvRow({
     updateEntry("env", index, formatEntry(cleanKey, localValue));
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") e.currentTarget.blur();
-  };
-
   return (
     <div className="group relative flex items-center justify-between gap-3 rounded-lg border border-transparent px-3 py-1.5 transition-colors hover:bg-muted/30 focus-within:bg-muted/30 focus-within:border-border/50">
       <div className="flex flex-1 items-center gap-3 w-full">
@@ -56,7 +51,9 @@ function EnvRow({
           value={localKey}
           onChange={(e) => setLocalKey(sanitizeKey(e.target.value))}
           onBlur={commitChanges}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") e.currentTarget.blur();
+          }}
           className="w-1/3 bg-transparent px-2 py-1 font-mono text-[13px] font-medium text-foreground outline-none focus:bg-background focus:ring-1 focus:ring-ring/40 rounded transition-all placeholder:text-muted-foreground/30"
           placeholder="KEY"
           spellCheck={false}
@@ -66,7 +63,9 @@ function EnvRow({
           value={localValue}
           onChange={(e) => setLocalValue(e.target.value)}
           onBlur={commitChanges}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") e.currentTarget.blur();
+          }}
           className="flex-1 bg-transparent px-2 py-1 font-mono text-[13px] text-muted-foreground focus:text-foreground outline-none focus:bg-background focus:ring-1 focus:ring-ring/40 rounded transition-all placeholder:text-muted-foreground/30"
           placeholder="value"
           spellCheck={false}
@@ -91,7 +90,7 @@ function EnvRow({
 
 export function EnvironmentPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const envVars = useConfigStore((state) => state.data["env"]) ?? [];
+  const envVars = useConfigValues("env");
   const addEntry = useConfigStore((state) => state.addEntry);
   const updateEntry = useConfigStore((state) => state.updateEntry);
   const removeEntry = useConfigStore((state) => state.removeEntry);
@@ -113,7 +112,7 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
     }
   };
 
-  const handleSmartPaste = (e: ClipboardEvent<HTMLInputElement>) => {
+  const handleSmartPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const pastedText = e.clipboardData.getData("text");
     if (pastedText.includes("=")) {
       e.preventDefault();
@@ -134,15 +133,12 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
-      <div className="mb-8 flex flex-col gap-1.5">
-        <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-          Environment Variables
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Global variables injected into the mangowm session environment.
-        </p>
-      </div>
+    <PanelShell maxWidth="max-w-3xl">
+      <PanelHeader
+        title="Environment Variables"
+        description="Global variables injected into the mangowm session environment."
+        separator={false}
+      />
 
       <div className="mb-8 rounded-xl border border-border/50 bg-card p-1.5 shadow-sm">
         <form
@@ -227,6 +223,6 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
           </div>
         )}
       </div>
-    </div>
+    </PanelShell>
   );
 }

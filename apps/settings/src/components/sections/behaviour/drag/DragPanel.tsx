@@ -1,5 +1,10 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgFloat, cfgInt, cfgStr } from "@/lib/config-helpers";
+import {
+  useConfigStore,
+  useConfigBool,
+  useConfigFloat,
+  useConfigInt,
+  useConfigStr,
+} from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -21,28 +26,27 @@ const DRAG_CORNER_OPTIONS = [
 
 export function DragPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const dragCorner = cfgStr(data, "drag_corner", "3");
-  const dragWarpCursor = cfgBool(data, "drag_warp_cursor", true);
+  const dragCorner = useConfigStr("drag_corner", "3");
+  const dragWarpCursor = useConfigBool("drag_warp_cursor", true);
 
   // mango: CLAMP_INT(drag_tile_to_tile, 0, 1), default 0
-  const dragTileToTile = cfgBool(data, "drag_tile_to_tile");
+  const dragTileToTile = useConfigBool("drag_tile_to_tile");
   // mango: CLAMP_INT(drag_tile_small, 0, 1), default 1
-  const dragTileSmall = cfgBool(data, "drag_tile_small", true);
+  const dragTileSmall = useConfigBool("drag_tile_small", true);
 
   // mango: CLAMP_FLOAT(drag_tile_refresh_interval, 1.0, 16.0), default 8.0
-  const tileRefresh = cfgFloat(data, "drag_tile_refresh_interval", 8.0, 1.0, 16.0);
+  const tileRefresh = useConfigFloat("drag_tile_refresh_interval", 8.0, 1.0, 16.0);
   // mango: CLAMP_FLOAT(drag_floating_refresh_interval, 0.0, 1000.0), default 8.0
-  const floatRefresh = cfgFloat(data, "drag_floating_refresh_interval", 8.0, 0.0, 1000.0);
+  const floatRefresh = useConfigFloat("drag_floating_refresh_interval", 8.0, 0.0, 1000.0);
 
   // mango: CLAMP_INT(snap_distance, 0, 99999), default 30
-  const snapDist = cfgInt(data, "snap_distance", 30, 0, 99999);
+  const snapDist = useConfigInt("snap_distance", 30, 0, 99999);
   // mango: CLAMP_INT(enable_floating_snap, 0, 1), default 0
-  const floatSnap = cfgBool(data, "enable_floating_snap");
+  const floatSnap = useConfigBool("enable_floating_snap");
 
   return (
     <PanelShell>

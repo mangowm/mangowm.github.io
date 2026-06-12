@@ -3,20 +3,37 @@ import { temporal } from "zundo";
 import { readAllConfigFiles, writeAllConfigFiles, reloadMango } from "./config-file";
 import { type ConfigData, type SourceFile, countLines } from "./config-types";
 import { makeEntryLine } from "./config-parse";
-// `data` is the merged view across all files (UI reads this).
-// `files` is the authoritative source (written to disk).
-// `data` is ALWAYS derived from `files[].lines` — never stored separately.
+import { cfgBool, cfgInt, cfgFloat } from "./config-helpers";
 
-function mergeFileData(files: SourceFile[]): ConfigData {
-  const merged: ConfigData = {};
+const EMPTY_VALUES: string[] = [];
+
+function mergeFileData(files: SourceFile[], prevData: ConfigData = {}): ConfigData {
+  const next: ConfigData = {};
   for (const file of files) {
     for (const line of file.lines) {
       if (line.type === "entry") {
-        (merged[line.key] ??= []).push(line.value);
+        (next[line.key] ??= []).push(line.value);
       }
     }
   }
-  return merged;
+
+  const result: ConfigData = {};
+  const allKeys = new Set([...Object.keys(prevData), ...Object.keys(next)]);
+  for (const key of allKeys) {
+    const prev = prevData[key];
+    const nextArr = next[key];
+    if (
+      prev &&
+      nextArr &&
+      prev.length === nextArr.length &&
+      prev.every((v, i) => v === nextArr[i])
+    ) {
+      result[key] = prev;
+    } else if (nextArr) {
+      result[key] = nextArr;
+    }
+  }
+  return result;
 }
 
 function fileIndexForKey(files: SourceFile[], key: string): number {
@@ -43,10 +60,10 @@ export function resolveGlobalIndex(
 }
 
 function syncDerivedState() {
-  const { files } = useConfigStore.getState();
+  const { files, data } = useConfigStore.getState();
   const { pastStates } = useConfigStore.temporal.getState();
   useConfigStore.setState({
-    data: mergeFileData(files),
+    data: mergeFileData(files, data),
     dirty: pastStates.length > 0,
   });
 }
@@ -96,7 +113,7 @@ export const useConfigStore = create<ConfigStore>()(
         set({ loading: true, error: null });
         try {
           const files = await readAllConfigFiles();
-          set({ files, data: mergeFileData(files), loading: false, dirty: false });
+          set({ files, data: mergeFileData(files, {}), loading: false, dirty: false });
           useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
           set({ error: String(e instanceof Error ? e.message : e), loading: false });
@@ -129,7 +146,7 @@ export const useConfigStore = create<ConfigStore>()(
             }
             return { ...f, lines: newLines };
           });
-          return { files, data: mergeFileData(files), dirty: true };
+          return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 
       setValues: (entries) =>
@@ -149,7 +166,7 @@ export const useConfigStore = create<ConfigStore>()(
               return { ...f, lines: newLines };
             });
           }
-          return { files, data: mergeFileData(files), dirty: true };
+          return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 
       addEntry: (key, value) =>
@@ -158,7 +175,7 @@ export const useConfigStore = create<ConfigStore>()(
           const files = state.files.map((f, i) =>
             i === fileIdx ? { ...f, lines: [...f.lines, makeEntryLine(key, value)] } : f,
           );
-          return { files, data: mergeFileData(files), dirty: true };
+          return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 
       insertEntry: (key, value, { fileIdx, afterLineIdx }) =>
@@ -168,7 +185,7 @@ export const useConfigStore = create<ConfigStore>()(
           const newLines = [...file.lines];
           newLines.splice(afterLineIdx + 1, 0, makeEntryLine(key, value));
           const files = state.files.map((f, i) => (i === fileIdx ? { ...f, lines: newLines } : f));
-          return { files, data: mergeFileData(files), dirty: true };
+          return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 
       updateEntry: (key, index, value) =>
@@ -187,7 +204,7 @@ export const useConfigStore = create<ConfigStore>()(
             });
             return { ...f, lines: newLines };
           });
-          return { files, data: mergeFileData(files), dirty: true };
+          return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 
       removeEntry: (key, index) =>
@@ -206,7 +223,7 @@ export const useConfigStore = create<ConfigStore>()(
             });
             return { ...f, lines: newLines };
           });
-          return { files, data: mergeFileData(files), dirty: true };
+          return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
     }),
 
@@ -227,6 +244,30 @@ export const useConfigStore = create<ConfigStore>()(
     },
   ),
 );
+
+export function useConfigValue(key: string): string | undefined {
+  return useConfigStore((s) => s.data[key]?.[0]);
+}
+
+export function useConfigValues(key: string): string[] {
+  return useConfigStore((s) => s.data[key] ?? EMPTY_VALUES);
+}
+
+export function useConfigBool(key: string, fallback: boolean = false): boolean {
+  return useConfigStore((s) => cfgBool(s.data, key, fallback));
+}
+
+export function useConfigInt(key: string, fallback: number, min?: number, max?: number): number {
+  return useConfigStore((s) => cfgInt(s.data, key, fallback, min, max));
+}
+
+export function useConfigFloat(key: string, fallback: number, min?: number, max?: number): number {
+  return useConfigStore((s) => cfgFloat(s.data, key, fallback, min, max));
+}
+
+export function useConfigStr(key: string, fallback: string): string {
+  return useConfigStore((s) => s.data[key]?.[0] ?? fallback);
+}
 
 export function undo() {
   useConfigStore.temporal.getState().undo();

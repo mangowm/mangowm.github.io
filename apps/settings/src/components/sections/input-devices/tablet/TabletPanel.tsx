@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgStr } from "@/lib/config-helpers";
+import { useConfigStore, useConfigStr } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -11,10 +10,9 @@ import {
 
 export function TabletPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const tabletMapToMon = cfgStr(data, "tablet_map_to_mon", "");
+  const tabletMapToMon = useConfigStr("tablet_map_to_mon", "");
 
   return (
     <PanelShell>

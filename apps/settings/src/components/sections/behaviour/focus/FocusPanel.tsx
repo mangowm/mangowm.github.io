@@ -1,22 +1,20 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import { PanelShell, PanelHeader, SectionCard, ToggleRow } from "@/components/sections/section-ui";
 
 export function FocusPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const sloppyfocus = cfgBool(data, "sloppyfocus", true);
-  const warpcursor = cfgBool(data, "warpcursor", true);
-  const focusOnActivate = cfgBool(data, "focus_on_activate", true);
-  const focusCrossMon = cfgBool(data, "focus_cross_monitor");
-  const focusCrossTag = cfgBool(data, "focus_cross_tag");
-  const exchangeCrossMon = cfgBool(data, "exchange_cross_monitor");
+  const sloppyfocus = useConfigBool("sloppyfocus", true);
+  const warpcursor = useConfigBool("warpcursor", true);
+  const focusOnActivate = useConfigBool("focus_on_activate", true);
+  const focusCrossMon = useConfigBool("focus_cross_monitor");
+  const focusCrossTag = useConfigBool("focus_cross_tag");
+  const exchangeCrossMon = useConfigBool("exchange_cross_monitor");
 
   return (
     <PanelShell>

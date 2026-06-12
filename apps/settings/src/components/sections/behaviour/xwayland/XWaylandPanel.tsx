@@ -1,16 +1,14 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import { PanelShell, PanelHeader, SectionCard, ToggleRow } from "@/components/sections/section-ui";
 
 export function XWaylandPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   // mango: CLAMP_INT(xwayland_persistence, 0, 1), default 1
-  const xwaylandPersist = cfgBool(data, "xwayland_persistence", true);
+  const xwaylandPersist = useConfigBool("xwayland_persistence", true);
 
   return (
     <PanelShell>

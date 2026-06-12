@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgFloat, cfgStr } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool, useConfigFloat, useConfigStr } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -19,19 +18,18 @@ const SPLIT_OPTIONS = [
 
 export function DwindlePanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const vsplit = cfgStr(data, "dwindle_vsplit", "1");
-  const hsplit = cfgStr(data, "dwindle_hsplit", "1");
-  const preserveSplit = cfgBool(data, "dwindle_preserve_split");
-  const smartSplit = cfgBool(data, "dwindle_smart_split");
-  const smartResize = cfgBool(data, "dwindle_smart_resize");
-  const dropSimple = cfgBool(data, "dwindle_drop_simple_split", true);
-  const manualSplit = cfgBool(data, "dwindle_manual_split");
-  const splitRatio = cfgFloat(data, "dwindle_split_ratio", 0.5, 0.05, 0.95);
+  const vsplit = useConfigStr("dwindle_vsplit", "1");
+  const hsplit = useConfigStr("dwindle_hsplit", "1");
+  const preserveSplit = useConfigBool("dwindle_preserve_split");
+  const smartSplit = useConfigBool("dwindle_smart_split");
+  const smartResize = useConfigBool("dwindle_smart_resize");
+  const dropSimple = useConfigBool("dwindle_drop_simple_split", true);
+  const manualSplit = useConfigBool("dwindle_manual_split");
+  const splitRatio = useConfigFloat("dwindle_split_ratio", 0.5, 0.05, 0.95);
 
   return (
     <PanelShell>

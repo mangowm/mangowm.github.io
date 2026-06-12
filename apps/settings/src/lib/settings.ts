@@ -16,11 +16,8 @@ export async function updateSettings(newConfig: Record<string, any>) {
     } else {
       await mkdir(".config/mango", { baseDir: BaseDirectory.Home, recursive: true });
     }
-  } catch (error) {
-    console.warn(
-      "Failed to read existing settings or create directory. Proceeding with default state.",
-      error,
-    );
+  } catch {
+    // Fall through with default settings
   }
 
   const mergedSettings = {

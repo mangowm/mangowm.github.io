@@ -1,12 +1,11 @@
-import { useState, useEffect, useRef, useCallback, useMemo, memo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback, memo } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
-import { useConfigStore } from "@/lib/config-store";
-import { cfgStr } from "@/lib/config-helpers";
-import type { ConfigData } from "@/lib/config-types";
+import { useConfigStore, useConfigValue } from "@/lib/config-store";
 import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
+import { PanelShell, PanelHeader } from "@/components/sections/section-ui";
 
 interface ColorsConfig {
   rootcolor: string;
@@ -86,16 +85,7 @@ const COLOR_MODES: ColorMode[] = ["hex", "rgb", "hsl"];
 
 const defaultPalette = PALETTES.find((p) => p.name === "Default")!;
 
-function readTheme(data: ConfigData): ColorsConfig {
-  const defaults = defaultPalette.colors;
-  return COLORS_FIELDS.reduce(
-    (theme, field) => {
-      theme[field.key] = cfgStr(data, field.key, defaults[field.key]);
-      return theme;
-    },
-    { ...defaults },
-  );
-}
+const COLORS_ORDER = COLORS_FIELDS.map((f) => f.key);
 
 interface ColorInputProps {
   label: string;
@@ -248,8 +238,6 @@ const ColorInput = memo(function ColorInput({
   );
 });
 
-const COLORS_ORDER = COLORS_FIELDS.map((f) => f.key);
-
 interface PaletteCardProps {
   palette: ColorPalette;
   isActive: boolean;
@@ -287,22 +275,67 @@ const PaletteCard = memo(function PaletteCard({ palette, isActive, onSelect }: P
   );
 });
 
+function useColorConfigValues() {
+  const rootcolor = useConfigValue("rootcolor");
+  const bordercolor = useConfigValue("bordercolor");
+  const dropcolor = useConfigValue("dropcolor");
+  const splitcolor = useConfigValue("splitcolor");
+  const focuscolor = useConfigValue("focuscolor");
+  const maximizescreencolor = useConfigValue("maximizescreencolor");
+  const urgentcolor = useConfigValue("urgentcolor");
+  const scratchpadcolor = useConfigValue("scratchpadcolor");
+  const globalcolor = useConfigValue("globalcolor");
+  const overlaycolor = useConfigValue("overlaycolor");
+  const shadowscolor = useConfigValue("shadowscolor");
+
+  return useMemo<ColorsConfig>(
+    () => ({
+      rootcolor: rootcolor ?? defaultPalette.colors.rootcolor,
+      bordercolor: bordercolor ?? defaultPalette.colors.bordercolor,
+      dropcolor: dropcolor ?? defaultPalette.colors.dropcolor,
+      splitcolor: splitcolor ?? defaultPalette.colors.splitcolor,
+      focuscolor: focuscolor ?? defaultPalette.colors.focuscolor,
+      maximizescreencolor: maximizescreencolor ?? defaultPalette.colors.maximizescreencolor,
+      urgentcolor: urgentcolor ?? defaultPalette.colors.urgentcolor,
+      scratchpadcolor: scratchpadcolor ?? defaultPalette.colors.scratchpadcolor,
+      globalcolor: globalcolor ?? defaultPalette.colors.globalcolor,
+      overlaycolor: overlaycolor ?? defaultPalette.colors.overlaycolor,
+      shadowscolor: shadowscolor ?? defaultPalette.colors.shadowscolor,
+    }),
+    [
+      rootcolor,
+      bordercolor,
+      dropcolor,
+      splitcolor,
+      focuscolor,
+      maximizescreencolor,
+      urgentcolor,
+      scratchpadcolor,
+      globalcolor,
+      overlaycolor,
+      shadowscolor,
+    ],
+  );
+}
+
 export function ColorsPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((state) => state.data);
-  const loading = useConfigStore((state) => state.loading);
+  const loading = useConfigStore((s) => s.loading);
+  const data = useConfigStore((s) => s.data);
+  const setValues = useConfigStore((s) => s.setValues);
+  const setValue = useConfigStore((s) => s.setValue);
   const [mode, setMode] = useState<ColorMode>("hex");
 
-  const theme = readTheme(data);
-  const currentTheme = useRef<ColorsConfig | null>(null);
-  const didLoad = useRef(false);
+  const theme = useColorConfigValues();
 
-  if (!loading && Object.keys(data).length > 0 && !didLoad.current) {
-    didLoad.current = true;
-    currentTheme.current = theme;
-  }
+  const loadedSnapshot = useRef<ColorsConfig | null>(null);
+  useEffect(() => {
+    if (!loading && Object.keys(data).length > 0 && !loadedSnapshot.current) {
+      loadedSnapshot.current = theme;
+    }
+  }, [loading, data, theme]);
 
-  const currentColors = currentTheme.current ?? defaultPalette.colors;
+  const currentColors = loadedSnapshot.current ?? defaultPalette.colors;
 
   const activePalette = useMemo(() => {
     const themeStr = COLORS_ORDER.map((key) => theme[key]).join(",");
@@ -314,13 +347,19 @@ export function ColorsPanel({ focusKey }: PanelProps) {
     );
   }, [theme]);
 
-  const handlePaletteSelect = useCallback((palette: ColorPalette) => {
-    useConfigStore.getState().setValues(palette.colors as unknown as Record<string, string>);
-  }, []);
+  const handlePaletteSelect = useCallback(
+    (palette: ColorPalette) => {
+      setValues(palette.colors as unknown as Record<string, string>);
+    },
+    [setValues],
+  );
 
-  const handleColorChange = useCallback((key: keyof ColorsConfig, value: string) => {
-    useConfigStore.getState().setValue(key, value);
-  }, []);
+  const handleColorChange = useCallback(
+    (key: keyof ColorsConfig, value: string) => {
+      setValue(key, value);
+    },
+    [setValue],
+  );
 
   const changeHandlers = useMemo(() => {
     const handlers: Partial<Record<keyof ColorsConfig, (v: string) => void>> = {};
@@ -328,39 +367,42 @@ export function ColorsPanel({ focusKey }: PanelProps) {
       handlers[field.key] = (v) => handleColorChange(field.key, v);
     }
     return handlers;
-  }, [handleColorChange]);
+  }, []);
 
   const total = COLORS_FIELDS.length;
 
-  return (
-    <div className="mx-auto w-full max-w-6xl pb-12">
-      <div className="mb-6 flex items-end justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Colors</h2>
-        </div>
+  const modeSelector = (
+    <div className="flex shrink-0 items-center rounded-lg border border-border/40 bg-muted/30 p-0.5">
+      {COLOR_MODES.map((m) => (
+        <button
+          key={m}
+          type="button"
+          onClick={() => setMode(m)}
+          className="rounded-md px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-wider transition-all duration-150"
+          style={
+            mode === m
+              ? {
+                  background: "hsl(var(--background))",
+                  color: "hsl(var(--foreground))",
+                  boxShadow: "0 1px 3px hsl(var(--foreground) / 0.08)",
+                }
+              : { color: "hsl(var(--muted-foreground))" }
+          }
+        >
+          {m}
+        </button>
+      ))}
+    </div>
+  );
 
-        <div className="flex shrink-0 items-center rounded-lg border border-border/40 bg-muted/30 p-0.5">
-          {COLOR_MODES.map((m) => (
-            <button
-              key={m}
-              type="button"
-              onClick={() => setMode(m)}
-              className="rounded-md px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-wider transition-all duration-150"
-              style={
-                mode === m
-                  ? {
-                      background: "hsl(var(--background))",
-                      color: "hsl(var(--foreground))",
-                      boxShadow: "0 1px 3px hsl(var(--foreground) / 0.08)",
-                    }
-                  : { color: "hsl(var(--muted-foreground))" }
-              }
-            >
-              {m}
-            </button>
-          ))}
-        </div>
-      </div>
+  return (
+    <PanelShell maxWidth="max-w-6xl">
+      <PanelHeader
+        title="Colors"
+        description="Configure window border and UI colors."
+        actions={modeSelector}
+        separator={false}
+      />
 
       {PALETTES.length > 0 && (
         <div className="mb-4">
@@ -404,6 +446,6 @@ export function ColorsPanel({ focusKey }: PanelProps) {
           ))}
         </div>
       </div>
-    </div>
+    </PanelShell>
   );
 }

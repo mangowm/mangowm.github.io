@@ -9,7 +9,7 @@ export function parseConfig(text: string): ParsedConfig {
   const data: ConfigData = {};
   const lines: ConfigLine[] = [];
 
-  for (const raw of text.split("\n")) {
+  for (const raw of text.split(/\r?\n/)) {
     const trimmed = raw.trim();
 
     if (!trimmed) {

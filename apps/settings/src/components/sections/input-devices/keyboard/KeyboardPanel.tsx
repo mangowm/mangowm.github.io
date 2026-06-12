@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgInt, cfgStr } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool, useConfigInt, useConfigStr } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -14,18 +13,17 @@ import {
 
 export function KeyboardPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   // Ranges match mango's CLAMP_INT: repeat_rate [1,1000], repeat_delay [1,20000]
-  const repeatRate = cfgInt(data, "repeat_rate", 25, 1, 1000);
-  const repeatDelay = cfgInt(data, "repeat_delay", 600, 1, 20000);
-  const numlockOn = cfgBool(data, "numlockon");
-  const xkbLayout = cfgStr(data, "xkb_rules_layout", "");
-  const xkbVariant = cfgStr(data, "xkb_rules_variant", "");
-  const xkbOptions = cfgStr(data, "xkb_rules_options", "");
-  const xkbModel = cfgStr(data, "xkb_rules_model", "");
-  const xkbRules = cfgStr(data, "xkb_rules_rules", "");
+  const repeatRate = useConfigInt("repeat_rate", 25, 1, 1000);
+  const repeatDelay = useConfigInt("repeat_delay", 600, 1, 20000);
+  const numlockOn = useConfigBool("numlockon");
+  const xkbLayout = useConfigStr("xkb_rules_layout", "");
+  const xkbVariant = useConfigStr("xkb_rules_variant", "");
+  const xkbOptions = useConfigStr("xkb_rules_options", "");
+  const xkbModel = useConfigStr("xkb_rules_model", "");
+  const xkbRules = useConfigStr("xkb_rules_rules", "");
 
   return (
     <PanelShell>

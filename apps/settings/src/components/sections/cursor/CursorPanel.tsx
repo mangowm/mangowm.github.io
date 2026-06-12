@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgInt, cfgStr } from "@/lib/config-helpers";
+import { useConfigStore, useConfigInt, useConfigStr } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -12,11 +11,10 @@ import {
 
 export function CursorPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const cursorTheme = cfgStr(data, "cursor_theme", "");
-  const cursorSize = cfgInt(data, "cursor_size", 24, 16, 128);
+  const cursorTheme = useConfigStr("cursor_theme", "");
+  const cursorSize = useConfigInt("cursor_size", 24, 16, 128);
 
   return (
     <PanelShell>

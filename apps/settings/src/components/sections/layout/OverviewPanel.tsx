@@ -1,5 +1,4 @@
-import { useConfigStore } from "@/lib/config-store";
-import { cfgBool, cfgInt } from "@/lib/config-helpers";
+import { useConfigStore, useConfigBool, useConfigInt } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -20,18 +19,17 @@ const CORNER_OPTIONS = [
 
 export function OverviewPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const data = useConfigStore((s) => s.data);
   const setValue = useConfigStore((s) => s.setValue);
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const enableHotarea = cfgBool(data, "enable_hotarea");
-  const hotareaSize = cfgInt(data, "hotarea_size", 10, 1, 1000);
-  const hotareaCorner = cfgInt(data, "hotarea_corner", 2, 0, 3);
-  const ovTabMode = cfgBool(data, "ov_tab_mode", true);
-  const ovNoResize = cfgBool(data, "ov_no_resize", true);
-  const overviewgappi = cfgInt(data, "overviewgappi", 5, 0, 1000);
-  const overviewgappo = cfgInt(data, "overviewgappo", 30, 0, 1000);
+  const enableHotarea = useConfigBool("enable_hotarea");
+  const hotareaSize = useConfigInt("hotarea_size", 10, 1, 1000);
+  const hotareaCorner = useConfigInt("hotarea_corner", 2, 0, 3);
+  const ovTabMode = useConfigBool("ov_tab_mode", true);
+  const ovNoResize = useConfigBool("ov_no_resize", true);
+  const overviewgappi = useConfigInt("overviewgappi", 5, 0, 1000);
+  const overviewgappo = useConfigInt("overviewgappo", 30, 0, 1000);
 
   return (
     <PanelShell>
