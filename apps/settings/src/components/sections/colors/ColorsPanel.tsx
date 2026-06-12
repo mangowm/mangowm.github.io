@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback, memo } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
+import { Pipette } from "lucide-react";
 import { useConfigStore, useConfigValue } from "@/lib/config-store";
 import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
@@ -175,6 +176,9 @@ const ColorInput = memo(function ColorInput({
               style={{ boxShadow: `0 0 0 2px ${cssValue}` }}
             />
           )}
+          <div className="absolute inset-0 flex items-center justify-center rounded-[5px] bg-black/0 opacity-0 transition-all duration-200 group-hover:bg-black/40 group-hover:opacity-100">
+            <Pipette className="size-4 text-white drop-shadow-sm" />
+          </div>
         </button>
 
         {isOpen && (
