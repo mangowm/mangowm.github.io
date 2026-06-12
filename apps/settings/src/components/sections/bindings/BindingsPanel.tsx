@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Plus, Search, AlertTriangle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useShallow } from "zustand/react/shallow";
 import { useConfigStore } from "@/lib/config-store";
 import { parseModifiers, serializeModifiers } from "@/lib/keybind-parse";
 import { DISPATCHER_MAP } from "@/lib/dispatchers";
@@ -17,7 +18,7 @@ import { Button } from "@/components/ui/button";
 export function BindingsPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
 
-  const files = useConfigStore((s) => s.files);
+  const files = useConfigStore(useShallow((s) => s.files));
   const insertEntry = useConfigStore((s) => s.insertEntry);
   const updateEntry = useConfigStore((s) => s.updateEntry);
   const removeEntry = useConfigStore((s) => s.removeEntry);

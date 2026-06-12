@@ -320,8 +320,7 @@ function useColorConfigValues() {
 
 export function ColorsPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const loading = useConfigStore((s) => s.loading);
-  const data = useConfigStore((s) => s.data);
+  const loaded = useConfigStore((s) => !s.loading && Object.keys(s.data).length > 0);
   const setValues = useConfigStore((s) => s.setValues);
   const setValue = useConfigStore((s) => s.setValue);
   const [mode, setMode] = useState<ColorMode>("hex");
@@ -330,10 +329,10 @@ export function ColorsPanel({ focusKey }: PanelProps) {
 
   const loadedSnapshot = useRef<ColorsConfig | null>(null);
   useEffect(() => {
-    if (!loading && Object.keys(data).length > 0 && !loadedSnapshot.current) {
+    if (loaded && !loadedSnapshot.current) {
       loadedSnapshot.current = theme;
     }
-  }, [loading, data, theme]);
+  }, [loaded, theme]);
 
   const currentColors = loadedSnapshot.current ?? defaultPalette.colors;
 

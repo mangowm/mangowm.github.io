@@ -1,5 +1,6 @@
 import MiniSearch from "minisearch";
-import { useRef, useCallback } from "react";
+import { useRef, useEffect, useCallback } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useConfigStore } from "./config-store";
 import { SECTIONS } from "./sections";
 import type { ConfigData } from "./config-types";
@@ -152,6 +153,8 @@ const DYNAMIC_SOURCES: DynamicIndexSource[] = [
   ...buildRuleDynamicSources("layerrule", "layer-rules"),
 ];
 
+const WATCH_KEYS = [...new Set(DYNAMIC_SOURCES.flatMap((s) => s.watchKeys))];
+
 /**
  * Each rule type gets TWO dynamic sources:
  * 1. One indexes the rule's matching criteria so searching "foot" finds the rule
@@ -277,26 +280,44 @@ function search(query: string): SearchResult[] {
 }
 
 export function useSearch(): (query: string) => SearchResult[] {
-  const data = useConfigStore((s) => s.data);
-  const lastData = useRef(data);
-  const lastValues = useRef<Map<string, string>>(new Map());
+  const watchedValues = useConfigStore(
+    useShallow((s) => {
+      const vals: Record<string, readonly string[]> = {};
+      for (const key of WATCH_KEYS) {
+        const arr = s.data[key];
+        if (arr && arr.length > 0) vals[key] = arr;
+      }
+      return vals;
+    }),
+  );
 
-  if (data !== lastData.current) {
-    lastData.current = data;
+  const lastValuesRef = useRef(watchedValues);
+  const initializedRef = useRef(false);
+
+  useEffect(() => {
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      const data = useConfigStore.getState().data;
+      for (const source of DYNAMIC_SOURCES) {
+        rebuildDynamicSource(source, data);
+      }
+      return;
+    }
+
     for (const source of DYNAMIC_SOURCES) {
       let changed = false;
       for (const key of source.watchKeys) {
-        const serialized = JSON.stringify(data[key] ?? []);
-        if (lastValues.current.get(key) !== serialized) {
-          lastValues.current.set(key, serialized);
+        if (lastValuesRef.current[key] !== watchedValues[key]) {
           changed = true;
+          break;
         }
       }
       if (changed) {
-        rebuildDynamicSource(source, data);
+        rebuildDynamicSource(source, useConfigStore.getState().data);
       }
     }
-  }
+    lastValuesRef.current = watchedValues;
+  }, [watchedValues]);
 
   return useCallback((query: string): SearchResult[] => search(query), []);
 }

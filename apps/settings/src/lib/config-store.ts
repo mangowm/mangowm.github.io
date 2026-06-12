@@ -5,7 +5,7 @@ import { type ConfigData, type SourceFile, countLines } from "./config-types";
 import { makeEntryLine } from "./config-parse";
 import { cfgBool, cfgInt, cfgFloat } from "./config-helpers";
 
-const EMPTY_VALUES: string[] = [];
+const EMPTY_VALUES: readonly string[] = Object.freeze([]);
 
 function mergeFileData(files: SourceFile[], prevData: ConfigData = {}): ConfigData {
   const next: ConfigData = {};
@@ -249,7 +249,7 @@ export function useConfigValue(key: string): string | undefined {
   return useConfigStore((s) => s.data[key]?.[0]);
 }
 
-export function useConfigValues(key: string): string[] {
+export function useConfigValues(key: string): readonly string[] {
   return useConfigStore((s) => s.data[key] ?? EMPTY_VALUES);
 }
 
