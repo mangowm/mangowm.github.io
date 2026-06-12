@@ -62,7 +62,7 @@ export function RuleList({ ruleType }: RuleListProps) {
       )}
 
       {editing.mode === "creating" && (
-        <div className="animate-in fade-in slide-in-from-top-4 duration-300">
+        <div>
           <RuleEditor
             ruleType={ruleType}
             initialRule={createBlankRule(ruleType)}
@@ -75,7 +75,7 @@ export function RuleList({ ruleType }: RuleListProps) {
 
       {rules.length === 0 && editing.mode === "idle" ? (
         // Borderless, breathable empty state
-        <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in duration-500">
+        <div className="flex flex-col items-center justify-center py-20 text-center">
           <div className="mb-5 flex size-14 items-center justify-center rounded-full bg-background text-muted-foreground/40 shadow-sm border border-border/50">
             <ListFilter className="size-6" />
           </div>
@@ -98,7 +98,7 @@ export function RuleList({ ruleType }: RuleListProps) {
 
             if (isEditing && editing.mode === "editing") {
               return (
-                <div key={rule.id} className="animate-in fade-in duration-200">
+                <div key={rule.id}>
                   <RuleEditor
                     ruleType={ruleType}
                     initialRule={rule}

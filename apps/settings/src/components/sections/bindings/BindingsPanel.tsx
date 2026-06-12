@@ -265,7 +265,6 @@ export function BindingsPanel({ focusKey }: PanelProps) {
               <section
                 key={category}
                 aria-label={category}
-                className="animate-in fade-in slide-in-from-bottom-2 duration-300"
               >
                 <div className="mb-2 flex items-center gap-2 px-1">
                   <h3 className="text-[12px] font-semibold uppercase tracking-widest text-muted-foreground/70">

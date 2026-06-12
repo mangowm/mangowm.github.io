@@ -131,7 +131,7 @@ export function RuleEditor({ ruleType, initialRule, onSave, onCancel, index }: R
 
           <div className="flex justify-center border-t border-border/30 mt-3 pt-3">
             {paletteOpen ? (
-              <div className="w-full animate-in slide-in-from-top-2 duration-200">
+              <div className="w-full">
                 <OverridePalette
                   ruleType={ruleType}
                   usedKeys={new Set(overrideKeys)}

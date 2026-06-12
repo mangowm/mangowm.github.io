@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/page-header";
 import { SectionDocsPage } from "@/components/section-docs";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useConfigStore } from "@/lib/config-store";
 import { getSectionById, SECTIONS } from "@/lib/sections";
 import { getDocs } from "@/lib/docs";
@@ -29,11 +30,12 @@ export function SettingsPage() {
   const [focusKey, setFocusKey] = useState<string | undefined>(undefined);
   const [panelView, setPanelView] = useState<PanelView>("settings");
   const [searchOpen, setSearchOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const [ready, setReady] = useState(false);
+  const [, startTransition] = useTransition();
   const load = useConfigStore((s) => s.load);
 
   useEffect(() => {
-    load();
+    load().finally(() => setReady(true));
   }, [load]);
 
   useSearchShortcut(() => setSearchOpen(true));
@@ -66,9 +68,7 @@ export function SettingsPage() {
       <SidebarInset>
         <PageHeader title={section?.label ?? "Settings"} onSearch={() => setSearchOpen(true)} />
         <div className="flex-1 overflow-y-auto scrollbar-gutter-stable p-5">
-          <div
-            className={`flex flex-row gap-5 min-h-[calc(100vh-120px)] transition-opacity duration-200 ${isPending ? "opacity-50" : "opacity-100"}`}
-          >
+          <div className="flex flex-row gap-5 min-h-[calc(100vh-120px)]">
             <div className="flex-1 rounded-xl bg-card ring-1 ring-foreground/10 p-6 relative flex flex-col">
               <div className="absolute top-3 right-3">
                 <SegmentedControl
@@ -77,7 +77,11 @@ export function SettingsPage() {
                   onChange={setPanelView}
                 />
               </div>
-              {panelView === "settings" ? (
+              {!ready ? (
+                <div className="flex-1">
+                  <Skeleton className="h-96 w-full rounded-xl" />
+                </div>
+              ) : panelView === "settings" ? (
                 Panel && <Panel focusKey={focusKey} />
               ) : (
                 <SectionDocsPage markdown={getDocs(activeSection)} />

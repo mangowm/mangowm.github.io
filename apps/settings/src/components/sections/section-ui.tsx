@@ -437,13 +437,13 @@ export interface PanelShellProps {
 
 /**
  * Outer wrapper for all panels. Applies consistent max-width, horizontal
- * centering, bottom padding, and the entry animation.
+ * centering, and bottom padding.
  */
 export function PanelShell({ children, maxWidth = "max-w-4xl" }: PanelShellProps) {
   return (
     <div
       className={
-        "mx-auto w-full pb-12 animate-in fade-in slide-in-from-bottom-4 duration-200 " + maxWidth
+        "mx-auto w-full pb-12 " + maxWidth
       }
     >
       {children}
