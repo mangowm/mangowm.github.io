@@ -127,28 +127,28 @@ function FileTreeNode({
 }
 
 function ConfigLineRow({ line, index }: { line: ConfigLine; index: number }) {
-  const num = (
-    <span className="text-muted-foreground/20 select-none w-8 text-right shrink-0 text-xs">
+  const gutter = (
+    <span className="text-muted-foreground/20 select-none min-w-[4ch] text-right pr-4 shrink-0 tabular-nums">
       {index + 1}
     </span>
   );
 
   if (line.type === "blank") {
-    return <div className="flex gap-4 px-4 hover:bg-accent/30">{num}</div>;
+    return <div className="flex px-4 leading-6 hover:bg-accent/30">{gutter}</div>;
   }
 
   if (line.type === "comment") {
     return (
-      <div className="flex gap-4 px-4 hover:bg-accent/30">
-        {num}
+      <div className="flex px-4 leading-6 hover:bg-accent/30">
+        {gutter}
         <span className="text-green-600/70 dark:text-green-400/70">{line.raw}</span>
       </div>
     );
   }
 
   return (
-    <div className="flex gap-4 px-4 hover:bg-accent/30">
-      {num}
+    <div className="flex px-4 leading-6 hover:bg-accent/30">
+      {gutter}
       <span>
         <span className="text-blue-600 dark:text-blue-400">{line.key}</span>
         <span className="text-muted-foreground/50"> = </span>
@@ -218,9 +218,9 @@ export function ConfigPreviewer() {
               : ""}
           </span>
         </div>
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-auto">
           {selectedFile ? (
-            <pre className="font-mono text-sm leading-6 py-2">
+            <pre className="font-mono text-sm leading-6 py-2 min-w-min">
               {selectedFile.lines.map((line, i) => (
                 <ConfigLineRow key={i} line={line} index={i} />
               ))}
