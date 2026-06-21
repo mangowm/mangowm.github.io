@@ -1,12 +1,23 @@
-import { Undo2, Redo2, AlertCircle, SearchIcon } from "lucide-react";
+import { Undo2, Redo2, AlertCircle, SearchIcon, FileCode2Icon } from "lucide-react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { useConfigStore, undo, redo } from "@/lib/config-store";
+import { cn } from "@/lib/utils";
 
-export function PageHeader({ title, onSearch }: { title?: string; onSearch?: () => void }) {
+export function PageHeader({
+  title,
+  onSearch,
+  showConfig,
+  onToggleConfig,
+}: {
+  title?: string;
+  onSearch?: () => void;
+  showConfig?: boolean;
+  onToggleConfig?: () => void;
+}) {
   const error = useConfigStore((s) => s.error);
 
   return (
@@ -43,6 +54,17 @@ export function PageHeader({ title, onSearch }: { title?: string; onSearch?: () 
         </div>
 
         <div className="flex items-center gap-2">
+          {onToggleConfig && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={onToggleConfig}
+              title={showConfig ? "Back to Settings" : "View Config Files"}
+              className={cn(showConfig && "bg-accent text-accent-foreground")}
+            >
+              <FileCode2Icon className="size-4" />
+            </Button>
+          )}
           <HistoryButtons />
           <ApplyButton />
         </div>
