@@ -3,6 +3,7 @@ import { homeDir } from "@tauri-apps/api/path";
 import { Command } from "@tauri-apps/plugin-shell";
 import { parseConfig, serializeConfig } from "./config-parse";
 import type { SourceFile } from "./config-types";
+import DEFAULT_CONFIG from "./default-config";
 
 const CONFIG_DIR = ".config/mango";
 const CONFIG_FILE = `${CONFIG_DIR}/config.conf`;
@@ -48,16 +49,11 @@ export async function readAllConfigFiles(): Promise<SourceFile[]> {
     if (rootText !== null) actualRootPath = fallbackPath;
   }
 
-  // If no config file exists at all, return a single placeholder entry so
-  // store mutators (addEntry, setValue, etc.) always have a target file.
+  // If no config exists, write the bundled default config to the user's
+  // config directory so the app always has real content to work with.
   if (rootText === null) {
-    return [
-      {
-        absPath: rootPath,
-        refPath: "config.conf",
-        lines: [],
-      },
-    ];
+    await writeFileText(rootPath, DEFAULT_CONFIG);
+    rootText = DEFAULT_CONFIG;
   }
 
   const seen: Set<string> = new Set();
