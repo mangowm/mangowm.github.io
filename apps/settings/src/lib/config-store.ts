@@ -59,15 +59,6 @@ export function resolveGlobalIndex(
   return null;
 }
 
-function syncDerivedState() {
-  const { files } = useConfigStore.getState();
-  const { pastStates } = useConfigStore.temporal.getState();
-  useConfigStore.setState({
-    data: mergeFileData(files),
-    dirty: pastStates.length > 0,
-  });
-}
-
 interface ConfigStore {
   data: ConfigData; // merged — read by UI
   files: SourceFile[]; // per-file — written to disk
@@ -245,6 +236,18 @@ export const useConfigStore = create<ConfigStore>()(
   ),
 );
 
+useConfigStore.subscribe((state, prevState) => {
+  if (state.files === prevState.files) return;
+  const { pastStates } = useConfigStore.temporal.getState();
+  const newData = mergeFileData(state.files, state.data);
+  if (newData !== state.data || (pastStates.length > 0) !== state.dirty) {
+    useConfigStore.setState({
+      data: newData,
+      dirty: pastStates.length > 0,
+    });
+  }
+});
+
 export function useConfigValue(key: string): string | undefined {
   return useConfigStore((s) => s.data[key]?.[0]);
 }
@@ -271,10 +274,8 @@ export function useConfigStr(key: string, fallback: string): string {
 
 export function undo() {
   useConfigStore.temporal.getState().undo();
-  syncDerivedState();
 }
 
 export function redo() {
   useConfigStore.temporal.getState().redo();
-  syncDerivedState();
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon } from "lucide-react";
 import { useConfigStore } from "@/lib/config-store";
 import type { SourceFile, ConfigLine } from "@/lib/config-types";
@@ -181,29 +181,28 @@ function ConfigLineRow({ line, index }: { line: ConfigLine; index: number }) {
 
 export function ConfigPreviewer() {
   const files = useConfigStore((s) => s.files);
-  const [selectedFile, setSelectedFile] = useState<SourceFile | null>(null);
+  const [selectedAbsPath, setSelectedAbsPath] = useState<string | null>(null);
 
-  const rootDir = useMemo(
-    () => commonAncestorDir(files.map((f) => f.absPath)),
-    [files],
-  );
-
-  const tree = useMemo(() => buildTree(files, rootDir), [files, rootDir]);
+  const rootDir = commonAncestorDir(files.map((f) => f.absPath));
+  const tree = buildTree(files, rootDir);
+  const selectedFile = selectedAbsPath
+    ? files.find((f) => f.absPath === selectedAbsPath) ?? null
+    : null;
 
   useEffect(() => {
     if (files.length === 0) {
-      setSelectedFile(null);
-    } else if (!selectedFile || !files.some((f) => f.absPath === selectedFile.absPath)) {
-      setSelectedFile(files[0]);
+      setSelectedAbsPath(null);
+    } else if (!selectedAbsPath || !files.some((f) => f.absPath === selectedAbsPath)) {
+      setSelectedAbsPath(files[0].absPath);
     }
-  }, [files, selectedFile]);
+  }, [files, selectedAbsPath]);
 
-  const displayPath = useMemo(() => {
-    if (!selectedFile || !rootDir) return null;
-    const p = selectedFile.absPath;
-    if (p.startsWith(rootDir + "/")) return p.slice(rootDir.length + 1);
-    return p.split("/").pop() ?? p;
-  }, [selectedFile, rootDir]);
+  const displayPath =
+    selectedAbsPath && rootDir
+      ? (selectedAbsPath.startsWith(rootDir + "/")
+          ? selectedAbsPath.slice(rootDir.length + 1)
+          : selectedAbsPath.split("/").pop() ?? selectedAbsPath)
+      : null;
 
   if (files.length === 0) {
     return (
@@ -225,7 +224,7 @@ export function ConfigPreviewer() {
               key={node.path}
               node={node}
               selectedPath={displayPath}
-              onSelect={setSelectedFile}
+              onSelect={(file) => setSelectedAbsPath(file.absPath)}
             />
           ))}
         </div>
