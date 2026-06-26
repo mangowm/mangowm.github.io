@@ -60,10 +60,10 @@ export function resolveGlobalIndex(
 }
 
 function syncDerivedState() {
-  const { files, data } = useConfigStore.getState();
+  const { files } = useConfigStore.getState();
   const { pastStates } = useConfigStore.temporal.getState();
   useConfigStore.setState({
-    data: mergeFileData(files, data),
+    data: mergeFileData(files),
     dirty: pastStates.length > 0,
   });
 }

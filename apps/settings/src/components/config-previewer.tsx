@@ -12,6 +12,27 @@ interface TreeNode {
   sourceFile?: SourceFile;
 }
 
+function commonAncestorDir(absPaths: string[]): string {
+  if (absPaths.length === 0) return "";
+  if (absPaths.length === 1) {
+    return absPaths[0].slice(0, absPaths[0].lastIndexOf("/"));
+  }
+
+  const splitPaths = absPaths.map((p) => p.split("/"));
+  let i = 0;
+  while (i < splitPaths[0].length) {
+    const seg = splitPaths[0][i];
+    if (splitPaths.every((s) => i < s.length && s[i] === seg)) {
+      i++;
+    } else {
+      break;
+    }
+  }
+
+  if (i < 2) return "/";
+  return splitPaths[0].slice(0, i).join("/");
+}
+
 function buildTree(files: SourceFile[], rootDir: string): TreeNode[] {
   const root: TreeNode[] = [];
 
@@ -113,7 +134,7 @@ function FileTreeNode({
         <div>
           {node.children.map((child) => (
             <FileTreeNode
-              key={child.path}
+              key={`${child.type}:${child.path}`}
               node={child}
               selectedPath={selectedPath}
               onSelect={onSelect}
@@ -162,15 +183,17 @@ export function ConfigPreviewer() {
   const files = useConfigStore((s) => s.files);
   const [selectedFile, setSelectedFile] = useState<SourceFile | null>(null);
 
-  const rootDir = useMemo(() => {
-    if (files.length === 0) return "";
-    return files[0].absPath.slice(0, files[0].absPath.lastIndexOf("/"));
-  }, [files]);
+  const rootDir = useMemo(
+    () => commonAncestorDir(files.map((f) => f.absPath)),
+    [files],
+  );
 
   const tree = useMemo(() => buildTree(files, rootDir), [files, rootDir]);
 
   useEffect(() => {
-    if (!selectedFile && files.length > 0) {
+    if (files.length === 0) {
+      setSelectedFile(null);
+    } else if (!selectedFile || !files.some((f) => f.absPath === selectedFile.absPath)) {
       setSelectedFile(files[0]);
     }
   }, [files, selectedFile]);
