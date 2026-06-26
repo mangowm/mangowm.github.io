@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy } from "lucide-react";
 import { useConfigStore } from "@/lib/config-store";
 import type { SourceFile, ConfigLine } from "@/lib/config-types";
+import { serializeConfig } from "@/lib/config-parse";
 import { cn } from "@/lib/utils";
 
 interface TreeNode {
@@ -182,6 +183,7 @@ function ConfigLineRow({ line, index }: { line: ConfigLine; index: number }) {
 export function ConfigPreviewer() {
   const files = useConfigStore((s) => s.files);
   const [selectedAbsPath, setSelectedAbsPath] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const rootDir = commonAncestorDir(files.map((f) => f.absPath));
   const tree = buildTree(files, rootDir);
@@ -196,6 +198,13 @@ export function ConfigPreviewer() {
       setSelectedAbsPath(files[0].absPath);
     }
   }, [files, selectedAbsPath]);
+
+  const handleCopy = useCallback(() => {
+    if (!selectedFile) return;
+    navigator.clipboard.writeText(serializeConfig(selectedFile.lines));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  }, [selectedFile]);
 
   const displayPath =
     selectedAbsPath && rootDir
@@ -234,10 +243,23 @@ export function ConfigPreviewer() {
         <div className="sticky top-0 border-b border-foreground/10 bg-card px-4 py-2 flex items-center gap-2 text-xs text-muted-foreground/60 z-10">
           <FileIcon className="size-3.5" />
           <span className="font-mono">{displayPath}</span>
-          <span className="ml-auto">
-            {selectedFile
-              ? `${selectedFile.lines.length} line${selectedFile.lines.length !== 1 ? "s" : ""}`
-              : ""}
+          <span className="ml-auto flex items-center gap-1">
+            <button
+              onClick={handleCopy}
+              disabled={!selectedFile}
+              className="flex items-center gap-1 rounded-md px-2 py-1 transition-colors cursor-pointer hover:bg-accent/50 hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
+            >
+              {copied ? (
+                <span className="text-green-600 dark:text-green-400">Copied!</span>
+              ) : (
+                <Copy className="size-3.5" />
+              )}
+            </button>
+            <span className="ml-1">
+              {selectedFile
+                ? `${selectedFile.lines.length} line${selectedFile.lines.length !== 1 ? "s" : ""}`
+                : ""}
+            </span>
           </span>
         </div>
         <div className="flex-1 overflow-auto">
