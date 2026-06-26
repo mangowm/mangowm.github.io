@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy } from "lucide-react";
+import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy, Download } from "lucide-react";
 import { useConfigStore } from "@/lib/config-store";
 import type { SourceFile, ConfigLine } from "@/lib/config-types";
 import { serializeConfig } from "@/lib/config-parse";
@@ -206,6 +206,18 @@ export function ConfigPreviewer() {
     setTimeout(() => setCopied(false), 1500);
   }, [selectedFile]);
 
+  const handleDownload = useCallback(() => {
+    if (!selectedFile) return;
+    const text = serializeConfig(selectedFile.lines);
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = selectedFile.absPath.split("/").pop() ?? "config.conf";
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [selectedFile]);
+
   const displayPath =
     selectedAbsPath && rootDir
       ? (selectedAbsPath.startsWith(rootDir + "/")
@@ -254,6 +266,13 @@ export function ConfigPreviewer() {
               ) : (
                 <Copy className="size-3.5" />
               )}
+            </button>
+            <button
+              onClick={handleDownload}
+              disabled={!selectedFile}
+              className="flex items-center gap-1 rounded-md px-2 py-1 transition-colors cursor-pointer hover:bg-accent/50 hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
+            >
+              <Download className="size-3.5" />
             </button>
             <span className="ml-1">
               {selectedFile
