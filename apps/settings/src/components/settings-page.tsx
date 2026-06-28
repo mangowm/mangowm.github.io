@@ -35,10 +35,15 @@ export function SettingsPage() {
   const [ready, setReady] = useState(false);
   const [, startTransition] = useTransition();
   const load = useConfigStore((s) => s.load);
+  const hasFiles = useConfigStore((s) => s.files.length > 0);
 
   useEffect(() => {
-    load().finally(() => setReady(true));
-  }, [load]);
+    if (hasFiles) {
+      setReady(true);
+    } else {
+      load().finally(() => setReady(true));
+    }
+  }, [load, hasFiles]);
 
   useSearchShortcut(() => setSearchOpen(true));
 
