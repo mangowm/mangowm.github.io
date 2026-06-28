@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useConfigStore, useConfigValues } from "@/lib/config-store";
 import { Button } from "@/components/ui/button";
-import { Trash2, Plus, Sparkles } from "lucide-react";
+import { Trash2, Plus } from "lucide-react";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import { PanelShell, PanelHeader } from "@/components/sections/section-ui";
@@ -123,15 +123,6 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
     }
   };
 
-  const addWaylandDefaults = () => {
-    const defaults = [
-      ["MOZ_ENABLE_WAYLAND", "1"],
-      ["XDG_SESSION_TYPE", "wayland"],
-      ["QT_QPA_PLATFORM", "wayland"],
-    ];
-    defaults.forEach(([k, v]) => addEntry("env", formatEntry(k, v)));
-  };
-
   return (
     <PanelShell maxWidth="max-w-3xl">
       <PanelHeader
@@ -154,7 +145,7 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
               value={newKey}
               onChange={(e) => setNewKey(sanitizeKey(e.target.value))}
               onPaste={handleSmartPaste}
-              placeholder="MOZ_ENABLE_WAYLAND"
+              placeholder="QT_QPA_PLATFORMTHEME"
               className="w-full bg-transparent text-sm font-mono outline-none placeholder:text-muted-foreground/30"
               spellCheck={false}
             />
@@ -168,7 +159,7 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
               ref={valueInputRef}
               value={newValue}
               onChange={(e) => setNewValue(e.target.value)}
-              placeholder="1"
+              placeholder="qt6ct"
               className="w-full bg-transparent text-sm font-mono outline-none placeholder:text-muted-foreground/30"
               spellCheck={false}
             />
@@ -199,15 +190,7 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
             <p className="mt-1 mb-5 text-sm text-muted-foreground max-w-[280px]">
               Set environment variables here to configure applications running under mangowm.
             </p>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={addWaylandDefaults}
-              className="gap-2 text-xs"
-            >
-              <Sparkles className="size-3.5 text-blue-500" />
-              Inject Wayland Defaults
-            </Button>
+
           </div>
         ) : (
           <div className="flex flex-col rounded-xl border border-border/50 bg-card p-1 shadow-sm">

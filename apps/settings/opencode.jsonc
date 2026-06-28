@@ -1,0 +1,41 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "references": {
+    "react": {
+      "repository": "react/react",
+      "description": "Use for React core APIs, hooks, and rendering patterns",
+    },
+    "tauri": {
+      "repository": "tauri-apps/tauri",
+      "description": "Use for Tauri APIs, plugins, and IPC patterns (@tauri-apps/*)",
+    },
+    "tailwind": {
+      "repository": "tailwindlabs/tailwindcss",
+      "description": "Use for Tailwind CSS utility classes, theme config, and design tokens",
+    },
+    "zustand": {
+      "repository": "pmndrs/zustand",
+      "description": "Use for Zustand store patterns, middleware, and state management",
+    },
+    "vite": {
+      "repository": "vitejs/vite",
+      "description": "Use for Vite config, plugins, and build tooling",
+    },
+    "typescript": {
+      "repository": "microsoft/TypeScript",
+      "description": "Use for TypeScript types, compiler options, and type utilities",
+    },
+    "base-ui": {
+      "repository": "mui/base-ui",
+      "description": "Use for @base-ui/react component APIs and accessibility patterns",
+    },
+    "lucide": {
+      "repository": "lucide-icons/lucide",
+      "description": "Use for Lucide icon names, sizing, and styling",
+    },
+    "electron": {
+      "repository": "electron/electron",
+      "description": "Use for Electron APIs, IPC patterns, and desktop app development",
+    },
+  },
+}
