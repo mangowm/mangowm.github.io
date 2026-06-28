@@ -40,17 +40,17 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const defaultProportion = useConfigFloat("scroller_default_proportion", 0.9, 0.1, 1.0);
-  const defaultSingle = useConfigFloat("scroller_default_proportion_single", 1.0, 0.1, 1.0);
-  const ignoreSingle = useConfigBool("scroller_ignore_proportion_single", true);
+  const defaultProportion = useConfigFloat("scroller_default_proportion", undefined, 0.1, 1.0);
+  const defaultSingle = useConfigFloat("scroller_default_proportion_single", undefined, 0.1, 1.0);
+  const ignoreSingle = useConfigBool("scroller_ignore_proportion_single");
   const focusCenter = useConfigBool("scroller_focus_center");
   const preferCenter = useConfigBool("scroller_prefer_center");
-  const preferOverspread = useConfigBool("scroller_prefer_overspread", true);
-  const pointerFocus = useConfigBool("edge_scroller_pointer_focus", true);
-  const allowSpeed = useConfigFloat("edge_scroller_focus_allow_speed", 0.0, 0.0, 1000.0);
-  const structs = useConfigInt("scroller_structs", 20, 0, 1000);
+  const preferOverspread = useConfigBool("scroller_prefer_overspread");
+  const pointerFocus = useConfigBool("edge_scroller_pointer_focus");
+  const allowSpeed = useConfigFloat("edge_scroller_focus_allow_speed", undefined, 0.0, 1000.0);
+  const structs = useConfigInt("scroller_structs");
 
-  const presetValue = useConfigStr("scroller_proportion_preset", "");
+  const presetValue = useConfigStr("scroller_proportion_preset");
 
   const handlePresetChange = useCallback(
     (raw: string) => {

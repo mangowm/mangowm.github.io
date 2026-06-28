@@ -30,22 +30,13 @@ export function DragPanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const dragCorner = useConfigStr("drag_corner", "3");
-  const dragWarpCursor = useConfigBool("drag_warp_cursor", true);
-
-  // mango: CLAMP_INT(drag_tile_to_tile, 0, 1), default 0
+  const dragCorner = useConfigStr("drag_corner");
+  const dragWarpCursor = useConfigBool("drag_warp_cursor");
   const dragTileToTile = useConfigBool("drag_tile_to_tile");
-  // mango: CLAMP_INT(drag_tile_small, 0, 1), default 1
-  const dragTileSmall = useConfigBool("drag_tile_small", true);
-
-  // mango: CLAMP_FLOAT(drag_tile_refresh_interval, 1.0, 16.0), default 8.0
-  const tileRefresh = useConfigFloat("drag_tile_refresh_interval", 8.0, 1.0, 16.0);
-  // mango: CLAMP_FLOAT(drag_floating_refresh_interval, 0.0, 1000.0), default 8.0
-  const floatRefresh = useConfigFloat("drag_floating_refresh_interval", 8.0, 0.0, 1000.0);
-
-  // mango: CLAMP_INT(snap_distance, 0, 99999), default 30
-  const snapDist = useConfigInt("snap_distance", 30, 0, 99999);
-  // mango: CLAMP_INT(enable_floating_snap, 0, 1), default 0
+  const dragTileSmall = useConfigBool("drag_tile_small");
+  const tileRefresh = useConfigFloat("drag_tile_refresh_interval", undefined, 1.0, 16.0);
+  const floatRefresh = useConfigFloat("drag_floating_refresh_interval", undefined, 0.0, 1000.0);
+  const snapDist = useConfigInt("snap_distance", undefined, 0, 99999);
   const floatSnap = useConfigBool("enable_floating_snap");
 
   return (

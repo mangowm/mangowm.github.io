@@ -16,11 +16,12 @@ import {
   SelectRow,
 } from "@/components/sections/section-ui";
 
-// mango: CLAMP_INT(trackpad_accel_profile, 0, 2)
+// CLAMP_INT(trackpad_accel_profile, 0, 2)
+//   libinput: 0 = NONE, 1 = FLAT, 2 = ADAPTIVE
 const ACCEL_PROFILE_OPTIONS = [
-  { value: "0", label: "Flat" },
-  { value: "1", label: "Adaptive" },
-  { value: "2", label: "Custom" },
+  { value: "0", label: "None" },
+  { value: "1", label: "Flat" },
+  { value: "2", label: "Adaptive" },
 ];
 
 // mango: CLAMP_INT(button_map, 0, 1)
@@ -36,21 +37,16 @@ export function TrackpadPanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  // mango defaults: trackpad_natural_scrolling=0, disable_trackpad=0
-  // tap_to_click=1, tap_and_drag=1, drag_lock=1, button_map=LRM (1)
   const naturalScroll = useConfigBool("trackpad_natural_scrolling");
-  const accelProfile = useConfigStr("trackpad_accel_profile", "1");
-  const accelSpeed = useConfigFloat("trackpad_accel_speed", 0.0, -1.0, 1.0);
-  // mango: CLAMP_FLOAT(trackpad_scroll_factor, 0.1, 10.0), default 1.0
-  const scrollFactor = useConfigFloat("trackpad_scroll_factor", 1.0, 0.1, 10.0);
+  const accelProfile = useConfigStr("trackpad_accel_profile");
+  const accelSpeed = useConfigFloat("trackpad_accel_speed", undefined, -1.0, 1.0);
+  const scrollFactor = useConfigFloat("trackpad_scroll_factor", undefined, 0.1, 10.0);
   const disabled = useConfigBool("disable_trackpad");
-  const tapToClick = useConfigBool("tap_to_click", true);
-  const tapAndDrag = useConfigBool("tap_and_drag", true);
-  const dragLock = useConfigBool("drag_lock", true);
-  // mango: CLAMP_INT(button_map, 0, 1), default TAP_MAP_LRM=1
-  const buttonMap = useConfigStr("button_map", "1");
-  // mango: CLAMP_INT(swipe_min_threshold, 1, 1000), default 1
-  const swipeThreshold = useConfigInt("swipe_min_threshold", 1, 1, 1000);
+  const tapToClick = useConfigBool("tap_to_click");
+  const tapAndDrag = useConfigBool("tap_and_drag");
+  const dragLock = useConfigBool("drag_lock");
+  const buttonMap = useConfigStr("button_map");
+  const swipeThreshold = useConfigInt("swipe_min_threshold");
 
   return (
     <PanelShell>

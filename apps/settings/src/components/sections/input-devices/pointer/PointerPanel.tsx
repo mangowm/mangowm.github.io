@@ -16,12 +16,12 @@ import {
   SelectRow,
 } from "@/components/sections/section-ui";
 
-// mango: CLAMP_INT(mouse_accel_profile, 0, 2)
-//   0 = FLAT, 1 = ADAPTIVE, 2 = CUSTOM
+// CLAMP_INT(mouse_accel_profile, 0, 2)
+//   libinput: 0 = NONE, 1 = FLAT, 2 = ADAPTIVE
 const ACCEL_PROFILE_OPTIONS = [
-  { value: "0", label: "Flat" },
-  { value: "1", label: "Adaptive" },
-  { value: "2", label: "Custom" },
+  { value: "0", label: "None" },
+  { value: "1", label: "Flat" },
+  { value: "2", label: "Adaptive" },
 ];
 
 // mango: CLAMP_INT(scroll_method, 0, 4)
@@ -46,12 +46,12 @@ const SCROLL_BUTTON_OPTIONS = [
   { value: "279", label: "BTN_TASK" },
 ];
 
-// mango: CLAMP_INT(click_method, 0, 2)
-//   0 = NONE, 1 = CLICKFINGER, 2 = BUTTON_AREAS
+// CLAMP_INT(click_method, 0, 2)
+//   libinput: 0 = NONE, 1 = BUTTON_AREAS, 2 = CLICKFINGER
 const CLICK_METHOD_OPTIONS = [
   { value: "0", label: "None" },
-  { value: "1", label: "Clickfinger" },
-  { value: "2", label: "Button Areas" },
+  { value: "1", label: "Button Areas" },
+  { value: "2", label: "Clickfinger" },
 ];
 
 // mango: CLAMP_INT(send_events_mode, 0, 2)
@@ -68,23 +68,16 @@ export function PointerPanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  // mango defaults: mouse_natural_scrolling=0, disable_while_typing=1, left_handed=0, middle_button_emulation=0
   const naturalScroll = useConfigBool("mouse_natural_scrolling");
-  const accelProfile = useConfigStr("mouse_accel_profile", "1");
-  const accelSpeed = useConfigFloat("mouse_accel_speed", 0.0, -1.0, 1.0);
-  // mango: CLAMP_FLOAT(axis_scroll_factor, 0.1, 10.0), default 1.0
-  const scrollFactor = useConfigFloat("axis_scroll_factor", 1.0, 0.1, 10.0);
-  // mango: CLAMP_INT(axis_bind_apply_timeout, 0, 1000), default 100
-  const axisBindTimeout = useConfigInt("axis_bind_apply_timeout", 100, 0, 1000);
-  // mango: CLAMP_INT(scroll_method, 0, 4), default SCROLL_2FG=1
-  const scrollMethod = useConfigStr("scroll_method", "1");
-  // mango: CLAMP_INT(scroll_button, 272, 279), default 274
-  const scrollButton = useConfigStr("scroll_button", "274");
-  // mango: CLAMP_INT(click_method, 0, 2), default CLICK_METHOD_BUTTON_AREAS=2
-  const clickMethod = useConfigStr("click_method", "2");
-  // mango: CLAMP_INT(send_events_mode, 0, 2), default SEND_EVENTS_ENABLED=0
-  const sendEventsMode = useConfigStr("send_events_mode", "0");
-  const disableTyping = useConfigBool("disable_while_typing", true);
+  const accelProfile = useConfigStr("mouse_accel_profile");
+  const accelSpeed = useConfigFloat("mouse_accel_speed", undefined, -1.0, 1.0);
+  const scrollFactor = useConfigFloat("axis_scroll_factor", undefined, 0.1, 10.0);
+  const axisBindTimeout = useConfigInt("axis_bind_apply_timeout", undefined, 0, 1000);
+  const scrollMethod = useConfigStr("scroll_method");
+  const scrollButton = useConfigStr("scroll_button");
+  const clickMethod = useConfigStr("click_method");
+  const sendEventsMode = useConfigStr("send_events_mode");
+  const disableTyping = useConfigBool("disable_while_typing");
   const leftHanded = useConfigBool("left_handed");
   const middleBtn = useConfigBool("middle_button_emulation");
 

@@ -16,10 +16,9 @@ export function ScratchpadPanel({ focusKey }: PanelProps) {
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const scratchpadCrossMon = useConfigBool("scratchpad_cross_monitor");
-  const singleScratchpad = useConfigBool("single_scratchpad", true);
-
-  const scratchpadWidth = useConfigFloat("scratchpad_width_ratio", 0.8, 0.1, 1.0);
-  const scratchpadHeight = useConfigFloat("scratchpad_height_ratio", 0.9, 0.1, 1.0);
+  const singleScratchpad = useConfigBool("single_scratchpad");
+  const scratchpadWidth = useConfigFloat("scratchpad_width_ratio", undefined, 0.1, 1.0);
+  const scratchpadHeight = useConfigFloat("scratchpad_height_ratio", undefined, 0.1, 1.0);
 
   return (
     <PanelShell>

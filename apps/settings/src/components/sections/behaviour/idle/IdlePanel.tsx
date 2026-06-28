@@ -15,10 +15,8 @@ export function IdlePanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  // mango: CLAMP_INT(idleinhibit_ignore_visible, 0, 1), default 0
   const idleInhibitIgnore = useConfigBool("idleinhibit_ignore_visible");
-  // mango: CLAMP_INT(cursor_hide_timeout, 0, 36000), default 0
-  const cursorTimeout = useConfigInt("cursor_hide_timeout", 0, 0, 36000);
+  const cursorTimeout = useConfigInt("cursor_hide_timeout", undefined, 0, 36000);
 
   return (
     <PanelShell>

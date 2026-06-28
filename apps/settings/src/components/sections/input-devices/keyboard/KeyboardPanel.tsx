@@ -16,14 +16,14 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
   const setValue = useConfigStore((s) => s.setValue);
 
   // Ranges match mango's CLAMP_INT: repeat_rate [1,1000], repeat_delay [1,20000]
-  const repeatRate = useConfigInt("repeat_rate", 25, 1, 1000);
-  const repeatDelay = useConfigInt("repeat_delay", 600, 1, 20000);
+  const repeatRate = useConfigInt("repeat_rate", undefined, 1, 1000);
+  const repeatDelay = useConfigInt("repeat_delay", undefined, 1, 20000);
   const numlockOn = useConfigBool("numlockon");
-  const xkbLayout = useConfigStr("xkb_rules_layout", "");
-  const xkbVariant = useConfigStr("xkb_rules_variant", "");
-  const xkbOptions = useConfigStr("xkb_rules_options", "");
-  const xkbModel = useConfigStr("xkb_rules_model", "");
-  const xkbRules = useConfigStr("xkb_rules_rules", "");
+  const xkbLayout = useConfigStr("xkb_rules_layout");
+  const xkbVariant = useConfigStr("xkb_rules_variant");
+  const xkbOptions = useConfigStr("xkb_rules_options");
+  const xkbModel = useConfigStr("xkb_rules_model");
+  const xkbRules = useConfigStr("xkb_rules_rules");
 
   return (
     <PanelShell>

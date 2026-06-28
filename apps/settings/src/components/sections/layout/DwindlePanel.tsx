@@ -22,14 +22,14 @@ export function DwindlePanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const vsplit = useConfigStr("dwindle_vsplit", "1");
-  const hsplit = useConfigStr("dwindle_hsplit", "1");
+  const vsplit = useConfigStr("dwindle_vsplit");
+  const hsplit = useConfigStr("dwindle_hsplit");
   const preserveSplit = useConfigBool("dwindle_preserve_split");
   const smartSplit = useConfigBool("dwindle_smart_split");
   const smartResize = useConfigBool("dwindle_smart_resize");
-  const dropSimple = useConfigBool("dwindle_drop_simple_split", true);
+  const dropSimple = useConfigBool("dwindle_drop_simple_split");
   const manualSplit = useConfigBool("dwindle_manual_split");
-  const splitRatio = useConfigFloat("dwindle_split_ratio", 0.5, 0.05, 0.95);
+  const splitRatio = useConfigFloat("dwindle_split_ratio", undefined, 0.05, 0.95);
 
   return (
     <PanelShell>

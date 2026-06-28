@@ -13,8 +13,8 @@ export function CursorPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const cursorTheme = useConfigStr("cursor_theme", "");
-  const cursorSize = useConfigInt("cursor_size", 24, 16, 128);
+  const cursorTheme = useConfigStr("cursor_theme");
+  const cursorSize = useConfigInt("cursor_size", undefined, 16, 128);
 
   return (
     <PanelShell>

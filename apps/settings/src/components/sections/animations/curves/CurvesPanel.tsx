@@ -8,27 +8,19 @@ import {
   TextInputRow,
 } from "@/components/sections/section-ui";
 
-const DEFAULT_MOVE = "0.46,1.0,0.29,0.99";
-const DEFAULT_OPEN = "0.46,1.0,0.29,0.99";
-const DEFAULT_CLOSE = "0.46,1.0,0.29,0.99";
-const DEFAULT_TAG = "0.46,1.0,0.29,0.99";
-const DEFAULT_FOCUS = "0.46,1.0,0.29,0.99";
-const DEFAULT_FADEIN = "0.46,1.0,0.29,0.99";
-const DEFAULT_FADEOUT = "0.5,0.5,0.5,0.5";
-
 const CURVE_PLACEHOLDER = "x1,y1,x2,y2 — e.g. 0.46,1.0,0.29,0.99";
 
 export function CurvesPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const curveMove = useConfigStr("animation_curve_move", DEFAULT_MOVE);
-  const curveOpen = useConfigStr("animation_curve_open", DEFAULT_OPEN);
-  const curveClose = useConfigStr("animation_curve_close", DEFAULT_CLOSE);
-  const curveTag = useConfigStr("animation_curve_tag", DEFAULT_TAG);
-  const curveFocus = useConfigStr("animation_curve_focus", DEFAULT_FOCUS);
-  const curveFadeIn = useConfigStr("animation_curve_opafadein", DEFAULT_FADEIN);
-  const curveFadeOut = useConfigStr("animation_curve_opafadeout", DEFAULT_FADEOUT);
+  const curveMove = useConfigStr("animation_curve_move");
+  const curveOpen = useConfigStr("animation_curve_open");
+  const curveClose = useConfigStr("animation_curve_close");
+  const curveTag = useConfigStr("animation_curve_tag");
+  const curveFocus = useConfigStr("animation_curve_focus");
+  const curveFadeIn = useConfigStr("animation_curve_opafadein");
+  const curveFadeOut = useConfigStr("animation_curve_opafadeout");
 
   return (
     <PanelShell>

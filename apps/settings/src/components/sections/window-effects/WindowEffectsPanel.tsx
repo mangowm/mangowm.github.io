@@ -15,26 +15,26 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
 
   const blurOn = useConfigBool("blur");
   const blurLayerOn = useConfigBool("blur_layer");
-  const blurOptimizedOn = useConfigBool("blur_optimized", true);
-  const blurPasses = useConfigInt("blur_params_num_passes", 1, 1, 10);
-  const blurRadius = useConfigInt("blur_params_radius", 5, 1, 32);
-  const blurNoise = useConfigFloat("blur_params_noise", 0.02, 0, 1);
-  const blurBrightness = useConfigFloat("blur_params_brightness", 0.9, 0, 1);
-  const blurContrast = useConfigFloat("blur_params_contrast", 0.9, 0, 1);
-  const blurSaturation = useConfigFloat("blur_params_saturation", 1.2, 0, 1);
+  const blurOptimizedOn = useConfigBool("blur_optimized");
+  const blurPasses = useConfigInt("blur_params_num_passes", undefined, 1, 10);
+  const blurRadius = useConfigInt("blur_params_radius", undefined, 1, 32);
+  const blurNoise = useConfigFloat("blur_params_noise", undefined, 0, 1);
+  const blurBrightness = useConfigFloat("blur_params_brightness", undefined, 0, 1);
+  const blurContrast = useConfigFloat("blur_params_contrast", undefined, 0, 1);
+  const blurSaturation = useConfigFloat("blur_params_saturation", undefined, 0, 2);
 
-  const radius = useConfigInt("border_radius", 0, 0, 64);
+  const radius = useConfigInt("border_radius");
 
   const shadowsOn = useConfigBool("shadows");
-  const shadowsFloatingOn = useConfigBool("shadow_only_floating", true);
+  const shadowsFloatingOn = useConfigBool("shadow_only_floating");
   const layerShadowsOn = useConfigBool("layer_shadows");
-  const shadowsSize = useConfigInt("shadows_size", 10, 0, 100);
-  const shadowsBlur = useConfigFloat("shadows_blur", 15.0, 0, 20);
-  const shadowsPosX = useConfigInt("shadows_position_x", 0, -100, 100);
-  const shadowsPosY = useConfigInt("shadows_position_y", 0, -100, 100);
+  const shadowsSize = useConfigInt("shadows_size");
+  const shadowsBlur = useConfigFloat("shadows_blur");
+  const shadowsPosX = useConfigInt("shadows_position_x");
+  const shadowsPosY = useConfigInt("shadows_position_y");
 
-  const focusedOpacity = useConfigFloat("focused_opacity", 1.0, 0, 1);
-  const unfocusedOpacity = useConfigFloat("unfocused_opacity", 1.0, 0, 1);
+  const focusedOpacity = useConfigFloat("focused_opacity");
+  const unfocusedOpacity = useConfigFloat("unfocused_opacity");
 
   const tb = (k: string) => (v: boolean) => setValue(k, v ? "1" : "0");
 
@@ -131,10 +131,10 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("blur_params_saturation")}>
                 <SliderRow
                   label="Saturation"
-                  description="Saturation multiplier for the blurred layer (0.0 – 1.0)."
+                  description="Saturation multiplier for the blurred layer."
                   value={blurSaturation}
                   min={0}
-                  max={1}
+                  max={2}
                   step={0.01}
                   onChange={(v) => setValue("blur_params_saturation", v.toFixed(2))}
                 />

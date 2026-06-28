@@ -7,8 +7,7 @@ export function XWaylandPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const setValue = useConfigStore((s) => s.setValue);
 
-  // mango: CLAMP_INT(xwayland_persistence, 0, 1), default 1
-  const xwaylandPersist = useConfigBool("xwayland_persistence", true);
+  const xwaylandPersist = useConfigBool("xwayland_persistence");
 
   return (
     <PanelShell>

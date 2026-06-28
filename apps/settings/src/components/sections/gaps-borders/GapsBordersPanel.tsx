@@ -14,11 +14,11 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
   const setValue = useConfigStore((s) => s.setValue);
 
   const smartgapsOn = useConfigBool("smartgaps");
-  const gappih = useConfigInt("gappih", 5, 0, 1000);
-  const gappiv = useConfigInt("gappiv", 5, 0, 1000);
-  const gappoh = useConfigInt("gappoh", 10, 0, 1000);
-  const gappov = useConfigInt("gappov", 10, 0, 1000);
-  const borderpx = useConfigInt("borderpx", 4, 0, 200);
+  const gappih = useConfigInt("gappih", undefined, 0, 1000);
+  const gappiv = useConfigInt("gappiv", undefined, 0, 1000);
+  const gappoh = useConfigInt("gappoh", undefined, 0, 1000);
+  const gappov = useConfigInt("gappov", undefined, 0, 1000);
+  const borderpx = useConfigInt("borderpx", undefined, 0, 200);
   const noBorderSingle = useConfigBool("no_border_when_single");
   const noRadiusSingle = useConfigBool("no_radius_when_single");
 

@@ -7,11 +7,11 @@ export function TimingPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const durMove = useConfigInt("animation_duration_move", 500, 1, 50000);
-  const durOpen = useConfigInt("animation_duration_open", 400, 1, 50000);
-  const durClose = useConfigInt("animation_duration_close", 300, 1, 50000);
-  const durTag = useConfigInt("animation_duration_tag", 300, 1, 50000);
-  const durFocus = useConfigInt("animation_duration_focus", 0, 1, 50000);
+  const durMove = useConfigInt("animation_duration_move", undefined, 1, 50000);
+  const durOpen = useConfigInt("animation_duration_open", undefined, 1, 50000);
+  const durClose = useConfigInt("animation_duration_close", undefined, 1, 50000);
+  const durTag = useConfigInt("animation_duration_tag", undefined, 1, 50000);
+  const durFocus = useConfigInt("animation_duration_focus", undefined, 0, 50000);
 
   return (
     <PanelShell>

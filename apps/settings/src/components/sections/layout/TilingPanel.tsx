@@ -15,11 +15,11 @@ export function TilingPanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const newIsMaster = useConfigBool("new_is_master", true);
-  const mfact = useConfigFloat("default_mfact", 0.55, 0.1, 0.9);
-  const nmaster = useConfigInt("default_nmaster", 1, 1, 1000);
+  const newIsMaster = useConfigBool("new_is_master");
+  const mfact = useConfigFloat("default_mfact", undefined, 0.1, 0.9);
+  const nmaster = useConfigInt("default_nmaster", undefined, 1, 1000);
   const centerOverspread = useConfigBool("center_master_overspread");
-  const centerSingleStack = useConfigBool("center_when_single_stack", true);
+  const centerSingleStack = useConfigBool("center_when_single_stack");
 
   return (
     <PanelShell>

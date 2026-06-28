@@ -21,9 +21,7 @@ export function RenderingPanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  // mango: CLAMP_INT(allow_tearing, 0, 2), default TEARING_DISABLED
-  const tearing = useConfigStr("allow_tearing", "0");
-  // mango: CLAMP_INT(syncobj_enable, 0, 1), default 0
+  const tearing = useConfigStr("allow_tearing");
   const syncobj = useConfigBool("syncobj_enable");
 
   return (

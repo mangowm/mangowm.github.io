@@ -9,9 +9,9 @@ export function FocusPanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const sloppyfocus = useConfigBool("sloppyfocus", true);
-  const warpcursor = useConfigBool("warpcursor", true);
-  const focusOnActivate = useConfigBool("focus_on_activate", true);
+  const sloppyfocus = useConfigBool("sloppyfocus");
+  const warpcursor = useConfigBool("warpcursor");
+  const focusOnActivate = useConfigBool("focus_on_activate");
   const focusCrossMon = useConfigBool("focus_cross_monitor");
   const focusCrossTag = useConfigBool("focus_cross_tag");
   const exchangeCrossMon = useConfigBool("exchange_cross_monitor");

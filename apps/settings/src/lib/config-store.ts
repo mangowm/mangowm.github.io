@@ -3,7 +3,8 @@ import { temporal } from "zundo";
 import { readAllConfigFiles, writeAllConfigFiles, reloadMango } from "./config-file";
 import { type ConfigData, type SourceFile, countLines } from "./config-types";
 import { makeEntryLine } from "./config-parse";
-import { cfgBool, cfgInt, cfgFloat } from "./config-helpers";
+import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./config-helpers";
+import { DEFAULTS } from "./defaults";
 
 const EMPTY_VALUES: readonly string[] = Object.freeze([]);
 
@@ -249,27 +250,27 @@ useConfigStore.subscribe((state, prevState) => {
 });
 
 export function useConfigValue(key: string): string | undefined {
-  return useConfigStore((s) => s.data[key]?.[0]);
+  return useConfigStore((s) => s.data[key]?.[0] ?? DEFAULTS[key]?.[0]);
 }
 
 export function useConfigValues(key: string): readonly string[] {
   return useConfigStore((s) => s.data[key] ?? EMPTY_VALUES);
 }
 
-export function useConfigBool(key: string, fallback: boolean = false): boolean {
+export function useConfigBool(key: string, fallback?: boolean): boolean {
   return useConfigStore((s) => cfgBool(s.data, key, fallback));
 }
 
-export function useConfigInt(key: string, fallback: number, min?: number, max?: number): number {
+export function useConfigInt(key: string, fallback?: number, min?: number, max?: number): number {
   return useConfigStore((s) => cfgInt(s.data, key, fallback, min, max));
 }
 
-export function useConfigFloat(key: string, fallback: number, min?: number, max?: number): number {
+export function useConfigFloat(key: string, fallback?: number, min?: number, max?: number): number {
   return useConfigStore((s) => cfgFloat(s.data, key, fallback, min, max));
 }
 
-export function useConfigStr(key: string, fallback: string): string {
-  return useConfigStore((s) => s.data[key]?.[0] ?? fallback);
+export function useConfigStr(key: string, fallback?: string): string {
+  return useConfigStore((s) => cfgStr(s.data, key, fallback));
 }
 
 export function undo() {

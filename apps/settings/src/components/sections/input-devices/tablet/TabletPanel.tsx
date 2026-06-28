@@ -12,7 +12,7 @@ export function TabletPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const setValue = useConfigStore((s) => s.setValue);
 
-  const tabletMapToMon = useConfigStr("tablet_map_to_mon", "");
+  const tabletMapToMon = useConfigStr("tablet_map_to_mon");
 
   return (
     <PanelShell>

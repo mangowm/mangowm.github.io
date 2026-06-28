@@ -24,12 +24,12 @@ export function OverviewPanel({ focusKey }: PanelProps) {
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const enableHotarea = useConfigBool("enable_hotarea");
-  const hotareaSize = useConfigInt("hotarea_size", 10, 1, 1000);
-  const hotareaCorner = useConfigInt("hotarea_corner", 2, 0, 3);
-  const ovTabMode = useConfigBool("ov_tab_mode", true);
-  const ovNoResize = useConfigBool("ov_no_resize", true);
-  const overviewgappi = useConfigInt("overviewgappi", 5, 0, 1000);
-  const overviewgappo = useConfigInt("overviewgappo", 30, 0, 1000);
+  const hotareaSize = useConfigInt("hotarea_size", undefined, 1, 1000);
+  const hotareaCorner = useConfigInt("hotarea_corner", undefined, 0, 3);
+  const ovTabMode = useConfigBool("ov_tab_mode");
+  const ovNoResize = useConfigBool("ov_no_resize");
+  const overviewgappi = useConfigInt("overviewgappi", undefined, 0, 1000);
+  const overviewgappo = useConfigInt("overviewgappo", undefined, 0, 1000);
 
   return (
     <PanelShell>

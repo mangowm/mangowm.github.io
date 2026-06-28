@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback, memo } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
 import { Pipette } from "lucide-react";
-import { useConfigStore, useConfigValue } from "@/lib/config-store";
+import { useConfigStore, useConfigStr } from "@/lib/config-store";
 import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
 import type { PanelProps } from "@/lib/section-types";
@@ -280,31 +280,31 @@ const PaletteCard = memo(function PaletteCard({ palette, isActive, onSelect }: P
 });
 
 function useColorConfigValues() {
-  const rootcolor = useConfigValue("rootcolor");
-  const bordercolor = useConfigValue("bordercolor");
-  const dropcolor = useConfigValue("dropcolor");
-  const splitcolor = useConfigValue("splitcolor");
-  const focuscolor = useConfigValue("focuscolor");
-  const maximizescreencolor = useConfigValue("maximizescreencolor");
-  const urgentcolor = useConfigValue("urgentcolor");
-  const scratchpadcolor = useConfigValue("scratchpadcolor");
-  const globalcolor = useConfigValue("globalcolor");
-  const overlaycolor = useConfigValue("overlaycolor");
-  const shadowscolor = useConfigValue("shadowscolor");
+  const rootcolor = useConfigStr("rootcolor");
+  const bordercolor = useConfigStr("bordercolor");
+  const dropcolor = useConfigStr("dropcolor");
+  const splitcolor = useConfigStr("splitcolor");
+  const focuscolor = useConfigStr("focuscolor");
+  const maximizescreencolor = useConfigStr("maximizescreencolor");
+  const urgentcolor = useConfigStr("urgentcolor");
+  const scratchpadcolor = useConfigStr("scratchpadcolor");
+  const globalcolor = useConfigStr("globalcolor");
+  const overlaycolor = useConfigStr("overlaycolor");
+  const shadowscolor = useConfigStr("shadowscolor");
 
   return useMemo<ColorsConfig>(
     () => ({
-      rootcolor: rootcolor ?? defaultPalette.colors.rootcolor,
-      bordercolor: bordercolor ?? defaultPalette.colors.bordercolor,
-      dropcolor: dropcolor ?? defaultPalette.colors.dropcolor,
-      splitcolor: splitcolor ?? defaultPalette.colors.splitcolor,
-      focuscolor: focuscolor ?? defaultPalette.colors.focuscolor,
-      maximizescreencolor: maximizescreencolor ?? defaultPalette.colors.maximizescreencolor,
-      urgentcolor: urgentcolor ?? defaultPalette.colors.urgentcolor,
-      scratchpadcolor: scratchpadcolor ?? defaultPalette.colors.scratchpadcolor,
-      globalcolor: globalcolor ?? defaultPalette.colors.globalcolor,
-      overlaycolor: overlaycolor ?? defaultPalette.colors.overlaycolor,
-      shadowscolor: shadowscolor ?? defaultPalette.colors.shadowscolor,
+      rootcolor,
+      bordercolor,
+      dropcolor,
+      splitcolor,
+      focuscolor,
+      maximizescreencolor,
+      urgentcolor,
+      scratchpadcolor,
+      globalcolor,
+      overlaycolor,
+      shadowscolor,
     }),
     [
       rootcolor,

@@ -1,11 +1,11 @@
 {
   "name": "Default",
   "colors": {
-    "rootcolor": "0x201b14ff",
+    "rootcolor": "0x323232ff",
     "bordercolor": "0x444444ff",
-    "dropcolor": "0x8FBA7C55",
-    "splitcolor": "0xEB441EFF",
-    "focuscolor": "0xc9b890ff",
+    "dropcolor": "0xd5899d80",
+    "splitcolor": "0xeb441eff",
+    "focuscolor": "0xc66b25ff",
     "maximizescreencolor": "0x89aa61ff",
     "urgentcolor": "0xad401fff",
     "scratchpadcolor": "0x516c93ff",
