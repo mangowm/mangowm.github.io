@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { create } from "@orama/orama";
 import { useDocsSearch } from "fumadocs-core/search/client";
 import {
@@ -18,6 +18,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "fumadocs-ui/components/
 import { buttonVariants } from "fumadocs-ui/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { useLocation } from "@tanstack/react-router";
 import docsMeta from "../../content/docs/meta.json";
 import { useI18n } from "fumadocs-ui/contexts/i18n";
 
@@ -30,6 +31,13 @@ const filterItems: { name: string; value: string | undefined; description: strin
   })),
 ];
 
+function getTagFromPath(pathname: string): string | undefined {
+  const match = pathname.match(/^\/docs\/(v\d+\.\d+\.\d+)/);
+  if (match) return match[1];
+  if (pathname.startsWith("/docs")) return "latest";
+  return undefined;
+}
+
 function initOrama() {
   return create({
     schema: { _: "string" },
@@ -39,7 +47,13 @@ function initOrama() {
 
 export default function DefaultSearchDialog(props: SharedProps) {
   const [open, setOpen] = useState(false);
-  const [tag, setTag] = useState<string | undefined>(undefined);
+  const location = useLocation();
+  const [tag, setTag] = useState<string | undefined>(() => getTagFromPath(location.pathname));
+
+  useEffect(() => {
+    setTag(getTagFromPath(location.pathname));
+  }, [location.pathname]);
+
   const { locale } = useI18n();
   const { search, setSearch, query } = useDocsSearch({
     type: "static",
