@@ -41,6 +41,7 @@ const NAV_LINKS: LinkItemType[] = [
   ...(import.meta.env.DEV ? [{ text: "Editor", url: "/editor" }] : []),
   { text: "Showcase", url: "/showcase" },
   { text: "Releases", url: "/releases" },
+  { text: "Settings", url: "https://mangowm.github.io/mangowm-settings/" },
   {
     type: "icon",
     url: "https://discord.gg/CPjbDxesh5",
