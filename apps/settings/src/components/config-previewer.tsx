@@ -1,14 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-  FileIcon,
-  FolderIcon,
-  FolderOpenIcon,
-  ChevronRightIcon,
-  Copy,
-} from "lucide-react";
+import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy } from "lucide-react";
 import { useConfigStore } from "@/lib/config-store";
 import type { SourceFile, ConfigLine } from "@/lib/config-types";
 import { serializeConfig } from "@/lib/config-parse";
+import { commonAncestorDir } from "@/lib/path-utils";
 import { cn } from "@/lib/utils";
 
 interface TreeNode {
@@ -19,27 +14,6 @@ interface TreeNode {
   sourceFile?: SourceFile;
 }
 
-function commonAncestorDir(absPaths: string[]): string {
-  if (absPaths.length === 0) return "";
-  if (absPaths.length === 1) {
-    return absPaths[0].slice(0, absPaths[0].lastIndexOf("/"));
-  }
-
-  const splitPaths = absPaths.map((p) => p.split("/"));
-  let i = 0;
-  while (i < splitPaths[0].length) {
-    const seg = splitPaths[0][i];
-    if (splitPaths.every((s) => i < s.length && s[i] === seg)) {
-      i++;
-    } else {
-      break;
-    }
-  }
-
-  if (i < 2) return "";
-  return splitPaths[0].slice(0, i).join("/");
-}
-
 function buildTree(files: SourceFile[], rootDir: string): TreeNode[] {
   const root: TreeNode[] = [];
 
@@ -47,7 +21,7 @@ function buildTree(files: SourceFile[], rootDir: string): TreeNode[] {
     const relPath = rootDir
       ? file.absPath.startsWith(rootDir + "/")
         ? file.absPath.slice(rootDir.length + 1)
-        : file.absPath.split("/").pop() ?? file.absPath
+        : (file.absPath.split("/").pop() ?? file.absPath)
       : file.absPath;
 
     const segments = relPath.split("/");
@@ -214,7 +188,7 @@ export function ConfigPreviewer() {
     selectedPath && rootDir
       ? selectedPath.startsWith(rootDir + "/")
         ? selectedPath.slice(rootDir.length + 1)
-        : selectedPath.split("/").pop() ?? selectedPath
+        : (selectedPath.split("/").pop() ?? selectedPath)
       : selectedPath;
 
   if (files.length === 0) {

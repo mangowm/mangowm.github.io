@@ -1,7 +1,9 @@
 import { readTextFile, writeTextFile, mkdir } from "@tauri-apps/plugin-fs";
 import { homeDir } from "@tauri-apps/api/path";
 import { Command } from "@tauri-apps/plugin-shell";
+import { zip, strToU8 } from "fflate";
 import { parseConfig, serializeConfig } from "./config-parse";
+import { commonAncestorDir } from "./path-utils";
 import type { SourceFile } from "./config-types";
 import DEFAULT_CONFIG from "./default-config";
 
@@ -111,14 +113,36 @@ export async function reloadMango(): Promise<void> {
 }
 
 export function downloadConfig(files: SourceFile[]): void {
-  const text = serializeConfig(files.flatMap((f) => f.lines));
-  const blob = new Blob([text], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "config.conf";
-  a.click();
-  URL.revokeObjectURL(url);
+  if (files.length === 0) return;
+  const allAbsolute = files.every((f) => f.absPath.startsWith("/"));
+
+  const rootDir = allAbsolute ? commonAncestorDir(files.map((f) => f.absPath)) : "";
+  const entries: Record<string, Uint8Array> = {};
+
+  for (const file of files) {
+    const relPath = allAbsolute
+      ? rootDir && file.absPath.startsWith(rootDir + "/")
+        ? file.absPath.slice(rootDir.length + 1)
+        : file.absPath.split("/").pop()!
+      : file.absPath;
+
+    if (relPath in entries) continue;
+    entries[relPath] = strToU8(serializeConfig(file.lines));
+  }
+
+  zip(entries, (err, out) => {
+    if (err) {
+      console.warn("Failed to create zip:", err);
+      return;
+    }
+    const blob = new Blob([out], { type: "application/zip" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "mango-config.zip";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
 }
 
 export async function uploadConfig(file: File): Promise<SourceFile[]> {
@@ -190,9 +214,8 @@ export async function uploadConfigFromDir(files: File[]): Promise<SourceFile[]> 
 
     for (const srcRef of parsed.data["source"] ?? []) {
       const s = srcRef.trim();
-      const resolved = s.startsWith("/") || s.startsWith("~/")
-        ? resolvePath("", s)
-        : resolvePath(fileDir, s);
+      const resolved =
+        s.startsWith("/") || s.startsWith("~/") ? resolvePath("", s) : resolvePath(fileDir, s);
       const srcKey = matchUploadedFile(fileContents, resolved);
       if (srcKey) await readOne(srcKey);
     }

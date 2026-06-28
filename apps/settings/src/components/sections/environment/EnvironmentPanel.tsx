@@ -190,7 +190,6 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
             <p className="mt-1 mb-5 text-sm text-muted-foreground max-w-[280px]">
               Set environment variables here to configure applications running under mangowm.
             </p>
-
           </div>
         ) : (
           <div className="flex flex-col rounded-xl border border-border/50 bg-card p-1 shadow-sm">
