@@ -59,6 +59,7 @@ export function SettingsPage() {
           startTransition(() => {
             setActiveSection(id);
             setFocusKey(undefined);
+            setShowConfig(false);
           });
         }}
       />
