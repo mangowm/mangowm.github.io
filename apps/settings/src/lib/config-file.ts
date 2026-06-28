@@ -7,8 +7,6 @@ import DEFAULT_CONFIG from "./default-config";
 
 const SYSCONFDIR = "/etc";
 
-const VIRTUAL_PATH = "";
-
 async function tryReadTextFile(absPath: string): Promise<string | null> {
   try {
     return await readTextFile(absPath);
@@ -46,7 +44,7 @@ async function resolveSourcePath(sourcePath: string, fileDir: string): Promise<s
 
 function makeVirtualSourceFile(text: string): SourceFile[] {
   const parsed = parseConfig(text);
-  return [{ absPath: VIRTUAL_PATH, refPath: "config.conf", lines: parsed.lines }];
+  return [{ absPath: "config.conf", refPath: "config.conf", lines: parsed.lines }];
 }
 
 export async function readAllConfigFiles(): Promise<SourceFile[]> {
@@ -99,7 +97,7 @@ export async function readAllConfigFiles(): Promise<SourceFile[]> {
 
 export async function writeAllConfigFiles(files: SourceFile[]): Promise<void> {
   for (const file of files) {
-    if (!file.absPath) continue;
+    if (!file.absPath.startsWith("/")) continue;
     const text = serializeConfig(file.lines);
     await tryWriteTextFile(file.absPath, text);
   }
@@ -142,6 +140,21 @@ function resolvePath(base: string, rel: string): string {
   return result.join("/");
 }
 
+function matchUploadedFile(
+  fileContents: Map<string, Promise<string>>,
+  path: string,
+): string | undefined {
+  if (fileContents.has(path)) return path;
+
+  const parts = path.split("/");
+  for (let i = 1; i < parts.length; i++) {
+    const suffix = parts.slice(i).join("/");
+    if (fileContents.has(suffix)) return suffix;
+  }
+
+  return undefined;
+}
+
 export async function uploadConfigFromDir(files: File[]): Promise<SourceFile[]> {
   const fileContents = new Map<string, Promise<string>>();
 
@@ -165,19 +178,23 @@ export async function uploadConfigFromDir(files: File[]): Promise<SourceFile[]> 
     if (seen.has(normal)) return;
     seen.add(normal);
 
-    const textPromise = fileContents.get(normal);
-    if (!textPromise) return;
+    const key = matchUploadedFile(fileContents, normal);
+    if (!key) return;
 
+    const textPromise = fileContents.get(key)!;
     const text = await textPromise;
     const parsed = parseConfig(text);
-    const fileDir = normal.includes("/") ? normal.slice(0, normal.lastIndexOf("/")) : "";
+    const fileDir = key.includes("/") ? key.slice(0, key.lastIndexOf("/")) : "";
 
-    result.push({ absPath: VIRTUAL_PATH, refPath: normal, lines: parsed.lines });
+    result.push({ absPath: key, refPath: key, lines: parsed.lines });
 
     for (const srcRef of parsed.data["source"] ?? []) {
       const s = srcRef.trim();
-      if (s.startsWith("/") || s.startsWith("~/")) continue;
-      await readOne(resolvePath(fileDir, s));
+      const resolved = s.startsWith("/") || s.startsWith("~/")
+        ? resolvePath("", s)
+        : resolvePath(fileDir, s);
+      const srcKey = matchUploadedFile(fileContents, resolved);
+      if (srcKey) await readOne(srcKey);
     }
   }
 

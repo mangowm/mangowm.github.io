@@ -36,7 +36,7 @@ function commonAncestorDir(absPaths: string[]): string {
     }
   }
 
-  if (i < 2) return "/";
+  if (i < 2) return "";
   return splitPaths[0].slice(0, i).join("/");
 }
 
@@ -44,9 +44,11 @@ function buildTree(files: SourceFile[], rootDir: string): TreeNode[] {
   const root: TreeNode[] = [];
 
   for (const file of files) {
-    const relPath = file.absPath.startsWith(rootDir + "/")
-      ? file.absPath.slice(rootDir.length + 1)
-      : (file.absPath.split("/").pop() ?? file.absPath);
+    const relPath = rootDir
+      ? file.absPath.startsWith(rootDir + "/")
+        ? file.absPath.slice(rootDir.length + 1)
+        : file.absPath.split("/").pop() ?? file.absPath
+      : file.absPath;
 
     const segments = relPath.split("/");
     let current = root;
@@ -184,22 +186,22 @@ function ConfigLineRow({ line, index }: { line: ConfigLine; index: number }) {
 
 export function ConfigPreviewer() {
   const files = useConfigStore((s) => s.files);
-  const [selectedAbsPath, setSelectedAbsPath] = useState<string | null>(null);
+  const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const rootDir = commonAncestorDir(files.map((f) => f.absPath));
   const tree = buildTree(files, rootDir);
-  const selectedFile = selectedAbsPath
-    ? (files.find((f) => f.absPath === selectedAbsPath) ?? null)
+  const selectedFile = selectedPath
+    ? (files.find((f) => f.absPath === selectedPath) ?? null)
     : null;
 
   useEffect(() => {
     if (files.length === 0) {
-      setSelectedAbsPath(null);
-    } else if (!selectedAbsPath || !files.some((f) => f.absPath === selectedAbsPath)) {
-      setSelectedAbsPath(files[0].absPath);
+      setSelectedPath(null);
+    } else if (!selectedPath || !files.some((f) => f.absPath === selectedPath)) {
+      setSelectedPath(files[0].absPath);
     }
-  }, [files, selectedAbsPath]);
+  }, [files, selectedPath]);
 
   const handleCopy = useCallback(() => {
     if (!selectedFile) return;
@@ -209,11 +211,11 @@ export function ConfigPreviewer() {
   }, [selectedFile]);
 
   const displayPath =
-    selectedAbsPath && rootDir
-      ? selectedAbsPath.startsWith(rootDir + "/")
-        ? selectedAbsPath.slice(rootDir.length + 1)
-        : (selectedAbsPath.split("/").pop() ?? selectedAbsPath)
-      : null;
+    selectedPath && rootDir
+      ? selectedPath.startsWith(rootDir + "/")
+        ? selectedPath.slice(rootDir.length + 1)
+        : selectedPath.split("/").pop() ?? selectedPath
+      : selectedPath;
 
   if (files.length === 0) {
     return (
@@ -235,7 +237,7 @@ export function ConfigPreviewer() {
               key={node.path}
               node={node}
               selectedPath={displayPath}
-              onSelect={(file) => setSelectedAbsPath(file.absPath)}
+              onSelect={(file) => setSelectedPath(file.absPath)}
             />
           ))}
         </div>
