@@ -121,16 +121,17 @@ function HistoryButtons() {
 }
 
 function ApplyButton() {
-  const { applying, loading, dirty, apply } = useConfigStore(
+  const { applying, loading, dirty, apply, isTauri } = useConfigStore(
     useShallow((s) => ({
       applying: s.applying,
       loading: s.loading,
       dirty: s.dirty,
       apply: s.apply,
+      isTauri: s.isTauri,
     })),
   );
 
-  if (loading) return null;
+  if (loading || !isTauri) return null;
 
   return (
     <Button onClick={apply} disabled={applying || !dirty} variant={dirty ? "default" : "outline"}>

@@ -8,6 +8,8 @@ import { DEFAULTS } from "./defaults";
 
 const EMPTY_VALUES: readonly string[] = Object.freeze([]);
 
+const IS_TAURI = typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
+
 function mergeFileData(files: SourceFile[], prevData: ConfigData = {}): ConfigData {
   const next: ConfigData = {};
   for (const file of files) {
@@ -67,6 +69,7 @@ interface ConfigStore {
   applying: boolean;
   dirty: boolean;
   error: string | null;
+  isTauri: boolean;
 
   load: () => Promise<void>;
   apply: () => Promise<void>;
@@ -100,6 +103,7 @@ export const useConfigStore = create<ConfigStore>()(
       applying: false,
       dirty: false,
       error: null,
+      isTauri: IS_TAURI,
 
       load: async () => {
         set({ loading: true, error: null });
