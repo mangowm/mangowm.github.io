@@ -21,6 +21,7 @@ type RawEntry = {
 type ShowcaseEntry = {
   username: string;
   screenshots: string[];
+  videos: string[];
   dotfiles: string;
   tags: string[];
   added: string | null;
@@ -45,6 +46,16 @@ async function main() {
 
   const entries: ShowcaseEntry[] = [];
 
+  function getMediaUrl(rawBase: string, name: string): string {
+    if (name === "screenshot.png") return `${rawBase}/screenshot.png`;
+    if (name.includes("/")) return `${rawBase}/${name}`;
+    return `${rawBase}/screenshots/${name}`;
+  }
+
+  function getSavedFilename(username: string, name: string): string {
+    return `${username}-${path.basename(name)}`;
+  }
+
   for (const item of rawEntries) {
     if (!item.username || !item.dotfiles) {
       console.warn("  ⚠ Skipping malformed entry (missing username or dotfiles):", item);
@@ -59,10 +70,23 @@ async function main() {
 
     const screenshotNames: string[] = [];
 
-    for (let i = 1; i <= 10; i++) {
-      const probe = await fetch(`${rawBase}/screenshots/${i}.png`, { method: "HEAD" });
+    for (let i = 1; ; i++) {
+      const probe = await fetch(`${rawBase}/showcase/images/${i}.png`, { method: "HEAD" });
       if (!probe.ok) break;
-      screenshotNames.push(`${i}.png`);
+      screenshotNames.push(`showcase/images/${i}.png`);
+    }
+
+    if (screenshotNames.length === 0) {
+      const probe = await fetch(`${rawBase}/showcase/image.png`, { method: "HEAD" });
+      if (probe.ok) screenshotNames.push("showcase/image.png");
+    }
+
+    if (screenshotNames.length === 0) {
+      for (let i = 1; ; i++) {
+        const probe = await fetch(`${rawBase}/screenshots/${i}.png`, { method: "HEAD" });
+        if (!probe.ok) break;
+        screenshotNames.push(`${i}.png`);
+      }
     }
 
     if (screenshotNames.length === 0) {
@@ -77,19 +101,47 @@ async function main() {
 
     const savedPaths: string[] = [];
     for (const name of screenshotNames) {
-      const isRoot = name === "screenshot.png";
-      const url = isRoot ? `${rawBase}/screenshot.png` : `${rawBase}/screenshots/${name}`;
+      const url = getMediaUrl(rawBase, name);
       const imgRes = await fetch(url);
       if (!imgRes.ok) continue;
       const buffer = Buffer.from(await imgRes.arrayBuffer());
-      const fileName = `${username}-${name}`;
+      const fileName = getSavedFilename(username, name);
       await fs.writeFile(path.join(imagesDir, fileName), buffer);
       savedPaths.push(`/showcase/${fileName}`);
+    }
+
+    const videoNames: string[] = [];
+
+    for (let i = 1; ; i++) {
+      const probe = await fetch(`${rawBase}/showcase/videos/${i}.mp4`, { method: "HEAD" });
+      if (!probe.ok) break;
+      videoNames.push(`showcase/videos/${i}.mp4`);
+    }
+
+    if (videoNames.length === 0) {
+      const probe = await fetch(`${rawBase}/showcase/video.mp4`, { method: "HEAD" });
+      if (probe.ok) videoNames.push("showcase/video.mp4");
+    }
+
+    const savedVideoPaths: string[] = [];
+    for (const name of videoNames) {
+      const url = `${rawBase}/${name}`;
+      const vidRes = await fetch(url);
+      if (!vidRes.ok) continue;
+      const buffer = Buffer.from(await vidRes.arrayBuffer());
+      const fileName = getSavedFilename(username, name);
+      await fs.writeFile(path.join(imagesDir, fileName), buffer);
+      savedVideoPaths.push(`/showcase/${fileName}`);
+    }
+
+    if (savedVideoPaths.length > 0) {
+      console.log(`  ✓ Found ${savedVideoPaths.length} video(s) for @${username}`);
     }
 
     entries.push({
       username,
       screenshots: savedPaths,
+      videos: savedVideoPaths,
       dotfiles,
       tags,
       added,

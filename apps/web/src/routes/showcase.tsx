@@ -25,44 +25,49 @@ export const Route = createFileRoute("/showcase")({
 function Lightbox({
   entries,
   index,
-  screenshotIndex,
-  setScreenshotIndex,
+  mediaIndex,
+  setMediaIndex,
   onClose,
   onPrev,
   onNext,
 }: {
   entries: typeof showcaseEntries;
   index: number;
-  screenshotIndex: number;
-  setScreenshotIndex: (i: number) => void;
+  mediaIndex: number;
+  setMediaIndex: (i: number) => void;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
 }) {
   const entry = entries[index];
-  const [imgError, setImgError] = useState(false);
+  const [mediaError, setMediaError] = useState(false);
 
-  const screenshots = entry.screenshots ?? [];
-  const currentScreenshot = screenshots[screenshotIndex] ?? screenshots[0];
+  const media = useMemo(() => {
+    const items: Array<{ type: "image" | "video"; url: string }> = [];
+    for (const url of entry.screenshots ?? []) items.push({ type: "image", url });
+    for (const url of entry.videos ?? []) items.push({ type: "video", url });
+    return items;
+  }, [entry.screenshots, entry.videos]);
+
+  const currentMedia = media[mediaIndex] ?? media[0];
 
   useEffect(() => {
-    setImgError(false);
-    setScreenshotIndex(0);
-  }, [index, setScreenshotIndex]);
+    setMediaError(false);
+  }, [index]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowLeft") {
-        if (screenshotIndex > 0) {
-          setScreenshotIndex(screenshotIndex - 1);
+        if (mediaIndex > 0) {
+          setMediaIndex(mediaIndex - 1);
         } else {
           onPrev();
         }
       }
       if (e.key === "ArrowRight") {
-        if (screenshotIndex < screenshots.length - 1) {
-          setScreenshotIndex(screenshotIndex + 1);
+        if (mediaIndex < media.length - 1) {
+          setMediaIndex(mediaIndex + 1);
         } else {
           onNext();
         }
@@ -74,7 +79,7 @@ function Lightbox({
       document.removeEventListener("keydown", handler);
       document.body.style.overflow = "";
     };
-  }, [onClose, onPrev, onNext, screenshotIndex, setScreenshotIndex, screenshots.length]);
+  }, [onClose, onPrev, onNext, mediaIndex, setMediaIndex, media.length]);
 
   const NavButton = ({
     onClick,
@@ -132,30 +137,52 @@ function Lightbox({
             boxShadow: "0 0 0 1px rgba(255,255,255,0.07), 0 32px 80px rgba(0,0,0,0.7)",
           }}
         >
-          {!imgError ? (
-            <img
-              src={currentScreenshot}
-              alt={`${entry.username}'s desktop`}
-              className="max-h-[80vh] max-w-[85vw] object-contain"
-              onError={() => setImgError(true)}
-            />
+          {!mediaError && currentMedia ? (
+            currentMedia.type === "video" ? (
+              <video
+                key={currentMedia.url}
+                controls
+                autoPlay
+                muted
+                playsInline
+                preload="metadata"
+                poster={entry.screenshots?.[0]}
+                className="max-h-[80vh] max-w-[85vw] rounded-xl"
+                onError={() => setMediaError(true)}
+              >
+                <source src={currentMedia.url} type="video/mp4" />
+              </video>
+            ) : (
+              <img
+                src={currentMedia.url}
+                alt={`${entry.username}'s desktop`}
+                className="max-h-[80vh] max-w-[85vw] object-contain"
+                onError={() => setMediaError(true)}
+              />
+            )
           ) : (
             <div className="flex h-[60vh] w-[70vw] items-center justify-center text-white/40 text-sm">
-              Screenshot unavailable
+              Media unavailable
             </div>
           )}
         </div>
 
-        {screenshots.length > 1 && (
-          <div className="flex items-center gap-1.5">
-            {screenshots.map((_, i) => (
+        {media.length > 1 && (
+          <div className="flex items-center gap-2">
+            {media.map((item, i) => (
               <button
                 key={i}
-                onClick={() => setScreenshotIndex(i)}
-                className={`h-1.5 rounded-full transition-all duration-200 ${
-                  i === screenshotIndex ? "w-4 bg-white/70" : "w-1.5 bg-white/20 hover:bg-white/40"
+                onClick={() => setMediaIndex(i)}
+                className={`transition-all duration-200 ${
+                  i === mediaIndex
+                    ? "w-4 bg-white/70"
+                    : "w-1.5 bg-white/20 hover:bg-white/40"
+                } ${
+                  item.type === "video"
+                    ? "rounded-sm"
+                    : "rounded-full"
                 }`}
-                aria-label={`Screenshot ${i + 1}`}
+                aria-label={`${item.type === "video" ? "Video" : "Screenshot"} ${i + 1}`}
               />
             ))}
           </div>
@@ -259,6 +286,8 @@ function ShowcaseCard({
   onOpen: () => void;
 }) {
   const [imgError, setImgError] = useState(false);
+  const hasVideos = (entry.videos?.length ?? 0) > 0;
+  const screenshotCount = entry.screenshots?.length ?? 0;
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-xl border border-fd-border/50 bg-fd-card transition-all duration-300 hover:border-fd-border hover:shadow-xl">
@@ -276,11 +305,18 @@ function ShowcaseCard({
               loading="lazy"
               onError={() => setImgError(true)}
             />
-            {(entry.screenshots?.length ?? 0) > 1 && (
-              <div className="absolute right-2 top-2 rounded-md border border-white/15 bg-black/60 px-2 py-1 text-xs font-medium text-white/80 backdrop-blur-sm">
-                1/{entry.screenshots!.length}
-              </div>
-            )}
+            <div className="absolute right-2 top-2 flex items-center gap-1.5">
+              {screenshotCount > 1 && (
+                <div className="rounded-md border border-white/15 bg-black/60 px-2 py-1 text-xs font-medium text-white/80 backdrop-blur-sm">
+                  1/{screenshotCount}
+                </div>
+              )}
+              {hasVideos && (
+                <div className="rounded-md border border-blue-400/20 bg-blue-500/50 px-2 py-1 text-xs font-medium text-blue-200 backdrop-blur-sm">
+                  {entry.videos!.length}v
+                </div>
+              )}
+            </div>
           </>
         ) : (
           <div className="flex h-full w-full items-center justify-center text-fd-muted-foreground text-sm">
@@ -797,7 +833,7 @@ function Showcase() {
   const entries = Route.useLoaderData();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [activeTags, setActiveTags] = useState<Set<string>>(new Set());
-  const [screenshotIndex, setScreenshotIndex] = useState(0);
+  const [mediaIndex, setMediaIndex] = useState(0);
   const [submitOpen, setSubmitOpen] = useState(false);
 
   const allTags = useMemo(
@@ -835,14 +871,19 @@ function Showcase() {
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
   const prevLightbox = useCallback(
-    () =>
+    () => {
       setLightboxIndex((i) =>
         i !== null ? (i - 1 + filteredEntries.length) % filteredEntries.length : null,
-      ),
+      );
+      setMediaIndex(0);
+    },
     [filteredEntries.length],
   );
   const nextLightbox = useCallback(
-    () => setLightboxIndex((i) => (i !== null ? (i + 1) % filteredEntries.length : null)),
+    () => {
+      setLightboxIndex((i) => (i !== null ? (i + 1) % filteredEntries.length : null));
+      setMediaIndex(0);
+    },
     [filteredEntries.length],
   );
 
@@ -927,7 +968,10 @@ function Showcase() {
         {/* Grid */}
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {filteredEntries.map((entry, i) => (
-            <ShowcaseCard key={entry.username} entry={entry} onOpen={() => setLightboxIndex(i)} />
+            <ShowcaseCard key={entry.username} entry={entry} onOpen={() => {
+              setLightboxIndex(i);
+              setMediaIndex(0);
+            }} />
           ))}
         </div>
 
@@ -944,8 +988,8 @@ function Showcase() {
         <Lightbox
           entries={filteredEntries}
           index={lightboxIndex}
-          screenshotIndex={screenshotIndex}
-          setScreenshotIndex={setScreenshotIndex}
+          mediaIndex={mediaIndex}
+          setMediaIndex={setMediaIndex}
           onClose={closeLightbox}
           onPrev={prevLightbox}
           onNext={nextLightbox}
