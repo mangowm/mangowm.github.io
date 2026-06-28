@@ -80,7 +80,13 @@ interface ColorPalette {
 const paletteModules = import.meta.glob<{ default: ColorPalette }>("./palettes/*.json", {
   eager: true,
 });
-const PALETTES: ColorPalette[] = Object.values(paletteModules).map((m) => m.default);
+const PALETTES: ColorPalette[] = Object.values(paletteModules)
+  .map((m) => m.default)
+  .sort((a, b) => {
+    if (a.name === "Default") return -1;
+    if (b.name === "Default") return 1;
+    return a.name.localeCompare(b.name);
+  });
 
 const COLOR_MODES: ColorMode[] = ["hex", "rgb", "hsl"];
 
