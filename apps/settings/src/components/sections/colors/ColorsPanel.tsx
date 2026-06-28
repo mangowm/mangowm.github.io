@@ -401,26 +401,38 @@ export function ColorsPanel({ focusKey }: PanelProps) {
         separator={false}
       />
 
-      {PALETTES.length > 0 && (
-        <div className="mb-4">
-          <div className="mb-3 flex items-center gap-2">
-            <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-              Palettes
-            </span>
-            <div className="h-px flex-1 bg-border/20" />
-          </div>
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {PALETTES.map((palette) => (
-              <PaletteCard
-                key={palette.name}
-                palette={palette}
-                isActive={activePalette === palette.name}
-                onSelect={handlePaletteSelect}
-              />
-            ))}
-          </div>
+      <div className="mb-4">
+        <div className="mb-3 flex items-center gap-2">
+          <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+            Palettes
+          </span>
+          <div className="h-px flex-1 bg-border/20" />
         </div>
-      )}
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          <div className="w-[130px] shrink-0 rounded-lg border border-border/40 bg-card p-2">
+            <div className="mb-1.5 flex h-[22px] overflow-hidden rounded-[4px]">
+              {COLORS_ORDER.map((key) => (
+                <div
+                  key={key}
+                  className="flex-1"
+                  style={{ backgroundColor: toCss(theme[key]) }}
+                />
+              ))}
+            </div>
+            <span className="block truncate text-[11px] font-medium text-foreground">
+              Current<span className="text-muted-foreground"> · {activePalette ?? "Custom"}</span>
+            </span>
+          </div>
+          {PALETTES.map((palette) => (
+            <PaletteCard
+              key={palette.name}
+              palette={palette}
+              isActive={false}
+              onSelect={handlePaletteSelect}
+            />
+          ))}
+        </div>
+      </div>
 
       <div className="rounded-xl border border-border/40 bg-card shadow-sm">
         <div className="divide-y divide-border/20">
