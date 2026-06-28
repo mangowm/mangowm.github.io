@@ -1,10 +1,11 @@
-import { Undo2, Redo2, AlertCircle, SearchIcon, FileCode2Icon } from "lucide-react";
+import { Undo2, Redo2, AlertCircle, SearchIcon, FileCode2Icon, Download } from "lucide-react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { useConfigStore, undo, redo } from "@/lib/config-store";
+import { downloadConfig } from "@/lib/config-file";
 import { cn } from "@/lib/utils";
 
 export function PageHeader({
@@ -19,6 +20,7 @@ export function PageHeader({
   onToggleConfig?: () => void;
 }) {
   const error = useConfigStore((s) => s.error);
+  const isTauri = useConfigStore((s) => s.isTauri);
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -66,7 +68,8 @@ export function PageHeader({
             </Button>
           )}
           <HistoryButtons />
-          <ApplyButton />
+          {isTauri && <ApplyButton />}
+          <DownloadButton />
         </div>
       </div>
     </header>
@@ -121,21 +124,33 @@ function HistoryButtons() {
 }
 
 function ApplyButton() {
-  const { applying, loading, dirty, apply, isTauri } = useConfigStore(
+  const { applying, loading, dirty, apply } = useConfigStore(
     useShallow((s) => ({
       applying: s.applying,
       loading: s.loading,
       dirty: s.dirty,
       apply: s.apply,
-      isTauri: s.isTauri,
     })),
   );
 
-  if (loading || !isTauri) return null;
+  if (loading) return null;
 
   return (
     <Button onClick={apply} disabled={applying || !dirty} variant={dirty ? "default" : "outline"}>
       {applying ? "Applying..." : dirty ? "Apply Changes" : "Applied"}
+    </Button>
+  );
+}
+
+function DownloadButton() {
+  return (
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      onClick={() => downloadConfig(useConfigStore.getState().files)}
+      title="Download Config"
+    >
+      <Download className="size-4" />
     </Button>
   );
 }
