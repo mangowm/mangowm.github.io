@@ -1,0 +1,16 @@
+{
+  "name": "Tokyo Night",
+  "colors": {
+    "shadowscolor": "0x15161eff",
+    "rootcolor": "0x1a1b26ff",
+    "bordercolor": "0x586691ff",
+    "dropcolor": "0x7aa2f780",
+    "splitcolor": "0x9ece6aff",
+    "focuscolor": "0x7aa2f7ff",
+    "maximizescreencolor": "0xbb9af7ff",
+    "urgentcolor": "0xf7768eff",
+    "scratchpadcolor": "0x9ece6aff",
+    "globalcolor": "0x003dbfff",
+    "overlaycolor": "0x4f00dfff"
+  }
+}

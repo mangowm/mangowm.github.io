@@ -1,0 +1,16 @@
+{
+  "name": "Nord",
+  "colors": {
+    "shadowscolor": "0x2e3440ff",
+    "rootcolor": "0x2e3440ff",
+    "bordercolor": "0x707d99ff",
+    "dropcolor": "0x8fbcbb80",
+    "splitcolor": "0x5e81acff",
+    "focuscolor": "0x8fbcbbff",
+    "maximizescreencolor": "0x88c0d0ff",
+    "urgentcolor": "0xbf616aff",
+    "scratchpadcolor": "0x5e81acff",
+    "globalcolor": "0x2e6b69ff",
+    "overlaycolor": "0x226e83ff"
+  }
+}

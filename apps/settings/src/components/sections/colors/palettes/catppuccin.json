@@ -1,0 +1,16 @@
+{
+  "name": "Catppuccin",
+  "colors": {
+    "shadowscolor": "0x11111bff",
+    "rootcolor": "0x1e1e2eff",
+    "bordercolor": "0x646789ff",
+    "dropcolor": "0xcba6f780",
+    "splitcolor": "0x94e2d5ff",
+    "focuscolor": "0xcba6f7ff",
+    "maximizescreencolor": "0xfab387ff",
+    "urgentcolor": "0xf38ba8ff",
+    "scratchpadcolor": "0x94e2d5ff",
+    "globalcolor": "0x6b02e9ff",
+    "overlaycolor": "0xcf4f00ff"
+  }
+}

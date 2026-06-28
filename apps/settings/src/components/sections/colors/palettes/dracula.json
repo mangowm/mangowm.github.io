@@ -1,0 +1,16 @@
+{
+  "name": "Dracula",
+  "colors": {
+    "shadowscolor": "0x282a36ff",
+    "rootcolor": "0x282a36ff",
+    "bordercolor": "0x6d7290ff",
+    "dropcolor": "0xbd93f980",
+    "splitcolor": "0x8be9fdff",
+    "focuscolor": "0xbd93f9ff",
+    "maximizescreencolor": "0xff79c6ff",
+    "urgentcolor": "0xff5555ff",
+    "scratchpadcolor": "0x8be9fdff",
+    "globalcolor": "0x5a00d9ff",
+    "overlaycolor": "0xc60071ff"
+  }
+}

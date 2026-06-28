@@ -1,0 +1,16 @@
+{
+  "name": "Gruvbox",
+  "colors": {
+    "shadowscolor": "0x282828ff",
+    "rootcolor": "0x282828ff",
+    "bordercolor": "0x786f6bff",
+    "dropcolor": "0xb8bb2680",
+    "splitcolor": "0x83a598ff",
+    "focuscolor": "0xb8bb26ff",
+    "maximizescreencolor": "0xfabd2fff",
+    "urgentcolor": "0xfb4934ff",
+    "scratchpadcolor": "0x83a598ff",
+    "globalcolor": "0x444507ff",
+    "overlaycolor": "0x765300ff"
+  }
+}
