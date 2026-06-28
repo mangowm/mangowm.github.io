@@ -84,8 +84,6 @@ const PALETTES: ColorPalette[] = Object.values(paletteModules).map((m) => m.defa
 
 const COLOR_MODES: ColorMode[] = ["hex", "rgb", "hsl"];
 
-const defaultPalette = PALETTES.find((p) => p.name === "Default")!;
-
 const COLORS_ORDER = COLORS_FIELDS.map((f) => f.key);
 
 interface ColorInputProps {
@@ -324,21 +322,11 @@ function useColorConfigValues() {
 
 export function ColorsPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
-  const loaded = useConfigStore((s) => !s.loading && Object.keys(s.data).length > 0);
   const setValues = useConfigStore((s) => s.setValues);
   const setValue = useConfigStore((s) => s.setValue);
   const [mode, setMode] = useState<ColorMode>("hex");
 
   const theme = useColorConfigValues();
-
-  const loadedSnapshot = useRef<ColorsConfig | null>(null);
-  useEffect(() => {
-    if (loaded && !loadedSnapshot.current) {
-      loadedSnapshot.current = theme;
-    }
-  }, [loaded, theme]);
-
-  const currentColors = loadedSnapshot.current ?? defaultPalette.colors;
 
   const activePalette = useMemo(() => {
     const themeStr = COLORS_ORDER.map((key) => theme[key]).join(",");
@@ -416,11 +404,6 @@ export function ColorsPanel({ focusKey }: PanelProps) {
             <div className="h-px flex-1 bg-border/20" />
           </div>
           <div className="flex gap-2 overflow-x-auto pb-1">
-            <PaletteCard
-              palette={{ name: "Current", colors: currentColors }}
-              isActive={activePalette === null}
-              onSelect={handlePaletteSelect}
-            />
             {PALETTES.map((palette) => (
               <PaletteCard
                 key={palette.name}
