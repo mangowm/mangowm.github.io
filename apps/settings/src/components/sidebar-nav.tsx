@@ -31,7 +31,7 @@ export function SidebarNav({
   const [openGroups, setOpenGroups] = React.useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     for (const item of items) {
-      if (item.children) initial[item.id] = true;
+      if (item.children) initial[item.id] = false;
     }
     return initial;
   });
