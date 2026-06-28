@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy, Download } from "lucide-react";
+import {
+  FileIcon,
+  FolderIcon,
+  FolderOpenIcon,
+  ChevronRightIcon,
+  Copy,
+  Download,
+} from "lucide-react";
 import { useConfigStore } from "@/lib/config-store";
 import type { SourceFile, ConfigLine } from "@/lib/config-types";
 import { serializeConfig } from "@/lib/config-parse";
@@ -40,7 +47,7 @@ function buildTree(files: SourceFile[], rootDir: string): TreeNode[] {
   for (const file of files) {
     const relPath = file.absPath.startsWith(rootDir + "/")
       ? file.absPath.slice(rootDir.length + 1)
-      : file.absPath.split("/").pop() ?? file.absPath;
+      : (file.absPath.split("/").pop() ?? file.absPath);
 
     const segments = relPath.split("/");
     let current = root;
@@ -50,9 +57,7 @@ function buildTree(files: SourceFile[], rootDir: string): TreeNode[] {
       const isLast = i === segments.length - 1;
 
       if (isLast) {
-        const existing = current.find(
-          (n) => n.name === segment && n.type === "file",
-        );
+        const existing = current.find((n) => n.name === segment && n.type === "file");
         if (!existing) {
           current.push({
             name: segment,
@@ -63,9 +68,7 @@ function buildTree(files: SourceFile[], rootDir: string): TreeNode[] {
           });
         }
       } else {
-        let folder = current.find(
-          (n) => n.name === segment && n.type === "folder",
-        );
+        let folder = current.find((n) => n.name === segment && n.type === "folder");
         if (!folder) {
           folder = {
             name: segment,
@@ -188,7 +191,7 @@ export function ConfigPreviewer() {
   const rootDir = commonAncestorDir(files.map((f) => f.absPath));
   const tree = buildTree(files, rootDir);
   const selectedFile = selectedAbsPath
-    ? files.find((f) => f.absPath === selectedAbsPath) ?? null
+    ? (files.find((f) => f.absPath === selectedAbsPath) ?? null)
     : null;
 
   useEffect(() => {
@@ -220,9 +223,9 @@ export function ConfigPreviewer() {
 
   const displayPath =
     selectedAbsPath && rootDir
-      ? (selectedAbsPath.startsWith(rootDir + "/")
-          ? selectedAbsPath.slice(rootDir.length + 1)
-          : selectedAbsPath.split("/").pop() ?? selectedAbsPath)
+      ? selectedAbsPath.startsWith(rootDir + "/")
+        ? selectedAbsPath.slice(rootDir.length + 1)
+        : (selectedAbsPath.split("/").pop() ?? selectedAbsPath)
       : null;
 
   if (files.length === 0) {

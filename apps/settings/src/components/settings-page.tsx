@@ -74,7 +74,7 @@ export function SettingsPage() {
       />
       <SidebarInset>
         <PageHeader
-          title={showConfig ? "Config Files" : section?.label ?? "Settings"}
+          title={showConfig ? "Config Files" : (section?.label ?? "Settings")}
           onSearch={() => setSearchOpen(true)}
           showConfig={showConfig}
           onToggleConfig={() => setShowConfig((v) => !v)}

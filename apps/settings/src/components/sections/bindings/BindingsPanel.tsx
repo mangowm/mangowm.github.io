@@ -262,10 +262,7 @@ export function BindingsPanel({ focusKey }: PanelProps) {
             </div>
 
             {[...grouped.entries()].map(([category, items]) => (
-              <section
-                key={category}
-                aria-label={category}
-              >
+              <section key={category} aria-label={category}>
                 <div className="mb-2 flex items-center gap-2 px-1">
                   <h3 className="text-[12px] font-semibold uppercase tracking-widest text-muted-foreground/70">
                     {category}

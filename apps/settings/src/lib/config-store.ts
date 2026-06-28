@@ -241,7 +241,7 @@ useConfigStore.subscribe((state, prevState) => {
   if (state.files === prevState.files) return;
   const { pastStates } = useConfigStore.temporal.getState();
   const newData = mergeFileData(state.files, state.data);
-  if (newData !== state.data || (pastStates.length > 0) !== state.dirty) {
+  if (newData !== state.data || pastStates.length > 0 !== state.dirty) {
     useConfigStore.setState({
       data: newData,
       dirty: pastStates.length > 0,

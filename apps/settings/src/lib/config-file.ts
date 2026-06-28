@@ -133,7 +133,10 @@ function resolvePath(base: string, rel: string): string {
   const result: string[] = [];
   for (const part of parts) {
     if (part === "" || part === ".") continue;
-    if (part === "..") { if (result.length) result.pop(); continue; }
+    if (part === "..") {
+      if (result.length) result.pop();
+      continue;
+    }
     result.push(part);
   }
   return result.join("/");

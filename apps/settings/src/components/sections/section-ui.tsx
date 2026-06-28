@@ -440,13 +440,5 @@ export interface PanelShellProps {
  * centering, and bottom padding.
  */
 export function PanelShell({ children, maxWidth = "max-w-4xl" }: PanelShellProps) {
-  return (
-    <div
-      className={
-        "mx-auto w-full pb-12 " + maxWidth
-      }
-    >
-      {children}
-    </div>
-  );
+  return <div className={"mx-auto w-full pb-12 " + maxWidth}>{children}</div>;
 }
