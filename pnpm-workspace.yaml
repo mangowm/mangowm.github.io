@@ -11,6 +11,8 @@ catalog:
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vitest: 4.1.9
   vite-plus: latest
+  react: ^19
+  react-dom: ^19
 overrides:
   vite: "catalog:"
   vitest: "catalog:"
@@ -21,3 +23,5 @@ peerDependencyRules:
   allowedVersions:
     vite: "*"
     vitest: "*"
+allowBuilds:
+  esbuild: true
