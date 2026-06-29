@@ -1,25 +1,24 @@
 {
   "name": "mangowm.github.io",
+  "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "check-types": "turbo check-types",
-    "dev:native": "turbo -F native dev",
-    "dev:web": "turbo -F web dev",
-    "check": "oxlint && oxfmt --write"
-  },
-  "dependencies": {
-    "dotenv": "^17.4.2",
-    "zod": "^4.3.6"
+    "ready": "vp check && vp run -r test && vp run -r build",
+    "dev": "vp run website#dev",
+    "prepare": "vp config"
   },
   "devDependencies": {
-    "@mangowm.github.io/config": "workspace:*",
-    "oxfmt": "^0.56.0",
-    "oxlint": "^1.71.0",
-    "turbo": "^2.10.0",
-    "typescript": "^6.0.3"
+    "vite-plus": "catalog:"
   },
-  "packageManager": "pnpm@11.9.0"
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.9.0",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
 }
