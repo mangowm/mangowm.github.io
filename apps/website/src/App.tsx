@@ -1,49 +1,8 @@
-import { memo, useEffect } from "react";
+import { useEffect } from "react";
 import { latestVersion } from "./constants";
 import { MangoLayouts } from "./components/mango-layouts";
 import { SponsorButton } from "./components/sponsor-button";
-
-const GithubIcon = memo(function GithubIcon() {
-  return (
-    <span style={{ display: "flex", alignItems: "center" }}>
-      <img
-        src="/github-mark.svg"
-        alt=""
-        aria-hidden="true"
-        className="github-light"
-        style={{ height: "1.25rem", width: "1.25rem" }}
-      />
-      <img
-        src="/github-mark-white.svg"
-        alt=""
-        aria-hidden="true"
-        className="github-dark"
-        style={{ height: "1.25rem", width: "1.25rem" }}
-      />
-    </span>
-  );
-});
-
-const DiscordIcon = memo(function DiscordIcon() {
-  return (
-    <span style={{ display: "flex", alignItems: "center" }}>
-      <img
-        src="/Discord-Symbol-Black.svg"
-        alt=""
-        aria-hidden="true"
-        className="discord-light"
-        style={{ height: "1.25rem", width: "1.25rem" }}
-      />
-      <img
-        src="/Discord-Symbol-White.svg"
-        alt=""
-        aria-hidden="true"
-        className="discord-dark"
-        style={{ height: "1.25rem", width: "1.25rem" }}
-      />
-    </span>
-  );
-});
+import { GithubIcon, DiscordIcon, ArrowRight, ArrowDown, HeartSvg } from "./components/icons";
 
 function ThemeToggle() {
   useEffect(() => {
@@ -205,53 +164,6 @@ function Badges({ version }: { version: string }) {
   );
 }
 
-const ArrowRight = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="12"
-    height="12"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M5 12h14M12 5l7 7-7 7" />
-  </svg>
-);
-
-const ArrowDown = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M12 5v14M5 12l7 7 7-7" />
-  </svg>
-);
-
-const HeartIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-  </svg>
-);
-
 function Hero({ version }: { version: string }) {
   return (
     <>
@@ -372,7 +284,7 @@ function Hero({ version }: { version: string }) {
 
           <div className="sponsor-cta">
             <div className="sponsor-cta-card">
-              <HeartIcon className="sponsor-cta-icon" />
+              <HeartSvg className="sponsor-cta-icon" />
               <h3 className="sponsor-cta-title">Become a Sponsor</h3>
               <p className="sponsor-cta-desc">
                 If mango makes your desktop better, consider supporting its development. Every

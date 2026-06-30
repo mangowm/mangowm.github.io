@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "../cn";
+import { ChevronDownIcon, HorizIcon, VertIcon } from "./icons";
 import { CenterTileLayout } from "./layouts/center-tile-layout";
 import { DeckLayout } from "./layouts/deck-layout";
 import { GridLayout } from "./layouts/grid-layout";
@@ -50,54 +51,6 @@ const OTHER_LAYOUTS: LayoutDef[] = [
 const ALL_LAYOUTS = [...MAIN_LAYOUTS, ...OTHER_LAYOUTS];
 const AUTO_PLAY_IDS = MAIN_LAYOUTS.map((l) => l.id);
 const AUTO_PLAY_INTERVAL = 9500;
-
-const ChevronDownIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="12"
-    height="12"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="m6 9 6 6 6-6" />
-  </svg>
-);
-
-const HorizIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect x="2" y="6" width="20" height="12" rx="2" />
-  </svg>
-);
-
-const VertIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect x="6" y="2" width="12" height="20" rx="2" />
-  </svg>
-);
 
 export function MangoLayouts() {
   const [activeLayout, setActiveLayout] = useState<LayoutId>("tiling");
@@ -243,7 +196,7 @@ export function MangoLayouts() {
         {activeLayout === "grid" && <GridLayout orientation={orientation} />}
         {activeLayout === "overview" && <OverviewLayout />}
         {activeLayout === "deck" && <DeckLayout orientation={orientation} />}
-        {activeLayout === "center-tile" && <CenterTileLayout orientation={orientation} />}
+        {activeLayout === "center-tile" && <CenterTileLayout />}
         {activeLayout === "right-tile" && <RightTileLayout />}
         {activeLayout === "monocle" && <MonocleLayout />}
         {activeLayout === "fair" && <FairLayout orientation={orientation} />}
