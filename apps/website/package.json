@@ -8,7 +8,14 @@
     "build": "tsc && vp build",
     "preview": "vp preview"
   },
+  "dependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
   "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plus": "catalog:"
