@@ -15,7 +15,7 @@ function ThemeToggle() {
   useEffect(() => {
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
-  });
+  }, []);
 
   const toggle = () => {
     const html = document.documentElement;
@@ -69,7 +69,7 @@ function Header() {
     <header className="nav">
       <div className="nav-inner">
         <a href="/" className="nav-logo">
-          <img src="/logo.svg" alt="mangowm" style={{ width: "1.25rem", height: "1.25rem" }} />
+          <img src="/logo.svg" alt="mangowm" className="w-5 h-5" />
           mangowm
         </a>
         <ul className="nav-primary">
@@ -131,20 +131,8 @@ function Header() {
 
 function Badges({ version }: { version: string }) {
   return (
-    <div
-      className="badges"
-      style={{
-        marginBottom: "1.5rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <a
-        href="/releases"
-        className="version-badge"
-        style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
-      >
+    <div className="mb-6 flex items-center justify-center">
+      <a href="/releases" className="version-badge inline-flex items-center gap-2">
         <span className="version-dot" />
         {version}
         <svg
@@ -174,8 +162,8 @@ function Hero({ version }: { version: string }) {
         <div className="hero-content">
           <Badges version={version} />
           <h1 className="hero-title">
-            <span style={{ display: "block" }}>Lightweight</span>
-            <span style={{ display: "block" }}>
+            <span className="block">Lightweight</span>
+            <span className="block">
               &amp; <span className="hero-title-primary">Feature-Rich</span>
             </span>
           </h1>
@@ -211,25 +199,21 @@ function Hero({ version }: { version: string }) {
       <section className="hero-desktop">
         <div aria-hidden="true" className="grid-bg hero-grid-bg" />
         <div className="hero-row">
-          <div className="hero-col" style={{ textAlign: "left" }}>
-            <div className="badges badges-left">
-              <a
-                href="/releases"
-                className="version-badge"
-                style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
-              >
+          <div className="hero-col text-left">
+            <div className="flex items-center justify-start mb-6">
+              <a href="/releases" className="version-badge inline-flex items-center gap-2">
                 <span className="version-dot" />
                 {version}
                 <ArrowRight />
               </a>
             </div>
-            <h1 className="hero-title hero-title-lg" style={{ textAlign: "left" }}>
-              <span style={{ display: "block" }}>Lightweight</span>
-              <span style={{ display: "block" }}>
+            <h1 className="hero-title hero-title-lg text-left">
+              <span className="block">Lightweight</span>
+              <span className="block">
                 &amp; <span className="hero-title-primary">Feature-Rich</span>
               </span>
             </h1>
-            <p className="hero-desc hero-desc-lg" style={{ marginLeft: 0, textAlign: "left" }}>
+            <p className="hero-desc hero-desc-lg ml-0 text-left">
               mangowm is a modern wayland compositor based on wlroots &amp; scenefx.
             </p>
             <div className="hero-actions hero-actions-left">
@@ -285,7 +269,7 @@ function Hero({ version }: { version: string }) {
 
           <div className="sponsor-cta">
             <div className="sponsor-cta-card">
-              <HeartSvg className="sponsor-cta-icon" />
+              <HeartSvg className="mx-auto w-8 h-8 text-red-500" />
               <h3 className="sponsor-cta-title">Become a Sponsor</h3>
               <p className="sponsor-cta-desc">
                 If mango makes your desktop better, consider supporting its development. Every

@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@rolldown/plugin-babel": "catalog:",
+    "@tailwindcss/vite": "catalog:",
     "babel-plugin-react-compiler": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "tailwindcss": "catalog:"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",

@@ -7,41 +7,27 @@ interface IconProps {
 
 export function GithubIcon() {
   return (
-    <span style={{ display: "flex", alignItems: "center" }}>
-      <img
-        src="/github-mark.svg"
-        alt=""
-        aria-hidden="true"
-        className="github-light"
-        style={{ height: "1.25rem", width: "1.25rem" }}
-      />
-      <img
-        src="/github-mark-white.svg"
-        alt=""
-        aria-hidden="true"
-        className="github-dark"
-        style={{ height: "1.25rem", width: "1.25rem" }}
-      />
+    <span className="inline-flex items-center">
+      <img src="/github-mark.svg" alt="" aria-hidden="true" className="github-light w-5 h-5" />
+      <img src="/github-mark-white.svg" alt="" aria-hidden="true" className="github-dark w-5 h-5" />
     </span>
   );
 }
 
 export function DiscordIcon() {
   return (
-    <span style={{ display: "flex", alignItems: "center" }}>
+    <span className="inline-flex items-center">
       <img
         src="/Discord-Symbol-Black.svg"
         alt=""
         aria-hidden="true"
-        className="discord-light"
-        style={{ height: "1.25rem", width: "1.25rem" }}
+        className="discord-light w-5 h-5"
       />
       <img
         src="/Discord-Symbol-White.svg"
         alt=""
         aria-hidden="true"
-        className="discord-dark"
-        style={{ height: "1.25rem", width: "1.25rem" }}
+        className="discord-dark w-5 h-5"
       />
     </span>
   );

@@ -136,11 +136,11 @@ export function SponsorButton({
           style={{
             position: "relative",
             background:
-              "linear-gradient(to bottom right, color-mix(in srgb, var(--primary) 5%, transparent), var(--background))",
+              "linear-gradient(to bottom right, color-mix(in srgb, var(--color-primary) 5%, transparent), var(--color-background))",
           }}
         >
           <button onClick={() => setOpen(false)} className="modal-close" aria-label="Close">
-            <XSvg style={{ width: "1.25rem", height: "1.25rem" }} />
+            <XSvg className="w-5 h-5" />
           </button>
 
           <div className="modal-header">
@@ -158,7 +158,7 @@ export function SponsorButton({
                 <img src={SPONSOR_DATA.QR_SRC} alt="BEP20 QR Code" className="modal-qr-img" />
                 <div className="modal-qr-overlay">
                   {lastCopied === "qr" ? (
-                    <CheckSvg style={{ width: "2rem", height: "2rem", color: "var(--primary)" }} />
+                    <CheckSvg className="w-8 h-8" style={{ color: "var(--color-primary)" }} />
                   ) : (
                     <>
                       <ImageSvg className="modal-qr-overlay-icon" />
@@ -174,7 +174,7 @@ export function SponsorButton({
               <div>
                 <div className="modal-address-header">
                   <label className="modal-address-label">
-                    <WalletSvg style={{ width: "0.875rem", height: "0.875rem" }} />
+                    <WalletSvg className="w-3.5 h-3.5" />
                     Wallet Address
                   </label>
                   <span className="modal-network-badge">{SPONSOR_DATA.NETWORK}</span>
@@ -208,9 +208,9 @@ export function SponsorButton({
                     )}
                   >
                     {lastCopied === "address" ? (
-                      <CheckSvg style={{ width: "0.875rem", height: "0.875rem" }} />
+                      <CheckSvg className="w-3.5 h-3.5" />
                     ) : (
-                      <CopySvg style={{ width: "0.875rem", height: "0.875rem" }} />
+                      <CopySvg className="w-3.5 h-3.5" />
                     )}
                   </div>
                 </div>
