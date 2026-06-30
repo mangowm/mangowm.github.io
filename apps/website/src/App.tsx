@@ -1,20 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useEffectEvent } from "react";
 import { latestVersion } from "./constants";
 import { MangoLayouts } from "./components/mango-layouts";
 import { SponsorButton } from "./components/sponsor-button";
 import { GithubIcon, DiscordIcon, ArrowRight, ArrowDown, HeartSvg } from "./components/icons";
 
 function ThemeToggle() {
+  const onStorage = useEffectEvent(() => {
+    const theme = localStorage.getItem("theme");
+    const isDark =
+      theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.classList.toggle("dark", isDark);
+  });
+
   useEffect(() => {
-    const onStorage = () => {
-      const theme = localStorage.getItem("theme");
-      const isDark =
-        theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches);
-      document.documentElement.classList.toggle("dark", isDark);
-    };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
-  }, []);
+  });
 
   const toggle = () => {
     const html = document.documentElement;

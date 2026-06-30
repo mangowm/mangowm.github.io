@@ -9,6 +9,8 @@
     "preview": "vp preview"
   },
   "dependencies": {
+    "@rolldown/plugin-babel": "catalog:",
+    "babel-plugin-react-compiler": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

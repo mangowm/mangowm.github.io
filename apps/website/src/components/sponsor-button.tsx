@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, useEffectEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../cn";
 import { HeartSvg, XSvg, CheckSvg, CopySvg, ImageSvg, WalletSvg, AlertTriangleSvg } from "./icons";
@@ -29,14 +29,15 @@ function SimpleDialog({
     setMounted(true);
   }, []);
 
+  const handleEscape = useEffectEvent((e: KeyboardEvent) => {
+    if (e.key === "Escape") onClose();
+  });
+
   useEffect(() => {
     if (!open) return;
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [open, onClose]);
+  }, [open]);
 
   if (!mounted || !open) return null;
 
@@ -78,48 +79,45 @@ export function SponsorButton({
   const [lastCopied, setLastCopied] = useState<CopyType | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
-  const showToast = useCallback((message: string) => {
+  function showToast(message: string) {
     setToast(message);
     setTimeout(() => setToast(null), 2000);
-  }, []);
+  }
 
-  const handleCopy = useCallback(
-    async (type: CopyType) => {
-      try {
-        if (type === "address") {
-          await navigator.clipboard.writeText(SPONSOR_DATA.ADDRESS);
+  async function handleCopy(type: CopyType) {
+    try {
+      if (type === "address") {
+        await navigator.clipboard.writeText(SPONSOR_DATA.ADDRESS);
+        setLastCopied(type);
+        showToast("Address copied to clipboard!");
+        setTimeout(() => setLastCopied(null), 2000);
+      } else {
+        const res = await fetch(SPONSOR_DATA.QR_SRC);
+        if (!res.ok) throw new Error("Failed to fetch QR code");
+        const blob = await res.blob();
+
+        if (navigator.clipboard && ClipboardItem) {
+          await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
           setLastCopied(type);
-          showToast("Address copied to clipboard!");
+          showToast("QR Code copied to clipboard!");
           setTimeout(() => setLastCopied(null), 2000);
         } else {
-          const res = await fetch(SPONSOR_DATA.QR_SRC);
-          if (!res.ok) throw new Error("Failed to fetch QR code");
-          const blob = await res.blob();
-
-          if (navigator.clipboard && ClipboardItem) {
-            await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
-            setLastCopied(type);
-            showToast("QR Code copied to clipboard!");
-            setTimeout(() => setLastCopied(null), 2000);
-          } else {
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "sponsor-qr.png";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            showToast("QR Code downloaded!");
-          }
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "sponsor-qr.png";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+          showToast("QR Code downloaded!");
         }
-      } catch (err) {
-        console.error("Copy failed:", err);
-        showToast("Failed to copy. Please try manually.");
       }
-    },
-    [showToast],
-  );
+    } catch (err) {
+      console.error("Copy failed:", err);
+      showToast("Failed to copy. Please try manually.");
+    }
+  }
 
   return (
     <>

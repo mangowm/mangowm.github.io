@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Activity, useEffect, useEffectEvent, useRef, useState } from "react";
 import { cn } from "../cn";
 import { ChevronDownIcon, HorizIcon, VertIcon } from "./icons";
 import { CenterTileLayout } from "./layouts/center-tile-layout";
@@ -85,13 +85,14 @@ export function MangoLayouts() {
     };
   }, [isAutoPlaying]);
 
+  const handleClickOutside = useEffectEvent((e: MouseEvent) => {
+    if (!dropdownRef.current?.contains(e.target as Node)) setShowMore(false);
+  });
+
   useEffect(() => {
     if (!showMore) return;
-    const handler = (e: MouseEvent) => {
-      if (!dropdownRef.current?.contains(e.target as Node)) setShowMore(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showMore]);
 
   const selectLayout = (id: LayoutId) => {
@@ -191,16 +192,36 @@ export function MangoLayouts() {
       </div>
 
       <div className="layouts-preview">
-        {activeLayout === "tiling" && <TileLayout orientation={orientation} />}
-        {activeLayout === "scroller" && <ScrollerLayout orientation={orientation} />}
-        {activeLayout === "grid" && <GridLayout orientation={orientation} />}
-        {activeLayout === "overview" && <OverviewLayout />}
-        {activeLayout === "deck" && <DeckLayout orientation={orientation} />}
-        {activeLayout === "center-tile" && <CenterTileLayout />}
-        {activeLayout === "right-tile" && <RightTileLayout />}
-        {activeLayout === "monocle" && <MonocleLayout />}
-        {activeLayout === "fair" && <FairLayout orientation={orientation} />}
-        {activeLayout === "dwindle" && <DwindleLayout />}
+        <Activity mode={activeLayout === "tiling" ? "visible" : "hidden"}>
+          <TileLayout orientation={orientation} />
+        </Activity>
+        <Activity mode={activeLayout === "scroller" ? "visible" : "hidden"}>
+          <ScrollerLayout orientation={orientation} />
+        </Activity>
+        <Activity mode={activeLayout === "grid" ? "visible" : "hidden"}>
+          <GridLayout orientation={orientation} />
+        </Activity>
+        <Activity mode={activeLayout === "overview" ? "visible" : "hidden"}>
+          <OverviewLayout />
+        </Activity>
+        <Activity mode={activeLayout === "deck" ? "visible" : "hidden"}>
+          <DeckLayout orientation={orientation} />
+        </Activity>
+        <Activity mode={activeLayout === "center-tile" ? "visible" : "hidden"}>
+          <CenterTileLayout />
+        </Activity>
+        <Activity mode={activeLayout === "right-tile" ? "visible" : "hidden"}>
+          <RightTileLayout />
+        </Activity>
+        <Activity mode={activeLayout === "monocle" ? "visible" : "hidden"}>
+          <MonocleLayout />
+        </Activity>
+        <Activity mode={activeLayout === "fair" ? "visible" : "hidden"}>
+          <FairLayout orientation={orientation} />
+        </Activity>
+        <Activity mode={activeLayout === "dwindle" ? "visible" : "hidden"}>
+          <DwindleLayout />
+        </Activity>
       </div>
 
       <p className="layouts-label">
