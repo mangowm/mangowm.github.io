@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { cn } from "../../cn";
-import { CARD_TRANSITION } from "./constants";
+import { CARD_TRANSITION, applyCardVisibility } from "./constants";
 
 type Phase = 0 | 1 | 2 | 7 | 8;
 
@@ -44,9 +43,9 @@ export function MonocleLayout() {
 
       const r1Visible = phase >= 1 && phase < 8;
       const r1Active = phase === 1 || phase === 7;
-      applyVisibility(r1.current, r1Visible, r1Active);
+      applyCardVisibility(r1.current, r1Visible, r1Active);
       const r2Visible = phase >= 2 && phase < 7;
-      applyVisibility(r2.current, r2Visible, r2Visible);
+      applyCardVisibility(r2.current, r2Visible, r2Visible);
     };
 
     update();
@@ -83,11 +82,4 @@ export function MonocleLayout() {
       </div>
     </div>
   );
-}
-
-function applyVisibility(el: HTMLDivElement | null, visible: boolean, active: boolean) {
-  if (!el) return;
-  el.style.opacity = visible ? "1" : "0";
-  el.style.transform = visible ? "scale(1)" : "scale(0.9)";
-  el.className = cn("card-base", active ? "card-active" : "card-inactive");
 }

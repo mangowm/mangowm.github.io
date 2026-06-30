@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { cn } from "../../cn";
-import { CARD_TRANSITION, TIMINGS, TOTAL_DURATION } from "./constants";
-
-interface Rect {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
+import {
+  CARD_TRANSITION,
+  TIMINGS,
+  TOTAL_DURATION,
+  setCardWithZIndex,
+  type Rect,
+} from "./constants";
 
 interface DeckLayoutProps {
   orientation?: "horizontal" | "vertical";
@@ -62,22 +60,22 @@ export function DeckLayout({ orientation = "horizontal" }: DeckLayoutProps) {
         const fullScreen: Rect = { x: 0, y: 0, w: width, h: height };
         const base = activeWindows === 1 ? fullScreen : masterRect;
         const target = isSwap ? stackRect : base;
-        setCard(r1.current, target, phase >= 1, focusedWindow === 1, getZ(1));
+        setCardWithZIndex(r1.current, target, phase >= 1, focusedWindow === 1, getZ(1));
       } else {
-        setCard(r1.current, { x: 0, y: 0, w: width, h: height }, false, false, 1);
+        setCardWithZIndex(r1.current, { x: 0, y: 0, w: width, h: height }, false, false, 1);
       }
 
       if (phase < 7) {
-        setCard(r2.current, stackRect, phase >= 2, focusedWindow === 2, getZ(2));
+        setCardWithZIndex(r2.current, stackRect, phase >= 2, focusedWindow === 2, getZ(2));
       } else {
-        setCard(r2.current, exitRect, false, false, 2);
+        setCardWithZIndex(r2.current, exitRect, false, false, 2);
       }
 
       if (phase < 6) {
         const target = isSwap ? masterRect : stackRect;
-        setCard(r3.current, target, phase >= 3, focusedWindow === 3, getZ(3));
+        setCardWithZIndex(r3.current, target, phase >= 3, focusedWindow === 3, getZ(3));
       } else {
-        setCard(r3.current, exitRect, false, false, 3);
+        setCardWithZIndex(r3.current, exitRect, false, false, 3);
       }
     };
 
@@ -118,22 +116,4 @@ export function DeckLayout({ orientation = "horizontal" }: DeckLayoutProps) {
       </div>
     </div>
   );
-}
-
-function setCard(
-  el: HTMLDivElement | null,
-  { x, y, w, h }: Rect,
-  visible: boolean,
-  active: boolean,
-  zIndex: number,
-) {
-  if (!el) return;
-  el.style.left = `${x}px`;
-  el.style.top = `${y}px`;
-  el.style.width = `${w}px`;
-  el.style.height = `${h}px`;
-  el.style.zIndex = String(zIndex);
-  el.style.opacity = visible ? "1" : "0";
-  el.style.transform = visible ? "scale(1)" : "scale(0.9)";
-  el.className = cn("card-base", active ? "card-active" : "card-inactive");
 }

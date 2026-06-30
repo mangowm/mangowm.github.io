@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { cn } from "../../cn";
-import { CARD_TRANSITION, TIMINGS, TOTAL_DURATION } from "./constants";
+import { CARD_TRANSITION, TIMINGS, TOTAL_DURATION, setCard } from "./constants";
 
 interface Rect {
   x: number;
@@ -9,11 +8,7 @@ interface Rect {
   h: number;
 }
 
-interface CenterTileLayoutProps {
-  orientation: "horizontal" | "vertical";
-}
-
-export function CenterTileLayout({ orientation: _orientation }: CenterTileLayoutProps) {
+export function CenterTileLayout() {
   const containerRef = useRef<HTMLDivElement>(null);
   const r1 = useRef<HTMLDivElement>(null);
   const r2 = useRef<HTMLDivElement>(null);
@@ -128,20 +123,4 @@ export function CenterTileLayout({ orientation: _orientation }: CenterTileLayout
       </div>
     </div>
   );
-}
-
-function setCard(
-  el: HTMLDivElement | null,
-  { x, y, w, h }: Rect,
-  visible: boolean,
-  active: boolean,
-) {
-  if (!el) return;
-  el.style.left = `${x}px`;
-  el.style.top = `${y}px`;
-  el.style.width = `${w}px`;
-  el.style.height = `${h}px`;
-  el.style.opacity = visible ? "1" : "0";
-  el.style.transform = visible ? "scale(1)" : "scale(0.9)";
-  el.className = cn("card-base", active ? "card-active" : "card-inactive");
 }
