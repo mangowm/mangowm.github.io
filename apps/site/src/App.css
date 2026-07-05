@@ -110,6 +110,10 @@ body {
   color: var(--color-accent-foreground);
 }
 
+.nav-link-active {
+  color: var(--color-foreground);
+}
+
 .nav-icon {
   display: inline-flex;
   align-items: center;

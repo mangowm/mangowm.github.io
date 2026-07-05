@@ -1,139 +1,13 @@
-import { useEffect, useEffectEvent } from "react";
-import { latestVersion } from "./constants";
-import { MangoLayouts } from "./components/mango-layouts";
-import { SponsorButton } from "./components/sponsor-button";
-import { GithubIcon, DiscordIcon, ArrowRight, ArrowDown, HeartSvg } from "./components/icons";
-import mangowmLogo from "@mangowm/assets/logos/mangowm.svg";
-
-function ThemeToggle() {
-  const onStorage = useEffectEvent(() => {
-    const theme = localStorage.getItem("theme");
-    const isDark =
-      theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches);
-    document.documentElement.classList.toggle("dark", isDark);
-  });
-
-  useEffect(() => {
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
-
-  const toggle = () => {
-    const html = document.documentElement;
-    const isDark = html.classList.contains("dark");
-    if (isDark) {
-      html.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
-      html.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    }
-  };
-
-  return (
-    <button type="button" onClick={toggle} className="theme-toggle" aria-label="Toggle theme">
-      <svg
-        className="theme-sun"
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="4" />
-        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-      </svg>
-      <svg
-        className="theme-moon"
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-      </svg>
-    </button>
-  );
-}
-
-function Header() {
-  return (
-    <header className="nav">
-      <div className="nav-inner">
-        <a href="/" className="nav-logo">
-          <img src={mangowmLogo} alt="mangowm" className="w-5 h-5" />
-          mangowm
-        </a>
-        <ul className="nav-primary">
-          <li>
-            <a href="/docs" className="nav-link">
-              Docs
-            </a>
-          </li>
-          <li>
-            <a href="/showcase" className="nav-link">
-              Showcase
-            </a>
-          </li>
-          <li>
-            <a href="/releases" className="nav-link">
-              Releases
-            </a>
-          </li>
-          <li>
-            <a href="https://mangowm.github.io/mangowm-settings/" className="nav-link">
-              Settings
-            </a>
-          </li>
-          <li className="nav-sponsor">
-            <SponsorButton />
-          </li>
-        </ul>
-        <div className="nav-end">
-          <ThemeToggle />
-          <ul className="nav-icons">
-            <li>
-              <a
-                href="https://discord.gg/CPjbDxesh5"
-                className="nav-icon"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Discord"
-              >
-                <DiscordIcon />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/mangowm/mango"
-                className="nav-icon"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-              >
-                <GithubIcon />
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </header>
-  );
-}
+import { Link } from "@tanstack/react-router";
+import { latestVersion } from "../constants";
+import { MangoLayouts } from "./mango-layouts";
+import { SponsorButton } from "./sponsor-button";
+import { ArrowRight, ArrowDown, HeartSvg } from "./icons";
 
 function Badges({ version }: { version: string }) {
   return (
     <div className="mb-6 flex items-center justify-center">
-      <a href="/releases" className="version-badge inline-flex items-center gap-2">
+      <Link to="/releases" className="version-badge inline-flex items-center gap-2">
         <span className="version-dot" />
         {version}
         <svg
@@ -149,7 +23,7 @@ function Badges({ version }: { version: string }) {
         >
           <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
-      </a>
+      </Link>
     </div>
   );
 }
@@ -202,11 +76,11 @@ function Hero({ version }: { version: string }) {
         <div className="hero-row">
           <div className="hero-col text-left">
             <div className="flex items-center justify-start mb-6">
-              <a href="/releases" className="version-badge inline-flex items-center gap-2">
+              <Link to="/releases" className="version-badge inline-flex items-center gap-2">
                 <span className="version-dot" />
                 {version}
                 <ArrowRight />
-              </a>
+              </Link>
             </div>
             <h1 className="hero-title hero-title-lg text-left">
               <span className="block">Lightweight</span>
@@ -287,11 +161,6 @@ function Hero({ version }: { version: string }) {
   );
 }
 
-export default function App() {
-  return (
-    <>
-      <Header />
-      <Hero version={latestVersion} />
-    </>
-  );
+export function HomePage() {
+  return <Hero version={latestVersion} />;
 }

@@ -5,13 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "tsc && vp build",
+    "build": "vp build",
+    "check": "vp check --fix",
     "preview": "vp preview"
   },
   "dependencies": {
     "@mangowm/assets": "workspace:*",
     "@rolldown/plugin-babel": "catalog:",
     "@tailwindcss/vite": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/router-plugin": "catalog:",
     "babel-plugin-react-compiler": "catalog:",
     "lucide-react": "catalog:",
     "react": "catalog:",
