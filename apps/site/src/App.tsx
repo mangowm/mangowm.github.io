@@ -3,6 +3,7 @@ import { latestVersion } from "./constants";
 import { MangoLayouts } from "./components/mango-layouts";
 import { SponsorButton } from "./components/sponsor-button";
 import { GithubIcon, DiscordIcon, ArrowRight, ArrowDown, HeartSvg } from "./components/icons";
+import mangowmLogo from "@mangowm/assets/logos/mangowm.svg";
 
 function ThemeToggle() {
   const onStorage = useEffectEvent(() => {
@@ -69,7 +70,7 @@ function Header() {
     <header className="nav">
       <div className="nav-inner">
         <a href="/" className="nav-logo">
-          <img src="/logo.svg" alt="mangowm" className="w-5 h-5" />
+          <img src={mangowmLogo} alt="mangowm" className="w-5 h-5" />
           mangowm
         </a>
         <ul className="nav-primary">

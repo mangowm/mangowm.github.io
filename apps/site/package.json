@@ -9,6 +9,7 @@
     "preview": "vp preview"
   },
   "dependencies": {
+    "@mangowm/assets": "workspace:*",
     "@rolldown/plugin-babel": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "babel-plugin-react-compiler": "catalog:",
