@@ -17,6 +17,7 @@ catalog:
   babel-plugin-react-compiler: ^1.0.0
   tailwindcss: ^4.3.1
   "@tailwindcss/vite": ^4.3.1
+  lucide-react: ^1.23.0
 overrides:
   vite: "catalog:"
   vitest: "catalog:"
