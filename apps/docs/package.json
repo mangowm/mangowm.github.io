@@ -5,7 +5,9 @@
   "sideEffects": false,
   "scripts": {
     "dev": "vp dev",
+    "dev:desktop": "tauri dev",
     "build": "vp build",
+    "build:desktop": "tauri build",
     "start": "serve .output/public --config ../../serve.json",
     "preview": "vp preview",
     "types:check": "fumadocs-mdx && tsc --noEmit",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.1",
+    "@tauri-apps/cli": "^2.11.4",
     "@types/mdx": "^2.0.14",
     "@types/node": "catalog:",
     "@types/react": "^19.2.17",

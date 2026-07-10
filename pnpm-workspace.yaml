@@ -20,6 +20,7 @@ catalog:
   lucide-react: ^1.23.0
   "@tanstack/react-router": 1.170.16
   "@tanstack/router-plugin": ^1.168.19
+  "@tauri-apps/cli": ^2.11.4
 overrides:
   vite: "catalog:"
   vitest: "catalog:"
