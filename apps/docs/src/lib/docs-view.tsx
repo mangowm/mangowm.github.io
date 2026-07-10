@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Link, notFound } from "@tanstack/react-router";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { createServerFn } from "@tanstack/react-start";
 import { slugsToMarkdownPath, source } from "@/lib/source";
@@ -18,17 +18,7 @@ import { useFumadocsLoader } from "fumadocs-core/source/client";
 import { Suspense } from "react";
 import { useMDXComponents } from "@/components/mdx";
 
-export const Route = createFileRoute("/docs/$")({
-  component: Page,
-  loader: async ({ params }) => {
-    const slugs = params._splat?.split("/") ?? [];
-    const data = await loader({ data: slugs });
-    await clientLoader.preload(data.path);
-    return data;
-  },
-});
-
-const loader = createServerFn({
+export const loader = createServerFn({
   method: "GET",
 })
   .validator((slugs: string[]) => slugs)
@@ -44,10 +34,9 @@ const loader = createServerFn({
     };
   });
 
-const clientLoader = browserCollections.docs.createClientLoader({
+export const clientLoader = browserCollections.docs.createClientLoader({
   component(
     { toc, frontmatter, default: MDX },
-    // you can define props for the component
     {
       markdownUrl,
       path,
@@ -75,8 +64,8 @@ const clientLoader = browserCollections.docs.createClientLoader({
   },
 });
 
-function Page() {
-  const { pageTree, path, markdownUrl } = useFumadocsLoader(Route.useLoaderData());
+export function DocsView({ loaderData }: { loaderData: any }) {
+  const { pageTree, path, markdownUrl } = useFumadocsLoader(loaderData);
 
   return (
     <DocsLayout {...baseOptions()} tree={pageTree}>
