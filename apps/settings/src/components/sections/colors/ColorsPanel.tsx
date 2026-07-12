@@ -412,11 +412,7 @@ export function ColorsPanel({ focusKey }: PanelProps) {
           <div className="w-[130px] shrink-0 rounded-lg border border-border/40 bg-card p-2">
             <div className="mb-1.5 flex h-[22px] overflow-hidden rounded-[4px]">
               {COLORS_ORDER.map((key) => (
-                <div
-                  key={key}
-                  className="flex-1"
-                  style={{ backgroundColor: toCss(theme[key]) }}
-                />
+                <div key={key} className="flex-1" style={{ backgroundColor: toCss(theme[key]) }} />
               ))}
             </div>
             <span className="block truncate text-[11px] font-medium text-foreground">

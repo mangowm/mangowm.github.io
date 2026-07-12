@@ -164,6 +164,19 @@ export const DEFAULTS: ConfigData = {
   allow_tearing: ["0"],
   syncobj_enable: ["0"],
 
+  // Group Bar (per-window, shown when windows are grouped)
+  group_bar_height: ["50"],
+  group_bar_decorate_font_desc: [""],
+  group_bar_decorate_fg_color: ["0xc4939dff"],
+  group_bar_decorate_bg_color: ["0x323232ff"],
+  group_bar_decorate_focus_fg_color: ["0xeda6b4ff"],
+  group_bar_decorate_focus_bg_color: ["0x4e453cff"],
+  group_bar_decorate_border_color: ["0x8baa9bff"],
+  group_bar_decorate_border_width: ["4"],
+  group_bar_decorate_corner_radius: ["5"],
+  group_bar_decorate_padding_x: ["0"],
+  group_bar_decorate_padding_y: ["0"],
+
   // Colors (from compositor set_value_default — note: these differ from assets/config.conf)
   rootcolor: ["0x323232ff"],
   bordercolor: ["0x444444ff"],

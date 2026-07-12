@@ -7,6 +7,7 @@ import { colorsMeta } from "@/components/sections/colors/colors.meta";
 import { windowEffectsMeta } from "@/components/sections/window-effects/window-effects.meta";
 import { gapsBordersMeta } from "@/components/sections/gaps-borders/gaps-borders.meta";
 import { cursorMeta } from "@/components/sections/cursor/cursor.meta";
+import { groupBarMeta } from "@/components/sections/appearance/group-bar/group-bar.meta";
 import { layoutMeta } from "@/components/sections/layout/layout.meta";
 import { tilingMeta } from "@/components/sections/layout/tiling.meta";
 import { dwindleMeta } from "@/components/sections/layout/dwindle.meta";
@@ -48,6 +49,7 @@ export const SECTIONS: SectionMeta[] = [
   colorsMeta,
   windowEffectsMeta,
   gapsBordersMeta,
+  groupBarMeta,
   cursorMeta,
   layoutMeta,
   tilingMeta,
