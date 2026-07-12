@@ -19,4 +19,13 @@ export const layerOverrides: OverrideMeta[] = [
     category: "Animation",
     appliesTo: ["layerrule"],
   },
+  {
+    key: "shield_when_capture",
+    label: "Shield When Capturing",
+    description: "Shield (hide) this layer when the screen is being captured/recorded",
+    type: "boolean",
+    category: "Privacy",
+    appliesTo: ["layerrule"],
+    aliases: ["shield capture", "hide when recording", "privacy shield"],
+  },
 ];
