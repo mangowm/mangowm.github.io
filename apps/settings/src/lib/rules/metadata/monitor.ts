@@ -101,4 +101,22 @@ export const monitorOverrides: OverrideMeta[] = [
     category: "Monitor",
     appliesTo: ["monitorrule"],
   },
+  {
+    key: "hdr",
+    label: "HDR",
+    description: "Enable HDR (High Dynamic Range) on this output",
+    type: "boolean",
+    category: "Monitor",
+    appliesTo: ["monitorrule"],
+    aliases: ["high dynamic range", "hdr mode"],
+  },
+  {
+    key: "disable",
+    label: "Disable",
+    description: "Disable this output entirely",
+    type: "boolean",
+    category: "Monitor",
+    appliesTo: ["monitorrule"],
+    aliases: ["off", "disabled"],
+  },
 ];
