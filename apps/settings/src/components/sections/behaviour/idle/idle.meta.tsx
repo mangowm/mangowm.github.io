@@ -8,7 +8,7 @@ export const idleMeta: SectionMeta = {
   icon: <PowerIcon />,
   panel: IdlePanel,
   parentId: "behaviour",
-  keywords: ["idle", "inhibit", "dpms", "power", "screen", "blank", "cursor", "hide", "timeout"],
+  keywords: ["idle", "inhibit", "dpms", "power", "screen", "blank", "cursor", "hide", "timeout", "keypress"],
   fields: [
     {
       configKey: "idleinhibit_ignore_visible",
@@ -21,6 +21,12 @@ export const idleMeta: SectionMeta = {
       label: "Cursor Hide Timeout",
       description: "Seconds of inactivity before auto-hiding the cursor (0 = never)",
       aliases: ["hide cursor", "cursor auto-hide", "cursor timeout"],
+    },
+    {
+      configKey: "cursor_hide_on_keypress",
+      label: "Hide Cursor on Keypress",
+      description: "Auto-hide the cursor whenever any keyboard key is pressed",
+      aliases: ["keypress hide", "hide on keypress", "typing hide"],
     },
   ],
 };

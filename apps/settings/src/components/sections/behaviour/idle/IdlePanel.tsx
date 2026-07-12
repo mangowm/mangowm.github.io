@@ -17,12 +17,13 @@ export function IdlePanel({ focusKey }: PanelProps) {
 
   const idleInhibitIgnore = useConfigBool("idleinhibit_ignore_visible");
   const cursorTimeout = useConfigInt("cursor_hide_timeout", undefined, 0, 36000);
+  const cursorHideKeypress = useConfigBool("cursor_hide_on_keypress");
 
   return (
     <PanelShell>
       <PanelHeader
         title="Idle"
-        description="Configure inactivity timeouts: screen blanking inhibition and cursor auto-hide."
+        description="Configure inactivity timeouts: screen blanking inhibition, cursor auto-hide, and keypress behaviour."
         separator={false}
       />
 
@@ -50,6 +51,14 @@ export function IdlePanel({ focusKey }: PanelProps) {
               max={600}
               unit=" s"
               onChange={(v) => setValue("cursor_hide_timeout", String(v))}
+            />
+          </div>
+          <div ref={fieldRef("cursor_hide_on_keypress")}>
+            <ToggleRow
+              label="Hide Cursor on Keypress"
+              description="Automatically hide the cursor whenever any keyboard key is pressed. The cursor reappears on mouse movement."
+              value={cursorHideKeypress}
+              onChange={tb("cursor_hide_on_keypress")}
             />
           </div>
         </SectionCard>
