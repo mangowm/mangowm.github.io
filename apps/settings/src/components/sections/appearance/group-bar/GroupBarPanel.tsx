@@ -64,7 +64,7 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("group_bar_decorate_fg_color")}>
             <TextInputRow
               label="Text"
-              description="Foreground color of window group labels. Hex format: 0xAARRGGBB."
+              description="Foreground color of window group labels. Hex format: 0xRRGGBBAA."
               value={fgColor}
               placeholder="0xc4939dff"
               onChange={(v) => setValue("group_bar_decorate_fg_color", v)}
@@ -73,7 +73,7 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("group_bar_decorate_bg_color")}>
             <TextInputRow
               label="Background"
-              description="Background color of the window group bar. Hex format: 0xAARRGGBB."
+              description="Background color of the window group bar. Hex format: 0xRRGGBBAA."
               value={bgColor}
               placeholder="0x323232ff"
               onChange={(v) => setValue("group_bar_decorate_bg_color", v)}
@@ -82,7 +82,7 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("group_bar_decorate_focus_fg_color")}>
             <TextInputRow
               label="Focused Text"
-              description="Foreground color of the focused group member label. Hex format: 0xAARRGGBB."
+              description="Foreground color of the focused group member label. Hex format: 0xRRGGBBAA."
               value={focusFgColor}
               placeholder="0xeda6b4ff"
               onChange={(v) => setValue("group_bar_decorate_focus_fg_color", v)}
@@ -91,7 +91,7 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("group_bar_decorate_focus_bg_color")}>
             <TextInputRow
               label="Focused Background"
-              description="Background color of the focused group member bar. Hex format: 0xAARRGGBB."
+              description="Background color of the focused group member bar. Hex format: 0xRRGGBBAA."
               value={focusBgColor}
               placeholder="0x4e453cff"
               onChange={(v) => setValue("group_bar_decorate_focus_bg_color", v)}
@@ -100,7 +100,7 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("group_bar_decorate_border_color")}>
             <TextInputRow
               label="Border"
-              description="Color of the window group bar outline. Hex format: 0xAARRGGBB."
+              description="Color of the window group bar outline. Hex format: 0xRRGGBBAA."
               value={borderColor}
               placeholder="0x8baa9bff"
               onChange={(v) => setValue("group_bar_decorate_border_color", v)}
