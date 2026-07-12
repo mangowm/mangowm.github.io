@@ -15,6 +15,12 @@ const TEARING_OPTIONS = [
   { value: "2", label: "Fullscreen Only" },
 ];
 
+const HDR_OPTIONS = [
+  { value: "0", label: "Default" },
+  { value: "1", label: "8-bit" },
+  { value: "2", label: "10-bit" },
+];
+
 export function RenderingPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const setValue = useConfigStore((s) => s.setValue);
@@ -23,12 +29,13 @@ export function RenderingPanel({ focusKey }: PanelProps) {
 
   const tearing = useConfigStr("allow_tearing");
   const syncobj = useConfigBool("syncobj_enable");
+  const hdrDepth = useConfigStr("hdr_depth");
 
   return (
     <PanelShell>
       <PanelHeader
         title="Rendering"
-        description="Configure display rendering behaviour — tearing control and GPU sync."
+        description="Configure display rendering behaviour — tearing control, GPU sync, and HDR output."
         separator={false}
       />
 
@@ -54,6 +61,20 @@ export function RenderingPanel({ focusKey }: PanelProps) {
               description="Enable DRM sync object timeline support. May improve GPU scheduling on compatible hardware."
               value={syncobj}
               onChange={tb("syncobj_enable")}
+            />
+          </div>
+        </SectionCard>
+      </div>
+
+      <div className="mb-5">
+        <SectionCard title="HDR">
+          <div ref={fieldRef("hdr_depth")}>
+            <SelectRow
+              label="HDR Bit Depth"
+              description="Output bit depth for HDR rendering. 10-bit is recommended for HDR displays; 8-bit for SDR fallback; Default uses the compositor-preferred setting."
+              value={hdrDepth}
+              options={HDR_OPTIONS}
+              onChange={(v) => setValue("hdr_depth", v)}
             />
           </div>
         </SectionCard>

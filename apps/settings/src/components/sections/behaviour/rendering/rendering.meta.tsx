@@ -8,7 +8,7 @@ export const renderingMeta: SectionMeta = {
   icon: <MonitorIcon />,
   panel: RenderingPanel,
   parentId: "behaviour",
-  keywords: ["tearing", "vsync", "async", "sync", "drm", "performance", "display"],
+  keywords: ["tearing", "vsync", "async", "sync", "drm", "hdr", "performance", "display"],
   fields: [
     {
       configKey: "allow_tearing",
@@ -21,6 +21,12 @@ export const renderingMeta: SectionMeta = {
       label: "Sync Object Enable",
       description: "Enable DRM sync object timeline support",
       aliases: ["sync", "drm", "timeline", "syncobj", "gpu"],
+    },
+    {
+      configKey: "hdr_depth",
+      label: "HDR Bit Depth",
+      description: "HDR rendering output bit depth",
+      aliases: ["hdr", "bit depth", "high dynamic range", "color depth"],
     },
   ],
 };
