@@ -71,7 +71,7 @@ export function MangoLayouts() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const controlsRef = useRef<HTMLDivElement>(null);
 
   const activeDef = ALL_LAYOUTS.find((l) => l.id === activeLayout)!;
   const isMainLayout = MAIN_LAYOUTS.some((l) => l.id === activeLayout);
@@ -102,7 +102,7 @@ export function MangoLayouts() {
   useEffect(() => {
     if (!showMore) return;
     const handler = (e: MouseEvent) => {
-      if (!dropdownRef.current?.contains(e.target as Node)) setShowMore(false);
+      if (!controlsRef.current?.contains(e.target as Node)) setShowMore(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
@@ -124,16 +124,53 @@ export function MangoLayouts() {
   return (
     <div className="w-full space-y-2.5">
       {/* Controls row — centred */}
-      <div className="flex items-center justify-center gap-2">
-        {/* Layout selector pill */}
-        <div className="inline-flex min-w-0 items-center gap-0.5 rounded-xl border border-fd-border bg-fd-muted p-1">
+      <div ref={controlsRef} className="flex flex-wrap items-center justify-center gap-2">
+        {/* ── Mobile: compact single dropdown ─────────────────────────────── */}
+        <div className="relative md:hidden">
+          <button
+            type="button"
+            onClick={() => setShowMore((v) => !v)}
+            className="flex cursor-pointer items-center gap-1.5 rounded-xl border border-fd-border bg-fd-muted px-3 py-1.5 text-sm font-medium text-fd-foreground transition-all"
+          >
+            {activeDef.label}
+            <ChevronDown
+              className={cn(
+                "h-3.5 w-3.5 shrink-0 transition-transform duration-200",
+                showMore && "rotate-180",
+              )}
+            />
+          </button>
+
+          {showMore && (
+            <div className="absolute left-1/2 top-full z-50 mt-1.5 min-w-[160px] -translate-x-1/2 rounded-xl border border-fd-border bg-fd-background p-1 shadow-lg">
+              {ALL_LAYOUTS.map((layout) => (
+                <button
+                  key={layout.id}
+                  type="button"
+                  onClick={() => selectLayout(layout.id)}
+                  className={cn(
+                    "w-full cursor-pointer rounded-lg px-3 py-1.5 text-left text-sm transition-colors",
+                    activeLayout === layout.id
+                      ? "bg-fd-primary/10 font-medium text-fd-primary"
+                      : "text-fd-foreground hover:bg-fd-muted",
+                  )}
+                >
+                  {layout.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* ── Desktop: pill bar ───────────────────────────────────────────── */}
+        <div className="hidden items-center gap-0.5 rounded-xl border border-fd-border bg-fd-muted p-1 md:inline-flex">
           {MAIN_LAYOUTS.map((layout) => (
             <button
               key={layout.id}
               type="button"
               onClick={() => selectLayout(layout.id)}
               className={cn(
-                "cursor-pointer rounded-lg px-3 py-1 text-sm font-medium transition-all",
+                "cursor-pointer whitespace-nowrap rounded-lg px-3 py-1 text-sm font-medium transition-all",
                 activeLayout === layout.id
                   ? "bg-fd-background text-fd-primary shadow-sm"
                   : "text-fd-muted-foreground hover:text-fd-foreground",
@@ -144,12 +181,12 @@ export function MangoLayouts() {
           ))}
 
           {/* More / active-other button + dropdown */}
-          <div ref={dropdownRef} className="relative">
+          <div className="relative">
             <button
               type="button"
               onClick={() => setShowMore((v) => !v)}
               className={cn(
-                "flex cursor-pointer items-center gap-1 rounded-lg px-3 py-1 text-sm font-medium outline-none transition-all",
+                "flex cursor-pointer items-center gap-1 whitespace-nowrap rounded-lg px-3 py-1 text-sm font-medium outline-none transition-all",
                 !isMainLayout
                   ? "bg-fd-background text-fd-primary shadow-sm"
                   : "text-fd-muted-foreground hover:text-fd-foreground",

@@ -143,6 +143,14 @@
   }
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 .grid-bg {
   background-image:
     linear-gradient(to right, var(--color-fd-border) 1px, transparent 1px),
