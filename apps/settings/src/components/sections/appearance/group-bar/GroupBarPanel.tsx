@@ -7,6 +7,7 @@ import {
   SectionCard,
   SliderRow,
   TextInputRow,
+  ColorRow,
 } from "@/components/sections/section-ui";
 
 export function GroupBarPanel({ focusKey }: PanelProps) {
@@ -62,47 +63,42 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Colors">
           <div ref={fieldRef("group_bar_decorate_fg_color")}>
-            <TextInputRow
+            <ColorRow
               label="Text"
-              description="Foreground color of window group labels. Hex format: 0xRRGGBBAA."
+              description="Foreground color of window group labels."
               value={fgColor}
-              placeholder="0xc4939dff"
               onChange={(v) => setValue("group_bar_decorate_fg_color", v)}
             />
           </div>
           <div ref={fieldRef("group_bar_decorate_bg_color")}>
-            <TextInputRow
+            <ColorRow
               label="Background"
-              description="Background color of the window group bar. Hex format: 0xRRGGBBAA."
+              description="Background color of the window group bar."
               value={bgColor}
-              placeholder="0x323232ff"
               onChange={(v) => setValue("group_bar_decorate_bg_color", v)}
             />
           </div>
           <div ref={fieldRef("group_bar_decorate_focus_fg_color")}>
-            <TextInputRow
+            <ColorRow
               label="Focused Text"
-              description="Foreground color of the focused group member label. Hex format: 0xRRGGBBAA."
+              description="Foreground color of the focused group member label."
               value={focusFgColor}
-              placeholder="0xeda6b4ff"
               onChange={(v) => setValue("group_bar_decorate_focus_fg_color", v)}
             />
           </div>
           <div ref={fieldRef("group_bar_decorate_focus_bg_color")}>
-            <TextInputRow
+            <ColorRow
               label="Focused Background"
-              description="Background color of the focused group member bar. Hex format: 0xRRGGBBAA."
+              description="Background color of the focused group member bar."
               value={focusBgColor}
-              placeholder="0x4e453cff"
               onChange={(v) => setValue("group_bar_decorate_focus_bg_color", v)}
             />
           </div>
           <div ref={fieldRef("group_bar_decorate_border_color")}>
-            <TextInputRow
+            <ColorRow
               label="Border"
-              description="Color of the window group bar outline. Hex format: 0xRRGGBBAA."
+              description="Color of the window group bar outline."
               value={borderColor}
-              placeholder="0x8baa9bff"
               onChange={(v) => setValue("group_bar_decorate_border_color", v)}
             />
           </div>

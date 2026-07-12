@@ -7,6 +7,7 @@ import {
   SectionCard,
   SliderRow,
   TextInputRow,
+  ColorRow,
 } from "@/components/sections/section-ui";
 
 export function JumpLabelPanel({ focusKey }: PanelProps) {
@@ -50,47 +51,42 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Colors">
           <div ref={fieldRef("jump_label_decorate_fg_color")}>
-            <TextInputRow
+            <ColorRow
               label="Text"
-              description="Foreground color of jump labels. Hex format: 0xRRGGBBAA."
+              description="Foreground color of jump labels."
               value={fgColor}
-              placeholder="0xc4939dff"
               onChange={(v) => setValue("jump_label_decorate_fg_color", v)}
             />
           </div>
           <div ref={fieldRef("jump_label_decorate_bg_color")}>
-            <TextInputRow
+            <ColorRow
               label="Background"
-              description="Background color of jump labels. Hex format: 0xRRGGBBAA."
+              description="Background color of jump labels."
               value={bgColor}
-              placeholder="0x323232ff"
               onChange={(v) => setValue("jump_label_decorate_bg_color", v)}
             />
           </div>
           <div ref={fieldRef("jump_label_decorate_focus_fg_color")}>
-            <TextInputRow
+            <ColorRow
               label="Focused Text"
-              description="Foreground color of the focused jump label. Hex format: 0xRRGGBBAA."
+              description="Foreground color of the focused jump label."
               value={focusFgColor}
-              placeholder="0xeda6b4ff"
               onChange={(v) => setValue("jump_label_decorate_focus_fg_color", v)}
             />
           </div>
           <div ref={fieldRef("jump_label_decorate_focus_bg_color")}>
-            <TextInputRow
+            <ColorRow
               label="Focused Background"
-              description="Background color of the focused jump label. Hex format: 0xRRGGBBAA."
+              description="Background color of the focused jump label."
               value={focusBgColor}
-              placeholder="0x4e453cff"
               onChange={(v) => setValue("jump_label_decorate_focus_bg_color", v)}
             />
           </div>
           <div ref={fieldRef("jump_label_decorate_border_color")}>
-            <TextInputRow
+            <ColorRow
               label="Border"
-              description="Color of the jump label outline. Hex format: 0xRRGGBBAA."
+              description="Color of the jump label outline."
               value={borderColor}
-              placeholder="0x8baa9bff"
               onChange={(v) => setValue("jump_label_decorate_border_color", v)}
             />
           </div>
