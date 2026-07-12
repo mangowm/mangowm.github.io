@@ -8,6 +8,7 @@ import { windowEffectsMeta } from "@/components/sections/window-effects/window-e
 import { gapsBordersMeta } from "@/components/sections/gaps-borders/gaps-borders.meta";
 import { cursorMeta } from "@/components/sections/cursor/cursor.meta";
 import { groupBarMeta } from "@/components/sections/appearance/group-bar/group-bar.meta";
+import { jumpLabelMeta } from "@/components/sections/appearance/jump-label/jump-label.meta";
 import { layoutMeta } from "@/components/sections/layout/layout.meta";
 import { tilingMeta } from "@/components/sections/layout/tiling.meta";
 import { dwindleMeta } from "@/components/sections/layout/dwindle.meta";
@@ -50,6 +51,7 @@ export const SECTIONS: SectionMeta[] = [
   windowEffectsMeta,
   gapsBordersMeta,
   groupBarMeta,
+  jumpLabelMeta,
   cursorMeta,
   layoutMeta,
   tilingMeta,

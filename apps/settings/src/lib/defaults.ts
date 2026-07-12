@@ -163,6 +163,7 @@ export const DEFAULTS: ConfigData = {
   // Behaviour — rendering
   allow_tearing: ["0"],
   syncobj_enable: ["0"],
+  hdr_depth: ["2"],
 
   // Group Bar (per-window, shown when windows are grouped)
   group_bar_height: ["50"],
@@ -176,6 +177,18 @@ export const DEFAULTS: ConfigData = {
   group_bar_decorate_corner_radius: ["5"],
   group_bar_decorate_padding_x: ["0"],
   group_bar_decorate_padding_y: ["0"],
+
+  // Jump Labels (overlay labels in overview navigation mode)
+  jump_label_decorate_font_desc: [""],
+  jump_label_decorate_fg_color: ["0xc4939dff"],
+  jump_label_decorate_bg_color: ["0x323232ff"],
+  jump_label_decorate_focus_fg_color: ["0xeda6b4ff"],
+  jump_label_decorate_focus_bg_color: ["0x4e453cff"],
+  jump_label_decorate_border_color: ["0x8baa9bff"],
+  jump_label_decorate_border_width: ["4"],
+  jump_label_decorate_corner_radius: ["5"],
+  jump_label_decorate_padding_x: ["10"],
+  jump_label_decorate_padding_y: ["10"],
 
   // Colors (from compositor set_value_default — note: these differ from assets/config.conf)
   rootcolor: ["0x323232ff"],
