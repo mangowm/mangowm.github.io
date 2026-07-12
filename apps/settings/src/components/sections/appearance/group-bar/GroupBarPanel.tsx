@@ -7,7 +7,6 @@ import {
   SectionCard,
   SliderRow,
   TextInputRow,
-  ColorRow,
 } from "@/components/sections/section-ui";
 
 export function GroupBarPanel({ focusKey }: PanelProps) {
@@ -21,11 +20,7 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
   const paddingX = useConfigInt("group_bar_decorate_padding_x", undefined, 0, 100);
   const paddingY = useConfigInt("group_bar_decorate_padding_y", undefined, 0, 100);
 
-  const fgColor = useConfigStr("group_bar_decorate_fg_color");
-  const bgColor = useConfigStr("group_bar_decorate_bg_color");
-  const focusFgColor = useConfigStr("group_bar_decorate_focus_fg_color");
-  const focusBgColor = useConfigStr("group_bar_decorate_focus_bg_color");
-  const borderColor = useConfigStr("group_bar_decorate_border_color");
+
 
   return (
     <PanelShell>
@@ -55,51 +50,6 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
               value={fontDesc}
               placeholder="Sans 10"
               onChange={(v) => setValue("group_bar_decorate_font_desc", v)}
-            />
-          </div>
-        </SectionCard>
-      </div>
-
-      <div className="mb-5">
-        <SectionCard title="Colors">
-          <div ref={fieldRef("group_bar_decorate_fg_color")}>
-            <ColorRow
-              label="Text"
-              description="Foreground color of window group labels."
-              value={fgColor}
-              onChange={(v) => setValue("group_bar_decorate_fg_color", v)}
-            />
-          </div>
-          <div ref={fieldRef("group_bar_decorate_bg_color")}>
-            <ColorRow
-              label="Background"
-              description="Background color of the window group bar."
-              value={bgColor}
-              onChange={(v) => setValue("group_bar_decorate_bg_color", v)}
-            />
-          </div>
-          <div ref={fieldRef("group_bar_decorate_focus_fg_color")}>
-            <ColorRow
-              label="Focused Text"
-              description="Foreground color of the focused group member label."
-              value={focusFgColor}
-              onChange={(v) => setValue("group_bar_decorate_focus_fg_color", v)}
-            />
-          </div>
-          <div ref={fieldRef("group_bar_decorate_focus_bg_color")}>
-            <ColorRow
-              label="Focused Background"
-              description="Background color of the focused group member bar."
-              value={focusBgColor}
-              onChange={(v) => setValue("group_bar_decorate_focus_bg_color", v)}
-            />
-          </div>
-          <div ref={fieldRef("group_bar_decorate_border_color")}>
-            <ColorRow
-              label="Border"
-              description="Color of the window group bar outline."
-              value={borderColor}
-              onChange={(v) => setValue("group_bar_decorate_border_color", v)}
             />
           </div>
         </SectionCard>

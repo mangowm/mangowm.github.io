@@ -7,7 +7,6 @@ import {
   SectionCard,
   SliderRow,
   TextInputRow,
-  ColorRow,
 } from "@/components/sections/section-ui";
 
 export function JumpLabelPanel({ focusKey }: PanelProps) {
@@ -20,11 +19,7 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
   const paddingX = useConfigInt("jump_label_decorate_padding_x", undefined, 0, 100);
   const paddingY = useConfigInt("jump_label_decorate_padding_y", undefined, 0, 100);
 
-  const fgColor = useConfigStr("jump_label_decorate_fg_color");
-  const bgColor = useConfigStr("jump_label_decorate_bg_color");
-  const focusFgColor = useConfigStr("jump_label_decorate_focus_fg_color");
-  const focusBgColor = useConfigStr("jump_label_decorate_focus_bg_color");
-  const borderColor = useConfigStr("jump_label_decorate_border_color");
+
 
   return (
     <PanelShell>
@@ -43,51 +38,6 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
               value={fontDesc}
               placeholder="Sans 10"
               onChange={(v) => setValue("jump_label_decorate_font_desc", v)}
-            />
-          </div>
-        </SectionCard>
-      </div>
-
-      <div className="mb-5">
-        <SectionCard title="Colors">
-          <div ref={fieldRef("jump_label_decorate_fg_color")}>
-            <ColorRow
-              label="Text"
-              description="Foreground color of jump labels."
-              value={fgColor}
-              onChange={(v) => setValue("jump_label_decorate_fg_color", v)}
-            />
-          </div>
-          <div ref={fieldRef("jump_label_decorate_bg_color")}>
-            <ColorRow
-              label="Background"
-              description="Background color of jump labels."
-              value={bgColor}
-              onChange={(v) => setValue("jump_label_decorate_bg_color", v)}
-            />
-          </div>
-          <div ref={fieldRef("jump_label_decorate_focus_fg_color")}>
-            <ColorRow
-              label="Focused Text"
-              description="Foreground color of the focused jump label."
-              value={focusFgColor}
-              onChange={(v) => setValue("jump_label_decorate_focus_fg_color", v)}
-            />
-          </div>
-          <div ref={fieldRef("jump_label_decorate_focus_bg_color")}>
-            <ColorRow
-              label="Focused Background"
-              description="Background color of the focused jump label."
-              value={focusBgColor}
-              onChange={(v) => setValue("jump_label_decorate_focus_bg_color", v)}
-            />
-          </div>
-          <div ref={fieldRef("jump_label_decorate_border_color")}>
-            <ColorRow
-              label="Border"
-              description="Color of the jump label outline."
-              value={borderColor}
-              onChange={(v) => setValue("jump_label_decorate_border_color", v)}
             />
           </div>
         </SectionCard>
