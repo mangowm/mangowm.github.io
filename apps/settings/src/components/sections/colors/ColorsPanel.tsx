@@ -6,7 +6,7 @@ import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
-import { PanelShell, PanelHeader } from "@/components/sections/section-ui";
+import { PanelShell, PanelHeader, SectionCard } from "@/components/sections/section-ui";
 
 interface ColorsConfig {
   rootcolor: string;
@@ -20,6 +20,16 @@ interface ColorsConfig {
   globalcolor: string;
   overlaycolor: string;
   shadowscolor: string;
+  group_bar_decorate_fg_color: string;
+  group_bar_decorate_bg_color: string;
+  group_bar_decorate_focus_fg_color: string;
+  group_bar_decorate_focus_bg_color: string;
+  group_bar_decorate_border_color: string;
+  jump_label_decorate_fg_color: string;
+  jump_label_decorate_bg_color: string;
+  jump_label_decorate_focus_fg_color: string;
+  jump_label_decorate_focus_bg_color: string;
+  jump_label_decorate_border_color: string;
 }
 
 const COLORS_FIELDS: Array<{
@@ -70,6 +80,56 @@ const COLORS_FIELDS: Array<{
   },
   { key: "splitcolor", label: "Split Indicator", description: "Dwindle manual-split guide line" },
   { key: "shadowscolor", label: "Shadow", description: "Drop shadow color for windows" },
+  {
+    key: "group_bar_decorate_fg_color",
+    label: "Text",
+    description: "Foreground color of window group labels",
+  },
+  {
+    key: "group_bar_decorate_bg_color",
+    label: "Background",
+    description: "Background color of the window group bar",
+  },
+  {
+    key: "group_bar_decorate_focus_fg_color",
+    label: "Focused Text",
+    description: "Foreground color of the focused group member label",
+  },
+  {
+    key: "group_bar_decorate_focus_bg_color",
+    label: "Focused Background",
+    description: "Background color of the focused group member bar",
+  },
+  {
+    key: "group_bar_decorate_border_color",
+    label: "Border",
+    description: "Color of the window group bar outline",
+  },
+  {
+    key: "jump_label_decorate_fg_color",
+    label: "Text",
+    description: "Foreground color of jump labels",
+  },
+  {
+    key: "jump_label_decorate_bg_color",
+    label: "Background",
+    description: "Background color of jump labels",
+  },
+  {
+    key: "jump_label_decorate_focus_fg_color",
+    label: "Focused Text",
+    description: "Foreground color of the focused jump label",
+  },
+  {
+    key: "jump_label_decorate_focus_bg_color",
+    label: "Focused Background",
+    description: "Background color of the focused jump label",
+  },
+  {
+    key: "jump_label_decorate_border_color",
+    label: "Border",
+    description: "Color of the jump label outline",
+  },
 ];
 
 interface ColorPalette {
@@ -264,7 +324,7 @@ const PaletteCard = memo(function PaletteCard({ palette, isActive, onSelect }: P
       }}
     >
       <div className="mb-1.5 flex h-[22px] overflow-hidden rounded-[4px]">
-        {COLORS_ORDER.map((key) => (
+        {COLORS_ORDER.filter((key) => palette.colors[key]).map((key) => (
           <div
             key={key}
             className="flex-1"
@@ -295,6 +355,16 @@ function useColorConfigValues() {
   const globalcolor = useConfigStr("globalcolor");
   const overlaycolor = useConfigStr("overlaycolor");
   const shadowscolor = useConfigStr("shadowscolor");
+  const gbFg = useConfigStr("group_bar_decorate_fg_color");
+  const gbBg = useConfigStr("group_bar_decorate_bg_color");
+  const gbFocusFg = useConfigStr("group_bar_decorate_focus_fg_color");
+  const gbFocusBg = useConfigStr("group_bar_decorate_focus_bg_color");
+  const gbBorder = useConfigStr("group_bar_decorate_border_color");
+  const jlFg = useConfigStr("jump_label_decorate_fg_color");
+  const jlBg = useConfigStr("jump_label_decorate_bg_color");
+  const jlFocusFg = useConfigStr("jump_label_decorate_focus_fg_color");
+  const jlFocusBg = useConfigStr("jump_label_decorate_focus_bg_color");
+  const jlBorder = useConfigStr("jump_label_decorate_border_color");
 
   return useMemo<ColorsConfig>(
     () => ({
@@ -309,6 +379,16 @@ function useColorConfigValues() {
       globalcolor,
       overlaycolor,
       shadowscolor,
+      group_bar_decorate_fg_color: gbFg,
+      group_bar_decorate_bg_color: gbBg,
+      group_bar_decorate_focus_fg_color: gbFocusFg,
+      group_bar_decorate_focus_bg_color: gbFocusBg,
+      group_bar_decorate_border_color: gbBorder,
+      jump_label_decorate_fg_color: jlFg,
+      jump_label_decorate_bg_color: jlBg,
+      jump_label_decorate_focus_fg_color: jlFocusFg,
+      jump_label_decorate_focus_bg_color: jlFocusBg,
+      jump_label_decorate_border_color: jlBorder,
     }),
     [
       rootcolor,
@@ -322,6 +402,16 @@ function useColorConfigValues() {
       globalcolor,
       overlaycolor,
       shadowscolor,
+      gbFg,
+      gbBg,
+      gbFocusFg,
+      gbFocusBg,
+      gbBorder,
+      jlFg,
+      jlBg,
+      jlFocusFg,
+      jlFocusBg,
+      jlBorder,
     ],
   );
 }
@@ -366,7 +456,9 @@ export function ColorsPanel({ focusKey }: PanelProps) {
     return handlers;
   }, []);
 
-  const total = COLORS_FIELDS.length;
+  const coreFields = COLORS_FIELDS.slice(0, 11);
+  const gbFields = COLORS_FIELDS.slice(11, 16);
+  const jlFields = COLORS_FIELDS.slice(16);
 
   const modeSelector = (
     <div className="flex shrink-0 items-center rounded-lg border border-border/40 bg-muted/30 p-0.5">
@@ -430,22 +522,54 @@ export function ColorsPanel({ focusKey }: PanelProps) {
         </div>
       </div>
 
-      <div className="rounded-xl border border-border/40 bg-card shadow-sm">
-        <div className="divide-y divide-border/20">
-          {COLORS_FIELDS.map((field, i) => (
-            <div ref={fieldRef(field.key)} key={field.key}>
-              <ColorInput
-                label={field.label}
-                description={field.description}
-                value={theme[field.key]}
-                mode={mode}
-                flipPopover={i >= total - 3}
-                onChange={changeHandlers[field.key]!}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      <SectionCard title="General">
+        {coreFields.map((field, i) => (
+          <div ref={fieldRef(field.key)} key={field.key}>
+            <ColorInput
+              label={field.label}
+              description={field.description}
+              value={theme[field.key]}
+              mode={mode}
+              flipPopover={i >= coreFields.length - 3}
+              onChange={changeHandlers[field.key]!}
+            />
+          </div>
+        ))}
+      </SectionCard>
+
+      <div className="mb-5" />
+
+      <SectionCard title="Group Bar">
+        {gbFields.map((field) => (
+          <div ref={fieldRef(field.key)} key={field.key}>
+            <ColorInput
+              label={field.label}
+              description={field.description}
+              value={theme[field.key]}
+              mode={mode}
+              flipPopover={false}
+              onChange={changeHandlers[field.key]!}
+            />
+          </div>
+        ))}
+      </SectionCard>
+
+      <div className="mb-5" />
+
+      <SectionCard title="Jump Labels">
+        {jlFields.map((field) => (
+          <div ref={fieldRef(field.key)} key={field.key}>
+            <ColorInput
+              label={field.label}
+              description={field.description}
+              value={theme[field.key]}
+              mode={mode}
+              flipPopover={false}
+              onChange={changeHandlers[field.key]!}
+            />
+          </div>
+        ))}
+      </SectionCard>
     </PanelShell>
   );
 }

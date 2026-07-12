@@ -11,6 +11,16 @@
     "urgentcolor": "0xfb4934ff",
     "scratchpadcolor": "0x83a598ff",
     "globalcolor": "0x444507ff",
-    "overlaycolor": "0x765300ff"
+    "overlaycolor": "0x765300ff",
+    "group_bar_decorate_bg_color": "0x474240ff",
+    "group_bar_decorate_border_color": "0x786f6bff",
+    "group_bar_decorate_fg_color": "0xfbf1c7ff",
+    "group_bar_decorate_focus_bg_color": "0xb8bb26ff",
+    "group_bar_decorate_focus_fg_color": "0x282828ff",
+    "jump_label_decorate_bg_color": "0x474240ff",
+    "jump_label_decorate_border_color": "0x786f6bff",
+    "jump_label_decorate_fg_color": "0xfbf1c7ff",
+    "jump_label_decorate_focus_bg_color": "0xb8bb26ff",
+    "jump_label_decorate_focus_fg_color": "0x282828ff"
   }
 }
