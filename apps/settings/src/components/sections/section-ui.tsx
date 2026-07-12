@@ -19,8 +19,9 @@
  *   PanelShell           — max-width wrapper with entry animation
  */
 
-import React from "react";
-import { X, Plus } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { X, Plus, Pipette } from "lucide-react";
+import { HexAlphaColorPicker } from "react-colorful";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
@@ -33,6 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toHex, toCss } from "@/lib/color-utils";
 
 // ---------------------------------------------------------------------------
 // Primitives
@@ -253,6 +255,153 @@ export interface TextInputRowProps {
   placeholder?: string;
   onChange: (v: string) => void;
   enabled?: boolean;
+}
+
+export interface ColorRowProps {
+  label: string;
+  description: string;
+  value: string;
+  onChange: (v: string) => void;
+  enabled?: boolean;
+}
+
+/**
+ * A row with a color swatch, HexAlphaColorPicker popover, and hex text input.
+ * Colors are stored in 0xRRGGBBAA format.
+ */
+export function ColorRow({
+  label,
+  description,
+  value,
+  onChange,
+  enabled,
+}: ColorRowProps) {
+  const isOff = enabled === false;
+  const cssValue = toCss(value);
+  const [isOpen, setIsOpen] = useState(false);
+  const [displayValue, setDisplayValue] = useState(value);
+  const [isFocused, setIsFocused] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setDisplayValue(value);
+  }, [value]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    if (isOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
+  const commitTextChange = () => {
+    onChange(toHex(displayValue, value));
+    setIsFocused(false);
+  };
+
+  const pick = (cssHex: string) => {
+    const hex = toHex(cssHex, value);
+    setDisplayValue(hex);
+    onChange(hex);
+  };
+
+  const alphaHex = value.slice(-2);
+  const alpha = Math.round((parseInt(alphaHex, 16) / 255) * 100);
+  const isTranslucent = alpha < 100;
+
+  return (
+    <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
+      <FieldLabel label={label} description={description} />
+      <div className="relative shrink-0" ref={popoverRef}>
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          disabled={isOff}
+          className="relative size-8 cursor-pointer rounded-md p-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background"
+          aria-label={`Edit ${label} color`}
+        >
+          {isTranslucent && (
+            <div
+              className="absolute inset-0 rounded-[5px]"
+              style={{
+                backgroundImage: "repeating-conic-gradient(#808080 0% 25%, transparent 0% 50%)",
+                backgroundSize: "8px 8px",
+              }}
+            />
+          )}
+          <div
+            className="absolute inset-0 rounded-[5px] shadow-inner transition-all duration-200"
+            style={{ backgroundColor: cssValue }}
+          />
+          <div
+            className="absolute inset-[-3px] rounded-[8px] opacity-0 transition-opacity duration-200 group-hover:opacity-40"
+            style={{ boxShadow: `0 0 0 2px ${cssValue}` }}
+          />
+          {isOpen && (
+            <div
+              className="absolute inset-[-3px] rounded-[8px] opacity-60"
+              style={{ boxShadow: `0 0 0 2px ${cssValue}` }}
+            />
+          )}
+          <div className="absolute inset-0 flex items-center justify-center rounded-[5px] bg-black/0 opacity-0 transition-all duration-200 group-hover:bg-black/40 group-hover:opacity-100">
+            <Pipette className="size-4 text-white drop-shadow-sm" />
+          </div>
+        </button>
+
+        {isOpen && (
+          <div className="absolute left-0 top-[calc(100%+8px)] z-50 min-w-[220px] rounded-xl border border-border/60 bg-popover shadow-xl animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between border-b border-border/40 px-3 py-2">
+              <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+                {label}
+              </span>
+              <div className="flex items-center gap-1.5">
+                <div
+                  className="size-3.5 rounded-sm shadow-inner"
+                  style={{ backgroundColor: cssValue }}
+                />
+                <span className="font-mono text-[10px] text-muted-foreground">{alpha}%</span>
+              </div>
+            </div>
+            <div className="p-3">
+              <HexAlphaColorPicker color={cssValue} onChange={pick} />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {isTranslucent && (
+        <span className="shrink-0 rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+          {alpha}%
+        </span>
+      )}
+
+      <input
+        type="text"
+        value={displayValue}
+        spellCheck={false}
+        onChange={(e) => setDisplayValue(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={commitTextChange}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") commitTextChange();
+          if (e.key === "Escape") {
+            setDisplayValue(value);
+            setIsFocused(false);
+            (e.target as HTMLInputElement).blur();
+          }
+        }}
+        disabled={isOff}
+        className="w-44 shrink-0 rounded-md border-0 bg-background/20 px-3 py-2 text-center font-mono text-[12px] outline-none transition-all duration-150 hover:bg-background/30"
+        style={{
+          boxShadow: isFocused ? `0 0 0 2px ${cssValue}55` : "none",
+          color: "hsl(var(--foreground))",
+        }}
+      />
+    </Row>
+  );
 }
 
 export interface MultiTagInputProps {
