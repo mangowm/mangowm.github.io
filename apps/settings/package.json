@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "og": "tsx scripts/generate-og.tsx",
     "check": "oxlint && oxfmt --write"
   },
   "dependencies": {
@@ -39,6 +40,7 @@
     "@babel/core": "^7.29.7",
     "@rolldown/plugin-babel": "^0.2.3",
     "@tauri-apps/cli": "^2.11.2",
+    "@takumi-rs/image-response": "^1.8.7",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^25.9.1",
     "@types/react": "^19.2.15",
@@ -47,6 +49,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "oxfmt": "^0.53.0",
     "oxlint": "^1.68.0",
+    "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "vite": "^8.0.14"
   }
