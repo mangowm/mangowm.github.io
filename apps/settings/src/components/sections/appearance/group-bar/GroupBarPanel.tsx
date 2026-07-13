@@ -20,8 +20,6 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
   const paddingX = useConfigInt("group_bar_decorate_padding_x", undefined, 0, 100);
   const paddingY = useConfigInt("group_bar_decorate_padding_y", undefined, 0, 100);
 
-
-
   return (
     <PanelShell>
       <PanelHeader

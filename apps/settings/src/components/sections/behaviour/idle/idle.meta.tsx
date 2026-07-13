@@ -8,7 +8,18 @@ export const idleMeta: SectionMeta = {
   icon: <PowerIcon />,
   panel: IdlePanel,
   parentId: "behaviour",
-  keywords: ["idle", "inhibit", "dpms", "power", "screen", "blank", "cursor", "hide", "timeout", "keypress"],
+  keywords: [
+    "idle",
+    "inhibit",
+    "dpms",
+    "power",
+    "screen",
+    "blank",
+    "cursor",
+    "hide",
+    "timeout",
+    "keypress",
+  ],
   fields: [
     {
       configKey: "idleinhibit_ignore_visible",

@@ -19,8 +19,6 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
   const paddingX = useConfigInt("jump_label_decorate_padding_x", undefined, 0, 100);
   const paddingY = useConfigInt("jump_label_decorate_padding_y", undefined, 0, 100);
 
-
-
   return (
     <PanelShell>
       <PanelHeader

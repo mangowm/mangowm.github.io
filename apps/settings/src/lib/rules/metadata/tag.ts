@@ -69,7 +69,8 @@ export const tagOverrides: OverrideMeta[] = [
   {
     key: "scroller_default_proportion_single",
     label: "Scroller Proportion (Single)",
-    description: "Proportion override when only one window is visible in scroller layout (0=use global)",
+    description:
+      "Proportion override when only one window is visible in scroller layout (0=use global)",
     type: "float",
     category: "Tag",
     range: [0.0, 1.0],
