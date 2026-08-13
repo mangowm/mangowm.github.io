@@ -181,6 +181,7 @@ export const DEFAULTS: ConfigData = {
   group_bar_decorate_padding_y: ["0"],
 
   // Jump Labels (overlay labels in overview navigation mode)
+  jump_labels: ["HJKLASDFGQWERTYUIOPZXCVBNM"],
   jump_label_decorate_font_desc: [""],
   jump_label_decorate_fg_color: ["0xc4939dff"],
   jump_label_decorate_bg_color: ["0x323232ff"],

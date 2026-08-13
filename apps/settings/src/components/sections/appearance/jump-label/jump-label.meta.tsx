@@ -8,8 +8,14 @@ export const jumpLabelMeta: SectionMeta = {
   icon: <ScanSearch />,
   panel: JumpLabelPanel,
   parentId: "appearance",
-  keywords: ["jump", "label", "overlay", "overview", "navigate", "key", "hint"],
+  keywords: ["jump", "label", "overlay", "overview", "navigate", "key", "hint", "character", "letters"],
   fields: [
+    {
+      configKey: "jump_labels",
+      label: "Jump Label Characters",
+      description: "Ordered characters used for quick window selection in jump label mode",
+      aliases: ["character set", "letters", "hint keys", "selection keys"],
+    },
     {
       configKey: "jump_label_decorate_font_desc",
       label: "Font",

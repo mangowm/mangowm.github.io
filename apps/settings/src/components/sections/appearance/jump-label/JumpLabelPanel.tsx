@@ -13,6 +13,7 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const setValue = useConfigStore((s) => s.setValue);
 
+  const jumpLabels = useConfigStr("jump_labels");
   const fontDesc = useConfigStr("jump_label_decorate_font_desc");
   const borderWidth = useConfigInt("jump_label_decorate_border_width", undefined, 0, 100);
   const cornerRadius = useConfigInt("jump_label_decorate_corner_radius", undefined, 0, 100);
@@ -26,6 +27,20 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
         description="Configure the appearance of overlay jump labels shown in overview navigation mode."
         separator={false}
       />
+
+      <div className="mb-5">
+        <SectionCard title="Labels">
+          <div ref={fieldRef("jump_labels")}>
+            <TextInputRow
+              label="Jump Label Characters"
+              description="Ordered characters used for quick window selection in jump label mode."
+              value={jumpLabels}
+              placeholder="HJKLASDFGQWERTYUIOPZXCVBNM"
+              onChange={(v) => setValue("jump_labels", v)}
+            />
+          </div>
+        </SectionCard>
+      </div>
 
       <div className="mb-5">
         <SectionCard title="Label">
