@@ -8,16 +8,7 @@ export const overviewMeta: SectionMeta = {
   icon: <Grid3x3Icon />,
   panel: OverviewPanel,
   parentId: "layout",
-  keywords: [
-    "overview",
-    "hotarea",
-    "corner",
-    "grid",
-    "tab",
-    "gap",
-    "overview gap",
-    "switcher",
-  ],
+  keywords: ["overview", "hotarea", "corner", "grid", "tab", "gap", "overview gap", "switcher"],
   fields: [
     {
       configKey: "enable_hotarea",

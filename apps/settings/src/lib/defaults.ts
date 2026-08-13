@@ -110,7 +110,7 @@ export const DEFAULTS: ConfigData = {
   cursor_hide_on_keypress: ["0"],
   enable_floating_snap: ["0"],
   snap_distance: ["30"],
-  drag_tile_to_tile: ["0"],
+  drag_tile_to_tile: ["1"],
   drag_tile_small: ["1"],
   drag_tile_refresh_interval: ["8.0"],
   drag_floating_refresh_interval: ["8.0"],
@@ -161,7 +161,7 @@ export const DEFAULTS: ConfigData = {
 
   // Behaviour — rendering
   allow_tearing: ["0"],
-  syncobj_enable: ["0"],
+  syncobj_enable: ["1"],
   hdr_depth: ["2"],
 
   // Group Bar (per-window, shown when windows are grouped)
