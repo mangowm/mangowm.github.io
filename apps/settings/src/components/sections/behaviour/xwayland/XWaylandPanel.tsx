@@ -8,6 +8,7 @@ export function XWaylandPanel({ focusKey }: PanelProps) {
   const setValue = useConfigStore((s) => s.setValue);
 
   const xwaylandPersist = useConfigBool("xwayland_persistence");
+  const xwaylandIgnoreScale = useConfigBool("xwayland_ignore_scale");
 
   return (
     <PanelShell>
@@ -25,6 +26,19 @@ export function XWaylandPanel({ focusKey }: PanelProps) {
               description="Keep the XWayland server running even when no X11 clients are connected. Disabling saves memory but may slow down first X11 app launch."
               value={xwaylandPersist}
               onChange={(v) => setValue("xwayland_persistence", v ? "1" : "0")}
+            />
+          </div>
+        </SectionCard>
+      </div>
+
+      <div className="mb-5">
+        <SectionCard title="Scaling">
+          <div ref={fieldRef("xwayland_ignore_scale")}>
+            <ToggleRow
+              label="Ignore XWayland Scale"
+              description="Ignore fractional scale factors for XWayland clients, keeping X11 apps at integer scaling."
+              value={xwaylandIgnoreScale}
+              onChange={(v) => setValue("xwayland_ignore_scale", v ? "1" : "0")}
             />
           </div>
         </SectionCard>

@@ -156,6 +156,7 @@ export const DEFAULTS: ConfigData = {
 
   // Behaviour — xwayland
   xwayland_persistence: ["1"],
+  xwayland_ignore_scale: ["0"],
 
   // Behaviour — security
   allow_shortcuts_inhibit: ["1"],
