@@ -66,4 +66,53 @@ export const MONITOR_ENTRIES: DispatcherInfo[] = [
     }),
     description: "Toggle a monitor's power state by monitor spec",
   },
+  {
+    name: "sleep_monitor",
+    category: "monitor",
+    args: namedArg("monitor", "monitor", "Monitor", "Monitor name (e.g. DP-1)", {
+      placeholder: "e.g. DP-1",
+      required: true,
+    }),
+    description: "Put a monitor into sleep / standby by monitor spec",
+  },
+  {
+    name: "wakeup_monitor",
+    category: "monitor",
+    args: namedArg("monitor", "monitor", "Monitor", "Monitor name (e.g. DP-1)", {
+      placeholder: "e.g. DP-1",
+      required: true,
+    }),
+    description: "Wake up a sleeping monitor by monitor spec",
+  },
+  {
+    name: "sleep_toggle_monitor",
+    category: "monitor",
+    args: namedArg("monitor", "monitor", "Monitor", "Monitor name (e.g. DP-1)", {
+      placeholder: "e.g. DP-1",
+      required: true,
+    }),
+    description: "Toggle sleep / standby state on a monitor by monitor spec",
+  },
+  {
+    name: "togglehdr",
+    category: "monitor",
+    args: [
+      {
+        name: "state",
+        type: "string",
+        label: "State",
+        description: "on, off, or toggle (default)",
+        options: ["on", "off", "toggle"],
+        placeholder: "toggle",
+      },
+      {
+        name: "monitor",
+        type: "string",
+        label: "Monitor",
+        description: "Monitor name (e.g. DP-1). Applies to all monitors when empty",
+        placeholder: "e.g. DP-1",
+      },
+    ],
+    description: "Enable, disable, or toggle HDR on a monitor by monitor spec",
+  },
 ];
