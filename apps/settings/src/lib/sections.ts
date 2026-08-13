@@ -20,6 +20,7 @@ import { pointerMeta } from "@/components/sections/input-devices/pointer/pointer
 import { trackpadMeta } from "@/components/sections/input-devices/trackpad/trackpad.meta";
 
 import { tabletMeta } from "@/components/sections/input-devices/tablet/tablet.meta";
+import { touchMeta } from "@/components/sections/input-devices/touch/touch.meta";
 import { bindingsMeta } from "@/components/sections/bindings/bindings.meta";
 import { animationsMeta } from "@/components/sections/animations/animations.meta";
 import { generalMeta } from "@/components/sections/animations/general/general.meta";
@@ -63,6 +64,7 @@ export const SECTIONS: SectionMeta[] = [
   pointerMeta,
   trackpadMeta,
   tabletMeta,
+  touchMeta,
   animationsMeta,
   generalMeta,
   timingMeta,

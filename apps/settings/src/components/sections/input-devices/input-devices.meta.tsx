@@ -18,6 +18,8 @@ export const inputDevicesMeta: SectionMeta = {
     "click",
     "tap",
     "tablet",
+    "touch",
+    "touchscreen",
     "repeat",
     "acceleration",
     "natural scrolling",

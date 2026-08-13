@@ -144,6 +144,11 @@ export const DEFAULTS: ConfigData = {
   trackpad_accel_speed: ["0.0"],
   button_map: ["0"],
 
+  // Input — touch
+  touch_enable: ["1"],
+  touch_enable_mouse_emulation: ["0"],
+  touch_map_to_mon: [""],
+
   // Input — mouse
   mouse_natural_scrolling: ["0"],
   mouse_accel_profile: ["2"],
