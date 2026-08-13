@@ -53,7 +53,7 @@ export function BindingsPanel({ focusKey }: PanelProps) {
   const modesSet = new Set<string>();
   allEntries.forEach((e) => {
     categoriesSet.add(DISPATCHER_MAP.get(e.func)?.category ?? "other");
-    if (e.type === "keyboard") modesSet.add(e.mode);
+    modesSet.add(e.mode);
   });
   const cats = ["All", ...Array.from(categoriesSet).sort()];
   const modes = ["All", ...Array.from(modesSet).sort()];

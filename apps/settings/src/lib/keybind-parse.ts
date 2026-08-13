@@ -160,7 +160,7 @@ export function parseSingleBinding(
     key: tokens.trigger,
     func: tokens.func,
     args: tokens.args,
-    mode: isKbd ? mode : "default",
+    mode,
     flags: isKbd
       ? parseFlagsFromKey(keyword)
       : { symOnly: false, onLock: false, onRelease: false, pass: false },
@@ -317,7 +317,11 @@ function findFileForConfigKey(files: SourceFile[], key: string): number {
   return 0;
 }
 
-/** Insert a binding; keyboard binds respect mode blocks, non-keyboard appends. */
+/**
+ * Insert a binding respecting its mode: default-mode bindings go into the
+ * leading block (before the first `keymode=` line), named-mode bindings go
+ * into their `keymode=` block, creating it when needed.
+ */
 export function insertModeAwareBinding(
   files: SourceFile[],
   insertEntry: (
@@ -328,23 +332,8 @@ export function insertModeAwareBinding(
   key: string,
   value: string,
   mode: string,
-  isKeyboard: boolean,
   knownFileIdx?: number,
 ): void {
-  if (!isKeyboard) {
-    const idx = (() => {
-      if (knownFileIdx !== undefined) return knownFileIdx;
-      const found = files.findIndex((f) =>
-        f.lines.some((l) => l.type === "entry" && l.key === key),
-      );
-      return found >= 0 ? found : files.length - 1;
-    })();
-    const file = files[idx];
-    if (!file) return;
-    insertEntry(key, value, { fileIdx: idx, afterLineIdx: file.lines.length - 1 });
-    return;
-  }
-
   const targetFileIdx = knownFileIdx ?? findFileForConfigKey(files, key);
   const file = files[targetFileIdx];
   if (!file) return;

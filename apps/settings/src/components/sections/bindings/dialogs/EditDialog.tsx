@@ -139,8 +139,7 @@ export function EditDialog({
 
       setShowAdvanced(
         editingEntry.type === "keyboard" &&
-          (editingEntry.mode !== "default" ||
-            editingEntry.flags.symOnly ||
+          (editingEntry.flags.symOnly ||
             editingEntry.flags.onLock ||
             editingEntry.flags.onRelease ||
             editingEntry.flags.pass),
@@ -205,7 +204,7 @@ export function EditDialog({
       key: key.trim(),
       func: func.trim(),
       args: args.trim(),
-      mode: isKeyboard ? mode : "default",
+      mode,
       flags: isKeyboard ? flags : { symOnly: false, onLock: false, onRelease: false, pass: false },
       fingers: bindingType === "gesture" ? fingers || "3" : "",
     };
@@ -214,22 +213,12 @@ export function EditDialog({
     const resolvedEditing = editingEntry ? allEntries.find((e) => e.id === editingEntry.id) : null;
 
     if (resolvedEditing) {
-      if (isKeyboard && configKey === resolvedEditing.keyword && mode === resolvedEditing.mode) {
-        updateEntry(resolvedEditing.keyword, resolvedEditing.ordinal, value);
-      } else if (!isKeyboard && configKey === resolvedEditing.keyword) {
+      if (configKey === resolvedEditing.keyword && mode === resolvedEditing.mode) {
         updateEntry(resolvedEditing.keyword, resolvedEditing.ordinal, value);
       } else {
         const loc = resolveGlobalIndex(files, resolvedEditing.keyword, resolvedEditing.ordinal);
         removeEntry(resolvedEditing.keyword, resolvedEditing.ordinal);
-        insertModeAwareBinding(
-          files,
-          insertEntry,
-          configKey,
-          value,
-          mode,
-          isKeyboard,
-          loc?.fileIdx,
-        );
+        insertModeAwareBinding(files, insertEntry, configKey, value, mode, loc?.fileIdx);
       }
     } else {
       if (isKeyboard) {
@@ -246,7 +235,7 @@ export function EditDialog({
           }
         }
       }
-      insertModeAwareBinding(files, insertEntry, configKey, value, mode, isKeyboard);
+      insertModeAwareBinding(files, insertEntry, configKey, value, mode);
     }
     onOpenChange(false);
   };
@@ -380,6 +369,27 @@ export function EditDialog({
             </section>
           )}
 
+          <section className="flex flex-col gap-2 shrink-0">
+            <SectionLabel icon={Settings2}>Mode</SectionLabel>
+            <Card>
+              <div className="flex items-center justify-between px-4 py-3">
+                <div className="flex flex-col gap-1 pr-4">
+                  <Label className="text-[13px] font-medium leading-none text-foreground">
+                    Mode
+                  </Label>
+                  <span className="text-[11px] text-muted-foreground/70">
+                    Restrict this binding to a specific context (keymode). Bindings in{" "}
+                    <span className="font-mono text-muted-foreground">common</span> apply in every
+                    mode.
+                  </span>
+                </div>
+                <div className="w-40">
+                  <ModeCombobox value={mode} existingModes={existingModes} onChange={setMode} />
+                </div>
+              </div>
+            </Card>
+          </section>
+
           {isKeyboard && (
             <section className="flex flex-col shrink-0 mt-2">
               <button
@@ -390,7 +400,7 @@ export function EditDialog({
                 <div className="flex items-center gap-1.5">
                   <Settings2 className="size-3.5 text-primary/70" />
                   <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground/80 group-hover:text-foreground transition-colors">
-                    Advanced Context &amp; Flags
+                    Advanced Flags
                   </span>
                 </div>
                 <ChevronDown
@@ -409,24 +419,6 @@ export function EditDialog({
               >
                 <div className="overflow-hidden">
                   <Card>
-                    <div className="flex items-center justify-between px-4 py-3 bg-muted/5 border-b border-border/20">
-                      <div className="flex flex-col gap-1 pr-4">
-                        <Label className="text-[13px] font-medium leading-none text-foreground">
-                          Mode
-                        </Label>
-                        <span className="text-[11px] text-muted-foreground/70">
-                          Restrict this binding to a specific context.
-                        </span>
-                      </div>
-                      <div className="w-40">
-                        <ModeCombobox
-                          value={mode}
-                          existingModes={existingModes}
-                          onChange={setMode}
-                        />
-                      </div>
-                    </div>
-
                     <div className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-muted/10 border-b border-border/20">
                       <div className="flex flex-col gap-1 pr-4">
                         <Label className="text-[13px] font-medium leading-none text-foreground">
