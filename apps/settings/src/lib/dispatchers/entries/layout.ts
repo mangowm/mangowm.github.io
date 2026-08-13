@@ -98,4 +98,10 @@ export const LAYOUT_ENTRIES: DispatcherInfo[] = [
     args: [],
     description: "Set the split window direction to vertical in dwindle layout",
   },
+  {
+    name: "dwindle_toggle_current_split",
+    category: "layout",
+    args: [],
+    description: "Toggle the split direction of the currently focused window in dwindle layout",
+  },
 ];
