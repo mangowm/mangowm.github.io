@@ -1,6 +1,6 @@
 import type { DispatcherInfo } from "../types";
-import { oneArg } from "../helpers";
-import { DIRECTION_OPTS, CIRCLE_DIR_OPTS } from "../types";
+import { oneArg, namedArg } from "../helpers";
+import { DIRECTION_OPTS, CIRCLE_DIR_OPTS, BOOL_FLAGS } from "../types";
 
 export const NAVIGATION_ENTRIES: DispatcherInfo[] = [
   {
@@ -52,5 +52,43 @@ export const NAVIGATION_ENTRIES: DispatcherInfo[] = [
     category: "navigation",
     args: [],
     description: "Swap the focused window with the master window",
+  },
+  {
+    name: "focus_window_or_workspace",
+    category: "navigation",
+    args: oneArg("direction", "Direction", "Focus the window in this direction", {
+      options: [...DIRECTION_OPTS],
+    }),
+    description: "Focus the window in a direction, falling back to the workspace",
+  },
+  {
+    name: "groupfocus",
+    category: "navigation",
+    args: oneArg("circle-dir", "Direction", "Cycle focus within the window group", {
+      options: [...CIRCLE_DIR_OPTS],
+    }),
+    description: "Cycle focus within a window group (next/prev)",
+  },
+  {
+    name: "groupjoin",
+    category: "navigation",
+    args: oneArg("direction", "Direction", "Join the window group in this direction", {
+      options: [...DIRECTION_OPTS],
+    }),
+    description: "Join the adjacent window's group in a direction (left/right/up/down)",
+  },
+  {
+    name: "groupleave",
+    category: "navigation",
+    args: [],
+    description: "Leave the current window group",
+  },
+  {
+    name: "togglejump",
+    category: "navigation",
+    args: namedArg("flag", "bool-flag", "Flag", "Show jump labels when set to 1", {
+      options: [...BOOL_FLAGS],
+    }),
+    description: "Toggle the jump-label overlay for quick window selection",
   },
 ];
