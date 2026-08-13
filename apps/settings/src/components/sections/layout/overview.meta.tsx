@@ -14,7 +14,6 @@ export const overviewMeta: SectionMeta = {
     "corner",
     "grid",
     "tab",
-    "resize",
     "gap",
     "overview gap",
     "switcher",
@@ -43,12 +42,6 @@ export const overviewMeta: SectionMeta = {
       label: "Tab Mode",
       description: "Show window tabs in the overview grid",
       aliases: ["overview tabs", "window tabs", "tab overview"],
-    },
-    {
-      configKey: "ov_no_resize",
-      label: "Disable Resize in Overview",
-      description: "Prevent window resize operations while in overview mode",
-      aliases: ["overview resize", "lock resize", "no resize overview"],
     },
     {
       configKey: "overviewgappi",

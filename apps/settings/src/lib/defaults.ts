@@ -82,7 +82,6 @@ export const DEFAULTS: ConfigData = {
 
   // Overview
   ov_tab_mode: ["1"],
-  ov_no_resize: ["1"],
   hotarea_size: ["10"],
   hotarea_corner: ["2"],
   enable_hotarea: ["0"],

@@ -27,7 +27,6 @@ export function OverviewPanel({ focusKey }: PanelProps) {
   const hotareaSize = useConfigInt("hotarea_size", undefined, 1, 1000);
   const hotareaCorner = useConfigInt("hotarea_corner", undefined, 0, 3);
   const ovTabMode = useConfigBool("ov_tab_mode");
-  const ovNoResize = useConfigBool("ov_no_resize");
   const overviewgappi = useConfigInt("overviewgappi", undefined, 0, 1000);
   const overviewgappo = useConfigInt("overviewgappo", undefined, 0, 1000);
 
@@ -83,14 +82,6 @@ export function OverviewPanel({ focusKey }: PanelProps) {
               description="Show window tabs/headers in the overview grid."
               value={ovTabMode}
               onChange={tb("ov_tab_mode")}
-            />
-          </div>
-          <div ref={fieldRef("ov_no_resize")}>
-            <ToggleRow
-              label="Disable Resize in Overview"
-              description="Prevent window resize operations while overview mode is active."
-              value={ovNoResize}
-              onChange={tb("ov_no_resize")}
             />
           </div>
         </SectionCard>
