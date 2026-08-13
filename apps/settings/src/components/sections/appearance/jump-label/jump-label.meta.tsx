@@ -8,7 +8,17 @@ export const jumpLabelMeta: SectionMeta = {
   icon: <ScanSearch />,
   panel: JumpLabelPanel,
   parentId: "appearance",
-  keywords: ["jump", "label", "overlay", "overview", "navigate", "key", "hint", "character", "letters"],
+  keywords: [
+    "jump",
+    "label",
+    "overlay",
+    "overview",
+    "navigate",
+    "key",
+    "hint",
+    "character",
+    "letters",
+  ],
   fields: [
     {
       configKey: "jump_labels",
