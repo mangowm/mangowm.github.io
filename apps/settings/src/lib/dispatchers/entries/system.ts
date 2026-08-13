@@ -11,6 +11,15 @@ export const SYSTEM_ENTRIES: DispatcherInfo[] = [
   },
   { name: "quit", category: "system", args: [], description: "Exit mangowm" },
   {
+    name: "load_config_file",
+    category: "system",
+    args: namedArg("path", "string", "Config Path", "Absolute path to the config file to load", {
+      placeholder: "/home/user/.config/mango/alt.conf",
+      required: true,
+    }),
+    description: "Load and apply a config file by absolute path",
+  },
+  {
     name: "toggleoverview",
     category: "system",
     args: namedArg("tabmode", "bool-flag", "Tab Mode", "1 = tab overview, 0 = grid overview", {
