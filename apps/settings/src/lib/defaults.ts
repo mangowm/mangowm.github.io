@@ -104,6 +104,8 @@ export const DEFAULTS: ConfigData = {
   focus_cross_monitor: ["0"],
   focus_cross_tag: ["0"],
   exchange_cross_monitor: ["0"],
+  tag_num: ["9"],
+  tag_gather: ["0"],
   axis_bind_apply_timeout: ["100"],
   idleinhibit_ignore_visible: ["0"],
   cursor_hide_timeout: ["0"],

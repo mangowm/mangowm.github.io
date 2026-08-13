@@ -8,8 +8,20 @@ export const tagsMeta: SectionMeta = {
   icon: <TagsIcon />,
   panel: TagsPanel,
   parentId: "behaviour",
-  keywords: ["tag", "carousel", "view", "back", "navigation"],
+  keywords: ["tag", "carousel", "view", "back", "navigation", "count", "number", "gather"],
   fields: [
+    {
+      configKey: "tag_num",
+      label: "Number of Tags",
+      description: "How many tags/workspaces are available (1–31)",
+      aliases: ["tag count", "workspace count", "number of tags", "tags count"],
+    },
+    {
+      configKey: "tag_gather",
+      label: "Gather Tags",
+      description: "Compact tags to remove gaps after windows leave tags",
+      aliases: ["compact tags", "remove gaps", "tag compaction"],
+    },
     {
       configKey: "tag_carousel",
       label: "Tag Carousel",
