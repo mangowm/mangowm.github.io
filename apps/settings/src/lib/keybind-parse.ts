@@ -28,7 +28,7 @@ export function makeBindingId(
   return (h >>> 0).toString(36);
 }
 
-const BIND_KEY_RE = /^bind[slrp]*$/;
+const BIND_KEY_RE = /^bind[slrpc]*$/;
 const MOUSEBIND_KEY = "mousebind";
 const AXISBIND_KEY = "axisbind";
 const SWITCHBIND_KEY = "switchbind";
@@ -41,13 +41,13 @@ export const NON_KEYBOARD_KEYS = [
   GESTUREBIND_KEY,
 ] as const;
 
-/** All 16 canonical bind key variants (s→l→r→p flag order). */
+/** All 32 canonical bind key variants (s→l→r→p→c flag order). */
 export const ALL_BIND_VARIANTS: readonly string[] = (() => {
-  const letters = ["s", "l", "r", "p"] as const;
+  const letters = ["s", "l", "r", "p", "c"] as const;
   const keys: string[] = ["bind"];
-  for (let mask = 1; mask < 16; mask++) {
+  for (let mask = 1; mask < 32; mask++) {
     let key = "bind";
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
       if (mask & (1 << i)) key += letters[i];
     }
     keys.push(key);
@@ -163,7 +163,7 @@ export function parseSingleBinding(
     mode,
     flags: isKbd
       ? parseFlagsFromKey(keyword)
-      : { symOnly: false, onLock: false, onRelease: false, pass: false },
+      : { symOnly: false, onLock: false, onRelease: false, pass: false, allowConflict: false },
     fingers: tokens.fingers ?? "",
   };
 }
@@ -278,6 +278,7 @@ export function bindKeyFromFlags(flags: KeybindFlags): string {
   if (flags.onLock) key += "l";
   if (flags.onRelease) key += "r";
   if (flags.pass) key += "p";
+  if (flags.allowConflict) key += "c";
   return key;
 }
 
@@ -289,6 +290,7 @@ export function parseFlagsFromKey(key: string): KeybindFlags {
     onLock: suffix.includes("l"),
     onRelease: suffix.includes("r"),
     pass: suffix.includes("p"),
+    allowConflict: suffix.includes("c"),
   };
 }
 

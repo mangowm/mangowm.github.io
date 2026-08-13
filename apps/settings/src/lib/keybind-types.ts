@@ -1,9 +1,10 @@
-/** `s` forces keysym matching, `l` works while locked, `r` fires on release, `p` passes through */
+/** `s` forces keysym matching, `l` works while locked, `r` fires on release, `p` passes through, `c` allows conflicts */
 export interface KeybindFlags {
   symOnly: boolean;
   onLock: boolean;
   onRelease: boolean;
   pass: boolean;
+  allowConflict: boolean;
 }
 
 export type BindingType = "keyboard" | "mouse" | "axis" | "switch" | "gesture";

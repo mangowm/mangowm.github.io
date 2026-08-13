@@ -12,6 +12,7 @@ export function useConflictCheck(
   mods: string,
   key: string,
   editingId?: string | null,
+  editingAllowConflict = false,
 ): Keybinding[] {
   return useMemo(() => {
     if (!key.trim()) return [];
@@ -19,7 +20,10 @@ export function useConflictCheck(
     return entries.filter((e) => {
       if (e.type !== "keyboard") return false;
       if (editingId && e.id === editingId) return false;
-      return e.mode === mode && normalizeMods(e.mods) === needle && e.key === key;
+      if (e.mode !== mode || normalizeMods(e.mods) !== needle || e.key !== key) return false;
+      // Mango suppresses the conflict only when BOTH bindings allow it.
+      if (editingAllowConflict && e.flags.allowConflict) return false;
+      return true;
     });
-  }, [entries, mode, mods, key, editingId]);
+  }, [entries, mode, mods, key, editingId, editingAllowConflict]);
 }

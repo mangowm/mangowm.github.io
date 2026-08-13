@@ -118,6 +118,7 @@ export function EditDialog({
     onLock: false,
     onRelease: false,
     pass: false,
+    allowConflict: false,
   });
   const [fingers, setFingers] = useState("3");
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -142,7 +143,8 @@ export function EditDialog({
           (editingEntry.flags.symOnly ||
             editingEntry.flags.onLock ||
             editingEntry.flags.onRelease ||
-            editingEntry.flags.pass),
+            editingEntry.flags.pass ||
+            editingEntry.flags.allowConflict),
       );
     } else {
       setBindingType("keyboard");
@@ -152,7 +154,13 @@ export function EditDialog({
       setArgs("");
       setFingers("3");
       setMode("default");
-      setFlags({ symOnly: false, onLock: false, onRelease: false, pass: false });
+      setFlags({
+        symOnly: false,
+        onLock: false,
+        onRelease: false,
+        pass: false,
+        allowConflict: false,
+      });
       setArgErrors({});
       setShowAdvanced(false);
     }
@@ -168,6 +176,7 @@ export function EditDialog({
     modString,
     key,
     editingEntry?.id,
+    flags.allowConflict,
   );
 
   const currentSchema = DISPATCHER_MAP.get(func)?.args ?? [];
@@ -205,7 +214,9 @@ export function EditDialog({
       func: func.trim(),
       args: args.trim(),
       mode,
-      flags: isKeyboard ? flags : { symOnly: false, onLock: false, onRelease: false, pass: false },
+      flags: isKeyboard
+        ? flags
+        : { symOnly: false, onLock: false, onRelease: false, pass: false, allowConflict: false },
       fingers: bindingType === "gesture" ? fingers || "3" : "",
     };
 
@@ -221,7 +232,9 @@ export function EditDialog({
         insertModeAwareBinding(files, insertEntry, configKey, value, mode, loc?.fileIdx);
       }
     } else {
-      if (isKeyboard) {
+      // With allow-conflict enabled the new binding coexists with same-key
+      // bindings (mango keeps both); otherwise save replaces the conflicts.
+      if (isKeyboard && !flags.allowConflict) {
         const byKeyword = new Map<string, typeof conflicts>();
         for (const c of conflicts) {
           const group = byKeyword.get(c.keyword) ?? [];
@@ -476,6 +489,23 @@ export function EditDialog({
                       <Switch
                         checked={flags.pass}
                         onCheckedChange={(c) => setFlags({ ...flags, pass: c })}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-muted/10">
+                      <div className="flex flex-col gap-1 pr-4">
+                        <Label className="text-[13px] font-medium leading-none text-foreground">
+                          Allow Conflicts
+                        </Label>
+                        <span className="text-[11px] text-muted-foreground/70">
+                          Let this binding coexist with other bindings on the same key — all
+                          matching bindings fire together. Startup conflict warnings are suppressed
+                          only when the other conflicting binding also has this enabled.
+                        </span>
+                      </div>
+                      <Switch
+                        checked={flags.allowConflict}
+                        onCheckedChange={(c) => setFlags({ ...flags, allowConflict: c })}
                       />
                     </div>
                   </Card>

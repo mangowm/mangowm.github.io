@@ -35,6 +35,7 @@ export function BindingsPanel({ focusKey }: PanelProps) {
 
   const conflictIds = new Set<string>();
   const signatureMap = new Map<string, string[]>();
+  const entriesById = new Map(allEntries.map((e) => [e.id, e]));
   allEntries.forEach((e) => {
     if (e.type !== "keyboard") return;
     const mods = serializeModifiers(parseModifiers(e.mods));
@@ -44,7 +45,11 @@ export function BindingsPanel({ focusKey }: PanelProps) {
     signatureMap.set(signature, existing);
   });
   signatureMap.forEach((matchedIds) => {
-    if (matchedIds.length > 1) {
+    // Mango flags the group unless EVERY member allows conflicts.
+    if (
+      matchedIds.length > 1 &&
+      matchedIds.some((id) => !entriesById.get(id)?.flags.allowConflict)
+    ) {
       matchedIds.forEach((id) => conflictIds.add(id));
     }
   });
