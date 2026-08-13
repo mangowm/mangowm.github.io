@@ -294,6 +294,21 @@ export function parseFlagsFromKey(key: string): KeybindFlags {
   };
 }
 
+/**
+ * Mango's key-binding conflict rule (parse_config.h): two same-key bindings
+ * conflict when they share a mode OR either is `common` (active in every
+ * mode), unless BOTH carry the allow-conflict flag.
+ */
+export function bindingsConflict(
+  a: { mode: string; flags: Pick<KeybindFlags, "allowConflict"> },
+  b: { mode: string; flags: Pick<KeybindFlags, "allowConflict"> },
+): boolean {
+  const sameMode = a.mode === b.mode;
+  const anyCommon = a.mode === "common" || b.mode === "common";
+  const bothAllow = a.flags.allowConflict && b.flags.allowConflict;
+  return (sameMode || anyCommon) && !bothAllow;
+}
+
 /** Canonical modifier order used for serialization and display. */
 export const MODIFIER_ORDER = ["super", "ctrl", "alt", "shift", "hyper"] as const;
 

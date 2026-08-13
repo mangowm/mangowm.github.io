@@ -3,7 +3,7 @@ import { Plus, Search, AlertTriangle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useShallow } from "zustand/react/shallow";
 import { useConfigStore } from "@/lib/config-store";
-import { parseModifiers, serializeModifiers } from "@/lib/keybind-parse";
+import { parseModifiers, serializeModifiers, bindingsConflict } from "@/lib/keybind-parse";
 import { DISPATCHER_MAP } from "@/lib/dispatchers";
 import type { Keybinding } from "@/lib/keybind-types";
 import type { PanelProps } from "@/lib/section-types";
@@ -34,23 +34,25 @@ export function BindingsPanel({ focusKey }: PanelProps) {
   const [editingEntry, setEditingEntry] = useState<Keybinding | null>(null);
 
   const conflictIds = new Set<string>();
-  const signatureMap = new Map<string, string[]>();
-  const entriesById = new Map(allEntries.map((e) => [e.id, e]));
+  // Mango compares same-key bindings across modes: a `common` binding collides
+  // with the same key in ANY mode. Group by mods+key, then flag each pair.
+  const groups = new Map<string, Keybinding[]>();
   allEntries.forEach((e) => {
     if (e.type !== "keyboard") return;
     const mods = serializeModifiers(parseModifiers(e.mods));
-    const signature = `${e.mode}|${mods}|${e.key}`;
-    const existing = signatureMap.get(signature) || [];
-    existing.push(e.id);
-    signatureMap.set(signature, existing);
+    const signature = `${mods}|${e.key}`;
+    const group = groups.get(signature);
+    if (group) group.push(e);
+    else groups.set(signature, [e]);
   });
-  signatureMap.forEach((matchedIds) => {
-    // Mango flags the group unless EVERY member allows conflicts.
-    if (
-      matchedIds.length > 1 &&
-      matchedIds.some((id) => !entriesById.get(id)?.flags.allowConflict)
-    ) {
-      matchedIds.forEach((id) => conflictIds.add(id));
+  groups.forEach((group) => {
+    for (let i = 0; i < group.length; i++) {
+      for (let j = i + 1; j < group.length; j++) {
+        if (bindingsConflict(group[i], group[j])) {
+          conflictIds.add(group[i].id);
+          conflictIds.add(group[j].id);
+        }
+      }
     }
   });
 
