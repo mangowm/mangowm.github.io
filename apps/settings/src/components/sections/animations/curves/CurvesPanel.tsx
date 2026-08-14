@@ -212,14 +212,14 @@ export function CurvesPanel({ focusKey }: PanelProps) {
                   onClick={() => setSelected(field.key)}
                   aria-pressed={isSelected}
                   className={cn(
-                    "relative flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors duration-150 hover:bg-muted/15",
+                    "group relative flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors duration-150 hover:bg-muted/15",
                     isSelected && "bg-primary/10 hover:bg-primary/10",
                   )}
                 >
                   <span
                     className={cn(
                       "absolute left-0 top-0 h-full w-[2px] rounded-full bg-ring/60 transition-transform duration-200",
-                      isSelected ? "scale-y-100" : "scale-y-0",
+                      isSelected ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100",
                     )}
                   />
                   <CurveThumb
