@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { ChevronRight } from "lucide-react";
 import { useConfigStore, useConfigStr } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
@@ -213,10 +212,13 @@ export function CurvesPanel({ focusKey }: PanelProps) {
                   onClick={() => setSelected(field.key)}
                   aria-pressed={isSelected}
                   className={cn(
-                    "flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors duration-150 hover:bg-muted/15",
-                    isSelected && "bg-muted/30",
+                    "relative flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors duration-150 hover:bg-muted/15",
+                    isSelected && "bg-primary/10 hover:bg-primary/10",
                   )}
                 >
+                  {isSelected && (
+                    <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-primary" />
+                  )}
                   <CurveThumb
                     curve={thumbCurve}
                     className={cn(
@@ -224,15 +226,14 @@ export function CurvesPanel({ focusKey }: PanelProps) {
                       isSelected ? "text-primary" : "text-muted-foreground",
                     )}
                   />
-                  <span className="min-w-0 flex-1 truncate text-[13px] font-medium leading-none text-foreground">
+                  <span
+                    className={cn(
+                      "min-w-0 flex-1 truncate text-[13px] font-medium leading-none",
+                      isSelected ? "text-primary" : "text-foreground",
+                    )}
+                  >
                     {field.label}
                   </span>
-                  <ChevronRight
-                    className={cn(
-                      "size-3.5 shrink-0 text-muted-foreground/40 transition-transform duration-150",
-                      isSelected && "rotate-90 text-primary",
-                    )}
-                  />
                 </button>
               </div>
             );
