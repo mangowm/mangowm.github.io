@@ -242,18 +242,16 @@ export function CurvesPanel({ focusKey }: PanelProps) {
           })}
         </SectionCard>
 
-        <div className="rounded-xl border border-border/40 bg-card p-5 shadow-sm">
-          <div>
+        <div className="flex flex-col gap-4">
+          <div className="rounded-xl border border-border/40 bg-card p-5 shadow-sm">
             <h3 className="text-sm font-semibold tracking-tight text-foreground">
               {selectedField.label}
             </h3>
             <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
               {selectedField.description}
             </p>
-          </div>
 
-          <div className="mt-4 grid items-center gap-6 md:grid-cols-2">
-            <div className="mx-auto w-full max-w-[240px]">
+            <div className="mx-auto mt-4 w-full max-w-[240px]">
               <div className="rounded-xl border border-border/40 bg-muted/10 p-2">
                 <BezierEditor value={curve} onChange={commitCurve} />
               </div>
@@ -277,8 +275,14 @@ export function CurvesPanel({ focusKey }: PanelProps) {
                 </p>
               )}
             </div>
+          </div>
 
-            <div className="mx-auto w-full max-w-[400px]">
+          <div className="rounded-xl border border-border/40 bg-card p-5 shadow-sm">
+            <h3 className="text-sm font-semibold tracking-tight text-foreground">Motion Preview</h3>
+            <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+              Live preview of the {selectedField.label.toLowerCase()} motion with the current curve.
+            </p>
+            <div className="mt-4">
               <CurveMotionPreview curveKey={selected} curve={curve} />
             </div>
           </div>
