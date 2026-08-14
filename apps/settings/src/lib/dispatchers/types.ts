@@ -40,7 +40,10 @@ export const LAYOUT_NAMES = [
   "vertical_scroller",
 ] as const;
 export const MOUSE_ACTION_OPTS = ["curmove", "curresize"] as const;
-export const TAG_NUMBERS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"] as const;
+export const TAG_COUNT_MAX = 31;
+export const TAG_NUMBERS: readonly string[] = Array.from({ length: TAG_COUNT_MAX }, (_, i) =>
+  String(i + 1),
+);
 export const BOOL_FLAGS = ["0", "1"] as const;
 
 export type DispatcherCategory =

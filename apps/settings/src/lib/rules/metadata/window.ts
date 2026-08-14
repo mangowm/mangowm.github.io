@@ -1,4 +1,5 @@
 import type { OverrideMeta } from "../types";
+import { TAG_COUNT_MAX } from "../../dispatchers/types";
 
 export const windowMatchers = ["appid", "title"];
 
@@ -381,10 +382,10 @@ export const windowOverrides: OverrideMeta[] = [
   {
     key: "tags",
     label: "Tags",
-    description: "Assign window to a specific tag (1–9)",
+    description: `Assign window to a specific tag (1–${TAG_COUNT_MAX})`,
     type: "integer",
     category: "Tags & Monitor",
-    range: [1, 9],
+    range: [1, TAG_COUNT_MAX],
     unit: "",
     appliesTo: ["windowrule"],
     aliases: ["tag assignment", "move to tag"],

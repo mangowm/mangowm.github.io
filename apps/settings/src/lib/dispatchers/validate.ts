@@ -1,5 +1,17 @@
 import type { DispatcherArg } from "./types";
-import { DIRECTION_OPTS, CIRCLE_DIR_OPTS, LAYOUT_NAMES, MOUSE_ACTION_OPTS } from "./types";
+import {
+  DIRECTION_OPTS,
+  CIRCLE_DIR_OPTS,
+  LAYOUT_NAMES,
+  MOUSE_ACTION_OPTS,
+  TAG_COUNT_MAX,
+} from "./types";
+
+function isValidTagNumber(value: string): boolean {
+  if (!/^\d+$/.test(value)) return false;
+  const n = Number(value);
+  return n >= 1 && n <= TAG_COUNT_MAX;
+}
 
 export function validateArgValue(value: string, arg: DispatcherArg): string | null {
   if (arg.required && !value) return `${arg.label} is required`;
@@ -28,13 +40,13 @@ export function validateArgValue(value: string, arg: DispatcherArg): string | nu
       if (isNaN(Number(value))) return "Must be a number";
       break;
     case "tag":
-      if (!/^[1-9]$/.test(value)) return "Must be a tag number 1–9";
+      if (!isValidTagNumber(value)) return `Must be a tag number 1–${TAG_COUNT_MAX}`;
       break;
     case "tag-mask": {
       if (value === "-1" || value === "0") break;
       if (!/^\d+(\|\d+)*$/.test(value)) return "Use numbers separated by |, e.g. 1|3|5";
       const nums = value.split("|");
-      if (nums.some((n) => !/^[1-9]$/.test(n))) return "Each tag must be 1–9";
+      if (nums.some((n) => !isValidTagNumber(n))) return `Each tag must be 1–${TAG_COUNT_MAX}`;
       break;
     }
     case "bool-flag":

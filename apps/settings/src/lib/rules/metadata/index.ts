@@ -1,4 +1,5 @@
 import type { RuleType, OverrideMeta } from "../types";
+import { TAG_NUMBERS } from "../../dispatchers/types";
 import { windowMatchers, windowOverrides } from "./window";
 import { monitorMatchers, monitorOverrides } from "./monitor";
 import { tagMatchers, tagOverrides } from "./tag";
@@ -79,16 +80,8 @@ export const RULE_MATCHER_OPTIONS: Record<string, { value: string; label: string
     { value: "vertical_fair", label: "Vertical Fair" },
   ],
   id: [
-    { value: "0", label: "0" },
-    { value: "1", label: "1" },
-    { value: "2", label: "2" },
-    { value: "3", label: "3" },
-    { value: "4", label: "4" },
-    { value: "5", label: "5" },
-    { value: "6", label: "6" },
-    { value: "7", label: "7" },
-    { value: "8", label: "8" },
-    { value: "9", label: "9" },
+    ...TAG_NUMBERS.map((n) => ({ value: n, label: n })),
+    { value: "*", label: "All (wildcard)" },
   ],
 };
 
@@ -99,7 +92,7 @@ export const RULE_MATCHER_PLACEHOLDERS: Record<string, string> = {
   make: "e.g. Dell Inc.",
   model: "e.g. DELL U2723QE",
   serial: "e.g. ABC123",
-  id: "Tag index 0–9",
+  id: "Tag 1–31 (or * for all)",
   layout_name: "e.g. dwindle, master, scroller",
   monitor_name: "e.g. DP-1",
   monitor_make: "e.g. Dell Inc.",
