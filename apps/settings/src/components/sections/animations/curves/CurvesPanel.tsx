@@ -257,34 +257,35 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             </span>
           </div>
 
-          <div className="mt-4 grid gap-6 md:grid-cols-[minmax(0,280px)_minmax(0,1fr)]">
-            <div>
-              <div className="rounded-xl border border-border/40 bg-muted/10 p-2">
-                <BezierEditor value={curve} onChange={commitCurve} />
-              </div>
-              <div className="mt-3 grid grid-cols-4 gap-2">
-                {NUMERIC_FIELDS.map((nf) => (
-                  <NumberField
-                    key={nf.index}
-                    label={nf.label}
-                    value={curve[nf.index]}
-                    onChange={(n) => {
-                      const next = [...curve] as BezierValue;
-                      next[nf.index] = n;
-                      commitCurve(next);
-                    }}
-                  />
-                ))}
-              </div>
-              {parsed === null && (
-                <p className="mt-2 text-[11px] leading-tight text-red-500/80">
-                  The stored value is not a valid curve — it must be exactly 4 non-negative numbers.
-                </p>
-              )}
+          <div className="mt-4 grid items-center gap-6 md:grid-cols-2">
+            <div className="mx-auto w-full max-w-[240px] rounded-xl border border-border/40 bg-muted/10 p-2">
+              <BezierEditor value={curve} onChange={commitCurve} />
             </div>
 
-            <CurveMotionPreview curveKey={selected} curve={curve} />
+            <div className="mx-auto w-full max-w-[400px]">
+              <CurveMotionPreview curveKey={selected} curve={curve} />
+            </div>
           </div>
+
+          <div className="mt-4 grid grid-cols-4 gap-2">
+            {NUMERIC_FIELDS.map((nf) => (
+              <NumberField
+                key={nf.index}
+                label={nf.label}
+                value={curve[nf.index]}
+                onChange={(n) => {
+                  const next = [...curve] as BezierValue;
+                  next[nf.index] = n;
+                  commitCurve(next);
+                }}
+              />
+            ))}
+          </div>
+          {parsed === null && (
+            <p className="mt-2 text-[11px] leading-tight text-red-500/80">
+              The stored value is not a valid curve — it must be exactly 4 non-negative numbers.
+            </p>
+          )}
         </div>
       </div>
     </PanelShell>

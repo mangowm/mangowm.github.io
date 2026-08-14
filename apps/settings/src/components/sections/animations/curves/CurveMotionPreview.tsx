@@ -113,34 +113,46 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
         </span>
       </div>
 
-      <div
-        className="relative overflow-hidden rounded-lg"
-        style={{ width: STAGE_W, height: STAGE_H, backgroundColor: toCss(rootColor) }}
+      <svg
+        viewBox={`0 0 ${STAGE_W} ${STAGE_H}`}
+        className="block w-full rounded-lg"
+        style={{ backgroundColor: toCss(rootColor) }}
+        role="img"
+        aria-label={`Motion preview — ${label}`}
       >
         {wins.map((w) => (
-          <div
-            key={w.id}
-            className="absolute"
-            style={{
-              left: w.rect.x,
-              top: w.rect.y,
-              width: w.rect.width,
-              height: w.rect.height,
-              opacity: w.opacity,
-            }}
-          >
-            <div
-              className="relative h-full w-full rounded-sm border-2"
-              style={{ borderColor: toCss(w.focused ? focusColor : borderColor) }}
+          <g key={w.id} opacity={w.opacity}>
+            <rect
+              x={w.rect.x + 1}
+              y={w.rect.y + 1}
+              width={w.rect.width - 2}
+              height={w.rect.height - 2}
+              rx={4}
+              fill="none"
+              stroke={toCss(w.focused ? focusColor : borderColor)}
+              strokeWidth={2}
+            />
+            <rect
+              x={w.rect.x + 3}
+              y={w.rect.y + 3}
+              width={w.rect.width - 6}
+              height={w.rect.height - 6}
+              rx={2}
+              fill="rgba(0, 0, 0, 0.35)"
+            />
+            <text
+              x={w.rect.x + 8}
+              y={w.rect.y + w.rect.height - 8}
+              fontSize={10}
+              fontFamily="monospace"
+              letterSpacing={1}
+              fill="rgba(255, 255, 255, 0.4)"
             >
-              <div className="absolute inset-[2px] bg-black/35" />
-              <span className="absolute bottom-1 left-1.5 font-mono text-[10px] uppercase tracking-widest text-white/40">
-                {w.label}
-              </span>
-            </div>
-          </div>
+              {w.label}
+            </text>
+          </g>
         ))}
-      </div>
+      </svg>
     </div>
   );
 }
