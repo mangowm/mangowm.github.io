@@ -27,9 +27,16 @@ function resolveEffect(type: string, animationsOn: boolean): PreviewEffect {
  * Live preview of the window OPEN animation, driven by the real config:
  * `animation_type_open`, `animation_curve_open`, `animation_duration_open`,
  * `zoom_initial_ratio` and `fadein_begin_opacity`. Uses mango's exact easing
- * evaluation and replays whenever the inputs change.
+ * evaluation and replays whenever the inputs change. Pass `curve` to preview a
+ * specific curve instead of the configured `animation_curve_open`.
  */
-export function AnimationPreview() {
+export function AnimationPreview({
+  curve: curveOverride,
+  title = "Animation Preview",
+}: {
+  curve?: BezierValue;
+  title?: string;
+}) {
   const animationsOn = useConfigBool("animations");
   const type = useConfigStr("animation_type_open");
   const duration = useConfigInt("animation_duration_open", undefined, 1, 50000);
@@ -40,10 +47,11 @@ export function AnimationPreview() {
   const focusColor = useConfigStr("focuscolor");
 
   const parsedCurve = parseCurve(rawCurve);
-  const curve: BezierValue =
+  const storedCurve: BezierValue =
     parsedCurve && parsedCurve.length === 4
       ? [parsedCurve[0], parsedCurve[1], parsedCurve[2], parsedCurve[3]]
       : DEFAULT_CURVE;
+  const curve = curveOverride ?? storedCurve;
 
   const effect = resolveEffect(type, animationsOn);
 
@@ -88,7 +96,7 @@ export function AnimationPreview() {
   const translateY = effect === "slide" ? (1 - progress) * 80 : 0;
 
   return (
-    <SectionCard title="Animation Preview">
+    <SectionCard title={title}>
       <div className="px-4 py-3">
         <div
           className="relative h-40 overflow-hidden rounded-lg"

@@ -10,6 +10,7 @@ import { EASING_PRESETS } from "@/lib/easings";
 import { BezierEditor } from "./BezierEditor";
 import { CurveThumb } from "./CurveThumb";
 import { CurveInputRow } from "./CurveInputRow";
+import { AnimationPreview } from "../AnimationPreview";
 import { cn } from "@/lib/utils";
 
 const CURVE_FIELDS: { key: string; label: string; description: string }[] = [
@@ -286,6 +287,10 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             />
           </div>
         </div>
+      </div>
+
+      <div className="mt-4">
+        <AnimationPreview curve={curve} title={`Preview — ${selectedField.label}`} />
       </div>
     </PanelShell>
   );
