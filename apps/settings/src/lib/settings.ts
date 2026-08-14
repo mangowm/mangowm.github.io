@@ -3,6 +3,7 @@ import { BaseDirectory } from "@tauri-apps/api/path";
 
 const SETTINGS_FILE = ".config/mango/.settings";
 const CURRENT_SETTINGS_VERSION = "0.1.1";
+export const MANGO_SUPPORTED_VERSION = "0.16.0";
 
 export async function updateSettings(newConfig: Record<string, any>) {
   let currentSettings: Record<string, any> = { version: CURRENT_SETTINGS_VERSION };
