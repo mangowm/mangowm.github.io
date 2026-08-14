@@ -7,6 +7,7 @@ import type { ColorMode } from "@/lib/color-utils";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import { PanelShell, PanelHeader, SectionCard } from "@/components/sections/section-ui";
+import { cn } from "@/lib/utils";
 
 interface ColorsConfig {
   rootcolor: string;
@@ -318,10 +319,12 @@ const PaletteCard = memo(function PaletteCard({ palette, isActive, onSelect }: P
       type="button"
       onClick={() => onSelect(palette)}
       aria-pressed={isActive}
-      className="relative w-[130px] shrink-0 cursor-pointer rounded-lg border bg-card p-2 text-left outline-none transition-all duration-150"
-      style={{
-        borderColor: isActive ? "hsl(var(--ring))" : "transparent",
-      }}
+      className={cn(
+        "relative w-[130px] shrink-0 cursor-pointer rounded-lg border p-2 text-left outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary/40",
+        isActive
+          ? "border-ring bg-primary/10 hover:bg-primary/15"
+          : "border-border/50 bg-card hover:border-border/70",
+      )}
     >
       <div className="mb-1.5 flex h-[22px] overflow-hidden rounded-[4px]">
         {COLORS_ORDER.filter((key) => palette.colors[key]).map((key) => (
@@ -334,8 +337,10 @@ const PaletteCard = memo(function PaletteCard({ palette, isActive, onSelect }: P
       </div>
 
       <span
-        className="block truncate text-[11px] font-medium"
-        style={{ color: isActive ? "hsl(var(--ring))" : "hsl(var(--muted-foreground))" }}
+        className={cn(
+          "block truncate text-[11px] font-medium",
+          isActive ? "text-primary" : "text-muted-foreground",
+        )}
       >
         {palette.name}
       </span>
@@ -515,7 +520,7 @@ export function ColorsPanel({ focusKey }: PanelProps) {
             <PaletteCard
               key={palette.name}
               palette={palette}
-              isActive={false}
+              isActive={palette.name === activePalette}
               onSelect={handlePaletteSelect}
             />
           ))}
