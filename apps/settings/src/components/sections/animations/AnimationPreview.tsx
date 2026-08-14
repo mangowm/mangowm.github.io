@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useConfigBool, useConfigStr, useConfigInt, useConfigFloat } from "@/lib/config-store";
@@ -39,12 +39,11 @@ export function AnimationPreview() {
   const rootColor = useConfigStr("rootcolor");
   const focusColor = useConfigStr("focuscolor");
 
-  const curve = useMemo<BezierValue>(() => {
-    const parsed = parseCurve(rawCurve);
-    return parsed && parsed.length === 4
-      ? [parsed[0], parsed[1], parsed[2], parsed[3]]
+  const parsedCurve = parseCurve(rawCurve);
+  const curve: BezierValue =
+    parsedCurve && parsedCurve.length === 4
+      ? [parsedCurve[0], parsedCurve[1], parsedCurve[2], parsedCurve[3]]
       : DEFAULT_CURVE;
-  }, [rawCurve]);
 
   const effect = resolveEffect(type, animationsOn);
 
@@ -78,11 +77,11 @@ export function AnimationPreview() {
     return () => cancelAnimationFrame(raf);
   }, [playing, effect, duration, curve, replayKey]);
 
-  const handleReplay = useCallback(() => {
+  const handleReplay = () => {
     setProgress(0);
     setPlaying(true);
     setReplayKey((k) => k + 1);
-  }, []);
+  };
 
   const scale = effect === "zoom" ? zoomInitial + (1 - zoomInitial) * progress : 1;
   const opacity = effect === "fade" ? fadeBegin + (1 - fadeBegin) * progress : 1;
