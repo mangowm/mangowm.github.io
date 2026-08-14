@@ -242,7 +242,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
           })}
         </SectionCard>
 
-        <div className="flex flex-col gap-4">
+        <div className="grid items-start gap-4 md:grid-cols-2">
           <div className="rounded-xl border border-border/40 bg-card p-5 shadow-sm">
             <h3 className="text-sm font-semibold tracking-tight text-foreground">
               {selectedField.label}
