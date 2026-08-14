@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { Play } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useConfigBool, useConfigStr, useConfigInt, useConfigFloat } from "@/lib/config-store";
 import { parseCurve } from "@/lib/curve";
 import type { BezierValue } from "@/lib/curve";
@@ -89,7 +87,6 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
   const duration = Math.max(1, durations[MOTION_DURATION_KEYS[curveKey]] ?? 400);
 
   const [t, setT] = useState(0);
-  const [replayKey, setReplayKey] = useState(0);
 
   useEffect(() => {
     const start = performance.now();
@@ -100,7 +97,7 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [duration, curveKey, replayKey, curve]);
+  }, [duration, curveKey, curve]);
 
   const wins = animationsOn ? renderMotion(curveKey, t, cfg) : [];
   const label = MOTION_LABELS[curveKey] ?? curveKey;
@@ -143,18 +140,6 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
             </div>
           </div>
         ))}
-      </div>
-
-      <div className="mt-2 flex justify-end">
-        <Button
-          size="sm"
-          variant="secondary"
-          onClick={() => setReplayKey((k) => k + 1)}
-          className="gap-1.5"
-        >
-          <Play className="size-3.5" />
-          Replay
-        </Button>
       </div>
     </div>
   );
