@@ -243,18 +243,13 @@ export function CurvesPanel({ focusKey }: PanelProps) {
         </SectionCard>
 
         <div className="rounded-xl border border-border/40 bg-card p-5 shadow-sm">
-          <div className="flex items-start justify-between gap-4">
-            <div className="min-w-0">
-              <h3 className="text-sm font-semibold tracking-tight text-foreground">
-                {selectedField.label}
-              </h3>
-              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                {selectedField.description}
-              </p>
-            </div>
-            <span className="shrink-0 rounded-md bg-muted/50 px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
-              {activePreset ?? "Custom"}
-            </span>
+          <div>
+            <h3 className="text-sm font-semibold tracking-tight text-foreground">
+              {selectedField.label}
+            </h3>
+            <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+              {selectedField.description}
+            </p>
           </div>
 
           <div className="mt-4 grid items-center gap-6 md:grid-cols-2">
