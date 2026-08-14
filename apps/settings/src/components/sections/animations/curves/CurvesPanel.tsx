@@ -174,7 +174,9 @@ export function CurvesPanel({ focusKey }: PanelProps) {
                 aria-pressed={isActive}
                 className="flex w-[104px] shrink-0 flex-col items-center gap-1 rounded-lg border bg-card p-2 text-left outline-none transition-all duration-150 hover:border-border/60 focus-visible:ring-2 focus-visible:ring-primary/40"
                 style={{
-                  borderColor: isActive ? "hsl(var(--ring))" : "hsl(var(--border)/0.5)",
+                  borderColor: isActive
+                    ? "var(--ring)"
+                    : "color-mix(in oklab, var(--border) 50%, transparent)",
                 }}
               >
                 <CurveThumb
@@ -184,7 +186,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
                 <span
                   className="w-full truncate text-center text-[10px] font-medium"
                   style={{
-                    color: isActive ? "hsl(var(--ring))" : "hsl(var(--muted-foreground))",
+                    color: isActive ? "var(--ring)" : "var(--muted-foreground)",
                   }}
                 >
                   {preset.name}

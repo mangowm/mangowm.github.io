@@ -62,7 +62,7 @@ export function BezierEditor({ value, onChange }: BezierEditorProps) {
       onPointerLeave={handlePointerUp}
     >
       {[0.25, 0.5, 0.75].map((g) => (
-        <g key={g} stroke="hsl(var(--muted-foreground) / 0.45)" strokeWidth="0.8">
+        <g key={g} stroke="var(--muted-foreground)" opacity="0.45" strokeWidth="0.8">
           <line x1={sx(g)} y1="0" x2={sx(g)} y2="100" />
           <line x1="0" y1={sy(g)} x2="100" y2={sy(g)} />
         </g>
@@ -73,7 +73,8 @@ export function BezierEditor({ value, onChange }: BezierEditorProps) {
         y1="100"
         x2={sx(x1)}
         y2={sy(y1)}
-        stroke="hsl(var(--muted-foreground) / 0.7)"
+        stroke="var(--muted-foreground)"
+        opacity="0.7"
         strokeWidth="1.2"
         strokeDasharray="3 3"
       />
@@ -82,7 +83,8 @@ export function BezierEditor({ value, onChange }: BezierEditorProps) {
         y1="0"
         x2={sx(x2)}
         y2={sy(y2)}
-        stroke="hsl(var(--muted-foreground) / 0.7)"
+        stroke="var(--muted-foreground)"
+        opacity="0.7"
         strokeWidth="1.2"
         strokeDasharray="3 3"
       />
@@ -90,7 +92,7 @@ export function BezierEditor({ value, onChange }: BezierEditorProps) {
       <path
         d={`M0 100 C ${sx(x1)} ${sy(y1)} ${sx(x2)} ${sy(y2)} 100 0`}
         fill="none"
-        stroke="hsl(var(--primary))"
+        stroke="var(--primary)"
         strokeWidth="2.5"
         strokeLinecap="round"
       />
@@ -99,16 +101,16 @@ export function BezierEditor({ value, onChange }: BezierEditorProps) {
         cx="0"
         cy="100"
         r="2.4"
-        fill="hsl(var(--foreground))"
-        stroke="hsl(var(--muted-foreground))"
+        fill="var(--foreground)"
+        stroke="var(--muted-foreground)"
         strokeWidth="1.5"
       />
       <circle
         cx="100"
         cy="0"
         r="2.4"
-        fill="hsl(var(--foreground))"
-        stroke="hsl(var(--muted-foreground))"
+        fill="var(--foreground)"
+        stroke="var(--muted-foreground)"
         strokeWidth="1.5"
       />
 
@@ -116,8 +118,8 @@ export function BezierEditor({ value, onChange }: BezierEditorProps) {
         cx={sx(x1)}
         cy={sy(y1)}
         r="4.5"
-        fill="hsl(var(--foreground))"
-        stroke="hsl(var(--primary))"
+        fill="var(--foreground)"
+        stroke="var(--primary)"
         strokeWidth="2"
         className="cursor-grab active:cursor-grabbing"
         onPointerDown={handlePointerDown(0)}
@@ -126,8 +128,8 @@ export function BezierEditor({ value, onChange }: BezierEditorProps) {
         cx={sx(x2)}
         cy={sy(y2)}
         r="4.5"
-        fill="hsl(var(--foreground))"
-        stroke="hsl(var(--primary))"
+        fill="var(--foreground)"
+        stroke="var(--primary)"
         strokeWidth="2"
         className="cursor-grab active:cursor-grabbing"
         onPointerDown={handlePointerDown(1)}
@@ -157,5 +159,5 @@ function PreviewDot({ value }: { value: BezierValue }) {
   const px = sx(3 * mt * mt * t * x1 + 3 * mt * t * t * x2 + t * t * t);
   const py = 100 * (mt * mt * mt + 3 * mt * mt * t * (1 - y1) + 3 * mt * t * t * (1 - y2));
 
-  return <circle cx={px} cy={py} r="1.6" fill="hsl(var(--primary))" opacity="0.85" />;
+  return <circle cx={px} cy={py} r="1.6" fill="var(--primary)" opacity="0.85" />;
 }
