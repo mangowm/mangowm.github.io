@@ -197,87 +197,88 @@ export function CurvesPanel({ focusKey }: PanelProps) {
         </div>
       </div>
 
-      <SectionCard title="Animation Curves">
-        {CURVE_FIELDS.map((field) => {
-          const isSelected = selected === field.key;
-          const fieldCurve = parseCurve(values[field.key]);
-          const thumbCurve: BezierValue =
-            fieldCurve && fieldCurve.length === 4
-              ? [fieldCurve[0], fieldCurve[1], fieldCurve[2], fieldCurve[3]]
-              : DEFAULT_CURVE;
-          return (
-            <div key={field.key} ref={fieldRef(field.key)}>
-              <button
-                type="button"
-                onClick={() => setSelected(field.key)}
-                aria-pressed={isSelected}
-                className={cn(
-                  "flex w-full items-center gap-3 px-4 py-3 text-left transition-colors duration-150 hover:bg-muted/15",
-                  isSelected && "bg-muted/30",
-                )}
-              >
-                <CurveThumb
-                  curve={thumbCurve}
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
+        <SectionCard title="Curves">
+          {CURVE_FIELDS.map((field) => {
+            const isSelected = selected === field.key;
+            const fieldCurve = parseCurve(values[field.key]);
+            const thumbCurve: BezierValue =
+              fieldCurve && fieldCurve.length === 4
+                ? [fieldCurve[0], fieldCurve[1], fieldCurve[2], fieldCurve[3]]
+                : DEFAULT_CURVE;
+            return (
+              <div key={field.key} ref={fieldRef(field.key)}>
+                <button
+                  type="button"
+                  onClick={() => setSelected(field.key)}
+                  aria-pressed={isSelected}
                   className={cn(
-                    "size-8 shrink-0",
-                    isSelected ? "text-primary" : "text-muted-foreground",
+                    "flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors duration-150 hover:bg-muted/15",
+                    isSelected && "bg-muted/30",
                   )}
-                />
-                <div className="min-w-0 flex-1">
-                  <span className="block text-[13px] font-medium leading-none text-foreground">
+                >
+                  <CurveThumb
+                    curve={thumbCurve}
+                    className={cn(
+                      "size-7 shrink-0",
+                      isSelected ? "text-primary" : "text-muted-foreground",
+                    )}
+                  />
+                  <span className="min-w-0 flex-1 truncate text-[13px] font-medium leading-none text-foreground">
                     {field.label}
                   </span>
-                  <span className="mt-1 block truncate font-mono text-[11px] text-muted-foreground/70">
-                    {values[field.key]}
-                  </span>
-                </div>
-                <ChevronRight
-                  className={cn(
-                    "size-4 shrink-0 text-muted-foreground/40 transition-transform duration-150",
-                    isSelected && "rotate-90 text-primary",
-                  )}
-                />
-              </button>
+                  <ChevronRight
+                    className={cn(
+                      "size-3.5 shrink-0 text-muted-foreground/40 transition-transform duration-150",
+                      isSelected && "rotate-90 text-primary",
+                    )}
+                  />
+                </button>
+              </div>
+            );
+          })}
+        </SectionCard>
+
+        <div className="rounded-xl border border-border/40 bg-card p-5 shadow-sm">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              <h3 className="text-sm font-semibold tracking-tight text-foreground">
+                {selectedField.label}
+              </h3>
+              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                {selectedField.description}
+              </p>
             </div>
-          );
-        })}
-      </SectionCard>
-
-      <div className="mt-4 rounded-xl border border-border/40 bg-card p-5 shadow-sm">
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <h3 className="text-sm font-semibold tracking-tight text-foreground">
-              {selectedField.label}
-            </h3>
-            <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-              {selectedField.description}
-            </p>
-          </div>
-          <span className="shrink-0 rounded-md bg-muted/50 px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
-            {activePreset ?? "Custom"}
-          </span>
-        </div>
-
-        <div className="flex flex-col gap-6 sm:flex-row">
-          <div className="mx-auto w-full max-w-[220px] rounded-xl border border-border/40 bg-muted/10 p-2">
-            <BezierEditor value={curve} onChange={commitCurve} />
+            <span className="shrink-0 rounded-md bg-muted/50 px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
+              {activePreset ?? "Custom"}
+            </span>
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-col gap-4">
-            <div className="grid grid-cols-4 gap-2">
-              {NUMERIC_FIELDS.map((nf) => (
-                <NumberField
-                  key={nf.index}
-                  label={nf.label}
-                  value={curve[nf.index]}
-                  onChange={(n) => {
-                    const next = [...curve] as BezierValue;
-                    next[nf.index] = n;
-                    commitCurve(next);
-                  }}
-                />
-              ))}
+          <div className="mt-4 grid gap-6 md:grid-cols-[minmax(0,280px)_minmax(0,1fr)]">
+            <div>
+              <div className="rounded-xl border border-border/40 bg-muted/10 p-2">
+                <BezierEditor value={curve} onChange={commitCurve} />
+              </div>
+              <div className="mt-3 grid grid-cols-4 gap-2">
+                {NUMERIC_FIELDS.map((nf) => (
+                  <NumberField
+                    key={nf.index}
+                    label={nf.label}
+                    value={curve[nf.index]}
+                    onChange={(n) => {
+                      const next = [...curve] as BezierValue;
+                      next[nf.index] = n;
+                      commitCurve(next);
+                    }}
+                  />
+                ))}
+              </div>
             </div>
+
+            <CurveMotionPreview curveKey={selected} curve={curve} />
+          </div>
+
+          <div className="mt-4">
             <CurveInputRow
               label="Curve Value"
               description="Comma-separated x1,y1,x2,y2 — non-negative numbers."
@@ -286,10 +287,6 @@ export function CurvesPanel({ focusKey }: PanelProps) {
               onChange={(v) => setValue(selected, v)}
             />
           </div>
-        </div>
-
-        <div className="mt-5 border-t border-border/30 pt-4">
-          <CurveMotionPreview curveKey={selected} curve={curve} />
         </div>
       </div>
     </PanelShell>
