@@ -8,7 +8,6 @@ import {
   STAGE_H,
   renderMotion,
   resolveMotionType,
-  MOTION_LABELS,
   MOTION_DURATION_KEYS,
 } from "@/lib/motion";
 import type { MotionCfg } from "@/lib/motion";
@@ -100,25 +99,15 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
   }, [duration, curveKey, curve]);
 
   const wins = animationsOn ? renderMotion(curveKey, t, cfg) : [];
-  const label = MOTION_LABELS[curveKey] ?? curveKey;
 
   return (
     <div>
-      <div className="mb-2 flex items-center justify-between">
-        <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-          Motion — {label}
-        </span>
-        <span className="font-mono text-[10px] text-muted-foreground/70">
-          {animationsOn ? `${duration} ms` : "animations off"}
-        </span>
-      </div>
-
       <svg
         viewBox={`0 0 ${STAGE_W} ${STAGE_H}`}
         className="block w-full rounded-lg"
         style={{ backgroundColor: toCss(rootColor) }}
         role="img"
-        aria-label={`Motion preview — ${label}`}
+        aria-label="Animation motion preview"
       >
         {wins.map((w) => (
           <g key={w.id} opacity={w.opacity}>
