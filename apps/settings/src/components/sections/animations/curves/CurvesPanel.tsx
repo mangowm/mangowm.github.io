@@ -1,12 +1,8 @@
 import { useConfigStore, useConfigStr } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
-import {
-  PanelShell,
-  PanelHeader,
-  SectionCard,
-  TextInputRow,
-} from "@/components/sections/section-ui";
+import { PanelShell, PanelHeader, SectionCard } from "@/components/sections/section-ui";
+import { CurveInputRow } from "./CurveInputRow";
 
 const CURVE_PLACEHOLDER = "x1,y1,x2,y2 — e.g. 0.46,1.0,0.29,0.99";
 
@@ -33,7 +29,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Window Animations">
           <div ref={fieldRef("animation_curve_move")}>
-            <TextInputRow
+            <CurveInputRow
               label="Move / Resize"
               description="Bezier curve for move and resize animations."
               value={curveMove}
@@ -42,7 +38,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             />
           </div>
           <div ref={fieldRef("animation_curve_open")}>
-            <TextInputRow
+            <CurveInputRow
               label="Window Open"
               description="Bezier curve when a new window opens."
               value={curveOpen}
@@ -51,7 +47,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             />
           </div>
           <div ref={fieldRef("animation_curve_close")}>
-            <TextInputRow
+            <CurveInputRow
               label="Window Close"
               description="Bezier curve when a window closes."
               value={curveClose}
@@ -60,7 +56,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             />
           </div>
           <div ref={fieldRef("animation_curve_tag")}>
-            <TextInputRow
+            <CurveInputRow
               label="Tag Switch"
               description="Bezier curve for tag-switch (workspace) animations."
               value={curveTag}
@@ -69,7 +65,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             />
           </div>
           <div ref={fieldRef("animation_curve_focus")}>
-            <TextInputRow
+            <CurveInputRow
               label="Focus Change"
               description="Bezier curve for focus-change animations."
               value={curveFocus}
@@ -83,7 +79,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Opacity Animations">
           <div ref={fieldRef("animation_curve_opafadein")}>
-            <TextInputRow
+            <CurveInputRow
               label="Fade In Opacity"
               description="Bezier curve for fade-in opacity transitions."
               value={curveFadeIn}
@@ -92,7 +88,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             />
           </div>
           <div ref={fieldRef("animation_curve_opafadeout")}>
-            <TextInputRow
+            <CurveInputRow
               label="Fade Out Opacity"
               description="Bezier curve for fade-out opacity transitions."
               value={curveFadeOut}
