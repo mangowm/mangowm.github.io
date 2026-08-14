@@ -61,7 +61,7 @@ export function ModeCombobox({ value, existingModes, onChange }: ModeComboboxPro
       >
         <Command className="border-0 bg-transparent" shouldFilter={false}>
           <CommandInput autoFocus value={search} onValueChange={setSearch} placeholder="default" />
-          <CommandList className="scrollbar-thin max-h-[180px]">
+          <CommandList className="scrollbar-thin max-h-[180px] pt-2">
             {filtered.length === 0 && !isNew && <CommandEmpty>No matching modes</CommandEmpty>}
             {filtered.map((m) => (
               <CommandItem key={m} value={m} onSelect={() => select(m)}>
