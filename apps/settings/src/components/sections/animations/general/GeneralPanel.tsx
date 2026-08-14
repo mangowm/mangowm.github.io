@@ -9,9 +9,7 @@ import {
   SliderRow,
   SelectRow,
 } from "@/components/sections/section-ui";
-import { AnimationPreview } from "../AnimationPreview";
-
-// Animation type options — empty string is mango's actual default (none selected)
+import { MotionPreview } from "../MotionPreview"; // Animation type options — empty string is mango's actual default (none selected)
 const ANIM_TYPE_OPTIONS = [
   { value: "", label: "Default (none)" },
   { value: "none", label: "None" },
@@ -59,7 +57,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
       />
 
       <div className="mb-5">
-        <AnimationPreview />
+        <MotionPreview />
       </div>
 
       <div className="mb-5">
