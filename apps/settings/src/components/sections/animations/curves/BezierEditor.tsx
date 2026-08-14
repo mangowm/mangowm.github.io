@@ -62,7 +62,7 @@ export function BezierEditor({ value, onChange }: BezierEditorProps) {
       onPointerLeave={handlePointerUp}
     >
       {[0.25, 0.5, 0.75].map((g) => (
-        <g key={g} stroke="hsl(var(--border))" strokeWidth="0.4">
+        <g key={g} stroke="hsl(var(--muted-foreground) / 0.3)" strokeWidth="0.6">
           <line x1={sx(g)} y1="0" x2={sx(g)} y2="100" />
           <line x1="0" y1={sy(g)} x2="100" y2={sy(g)} />
         </g>
@@ -73,7 +73,7 @@ export function BezierEditor({ value, onChange }: BezierEditorProps) {
         y1="100"
         x2={sx(x1)}
         y2={sy(y1)}
-        stroke="hsl(var(--muted-foreground)/0.5)"
+        stroke="hsl(var(--muted-foreground) / 0.6)"
         strokeWidth="1"
         strokeDasharray="3 3"
       />
@@ -82,7 +82,7 @@ export function BezierEditor({ value, onChange }: BezierEditorProps) {
         y1="0"
         x2={sx(x2)}
         y2={sy(y2)}
-        stroke="hsl(var(--muted-foreground)/0.5)"
+        stroke="hsl(var(--muted-foreground) / 0.6)"
         strokeWidth="1"
         strokeDasharray="3 3"
       />

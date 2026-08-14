@@ -252,7 +252,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             </p>
 
             <div className="mx-auto mt-4 w-full max-w-[240px]">
-              <div className="rounded-xl border border-border/40 bg-muted/10 p-2">
+              <div className="rounded-xl border border-border/40 bg-muted/20 p-2">
                 <BezierEditor value={curve} onChange={commitCurve} />
               </div>
               <div className="mt-3 grid grid-cols-4 gap-2">
