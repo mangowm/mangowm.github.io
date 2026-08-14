@@ -172,22 +172,25 @@ export function CurvesPanel({ focusKey }: PanelProps) {
                 type="button"
                 onClick={() => commitCurve(preset.curve)}
                 aria-pressed={isActive}
-                className="flex w-[104px] shrink-0 flex-col items-center gap-1 rounded-lg border bg-card p-2 text-left outline-none transition-all duration-150 hover:border-border/60 focus-visible:ring-2 focus-visible:ring-primary/40"
-                style={{
-                  borderColor: isActive
-                    ? "var(--ring)"
-                    : "color-mix(in oklab, var(--border) 50%, transparent)",
-                }}
+                className={cn(
+                  "flex w-[104px] shrink-0 flex-col items-center gap-1 rounded-lg border p-2 text-left outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary/40",
+                  isActive
+                    ? "border-ring bg-primary/10 hover:bg-primary/15"
+                    : "border-border/50 bg-card hover:border-border/70",
+                )}
               >
                 <CurveThumb
                   curve={preset.curve}
-                  className={cn("h-8 w-full", isActive ? "text-primary" : "text-foreground/80")}
+                  className={cn(
+                    "h-8 w-full",
+                    isActive ? "text-primary" : "text-muted-foreground/60",
+                  )}
                 />
                 <span
-                  className="w-full truncate text-center text-[10px] font-medium"
-                  style={{
-                    color: isActive ? "var(--ring)" : "var(--muted-foreground)",
-                  }}
+                  className={cn(
+                    "w-full truncate text-center text-[10px] font-medium",
+                    isActive ? "text-primary" : "text-muted-foreground",
+                  )}
                 >
                   {preset.name}
                 </span>
