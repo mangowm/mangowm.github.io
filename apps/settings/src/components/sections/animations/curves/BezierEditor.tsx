@@ -159,5 +159,15 @@ function PreviewDot({ value }: { value: BezierValue }) {
   const px = sx(3 * mt * mt * t * x1 + 3 * mt * t * t * x2 + t * t * t);
   const py = 100 * (mt * mt * mt + 3 * mt * mt * t * (1 - y1) + 3 * mt * t * t * (1 - y2));
 
-  return <circle cx={px} cy={py} r="1.6" fill="var(--primary)" opacity="0.85" />;
+  return (
+    <circle
+      cx={px}
+      cy={py}
+      r="3"
+      fill="var(--foreground)"
+      stroke="var(--primary)"
+      strokeWidth="1.2"
+      opacity="0.9"
+    />
+  );
 }
