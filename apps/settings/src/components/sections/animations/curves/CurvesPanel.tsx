@@ -10,7 +10,7 @@ import { EASING_PRESETS } from "@/lib/easings";
 import { BezierEditor } from "./BezierEditor";
 import { CurveThumb } from "./CurveThumb";
 import { CurveInputRow } from "./CurveInputRow";
-import { MotionPreview } from "../MotionPreview";
+import { CurveMotionPreview } from "./CurveMotionPreview";
 import { cn } from "@/lib/utils";
 
 const CURVE_FIELDS: { key: string; label: string; description: string }[] = [
@@ -287,10 +287,10 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             />
           </div>
         </div>
-      </div>
 
-      <div className="mt-4">
-        <MotionPreview override={{ key: selected, curve }} />
+        <div className="mt-5 border-t border-border/30 pt-4">
+          <CurveMotionPreview curveKey={selected} curve={curve} />
+        </div>
       </div>
     </PanelShell>
   );
