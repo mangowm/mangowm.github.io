@@ -3,6 +3,7 @@ import { useConfigBool, useConfigStr, useConfigInt, useConfigFloat } from "@/lib
 import { parseCurve } from "@/lib/curve";
 import type { BezierValue } from "@/lib/curve";
 import { toCss } from "@/lib/color-utils";
+import { cn } from "@/lib/utils";
 import {
   STAGE_W,
   STAGE_H,
@@ -13,6 +14,12 @@ import {
 import type { MotionCfg } from "@/lib/motion";
 
 const DEFAULT_CURVE: BezierValue = [0.25, 0.1, 0.25, 1];
+
+const SPEED_OPTIONS: { speed: number; label: string }[] = [
+  { speed: 0.25, label: "¼×" },
+  { speed: 0.5, label: "½×" },
+  { speed: 1, label: "1×" },
+];
 
 const parseStoredCurve = (raw: string): BezierValue => {
   const parsed = parseCurve(raw);
@@ -85,18 +92,21 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
 
   const duration = Math.max(1, durations[MOTION_DURATION_KEYS[curveKey]] ?? 400);
 
+  const [speed, setSpeed] = useState(0.5);
   const [t, setT] = useState(0);
+
+  const playbackDuration = Math.max(1, duration / speed);
 
   useEffect(() => {
     const start = performance.now();
     let raf = 0;
     const tick = (now: number) => {
-      setT(((now - start) % duration) / duration);
+      setT(((now - start) % playbackDuration) / playbackDuration);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [duration, curveKey, curve]);
+  }, [playbackDuration, curveKey, curve]);
 
   const wins = animationsOn ? renderMotion(curveKey, t, cfg) : [];
 
@@ -142,6 +152,25 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
           </g>
         ))}
       </svg>
+
+      <div className="mt-2 flex items-center justify-center gap-1">
+        {SPEED_OPTIONS.map(({ speed: s, label }) => (
+          <button
+            key={s}
+            type="button"
+            onClick={() => setSpeed(s)}
+            aria-pressed={speed === s}
+            className={cn(
+              "rounded-md px-2.5 py-1 font-mono text-[11px] transition-colors",
+              speed === s
+                ? "bg-primary/15 text-primary"
+                : "text-muted-foreground/60 hover:text-foreground",
+            )}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
