@@ -163,7 +163,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
           </span>
           <div className="h-px flex-1 bg-border/20" />
         </div>
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div className="scrollbar-thin flex gap-2 overflow-x-auto pb-1">
           {EASING_PRESETS.map((preset) => {
             const isActive = activePreset === preset.name;
             return (
