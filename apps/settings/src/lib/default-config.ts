@@ -65,6 +65,7 @@ scroller_proportion_preset=0.5,0.8,1.0
 new_is_master=1
 default_mfact=0.55
 default_nmaster=1
+tag_num=9
 smartgaps=0
 
 # Dwindle Layout Setting
@@ -180,7 +181,7 @@ bind=SUPER+SHIFT,Right,exchange_client,right
 
 # switch window status
 bind=SUPER,g,toggleglobal,
-bind=ALT,Tab,toggleoverview,
+bind=ALT,Tab,togglejump,
 bind=ALT,backslash,togglefloating,
 bind=ALT,a,togglemaximizescreen,
 bind=ALT,f,togglefullscreen,
