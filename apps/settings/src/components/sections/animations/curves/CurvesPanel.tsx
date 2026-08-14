@@ -8,7 +8,6 @@ import type { BezierValue } from "@/lib/curve";
 import { EASING_PRESETS } from "@/lib/easings";
 import { BezierEditor } from "./BezierEditor";
 import { CurveThumb } from "./CurveThumb";
-import { CurveInputRow } from "./CurveInputRow";
 import { CurveMotionPreview } from "./CurveMotionPreview";
 import { cn } from "@/lib/utils";
 
@@ -277,19 +276,14 @@ export function CurvesPanel({ focusKey }: PanelProps) {
                   />
                 ))}
               </div>
+              {parsed === null && (
+                <p className="mt-2 text-[11px] leading-tight text-red-500/80">
+                  The stored value is not a valid curve — it must be exactly 4 non-negative numbers.
+                </p>
+              )}
             </div>
 
             <CurveMotionPreview curveKey={selected} curve={curve} />
-          </div>
-
-          <div className="mt-4">
-            <CurveInputRow
-              label="Curve Value"
-              description="Comma-separated x1,y1,x2,y2 — non-negative numbers."
-              value={rawValue}
-              placeholder="0.46,1.0,0.29,0.99"
-              onChange={(v) => setValue(selected, v)}
-            />
           </div>
         </div>
       </div>
