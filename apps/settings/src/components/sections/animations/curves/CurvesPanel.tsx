@@ -242,7 +242,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
           })}
         </SectionCard>
 
-        <div className="grid items-start gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-xl border border-border/40 bg-card p-5 shadow-sm">
             <h3 className="text-sm font-semibold tracking-tight text-foreground">
               {selectedField.label}
@@ -277,12 +277,12 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-border/40 bg-card p-5 shadow-sm">
+          <div className="flex flex-col rounded-xl border border-border/40 bg-card p-5 shadow-sm">
             <h3 className="text-sm font-semibold tracking-tight text-foreground">Motion Preview</h3>
             <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
               Live preview of the {selectedField.label.toLowerCase()} motion with the current curve.
             </p>
-            <div className="mt-4">
+            <div className="mt-4 flex flex-1 items-center">
               <CurveMotionPreview curveKey={selected} curve={curve} />
             </div>
           </div>
