@@ -163,10 +163,10 @@ function PreviewDot({ value }: { value: BezierValue }) {
     <circle
       cx={px}
       cy={py}
-      r="3"
+      r="2.4"
       fill="var(--foreground)"
       stroke="var(--primary)"
-      strokeWidth="1.2"
+      strokeWidth="1"
       opacity="0.9"
     />
   );
