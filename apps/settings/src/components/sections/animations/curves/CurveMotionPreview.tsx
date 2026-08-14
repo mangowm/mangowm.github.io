@@ -101,10 +101,10 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
   const wins = animationsOn ? renderMotion(curveKey, t, cfg) : [];
 
   return (
-    <div>
+    <div className="w-full">
       <svg
         viewBox={`0 0 ${STAGE_W} ${STAGE_H}`}
-        className="block w-full rounded-lg"
+        className="mx-auto block w-full max-w-[420px] rounded-lg"
         style={{ backgroundColor: toCss(rootColor) }}
         role="img"
         aria-label="Animation motion preview"

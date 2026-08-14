@@ -282,7 +282,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
               Live preview of the {selectedField.label.toLowerCase()} motion with the current curve.
             </p>
-            <div className="mt-4 flex flex-1 items-center">
+            <div className="mt-4 flex flex-1 items-center justify-center">
               <CurveMotionPreview curveKey={selected} curve={curve} />
             </div>
           </div>
