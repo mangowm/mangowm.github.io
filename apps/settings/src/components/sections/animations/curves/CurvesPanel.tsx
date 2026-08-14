@@ -216,9 +216,12 @@ export function CurvesPanel({ focusKey }: PanelProps) {
                     isSelected && "bg-primary/10 hover:bg-primary/10",
                   )}
                 >
-                  {isSelected && (
-                    <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-primary" />
-                  )}
+                  <span
+                    className={cn(
+                      "absolute left-0 top-0 h-full w-[2px] rounded-full bg-ring/60 transition-transform duration-200",
+                      isSelected ? "scale-y-100" : "scale-y-0",
+                    )}
+                  />
                   <CurveThumb
                     curve={thumbCurve}
                     className={cn(
