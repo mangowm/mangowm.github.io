@@ -1,6 +1,14 @@
-import { useState, useRef, useEffect } from "react";
-import { Command } from "cmdk";
+import { useEffect, useState } from "react";
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
 
 interface ModeComboboxProps {
   value: string;
@@ -11,92 +19,64 @@ interface ModeComboboxProps {
 export function ModeCombobox({ value, existingModes, onChange }: ModeComboboxProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState(value);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setSearch(value);
   }, [value]);
 
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-        if (search.trim()) onChange(search.trim());
-      }
-    }
-    if (open) document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [open, search, onChange]);
+  const q = search.trim().toLowerCase();
+  const filtered = existingModes.filter((m) => m.toLowerCase().includes(q));
+  const isNew = q !== "" && !existingModes.includes(search.trim());
 
-  const filtered = existingModes.filter((m) => m.toLowerCase().includes(search.toLowerCase()));
-  const isNew = search.trim() && !existingModes.includes(search.trim());
+  const select = (mode: string) => {
+    onChange(mode);
+    setOpen(false);
+  };
 
   return (
-    <div className="relative w-full" ref={containerRef}>
-      <button
-        type="button"
-        onClick={() => {
-          setOpen(!open);
-          if (!open) setTimeout(() => inputRef.current?.focus(), 0);
-        }}
-        className="flex w-full items-center justify-between h-11 rounded-lg px-3.5 text-sm font-mono transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+    <Popover
+      open={open}
+      onOpenChange={(o) => {
+        setOpen(o);
+        if (!o) setSearch(value);
+      }}
+    >
+      <PopoverTrigger
+        role="combobox"
+        aria-expanded={open}
+        className={cn(
+          "flex h-11 w-full items-center justify-between gap-2 rounded-lg border border-border/40 px-3 text-sm transition-all",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+          value ? "bg-card hover:bg-accent/40" : "bg-muted/30 hover:bg-muted/50",
+        )}
       >
-        <span className={value ? "text-foreground" : "text-muted-foreground/60"}>
-          {value || "default"}
-        </span>
-        <ChevronDownIcon className="size-4 text-muted-foreground/50" />
-      </button>
+        <span className="min-w-0 truncate font-mono text-foreground">{value || "default"}</span>
+        <ChevronDownIcon className="size-4 shrink-0 text-muted-foreground/50" />
+      </PopoverTrigger>
 
-      {open && (
-        <div className="absolute top-[calc(100%+4px)] z-50 w-full overflow-hidden rounded-xl border border-border/50 bg-popover shadow-xl animate-in fade-in zoom-in-95 duration-100">
-          <Command className="flex flex-col overflow-hidden bg-transparent">
-            <div className="flex items-center gap-2 border-b border-border/30 px-3 py-2">
-              <Command.Input
-                ref={inputRef}
-                autoFocus
-                value={search}
-                onValueChange={setSearch}
-                placeholder="default"
-                className="flex-1 bg-transparent text-sm font-mono outline-none placeholder:text-muted-foreground/40"
-              />
-            </div>
-            <Command.List className="max-h-[180px] overflow-y-auto p-1">
-              {filtered.length === 0 && !isNew && (
-                <Command.Empty className="py-3 text-center text-xs text-muted-foreground">
-                  No matching modes
-                </Command.Empty>
-              )}
-              {filtered.map((m) => (
-                <Command.Item
-                  key={m}
-                  value={m}
-                  onSelect={() => {
-                    onChange(m);
-                    setOpen(false);
-                  }}
-                  className="flex cursor-pointer items-center rounded-md px-2 py-1.5 text-sm font-mono data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground transition-colors"
-                >
-                  {m}
-                </Command.Item>
-              ))}
-              {isNew && (
-                <Command.Item
-                  value={search.trim()}
-                  onSelect={() => {
-                    onChange(search.trim());
-                    setOpen(false);
-                  }}
-                  className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm text-primary data-[selected=true]:bg-accent transition-colors"
-                >
-                  <PlusIcon className="size-3.5" />
-                  Add &quot;{search.trim()}&quot;
-                </Command.Item>
-              )}
-            </Command.List>
-          </Command>
-        </div>
-      )}
-    </div>
+      <PopoverContent
+        align="start"
+        sideOffset={6}
+        className="w-56 rounded-xl border-border/60 bg-background/95 p-0 shadow-xl backdrop-blur-xl"
+      >
+        <Command className="border-0 bg-transparent" shouldFilter={false}>
+          <CommandInput autoFocus value={search} onValueChange={setSearch} placeholder="default" />
+          <CommandList className="scrollbar-thin max-h-[180px]">
+            {filtered.length === 0 && !isNew && <CommandEmpty>No matching modes</CommandEmpty>}
+            {filtered.map((m) => (
+              <CommandItem key={m} value={m} onSelect={() => select(m)}>
+                <span className="font-mono">{m}</span>
+              </CommandItem>
+            ))}
+            {isNew && (
+              <CommandItem value={search.trim()} onSelect={() => select(search.trim())}>
+                <PlusIcon className="size-3.5 text-primary" />
+                <span>Add &quot;{search.trim()}&quot;</span>
+              </CommandItem>
+            )}
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 }
