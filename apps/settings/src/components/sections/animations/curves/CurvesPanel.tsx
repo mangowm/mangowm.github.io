@@ -267,7 +267,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-4 gap-2">
+          <div className="mx-auto mt-4 grid w-full max-w-[300px] grid-cols-4 gap-2">
             {NUMERIC_FIELDS.map((nf) => (
               <NumberField
                 key={nf.index}
@@ -282,7 +282,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
             ))}
           </div>
           {parsed === null && (
-            <p className="mt-2 text-[11px] leading-tight text-red-500/80">
+            <p className="mt-2 text-center text-[11px] leading-tight text-red-500/80">
               The stored value is not a valid curve — it must be exactly 4 non-negative numbers.
             </p>
           )}
