@@ -9,7 +9,8 @@ import {
   SliderRow,
   SelectRow,
 } from "@/components/sections/section-ui";
-import { MotionPreview } from "../MotionPreview"; // Animation type options — empty string is mango's actual default (none selected)
+
+// Animation type options — empty string is mango's actual default (none selected)
 const ANIM_TYPE_OPTIONS = [
   { value: "", label: "Default (none)" },
   { value: "none", label: "None" },
@@ -55,10 +56,6 @@ export function GeneralPanel({ focusKey }: PanelProps) {
         description="Master toggles, animation types, fade options, zoom ratios, and tag-switch direction."
         separator={false}
       />
-
-      <div className="mb-5">
-        <MotionPreview />
-      </div>
 
       <div className="mb-5">
         <SectionCard title="Master Controls">
