@@ -16,8 +16,8 @@ import type { MotionCfg } from "@/lib/motion";
 const DEFAULT_CURVE: BezierValue = [0.25, 0.1, 0.25, 1];
 
 const SPEED_OPTIONS: { speed: number; label: string }[] = [
-  { speed: 0.25, label: "¼×" },
-  { speed: 0.5, label: "½×" },
+  { speed: 0.25, label: "0.25×" },
+  { speed: 0.5, label: "0.5×" },
   { speed: 1, label: "1×" },
 ];
 
