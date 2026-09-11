@@ -57,7 +57,7 @@ Configuration for external mice.
 
 ### Trackpad Settings
 
-Specific settings for laptop touchpads. Some settings may require a relogin to take effect.
+Specific settings for laptop trackpads. Some settings may require a relogin to take effect.
 
 | Setting | Default | Description |
 | :--- | :--- | :--- |
@@ -221,6 +221,8 @@ devicerule=type:<device-type>,option:value
 Put the printed `name` after `name:` (the `identifier` field,
 `vendor:product:name`, also works). Use `type:` to match all devices of a
 type: `keyboard`, `pointer`, `trackpad`, `touch`, `switch`, `tablet`, `pad`.
+The historical spelling `touchpad` is still accepted as a deprecated alias for
+`trackpad`.
 
 Exact `name:` matches take priority over `type:` matches; the first matching
 rule wins. A rule with keyboard options (`kb_*`, `repeat_*`) turns that
