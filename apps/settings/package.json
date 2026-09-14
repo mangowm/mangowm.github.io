@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
+    "dev:desktop": "tauri dev",
     "build": "vp build",
-    "check": "vp check --fix",
+    "build:desktop": "tauri build",
     "preview": "vp preview",
-    "tauri": "tauri",
+    "check": "vp check --fix",
     "og": "tsx scripts/generate-og.tsx"
   },
   "dependencies": {
