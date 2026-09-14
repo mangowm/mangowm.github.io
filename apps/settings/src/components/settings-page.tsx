@@ -31,7 +31,7 @@ export function SettingsPage() {
     if (hasFiles) {
       setReady(true);
     } else {
-      load().finally(() => setReady(true));
+      void load().finally(() => setReady(true));
     }
   }, [load, hasFiles]);
 

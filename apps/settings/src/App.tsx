@@ -9,7 +9,7 @@ export default function App() {
   const [view, setView] = useState<"loading" | "onboarding" | "settings">("loading");
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       setView((await isOnboardingCompleted()) ? "settings" : "onboarding");
     })();
   }, []);

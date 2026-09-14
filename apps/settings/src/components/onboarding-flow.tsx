@@ -49,7 +49,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       const splash = new Promise((r) => setTimeout(r, 800));
       try {
         const [dirExists] = await Promise.all([exists(BASE, { baseDir: BD }), splash]);

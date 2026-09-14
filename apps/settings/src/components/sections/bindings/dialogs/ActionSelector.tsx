@@ -65,7 +65,7 @@ const CategoryIcon = ({
   category,
   className,
 }: {
-  category: DispatcherCategory | string;
+  category: DispatcherCategory;
   className?: string;
 }) => {
   const icons: Record<string, React.ElementType> = {
@@ -112,7 +112,7 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
   type ScoredItem = { d: DispatcherInfo; score: number };
 
   const filtered = (() => {
-    const result: { category: string; items: ScoredItem[] }[] = [];
+    const result: { category: DispatcherCategory; items: ScoredItem[] }[] = [];
 
     if (!q) {
       for (const [cat, items] of categories) {

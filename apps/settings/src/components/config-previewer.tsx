@@ -179,9 +179,13 @@ export function ConfigPreviewer() {
 
   const handleCopy = useCallback(() => {
     if (!selectedFile) return;
-    navigator.clipboard.writeText(serializeConfig(selectedFile.lines));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    navigator.clipboard
+      .writeText(serializeConfig(selectedFile.lines))
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      })
+      .catch(() => {});
   }, [selectedFile]);
 
   const displayPath =
