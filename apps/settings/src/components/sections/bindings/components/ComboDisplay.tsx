@@ -1,4 +1,4 @@
-import { BindingType, MOUSE_BUTTON_LABELS } from "@/lib/keybind-types";
+import { type BindingType, MOUSE_BUTTON_LABELS } from "@/lib/keybind-types";
 import { xkbToDisplay } from "@/lib/keyboard";
 import { parseModifiers } from "@/lib/keybind-parse";
 import { KeyBadge } from "./KeyBadge";
