@@ -2,7 +2,7 @@ import react from "@vitejs/plugin-react";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite-plus";
 import tailwindcss from "@tailwindcss/vite";
-import mdx from "fumadocs-mdx/vite";
+import { fumadocsMdx } from "fumadocs-mdx/vite";
 import { nitro } from "nitro/vite";
 import { lazyPlugins } from "vite-plus";
 
@@ -11,7 +11,7 @@ export default defineConfig({
     port: 3000,
   },
   plugins: lazyPlugins(() => [
-    mdx(),
+    fumadocsMdx(),
     tailwindcss(),
     tanstackStart({
       spa: {

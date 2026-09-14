@@ -6,20 +6,20 @@ packages:
 catalogMode: prefer
 
 catalog:
-  "@types/node": ^26
-  typescript: ^6
+  "@types/node": ^26.5.1
+  typescript: ^7.0.2
   vite: npm:@voidzero-dev/vite-plus-core@latest
-  vitest: 4.1.9
+  vitest: 4.1.11
   vite-plus: ^0.3.1
-  react: ^19
-  react-dom: ^19
-  "@rolldown/plugin-babel": ^0.2.3
+  react: ^19.3.0
+  react-dom: ^19.3.0
+  "@rolldown/plugin-babel": ^0.2.4
   babel-plugin-react-compiler: ^1.0.0
-  tailwindcss: ^4.3.1
-  "@tailwindcss/vite": ^4.3.1
-  lucide-react: ^1.23.0
-  "@tanstack/react-router": 1.170.16
-  "@tanstack/router-plugin": ^1.168.19
+  tailwindcss: ^4.3.3
+  "@tailwindcss/vite": ^4.3.3
+  lucide-react: ^1.45.0
+  "@tanstack/react-router": 1.170.36
+  "@tanstack/router-plugin": ^1.168.38
   "@tauri-apps/cli": ^2.11.4
 overrides:
   vite: "catalog:"
@@ -33,3 +33,5 @@ peerDependencyRules:
     vitest: "*"
 allowBuilds:
   esbuild: true
+minimumReleaseAgeExclude:
+  - "@tanstack/*"
