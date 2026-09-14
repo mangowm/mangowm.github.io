@@ -1,0 +1,61 @@
+import { cn } from "@/lib/utils";
+import { useConfigStore, useConfigStr } from "@/lib/config-store";
+import { LAYOUT_NAMES } from "@/lib/dispatchers/types";
+
+export function LayoutToggleGroup() {
+  const setValue = useConfigStore((s) => s.setValue);
+
+  const raw = useConfigStr("circle_layout", "");
+
+  const activeLayouts = raw
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+
+  const activeSet = new Set(activeLayouts);
+
+  const inactiveLayouts = LAYOUT_NAMES.filter((name) => !activeSet.has(name));
+
+  const toggle = (name: string) => {
+    if (activeSet.has(name)) {
+      setValue("circle_layout", activeLayouts.filter((l) => l !== name).join(","));
+    } else {
+      setValue("circle_layout", [...activeLayouts, name].join(","));
+    }
+  };
+
+  return (
+    <div className="flex flex-wrap gap-1.5 px-4 py-3">
+      {activeLayouts.map((name) => (
+        <button
+          key={name}
+          type="button"
+          onClick={() => toggle(name)}
+          className={cn(
+            "flex items-center justify-center h-8 rounded-lg border px-3 font-medium select-none transition-all duration-100 text-[12px]",
+            "bg-primary text-primary-foreground border-primary/30 shadow-sm",
+          )}
+        >
+          {name}
+        </button>
+      ))}
+
+      {inactiveLayouts.length > 0 && activeLayouts.length > 0 && (
+        <span className="w-px self-stretch mx-1 bg-border/30" />
+      )}
+      {inactiveLayouts.map((name) => (
+        <button
+          key={name}
+          type="button"
+          onClick={() => toggle(name)}
+          className={cn(
+            "flex items-center justify-center h-8 rounded-lg border px-3 font-medium select-none transition-all duration-100 text-[12px]",
+            "border-dashed border-muted-foreground/25 text-muted-foreground/55 bg-transparent hover:bg-muted/30 hover:border-muted-foreground/50 hover:text-muted-foreground/75",
+          )}
+        >
+          {name}
+        </button>
+      ))}
+    </div>
+  );
+}
