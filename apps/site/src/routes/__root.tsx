@@ -1,4 +1,4 @@
-import { createRootRoute, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import appCss from "../App.css?url";
 import { Header } from "../components/header";
 import { siteConfig } from "../constants";
@@ -48,15 +48,6 @@ export const Route = createRootRoute({
     ],
   }),
   component: RootComponent,
-  notFoundComponent: () => (
-    <div className="flex flex-col items-center justify-center flex-1 px-4 py-24 text-center">
-      <h1 className="text-4xl font-bold mb-4">404</h1>
-      <p className="text-muted-foreground mb-8">This page does not exist yet.</p>
-      <Link to="/" className="btn-primary">
-        Go Home
-      </Link>
-    </div>
-  ),
 });
 
 function RootComponent() {
