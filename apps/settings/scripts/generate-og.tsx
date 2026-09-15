@@ -17,7 +17,7 @@ const logoPaths: Array<{ fill: string; d: string }> = (() => {
 })();
 
 async function main() {
-  const OUT = resolve(__dirname, "../public/og/home");
+  const OUT = resolve(__dirname, "../public/og");
   mkdirSync(OUT, { recursive: true });
 
   const image = new ImageResponse(
@@ -184,7 +184,7 @@ async function main() {
   );
 
   writeFileSync(resolve(OUT, "image.webp"), Buffer.from(await image.arrayBuffer()));
-  console.log("Generated public/og/home/image.webp");
+  console.log("Generated public/og/image.webp");
 }
 
 main().catch((err) => {

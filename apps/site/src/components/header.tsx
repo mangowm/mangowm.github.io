@@ -97,7 +97,7 @@ export function Header() {
             </Link>
           </li>
           <li>
-            <a href="https://mangowm.github.io/mangowm-settings/" className="nav-link">
+            <a href="/settings" className="nav-link">
               Settings
             </a>
           </li>

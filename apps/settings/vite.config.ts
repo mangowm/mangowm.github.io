@@ -6,7 +6,10 @@ import { defineConfig } from "vite-plus";
 
 const host = process.env.TAURI_DEV_HOST;
 
+const base = process.env.TAURI_ENV_PLATFORM ? "/" : "/settings/";
+
 export default defineConfig({
+  base,
   plugins: [
     babel({
       presets: [reactCompilerPreset()],
