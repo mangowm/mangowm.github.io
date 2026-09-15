@@ -1,16 +1,23 @@
 import { defineConfig } from "vite-plus";
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
+import { nitro } from "nitro/vite";
 
 export default defineConfig({
   plugins: [
-    tanstackRouter({ target: "react", autoCodeSplitting: true, quoteStyle: "double" }),
     tailwindcss(),
+    tanstackStart({
+      prerender: {
+        enabled: true,
+        crawlLinks: false,
+      },
+    }),
     react(),
     babel({
       plugins: ["babel-plugin-react-compiler"],
     }),
+    nitro(),
   ],
 });
