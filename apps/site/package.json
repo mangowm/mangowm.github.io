@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "vp build",
+    "build": "vp build && cp dist/index.html dist/404.html",
     "check": "vp check --fix",
     "preview": "vp preview"
   },
