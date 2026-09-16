@@ -105,9 +105,12 @@ bindr=Super,Super_L,spawn,rofi -show run
 | `toggle_render_border` | - | Toggle border rendering. |
 | `centerwin` | - | Center the floating window. |
 | `minimized` | - | Minimize window to scratchpad. |
-| `restore_minimized` | `0/1` | Restore minimized window to its previous state.(`1` means keep previous tags, `0` means restore to current tags.) |
+| `restore_minimized` | - | Restore minimized window to the currently focused tag. |
 | `toggle_scratchpad` | - | Toggle scratchpad. |
 | `toggle_named_scratchpad` | `appid,title,cmd` | Toggle named scratchpad. Launches app if not running, otherwise shows/hides it. |
+| `toggle_special_tag` | - | Toggle special workspace overlay (tiling scratchpad). |
+| `tag_special_tag` | - | Move focused window to/from the special workspace overlay. |
+| `tag_special_silent` | - | Silently move focused window to/from the special workspace overlay. |
 
 ### Focus & Movement
 
@@ -117,11 +120,12 @@ bindr=Super,Super_L,spawn,rofi -show run
 | `focusdir` | `left/right/up/down` | Focus window in direction. |
 | `focus_window_or_workspace` | `left/right/up/down` | Focus window in direction; otherwise jump to the nearest adjacent tag that has clients, falling back to the next/previous tag if none. |
 | `focusstack` | `next/prev` | Cycle focus within the stack. |
-| `overcircle` | `next/prev` | Open overview when closed; while it is open, cycle focus to the next/previous window on the current monitor. |
+| `overcircle` | `next/prev/current_next/current_prev` | Open overview when closed; while it is open, cycle focus to the next/previous window on the current monitor. `current_next`/`current_prev` only show the current tagset's windows in the overview instead of all tags. |
 | `focuslast` | - | Focus the previously active window. |
 | `switcher` | `next/prev`, `all_tag_next/all_tag_prev`, `all_next/all_prev` | Open or cycle the thumbnail switcher. `next`/`prev` list the current tag's windows, `all_tag_next`/`all_tag_prev` list all tags on the current monitor, `all_next`/`all_prev` list all monitors and tags. Releasing any modifier key selects. |
-| `exchange_client` | `left/right/up/down` | Swap window with neighbor in direction. |
+| `exchange_client` | `left/right/up/down` | Swap the focused window with its neighbor in direction. Both windows change place, and with `exchange_cross_monitor` enabled they also swap monitors. |
 | `exchange_stack_client` | `next/prev` | Exchange window position in stack. |
+| `move_client` | `left/right/up/down` | Move the focused window one step in direction. On the same monitor `dwindle` re-inserts it next to the neighbor keeping the row/column it came from, every other layout swaps it with the neighbor like `exchange_client`. When the neighbor lies on another monitor the window moves onto that monitor and is inserted in front of or behind the neighbor on the side it comes from; without a neighbor in that direction it moves onto the monitor lying there. Crossing monitors needs `exchange_cross_monitor`. |
 | `zoom` | - | Swap focused window with Master. |
 
 ### Group
@@ -150,8 +154,8 @@ bindr=Super,Super_L,spawn,rofi -show run
 | `toggletag` | `mask` | Toggle tag(s) on window. Accepts a [tag mask](/docs/bindings/keys#tag-mask-format). `0` toggles all tags. |
 | `toggleview` | `mask` | Toggle view of tag(s). Accepts a [tag mask](/docs/bindings/keys#tag-mask-format). |
 | `comboview` | `mask` | View multiple tags simultaneously. Accepts a [tag mask](/docs/bindings/keys#tag-mask-format) (typically built by pressing keys, e.g., `1|3`). |
-| `focusmon` | `left/right/up/down/monitor_spec` | Focus monitor by direction or [monitor spec](/docs/configuration/monitors#monitor-spec-format). |
-| `tagmon` | `left/right/up/down/monitor_spec,[keeptag]` | Move window to monitor by direction or [monitor spec](/docs/configuration/monitors#monitor-spec-format). `keeptag` is 0 or 1. |
+| `focusmon` | `left/right/up/down/next/prev/monitor_spec` | Focus monitor by direction, by cycling to the next or previous monitor (`next`/`prev`), or by [monitor spec](/docs/configuration/monitors#monitor-spec-format). |
+| `tagmon` | `left/right/up/down/next/prev/monitor_spec,[keeptag]` | Move window to monitor by direction, by cycling to the next or previous monitor (`next`/`prev`), or by [monitor spec](/docs/configuration/monitors#monitor-spec-format). `keeptag` is 0 or 1. |
 
 #### Tag Mask Format
 
@@ -189,7 +193,9 @@ It is formed by tag numbers `1`–`9`, optionally combined with `|`.
 | `reload_config` | - | Hot-reload configuration. |
 | `load_config_file` | `file path` | Load configuration from the specified file. Empty path resets to default config location. |
 | `quit` | - | Exit mangowm. |
-| `toggleoverview` | - | Toggle overview mode. |
+| `toggleoverview` | `[1]` | Toggle overview mode. Passing `1` only shows the current tagset's windows in the overview instead of all tags. |
+| `enteroverview` | - | Enter overview mode. |
+| `leaveoverview` | - | Leave overview mode. |
 | `togglejump` | - | Toggle overview with jump mode. |
 | `create_virtual_output` | - | Create a headless monitor (for VNC/Sunshine). |
 | `destroy_all_virtual_output` | - | Destroy all virtual monitors. |
