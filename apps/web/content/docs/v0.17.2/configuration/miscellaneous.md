@@ -34,7 +34,7 @@ description: Advanced settings for XWayland, focus behavior, and system integrat
 | :--- | :--- | :--- |
 | `focus_cross_monitor` | `0` | Allow directional focus to cross monitor boundaries. |
 | `focusdir_only_zone_overlap` | `1` | When enabled, directional focus only selects windows that overlap the current window on the perpendicular axis (y for left/right, x for up/down); returns nothing if none qualify. |
-| `exchange_cross_monitor` | `0` | Allow the `exchange_client` and `move_client` dispatchers to reach across monitor boundaries. With `exchange_client` the two windows swap monitors; with `move_client` a window that has no neighbor in the move direction moves onto the monitor lying in that direction. While disabled, both dispatchers keep the windows on the current monitor. |
+| `exchange_cross_monitor` | `0` | Allow the `exchange_client` and `move_client` dispatchers to reach across monitor boundaries. With `exchange_client` the two windows swap monitors; with `move_client` the window moves onto the monitor holding the neighbor (or lying in the move direction when there is none) and is inserted in front of or behind that neighbor instead of swapping with it. While disabled, both dispatchers keep the windows on the current monitor. |
 | `focus_cross_tag` | `0` | Allow directional focus to cross into other tags. |
 | `view_current_to_back` | `0` | Toggling the current tag switches back to the previously viewed tag. |
 | `scratchpad_cross_monitor` | `0` | Share the scratchpad pool across all monitors. |
@@ -51,6 +51,7 @@ description: Advanced settings for XWayland, focus behavior, and system integrat
 | `no_border_when_single` | `0` | Remove window borders when only one window is visible on the tag. |
 | `smartgaps` | `0` | Disable gaps when only one window is present. |
 | `idleinhibit_ignore_visible` | `0` | Allow invisible clients (e.g., background audio players) to inhibit idle. |
+| `idleinhibit_when_fullscreen` | `0` | Keep idle inhibited while a fullscreen window is focused. |
 | `tag_carousel` | `0` | Enable tag carousel (cycling through tags). |
 | `drag_tile_refresh_interval` | `8.0` | Interval (1.0–16.0) to refresh tiled window resize during drag. Too small may cause application lag. |
 | `drag_floating_refresh_interval` | `8.0` | Interval (1.0–16.0) to refresh floating window resize during drag. Too small may cause application lag. |
