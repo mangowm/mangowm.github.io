@@ -14,46 +14,35 @@ You can customize portal settings via the following paths:
 
 ## Screen Sharing
 
-To enable screen sharing (OBS, Discord, WebRTC), you need `xdg-desktop-portal-wlr`.
+Screen sharing (OBS, Discord, WebRTC, Tencent Meeting, ...) needs a portal backend that implements `org.freedesktop.impl.portal.ScreenCast`. Mango recommends [xdg-desktop-portal-luminous](https://github.com/waycrate/xdg-desktop-portal-luminous): it is self-contained, brings its own picker, and opens that picker in `Start()` — the same place the GNOME and KDE portals ask — so every client works, including those that call `Start()` right after `SelectSources()`.
 
-1. **Install Dependencies**
+1. **Install it**
 
-   `pipewire`, `pipewire-pulse`, `xdg-desktop-portal-wlr`, `rofi`
+   `pipewire`, `pipewire-pulse`, `xdg-desktop-portal-luminous` (AUR), or build it yourself with `meson` + `ninja`.
 
-   > **Note:** `xdg-desktop-portal-wlr` has no picker of its own. When an application asks to share a screen, it launches an external one and tries `slurp`, `wmenu`, `wofi`, `rofi`, `bemenu`, `mew` and `fuzzel` in that order. If none of them is installed the picker never appears and sharing just fails, so install at least one of them (`rofi` is the common choice). This is not needed if you skip the picker as described below.
+2. **Make sure the screen interfaces are routed to it**
 
-2. **Optional: Add to autostart**
+   The routing installed in `/usr/share/xdg-desktop-portal/mango-portals.conf` already points at `luminous`. An own `~/.config/xdg-desktop-portal/mango-portals.conf` replaces that file, so if you have one, keep these entries:
 
-   In some situations the portal may not start automatically. You can add this to your autostart script to ensure it launches:
-
-   ```bash
-   /usr/lib/xdg-desktop-portal-wlr &
+   ```ini
+   [preferred]
+   default=gtk
+   org.freedesktop.impl.portal.ScreenCast=luminous
+   org.freedesktop.impl.portal.Screenshot=luminous
+   org.freedesktop.impl.portal.Inhibit=none
    ```
 
-3. **Restart your computer** to apply changes.
+3. **Restart the portal** (or re-login)
+
+   ```bash
+   systemctl --user restart xdg-desktop-portal
+   ```
 
 ### Known Issues
 
-- **Tencent Meeting asks for a screen but nothing happens:** `xdg-desktop-portal-wlr` opens its chooser during `SelectSources()` and only replies once you picked something, while Tencent Meeting calls `Start()` immediately and never waits for that reply. The portal frontend then rejects the start with `Sources not selected`, so the picker closes without sharing anything. Pick a fixed output and skip the chooser:
-
-  ```ini
-  # ~/.config/xdg-desktop-portal-wlr/config
-  [screencast]
-  output_name=eDP-1
-  chooser_type=none
-  ```
-
-  Replace `eDP-1` with your output name (see `mmsg get all-monitors`). The configuration is only read when the portal starts, so restart it afterwards (a re-login or reboot works too):
-
-  ```bash
-  systemctl --user restart xdg-desktop-portal-wlr
-  ```
-
-  This applies to every application: screen sharing always captures that output and never asks. Applications that do wait for the reply (OBS, Firefox, Chromium) also work with the default chooser, so only add this if you need it. Tencent Meeting additionally only gets the first share attempt per app start right, so restart it before sharing.
+- **Tencent Meeting:** only the first screen share attempt per app start works, so restart it before sharing.
 
 - **Window screen sharing:** Some applications may have issues sharing individual windows. See [#184](https://github.com/mangowm/mango/pull/184) for workarounds.
-
-- **Screen recording lag:** If you experience stuttering during screen recording, see [xdg-desktop-portal-wlr#351](https://github.com/emersion/xdg-desktop-portal-wlr/issues/351).
 
 ## Clipboard Manager
 
@@ -82,8 +71,8 @@ Add the following to `~/.config/xdg-desktop-portal/mango-portals.conf`:
 ```ini
 [preferred]
 default=gtk
-org.freedesktop.impl.portal.ScreenCast=wlr
-org.freedesktop.impl.portal.Screenshot=wlr
+org.freedesktop.impl.portal.ScreenCast=luminous
+org.freedesktop.impl.portal.Screenshot=luminous
 org.freedesktop.impl.portal.Secret=gnome-keyring
 org.freedesktop.impl.portal.Inhibit=none
 ```
