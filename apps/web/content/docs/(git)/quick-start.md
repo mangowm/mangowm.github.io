@@ -66,7 +66,7 @@ To get a fully functional desktop experience, we recommend installing the follow
 | Desktop Shell | Noctalia, DankMaterialShell |
 | Wallpaper Setup | awww(swww), swaybg |
 | Notification Daemon | swaync, dunst, mako |
-| Desktop Portal | xdg-desktop-portal, xdg-desktop-portal-luminous, xdg-desktop-portal-gtk |
+| Desktop Portal | xdg-desktop-portal, xdg-desktop-portal-wlr, xdg-desktop-portal-gtk |
 | Clipboard | wl-clipboard, wl-clip-persist, cliphist |
 | Gamma Control / Night Light | wlsunset, gammastep |
 | Miscellaneous | xfce-polkit, wlogout |
