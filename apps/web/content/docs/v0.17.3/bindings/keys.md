@@ -14,7 +14,7 @@ bind[flags]=MODIFIERS,KEY,COMMAND,PARAMETERS
 - **Modifiers**: `SUPER`, `CTRL`, `ALT`, `SHIFT`, `NONE` (combine with `+`, e.g. `SUPER+CTRL+ALT`).
 - **Key**: Key name (from `xev` or `wev`) or keycode (e.g., `code:24` for `q`).
 
-> **Info:** `bind` automatically converts keysym to keycode for comparison. This makes it compatible with all keyboard layouts, but the matching may not always be precise. If a key combination doesn't work on your keyboard layout, use a keycode instead (e.g., `code:24` instead of `q`).
+> **Info:** `bind` converts the key name to a keycode, so it keeps working while other layouts are active. The name is resolved against the layouts configured with `xkb_rules_layout` (`device:*:kb_layout` is not used here), in the order they are listed, and falls back to the reference `us` layout when none of them can produce the key name. This means `bind=SUPER,h` resolves to your own `h` key on layout variants such as Dvorak, and to the `us` position when only non-latin layouts are configured. Use `code:N` to bind a keycode directly, or `binds` to match the character the active layout produces.
 
 ### Flags
 
@@ -23,6 +23,8 @@ bind[flags]=MODIFIERS,KEY,COMMAND,PARAMETERS
 - `r`: Triggers on key release instead of press.
 - `p`: Pass key event to client.
 - `c`: allow keybind conflict(need set in all conflict key).
+
+> **Info:** `c` has no effect on the `reload_config` and `load_config_file` dispatches, which always stop the current key event.
 
 **Examples:**
 
@@ -139,7 +141,7 @@ bindr=Super,Super_L,spawn,rofi -show run
 
 | Command | Param | Description |
 | :--- | :--- | :--- |
-| `view` | `mask[,synctag]` | View tag(s). Accepts a [tag mask](/docs/bindings/keys#tag-mask-format). Additionally, `0` shows all tags, `-1` shows the previous tagset. Optional `synctag` (0/1) syncs the action to all monitors. |
+| `view` | `mask[,synctag]` | View tag(s). Accepts a [tag mask](/docs/bindings/keys#tag-mask-format). Additionally, `00` shows all tags, `-1` shows the previous tagset. Optional `synctag` (0/1) syncs the action to all monitors. |
 | `viewtoleft` | `[synctag]` | View previous tag. Optional `synctag` (0/1) syncs to all monitors. |
 | `viewtoright` | `[synctag]` | View next tag. Optional `synctag` (0/1) syncs to all monitors. |
 | `view_insert` | `prev`/`next` | View the adjacent tag if it is empty; otherwise insert an empty tag before/after the current one and switch to it. |
@@ -151,7 +153,7 @@ bindr=Super,Super_L,spawn,rofi -show run
 | `tagtoleft` | `[synctag]` | Move window to left tag. Optional `synctag` (0/1). |
 | `tagtoright` | `[synctag]` | Move window to right tag. Optional `synctag` (0/1). |
 | `tagcrossmon` | `mask,monitor_spec` | Move window to tag(s) on specified monitor. Accepts a [tag mask](/docs/bindings/keys#tag-mask-format) and a [monitor spec](/docs/configuration/monitors#monitor-spec-format). |
-| `toggletag` | `mask` | Toggle tag(s) on window. Accepts a [tag mask](/docs/bindings/keys#tag-mask-format). `0` toggles all tags. |
+| `toggletag` | `mask` | Toggle tag(s) on window. Accepts a [tag mask](/docs/bindings/keys#tag-mask-format). `00` toggles all tags. |
 | `toggleview` | `mask` | Toggle view of tag(s). Accepts a [tag mask](/docs/bindings/keys#tag-mask-format). |
 | `comboview` | `mask` | View multiple tags simultaneously. Accepts a [tag mask](/docs/bindings/keys#tag-mask-format) (typically built by pressing keys, e.g., `1|3`). |
 | `focusmon` | `left/right/up/down/next/prev/monitor_spec` | Focus monitor by direction, by cycling to the next or previous monitor (`next`/`prev`), or by [monitor spec](/docs/configuration/monitors#monitor-spec-format). |
@@ -190,8 +192,8 @@ It is formed by tag numbers `1`–`9`, optionally combined with `|`.
 | `spawn` | `cmd` | Execute a command. |
 | `spawn_shell` | `cmd` | Execute shell command (supports pipes `\|`). |
 | `spawn_on_empty` | `cmd, tagmask` | Open command on empty tag.Accepts a cmd string and [tagmask](/docs/bindings/keys#tag-mask-format) |
-| `reload_config` | - | Hot-reload configuration. |
-| `load_config_file` | `file path` | Load configuration from the specified file. Empty path resets to default config location. |
+| `reload_config` | - | Hot-reload configuration. Does not support keybind conflict (`c` flag). |
+| `load_config_file` | `file path` | Load configuration from the specified file. Empty path resets to default config location. Does not support keybind conflict (`c` flag). |
 | `quit` | - | Exit mangowm. |
 | `toggleoverview` | `[1]` | Toggle overview mode. Passing `1` only shows the current tagset's windows in the overview instead of all tags. |
 | `enteroverview` | - | Enter overview mode. |
