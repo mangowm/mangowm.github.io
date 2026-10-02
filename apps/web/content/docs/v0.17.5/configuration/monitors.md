@@ -39,6 +39,18 @@ monitorrule=name:Values,Parameter:Values,Parameter:Values
 | `rr` | integer | 0-7 | Monitor transform |
 | `custom` | integer | 0, 1 | Enable custom mode (not supported on all displays — may cause black screen) |
 | `disable` | integer | 0, 1 | Disable the monitor |
+| `primary` | integer | 0, 1 | Make this monitor the X11 (RandR) primary output for XWayland |
+
+### Primary Output
+
+X11 clients — notably fullscreen games that confine or lock the pointer — use the RandR primary output to decide their coordinate origin. The primary output is therefore only ever changed when monitor rules are applied (at startup, on output hotplug, on a config reload), and never as focus or the pointer moves between monitors.
+
+Add `primary:1` to the rule of the monitor you want X11 to treat as primary. The rules are matched in order and only the first matching rule applies to a monitor, so put the `primary:1` on the rule that actually matches your display. If several rules ask for it, the earliest one wins. Without any `primary:1` rule the monitor of the first matching rule is used, and the first connected monitor when no rule matches at all.
+
+```ini
+# Play on the second display: make it the X11 primary output
+monitorrule=name:^DP-2$,width:2560,height:1440,refresh:144,x:1920,y:0,primary:1
+```
 
 ### Transform Values
 
