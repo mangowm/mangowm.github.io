@@ -11,6 +11,9 @@ The format is picked from the file extension (`.conf` / `.toml`); a file with
 another extension is sniffed (a leading `[` means TOML). A `source`d file is
 parsed with the reader that matches its own extension, so the two can be mixed.
 
+> **Reference example:** a complete, working TOML config lives in the
+> [`mango-config` `toml` branch](https://github.com/DreamMaoMao/mango-config/tree/toml).
+
 ## How conf maps to TOML
 
 | conf | TOML |
