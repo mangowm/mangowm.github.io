@@ -77,6 +77,10 @@ term = "foot"
 Variables are still referenced as `$name` / `${name}`, in values **and** in bind
 key combinations (e.g. `"$Mod+Return" = "spawn,$term"`).
 
+Values in `[env]` and `[var]` are always treated as strings: if you write a bare
+number or boolean (`"DPI" = 140`, `"FLAG" = true`), it is read as the literal
+text `"140"` / `"true"`. Quoting them is still recommended.
+
 ## Bindings
 
 In conf, `keymode` is a state line and `bind=mod,key,func,args` follows it. In
