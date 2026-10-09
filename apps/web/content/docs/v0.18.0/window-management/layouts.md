@@ -71,17 +71,17 @@ These settings apply to layouts like `tile` and `center_tile`.
 | Setting | Default | Description |
 | :--- | :--- | :--- |
 | `new_is_master` | `1` | New windows become the master window. |
-| `default_mfact` | `0.55` | The split ratio between master and stack areas. |
-| `default_nmaster` | `1` | Number of allowed master windows. |
+| `default_master_factor` | `0.55` | The split ratio between master and stack areas. |
+| `default_master_count` | `1` | Number of allowed master windows. |
 | `center_master_overspread` | `0` | (Center Tile) Master spreads across screen if no stack exists. |
 | `center_when_single_stack` | `1` | (Center Tile) Center master when only one stack window exists. |
 
 ```ini
 # Example master-stack configuration
 new_is_master=1
-smartgaps=0
-default_mfact=0.55
-default_nmaster=1
+smart_gaps=0
+default_master_factor=0.55
+default_master_count=1
 tag_num=9
 tag_gather=0
 ```
@@ -98,8 +98,8 @@ The Dwindle layout arranges windows as a binary tree of recursive splits. Each n
 | :--- | :--- | :--- |
 | `dwindle_split_ratio` | `0.5` | Ratio used for new splits (`0.05`–`0.95`). |
 | `dwindle_smart_split` | `0` | Pick the split axis from the cursor's position inside the focused window. The new window appears on the cursor's side. |
-| `dwindle_hsplit` | `1` | Side-by-side splits: where the new window goes. `0` = follow cursor, `1` = right, `2` = left. |
-| `dwindle_vsplit` | `1` | Top/bottom splits: where the new window goes. `0` = follow cursor, `1` = below, `2` = above. |
+| `dwindle_horizontal_split` | `1` | Side-by-side splits: where the new window goes. `0` = follow cursor, `1` = right, `2` = left. |
+| `dwindle_vertical_split` | `1` | Top/bottom splits: where the new window goes. `0` = follow cursor, `1` = below, `2` = above. |
 | `dwindle_preserve_split` | `0` | Keep the sibling's split orientation when a window is closed. |
 | `dwindle_smart_resize` | `0` | When dragging to resize, move the split toward the cursor regardless of which side was grabbed. |
 | `dwindle_drop_simple_split` | `1` | Drag-to-tile drop preview. `1` = 2-zone preview matching `dwindle_split_ratio`, `0` = 4-quadrant preview. |
@@ -109,11 +109,49 @@ The Dwindle layout arranges windows as a binary tree of recursive splits. Each n
 # Example dwindle configuration
 dwindle_split_ratio=0.5
 dwindle_smart_split=0
-dwindle_hsplit=0
-dwindle_vsplit=0
+dwindle_horizontal_split=0
+dwindle_vertical_split=0
 dwindle_preserve_split=0
 dwindle_smart_resize=0
 dwindle_drop_simple_split=1
+```
+
+---
+
+## Monocle Layout
+
+The Monocle layout shows a single window at a time, with the other windows on the tag stacked behind it.
+
+### Configuration
+
+| Setting | Default | Description |
+| :--- | :--- | :--- |
+| `monocle_tab_mode` | `1` | Auto merge stacked windows into a tab in monocle layout. |
+| `monocle_no_border` | `0` | Remove window borders from tiled windows (including maximized ones) while the monocle layout is active. |
+| `monocle_no_gap` | `0` | Remove gaps around tiled windows (including maximized ones) while the monocle layout is active. |
+
+```ini
+# Example monocle configuration
+monocle_tab_mode=1
+monocle_no_border=0
+monocle_no_gap=0
+```
+
+---
+
+## Deck Layout
+
+The Deck layout keeps the master area visible and stacks the remaining windows as a deck of cards.
+
+### Configuration
+
+| Setting | Default | Description |
+| :--- | :--- | :--- |
+| `deck_tab_mode` | `1` | Auto merge stack area windows into a tab in deck layout. |
+
+```ini
+# Example deck configuration
+deck_tab_mode=1
 ```
 
 ---
