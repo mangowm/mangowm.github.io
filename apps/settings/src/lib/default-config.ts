@@ -18,7 +18,7 @@ shadows_size = 10
 shadows_blur = 15
 shadows_position_x = 0
 shadows_position_y = 0
-shadowscolor= 0x000000ff
+shadows_color= 0x000000ff
 
 border_radius=6
 no_radius_when_single=0
@@ -128,16 +128,16 @@ gappov=10
 scratchpad_width_ratio=0.8
 scratchpad_height_ratio=0.9
 borderpx=4
-rootcolor=0x201b14ff
-bordercolor=0x444444ff
-dropcolor=0x8FBA7C55
-splitcolor=0xEB441EFF
-focuscolor=0xc9b890ff
-maximizescreencolor=0x89aa61ff
-urgentcolor=0xad401fff
-scratchpadcolor=0x516c93ff
-globalcolor=0xb153a7ff
-overlaycolor=0x14a57cff
+root_color=0x201b14ff
+border_color=0x444444ff
+drop_color=0x8FBA7C55
+split_color=0xEB441EFF
+focus_color=0xc9b890ff
+maximized_screen_color=0x89aa61ff
+urgent_color=0xad401fff
+scratchpad_color=0x516c93ff
+global_color=0xb153a7ff
+overlay_color=0x14a57cff
 
 # layout support:
 # tile,scroller,grid,deck,monocle,center_tile,vertical_tile,vertical_scroller
