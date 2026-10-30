@@ -11,9 +11,8 @@ catalog:
   "@types/react": ^19.3.0
   "@types/react-dom": ^19.3.0
   typescript: ^7.0.2
-  vite: npm:@voidzero-dev/vite-plus-core@1.1.0
-  vitest: 5.0.3
-  vite-plus: 1.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
   react: ^19.3.0
   react-dom: ^19.3.0
   "@vitejs/plugin-react": ^6.1.1
@@ -31,17 +30,14 @@ catalog:
   takumi-js: ^2.14.0
   yaml: ^2.9.1
 overrides:
-  vite: "catalog:"
-  vitest: "catalog:"
+  vite@*: "catalog:"
 publicHoistPattern:
   - "@takumi-rs/core-*"
 peerDependencyRules:
   allowAny:
     - vite
-    - vitest
   allowedVersions:
     vite: "*"
-    vitest: "*"
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
