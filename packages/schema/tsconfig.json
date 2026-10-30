@@ -1,0 +1,7 @@
+{
+  "extends": "@mangowm.github.io/config/tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["src", "scripts"]
+}
