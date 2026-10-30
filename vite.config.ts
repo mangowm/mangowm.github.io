@@ -40,4 +40,9 @@ export default defineConfig({
   run: {
     cache: true,
   },
+  pack: {
+    dts: {
+      generator: "tsgo",
+    },
+  },
 });

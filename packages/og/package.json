@@ -11,7 +11,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "vp pack src/index.ts",
+    "build": "vp pack",
     "check": "vp check --fix",
     "types:check": "tsc --noEmit"
   },
