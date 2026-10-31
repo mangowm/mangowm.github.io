@@ -331,6 +331,16 @@ describe("TOML schema", () => {
     ).toBe(true);
   });
 
+  it("validates toml comma strings", () => {
+    expect(Value.Check(tomlSchema, { global: { animation_curve_open: "0.46,1,0.29" } })).toBe(
+      false,
+    );
+    expect(Value.Check(tomlSchema, { global: { animation_curve_open: "a,b,c,d" } })).toBe(false);
+    expect(Value.Check(tomlSchema, { global: { circle_layout: "foo" } })).toBe(false);
+    expect(Value.Check(tomlSchema, { global: { scroller_proportion_preset: "a,b" } })).toBe(false);
+    expect(Value.Check(tomlSchema, { global: { circle_layout: "tile, scroller" } })).toBe(true);
+  });
+
   it("accepts a scalar proportion preset", () => {
     expect(Value.Check(tomlSchema, { global: { scroller_proportion_preset: 0.5 } })).toBe(true);
     expect(Value.Check(schema, { global: { scroller_proportion_preset: 0.5 } })).toBe(false);

@@ -455,7 +455,8 @@
               "maxItems": 4
             },
             {
-              "type": "string"
+              "type": "string",
+              "pattern": "^\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?(?:\\s*,\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?){3}\\s*$"
             }
           ],
           "title": "Move Curve",
@@ -477,7 +478,8 @@
               "maxItems": 4
             },
             {
-              "type": "string"
+              "type": "string",
+              "pattern": "^\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?(?:\\s*,\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?){3}\\s*$"
             }
           ],
           "title": "Open Curve",
@@ -499,7 +501,8 @@
               "maxItems": 4
             },
             {
-              "type": "string"
+              "type": "string",
+              "pattern": "^\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?(?:\\s*,\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?){3}\\s*$"
             }
           ],
           "title": "Tag Switch Curve",
@@ -521,7 +524,8 @@
               "maxItems": 4
             },
             {
-              "type": "string"
+              "type": "string",
+              "pattern": "^\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?(?:\\s*,\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?){3}\\s*$"
             }
           ],
           "title": "Close Curve",
@@ -543,7 +547,8 @@
               "maxItems": 4
             },
             {
-              "type": "string"
+              "type": "string",
+              "pattern": "^\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?(?:\\s*,\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?){3}\\s*$"
             }
           ],
           "title": "Focus Curve",
@@ -565,7 +570,8 @@
               "maxItems": 4
             },
             {
-              "type": "string"
+              "type": "string",
+              "pattern": "^\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?(?:\\s*,\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?){3}\\s*$"
             }
           ],
           "title": "Fade In Curve",
@@ -587,7 +593,8 @@
               "maxItems": 4
             },
             {
-              "type": "string"
+              "type": "string",
+              "pattern": "^\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?(?:\\s*,\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?){3}\\s*$"
             }
           ],
           "title": "Fade Out Curve",
@@ -1330,7 +1337,8 @@
               "minItems": 1
             },
             {
-              "type": "string"
+              "type": "string",
+              "pattern": "^\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?(?:\\s*,\\s*[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)*\\s*$"
             },
             {
               "type": "number",
@@ -1369,7 +1377,8 @@
               "minItems": 1
             },
             {
-              "type": "string"
+              "type": "string",
+              "pattern": "^\\s*(?:tile|scroller|grid|monocle|deck|center_tile|right_tile|vertical_scroller|vertical_tile|vertical_grid|vertical_deck|dwindle|fair|vertical_fair)(?:\\s*,\\s*(?:tile|scroller|grid|monocle|deck|center_tile|right_tile|vertical_scroller|vertical_tile|vertical_grid|vertical_deck|dwindle|fair|vertical_fair))*\\s*$"
             }
           ],
           "title": "Circle Layout",

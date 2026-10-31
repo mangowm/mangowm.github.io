@@ -154,7 +154,10 @@ function globalProperty(option: GlobalDef, mode: SchemaMode): TSchema {
         maxItems: 4,
       });
       if (mode === "canonical") return array;
-      return Type.Union([array, Type.String()], { ...metadata, default: defaultValue });
+      return Type.Union([array, Type.String({ pattern: CURVE_STRING_PATTERN })], {
+        ...metadata,
+        default: defaultValue,
+      });
     }
     case "preset": {
       const hasDefault = Array.isArray(defaultValue) && defaultValue.length > 0;
@@ -164,10 +167,17 @@ function globalProperty(option: GlobalDef, mode: SchemaMode): TSchema {
         minItems: 1,
       });
       if (mode === "canonical") return array;
-      return Type.Union([array, Type.String(), Type.Number({ minimum: 0.1, maximum: 1 })], {
-        ...metadata,
-        ...(hasDefault ? { default: defaultValue } : {}),
-      });
+      return Type.Union(
+        [
+          array,
+          Type.String({ pattern: NUMBER_LIST_PATTERN }),
+          Type.Number({ minimum: 0.1, maximum: 1 }),
+        ],
+        {
+          ...metadata,
+          ...(hasDefault ? { default: defaultValue } : {}),
+        },
+      );
     }
     case "layout-array": {
       const hasDefault = Array.isArray(defaultValue) && defaultValue.length > 0;
@@ -177,7 +187,7 @@ function globalProperty(option: GlobalDef, mode: SchemaMode): TSchema {
         minItems: 1,
       });
       if (mode === "canonical") return array;
-      return Type.Union([array, Type.String()], {
+      return Type.Union([array, Type.String({ pattern: LAYOUT_LIST_PATTERN })], {
         ...metadata,
         ...(hasDefault ? { default: defaultValue } : {}),
       });
@@ -267,6 +277,11 @@ const ACTION_PATTERN = `^\\s*(?:${DISPATCHERS.join("|")}|${VARIABLE_PATTERN})(?:
 const TAG_NUMBER_PATTERN = "(?:[0-9]|[12][0-9]|3[01])";
 const TAG_MASK_PATTERN = `^\\s*${TAG_NUMBER_PATTERN}\\s*(?:\\|\\s*${TAG_NUMBER_PATTERN}\\s*)*$`;
 const TAG_ID_STRINGS = ["*", ...Array.from({ length: 32 }, (_, index) => String(index))];
+
+const NUMBER_PATTERN = "[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?";
+const CURVE_STRING_PATTERN = `^\\s*${NUMBER_PATTERN}(?:\\s*,\\s*${NUMBER_PATTERN}){3}\\s*$`;
+const NUMBER_LIST_PATTERN = `^\\s*${NUMBER_PATTERN}(?:\\s*,\\s*${NUMBER_PATTERN})*\\s*$`;
+const LAYOUT_LIST_PATTERN = `^\\s*(?:${LAYOUTS.join("|")})(?:\\s*,\\s*(?:${LAYOUTS.join("|")}))*\\s*$`;
 
 const TomlActionString = Type.String({
   title: "Action",
