@@ -39,6 +39,16 @@ export const RULES: readonly RuleDef[] = [
         description:
           "Monitor transform. 0 normal, 1 90° CCW, 2 180°, 3 270° CCW, 4 vertical flip, 5 flip+90° CCW, 6 flip+180°, 7 flip+270° CCW.",
         options: ["0", "1", "2", "3", "4", "5", "6", "7"],
+        labels: [
+          "Normal",
+          "90\u00b0 CCW",
+          "180\u00b0",
+          "270\u00b0 CCW",
+          "Vertical flip",
+          "Flip+90\u00b0 CCW",
+          "Flip+180\u00b0",
+          "Flip+270\u00b0 CCW",
+        ],
       },
       {
         key: "scale",
@@ -255,6 +265,7 @@ export const RULES: readonly RuleDef[] = [
         description:
           "Layer surface open animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
+        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
       },
       {
         key: "animation_type_close",
@@ -263,6 +274,7 @@ export const RULES: readonly RuleDef[] = [
         description:
           "Layer surface close animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
+        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
       },
       {
         key: "shield_when_capture",
@@ -322,6 +334,7 @@ export const RULES: readonly RuleDef[] = [
         description:
           "Window open animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
+        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
       },
       {
         key: "animation_type_close",
@@ -330,6 +343,7 @@ export const RULES: readonly RuleDef[] = [
         description:
           "Window close animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
+        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
       },
       {
         key: "tags",
@@ -560,6 +574,7 @@ export const RULES: readonly RuleDef[] = [
         description:
           "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing.",
         options: ["0", "1", "2"],
+        labels: ["Unspecified", "Enabled", "Disabled"],
       },
       {
         key: "no_swallow",
@@ -636,6 +651,7 @@ export const RULES: readonly RuleDef[] = [
         description:
           "Window open animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
+        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
       },
       {
         key: "animation_type_close",
@@ -644,6 +660,7 @@ export const RULES: readonly RuleDef[] = [
         description:
           "Window close animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
+        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
       },
       {
         key: "tags",
@@ -874,6 +891,7 @@ export const RULES: readonly RuleDef[] = [
         description:
           "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing.",
         options: ["0", "1", "2"],
+        labels: ["Unspecified", "Enabled", "Disabled"],
       },
       {
         key: "no_swallow",
@@ -947,6 +965,7 @@ export const RULES: readonly RuleDef[] = [
           "pad",
           "touchpad",
         ],
+        labels: ["Keyboard", "Pointer", "Trackpad", "Touch", "Switch", "Tablet", "Pad", "Touchpad"],
       },
       {
         key: "repeat_rate",
@@ -1002,6 +1021,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Acceleration Profile",
         description: "Pointer acceleration profile: 0 none, 1 flat, 2 adaptive.",
         options: ["0", "1", "2"],
+        labels: ["None", "Flat", "Adaptive"],
       },
       {
         key: "accel_speed",
@@ -1027,6 +1047,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Scroll Method",
         description: "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button, 8 circular.",
         options: ["0", "1", "2", "4", "8"],
+        labels: ["Disabled", "Two-finger", "Edge", "Button", "Circular"],
       },
       {
         key: "scroll_button",
@@ -1040,6 +1061,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Click Method",
         description: "Click method: 0 no emulation, 1 button areas, 2 clickfinger.",
         options: ["0", "1", "2"],
+        labels: ["No emulation", "Button areas", "Clickfinger"],
       },
       {
         key: "send_events_mode",
@@ -1047,6 +1069,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Send Events Mode",
         description: "Send events: 0 on, 1 off, 2 off with an external pointer.",
         options: ["0", "1", "2"],
+        labels: ["Enabled", "Disabled", "Disabled with external pointer"],
       },
       {
         key: "tap_to_click",
@@ -1072,6 +1095,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Button Map",
         description: "`0` (Left/right/middle), `1` (Left/middle/right).",
         options: ["0", "1"],
+        labels: ["Left/right/middle", "Left/middle/right"],
       },
       {
         key: "disable_while_typing",

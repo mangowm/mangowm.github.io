@@ -50,6 +50,7 @@ export interface RuleFieldDef {
   label: string;
   description: string;
   options?: readonly string[];
+  labels?: readonly string[];
 }
 
 export interface RuleDef {

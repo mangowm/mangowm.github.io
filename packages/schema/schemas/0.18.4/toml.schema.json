@@ -335,6 +335,33 @@
         "animation_type_open": {
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
+          "oneOf": [
+            {
+              "type": "string",
+              "const": "",
+              "title": "Unset"
+            },
+            {
+              "type": "string",
+              "const": "none",
+              "title": "None"
+            },
+            {
+              "type": "string",
+              "const": "fade",
+              "title": "Fade"
+            },
+            {
+              "type": "string",
+              "const": "slide",
+              "title": "Slide"
+            },
+            {
+              "type": "string",
+              "const": "zoom",
+              "title": "Zoom"
+            }
+          ],
           "title": "Open Animation Type",
           "description": "Window open animation. Empty leaves it unset (slide); `none` disables it.",
           "default": ""
@@ -342,6 +369,33 @@
         "animation_type_close": {
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
+          "oneOf": [
+            {
+              "type": "string",
+              "const": "",
+              "title": "Unset"
+            },
+            {
+              "type": "string",
+              "const": "none",
+              "title": "None"
+            },
+            {
+              "type": "string",
+              "const": "fade",
+              "title": "Fade"
+            },
+            {
+              "type": "string",
+              "const": "slide",
+              "title": "Slide"
+            },
+            {
+              "type": "string",
+              "const": "zoom",
+              "title": "Zoom"
+            }
+          ],
           "title": "Close Animation Type",
           "description": "Window close animation. Empty leaves it unset (zoom); `none` disables it.",
           "default": ""
@@ -349,6 +403,33 @@
         "layer_animation_type_open": {
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
+          "oneOf": [
+            {
+              "type": "string",
+              "const": "",
+              "title": "Unset"
+            },
+            {
+              "type": "string",
+              "const": "none",
+              "title": "None"
+            },
+            {
+              "type": "string",
+              "const": "fade",
+              "title": "Fade"
+            },
+            {
+              "type": "string",
+              "const": "slide",
+              "title": "Slide"
+            },
+            {
+              "type": "string",
+              "const": "zoom",
+              "title": "Zoom"
+            }
+          ],
           "title": "Layer Open Animation Type",
           "description": "Layer surface open animation. Empty leaves it unset; `none` disables it.",
           "default": ""
@@ -356,6 +437,33 @@
         "layer_animation_type_close": {
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
+          "oneOf": [
+            {
+              "type": "string",
+              "const": "",
+              "title": "Unset"
+            },
+            {
+              "type": "string",
+              "const": "none",
+              "title": "None"
+            },
+            {
+              "type": "string",
+              "const": "fade",
+              "title": "Fade"
+            },
+            {
+              "type": "string",
+              "const": "slide",
+              "title": "Slide"
+            },
+            {
+              "type": "string",
+              "const": "zoom",
+              "title": "Zoom"
+            }
+          ],
           "title": "Layer Close Animation Type",
           "description": "Layer surface close animation. Empty leaves it unset; `none` disables it.",
           "default": ""
@@ -391,6 +499,18 @@
         "tag_animation_direction": {
           "type": "integer",
           "enum": [1, 0],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Horizontal"
+            },
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Vertical"
+            }
+          ],
           "title": "Tag Animation Direction",
           "description": "Tag-switch animation direction: 1 horizontal, 0 vertical.",
           "default": 1
@@ -1058,6 +1178,23 @@
         "allow_tearing": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Disabled"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Enabled"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Fullscreen only"
+            }
+          ],
           "title": "Allow Tearing",
           "description": "Tearing policy: 0 disabled, 1 enabled for any window, 2 enabled only for fullscreen windows.",
           "default": 0
@@ -1065,6 +1202,23 @@
         "hdr_depth": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Default"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "HDR8"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "HDR10"
+            }
+          ],
           "title": "HDR Bit Depth",
           "description": "Bit depth for HDR output: 0 default, 1 HDR8, 2 HDR10.",
           "default": 2
@@ -1494,6 +1648,23 @@
         "dwindle_vertical_split": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Follow cursor"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Below"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Above"
+            }
+          ],
           "title": "Vertical Split",
           "description": "Where a new window goes in a vertical split: 0 follows the cursor, 1 below, 2 above.",
           "default": 1
@@ -1501,6 +1672,23 @@
         "dwindle_horizontal_split": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Follow cursor"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Right"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Left"
+            }
+          ],
           "title": "Horizontal Split",
           "description": "Where a new window goes in a horizontal split: 0 follows the cursor, 1 right, 2 left.",
           "default": 1
@@ -1594,6 +1782,28 @@
         "hotarea_corner": {
           "type": "integer",
           "enum": [0, 1, 2, 3],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Top Left"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Top Right"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Bottom Left"
+            },
+            {
+              "type": "integer",
+              "const": 3,
+              "title": "Bottom Right"
+            }
+          ],
           "title": "Hotarea Corner",
           "description": "Screen corner that triggers the overview: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right.",
           "default": 2
@@ -2487,6 +2697,23 @@
         "mouse_accel_profile": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "None"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Flat"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Adaptive"
+            }
+          ],
           "title": "Mouse Acceleration Profile",
           "description": "Mouse acceleration profile: 0 none, 1 flat, 2 adaptive.",
           "default": 2
@@ -2502,6 +2729,23 @@
         "trackpad_accel_profile": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "None"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Flat"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Adaptive"
+            }
+          ],
           "title": "Trackpad Acceleration Profile",
           "description": "Trackpad acceleration profile: 0 none, 1 flat, 2 adaptive.",
           "default": 2
@@ -2545,6 +2789,28 @@
         "mouse_scroll_method": {
           "type": "integer",
           "enum": [0, 1, 2, 4],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Disabled"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Two-finger"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Edge"
+            },
+            {
+              "type": "integer",
+              "const": 4,
+              "title": "Button"
+            }
+          ],
           "title": "Mouse Scroll Method",
           "description": "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button.",
           "default": 1
@@ -2560,6 +2826,23 @@
         "mouse_click_method": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "No emulation"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Button areas"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Clickfinger"
+            }
+          ],
           "title": "Mouse Click Method",
           "description": "Click method: 0 no emulation, 1 button areas, 2 clickfinger.",
           "default": 1
@@ -2567,6 +2850,23 @@
         "mouse_send_events_mode": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Enabled"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Disabled"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Disabled on external mouse"
+            }
+          ],
           "title": "Mouse Send Events Mode",
           "description": "Send events: 0 on, 1 off, 2 off with an external pointer.",
           "default": 0
@@ -2616,6 +2916,28 @@
         "trackpad_scroll_method": {
           "type": "integer",
           "enum": [0, 1, 2, 4],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Disabled"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Two-finger"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Edge"
+            },
+            {
+              "type": "integer",
+              "const": 4,
+              "title": "Button"
+            }
+          ],
           "title": "Trackpad Scroll Method",
           "description": "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button.",
           "default": 1
@@ -2631,6 +2953,23 @@
         "trackpad_click_method": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "No emulation"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Button areas"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Clickfinger"
+            }
+          ],
           "title": "Trackpad Click Method",
           "description": "Click method: 0 no emulation, 1 button areas, 2 clickfinger.",
           "default": 1
@@ -2638,6 +2977,23 @@
         "trackpad_send_events_mode": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Enabled"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Disabled"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Disabled on external mouse"
+            }
+          ],
           "title": "Trackpad Send Events Mode",
           "description": "Send events: 0 on, 1 off, 2 off with an external pointer.",
           "default": 0
@@ -2645,6 +3001,23 @@
         "send_events_mode": {
           "type": "integer",
           "enum": [0, 1, 2],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Enabled"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Disabled"
+            },
+            {
+              "type": "integer",
+              "const": 2,
+              "title": "Disabled on external mouse"
+            }
+          ],
           "title": "Send Events Mode",
           "description": "Send events for touch and tablet devices: 0 on, 1 off, 2 off with an external pointer.",
           "default": 0
@@ -2652,6 +3025,18 @@
         "button_map": {
           "type": "integer",
           "enum": [0, 1],
+          "oneOf": [
+            {
+              "type": "integer",
+              "const": 0,
+              "title": "Left / right / middle"
+            },
+            {
+              "type": "integer",
+              "const": 1,
+              "title": "Left / middle / right"
+            }
+          ],
           "title": "Button Map",
           "description": "Trackpad tap-to-button mapping: 0 left/right/middle, 1 left/middle/right.",
           "default": 0
@@ -3270,6 +3655,48 @@
               "rr": {
                 "type": "integer",
                 "enum": [0, 1, 2, 3, 4, 5, 6, 7],
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "const": 0,
+                    "title": "Normal"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 1,
+                    "title": "90° CCW"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 2,
+                    "title": "180°"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 3,
+                    "title": "270° CCW"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 4,
+                    "title": "Vertical flip"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 5,
+                    "title": "Flip+90° CCW"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 6,
+                    "title": "Flip+180°"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 7,
+                    "title": "Flip+270° CCW"
+                  }
+                ],
                 "title": "Transform",
                 "description": "Monitor transform. 0 normal, 1 90° CCW, 2 180°, 3 270° CCW, 4 vertical flip, 5 flip+90° CCW, 6 flip+180°, 7 flip+270° CCW."
               },
@@ -3668,12 +4095,66 @@
               "animation_type_open": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "const": "",
+                    "title": "Unset"
+                  },
+                  {
+                    "type": "string",
+                    "const": "none",
+                    "title": "None"
+                  },
+                  {
+                    "type": "string",
+                    "const": "fade",
+                    "title": "Fade"
+                  },
+                  {
+                    "type": "string",
+                    "const": "slide",
+                    "title": "Slide"
+                  },
+                  {
+                    "type": "string",
+                    "const": "zoom",
+                    "title": "Zoom"
+                  }
+                ],
                 "title": "Open Animation",
                 "description": "Layer surface open animation. Empty inherits the global setting; `none` disables it."
               },
               "animation_type_close": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "const": "",
+                    "title": "Unset"
+                  },
+                  {
+                    "type": "string",
+                    "const": "none",
+                    "title": "None"
+                  },
+                  {
+                    "type": "string",
+                    "const": "fade",
+                    "title": "Fade"
+                  },
+                  {
+                    "type": "string",
+                    "const": "slide",
+                    "title": "Slide"
+                  },
+                  {
+                    "type": "string",
+                    "const": "zoom",
+                    "title": "Zoom"
+                  }
+                ],
                 "title": "Close Animation",
                 "description": "Layer surface close animation. Empty inherits the global setting; `none` disables it."
               },
@@ -3766,12 +4247,66 @@
               "animation_type_open": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "const": "",
+                    "title": "Unset"
+                  },
+                  {
+                    "type": "string",
+                    "const": "none",
+                    "title": "None"
+                  },
+                  {
+                    "type": "string",
+                    "const": "fade",
+                    "title": "Fade"
+                  },
+                  {
+                    "type": "string",
+                    "const": "slide",
+                    "title": "Slide"
+                  },
+                  {
+                    "type": "string",
+                    "const": "zoom",
+                    "title": "Zoom"
+                  }
+                ],
                 "title": "Open Animation",
                 "description": "Window open animation. Empty inherits the global setting; `none` disables it."
               },
               "animation_type_close": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "const": "",
+                    "title": "Unset"
+                  },
+                  {
+                    "type": "string",
+                    "const": "none",
+                    "title": "None"
+                  },
+                  {
+                    "type": "string",
+                    "const": "fade",
+                    "title": "Fade"
+                  },
+                  {
+                    "type": "string",
+                    "const": "slide",
+                    "title": "Slide"
+                  },
+                  {
+                    "type": "string",
+                    "const": "zoom",
+                    "title": "Zoom"
+                  }
+                ],
                 "title": "Close Animation",
                 "description": "Window close animation. Empty inherits the global setting; `none` disables it."
               },
@@ -4195,6 +4730,23 @@
                   {
                     "type": "integer",
                     "enum": [0, 1, 2],
+                    "oneOf": [
+                      {
+                        "type": "integer",
+                        "const": 0,
+                        "title": "Unspecified"
+                      },
+                      {
+                        "type": "integer",
+                        "const": 1,
+                        "title": "Enabled"
+                      },
+                      {
+                        "type": "integer",
+                        "const": 2,
+                        "title": "Disabled"
+                      }
+                    ],
                     "title": "Force Tearing",
                     "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing."
                   }
@@ -4317,12 +4869,66 @@
               "animation_type_open": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "const": "",
+                    "title": "Unset"
+                  },
+                  {
+                    "type": "string",
+                    "const": "none",
+                    "title": "None"
+                  },
+                  {
+                    "type": "string",
+                    "const": "fade",
+                    "title": "Fade"
+                  },
+                  {
+                    "type": "string",
+                    "const": "slide",
+                    "title": "Slide"
+                  },
+                  {
+                    "type": "string",
+                    "const": "zoom",
+                    "title": "Zoom"
+                  }
+                ],
                 "title": "Open Animation",
                 "description": "Window open animation. Empty inherits the global setting; `none` disables it."
               },
               "animation_type_close": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "const": "",
+                    "title": "Unset"
+                  },
+                  {
+                    "type": "string",
+                    "const": "none",
+                    "title": "None"
+                  },
+                  {
+                    "type": "string",
+                    "const": "fade",
+                    "title": "Fade"
+                  },
+                  {
+                    "type": "string",
+                    "const": "slide",
+                    "title": "Slide"
+                  },
+                  {
+                    "type": "string",
+                    "const": "zoom",
+                    "title": "Zoom"
+                  }
+                ],
                 "title": "Close Animation",
                 "description": "Window close animation. Empty inherits the global setting; `none` disables it."
               },
@@ -4746,6 +5352,23 @@
                   {
                     "type": "integer",
                     "enum": [0, 1, 2],
+                    "oneOf": [
+                      {
+                        "type": "integer",
+                        "const": 0,
+                        "title": "Unspecified"
+                      },
+                      {
+                        "type": "integer",
+                        "const": 1,
+                        "title": "Enabled"
+                      },
+                      {
+                        "type": "integer",
+                        "const": 2,
+                        "title": "Disabled"
+                      }
+                    ],
                     "title": "Force Tearing",
                     "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing."
                   }
@@ -4859,6 +5482,48 @@
                   "pad",
                   "touchpad"
                 ],
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "const": "keyboard",
+                    "title": "Keyboard"
+                  },
+                  {
+                    "type": "string",
+                    "const": "pointer",
+                    "title": "Pointer"
+                  },
+                  {
+                    "type": "string",
+                    "const": "trackpad",
+                    "title": "Trackpad"
+                  },
+                  {
+                    "type": "string",
+                    "const": "touch",
+                    "title": "Touch"
+                  },
+                  {
+                    "type": "string",
+                    "const": "switch",
+                    "title": "Switch"
+                  },
+                  {
+                    "type": "string",
+                    "const": "tablet",
+                    "title": "Tablet"
+                  },
+                  {
+                    "type": "string",
+                    "const": "pad",
+                    "title": "Pad"
+                  },
+                  {
+                    "type": "string",
+                    "const": "touchpad",
+                    "title": "Touchpad"
+                  }
+                ],
                 "title": "Device Type",
                 "description": "Device type to match. touchpad is a deprecated alias for trackpad."
               },
@@ -4917,6 +5582,23 @@
               "accel_profile": {
                 "type": "integer",
                 "enum": [0, 1, 2],
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "const": 0,
+                    "title": "None"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 1,
+                    "title": "Flat"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 2,
+                    "title": "Adaptive"
+                  }
+                ],
                 "title": "Acceleration Profile",
                 "description": "Pointer acceleration profile: 0 none, 1 flat, 2 adaptive."
               },
@@ -4956,6 +5638,33 @@
               "scroll_method": {
                 "type": "integer",
                 "enum": [0, 1, 2, 4, 8],
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "const": 0,
+                    "title": "Disabled"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 1,
+                    "title": "Two-finger"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 2,
+                    "title": "Edge"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 4,
+                    "title": "Button"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 8,
+                    "title": "Circular"
+                  }
+                ],
                 "title": "Scroll Method",
                 "description": "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button, 8 circular."
               },
@@ -4967,12 +5676,46 @@
               "click_method": {
                 "type": "integer",
                 "enum": [0, 1, 2],
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "const": 0,
+                    "title": "No emulation"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 1,
+                    "title": "Button areas"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 2,
+                    "title": "Clickfinger"
+                  }
+                ],
                 "title": "Click Method",
                 "description": "Click method: 0 no emulation, 1 button areas, 2 clickfinger."
               },
               "send_events_mode": {
                 "type": "integer",
                 "enum": [0, 1, 2],
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "const": 0,
+                    "title": "Enabled"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 1,
+                    "title": "Disabled"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 2,
+                    "title": "Disabled with external pointer"
+                  }
+                ],
                 "title": "Send Events Mode",
                 "description": "Send events: 0 on, 1 off, 2 off with an external pointer."
               },
@@ -5018,6 +5761,18 @@
               "button_map": {
                 "type": "integer",
                 "enum": [0, 1],
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "const": 0,
+                    "title": "Left/right/middle"
+                  },
+                  {
+                    "type": "integer",
+                    "const": 1,
+                    "title": "Left/middle/right"
+                  }
+                ],
                 "title": "Button Map",
                 "description": "`0` (Left/right/middle), `1` (Left/middle/right)."
               },

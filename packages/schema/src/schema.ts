@@ -89,10 +89,19 @@ function enumSchema(
   numeric: boolean,
   metadata: Record<string, unknown>,
   defaultValue?: unknown,
+  labels?: readonly string[],
 ): TSchema {
+  const hasLabels = labels?.some((label) => Boolean(label)) ?? false;
+  const branches = values.map((value, index) => ({
+    type: numeric ? "integer" : "string",
+    const: numeric ? Number(value) : value,
+    ...(labels?.[index] ? { title: labels[index] } : {}),
+  }));
+
   return Type.Unsafe<TSchema>({
     type: numeric ? "integer" : "string",
     enum: numeric ? values.map(Number) : [...values],
+    ...(hasLabels ? { oneOf: branches } : {}),
     ...metadata,
     ...(defaultValue === undefined ? {} : { default: defaultValue }),
   });
@@ -200,6 +209,7 @@ function globalProperty(option: GlobalDef, mode: SchemaMode): TSchema {
         NUMERIC_ENUMS.has(option.key),
         metadata,
         defaultValue,
+        values.map((value) => value.label),
       );
     }
   }
@@ -537,7 +547,13 @@ function ruleField(field: RuleFieldDef, ruleKey: string, mode: SchemaMode): TSch
       return Type.String(metadata);
     case "enum": {
       const values = field.options ?? [];
-      const schema = enumSchema(values, NUMERIC_RULE_ENUMS.has(field.key), metadata);
+      const schema = enumSchema(
+        values,
+        NUMERIC_RULE_ENUMS.has(field.key),
+        metadata,
+        undefined,
+        field.labels,
+      );
       if (field.key === "force_tearing" && mode === "toml") {
         return Type.Union([Type.Boolean(), schema], metadata);
       }
