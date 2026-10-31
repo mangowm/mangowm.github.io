@@ -83,28 +83,28 @@
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
           "title": "Open Animation Type",
-          "description": "Animation style when a window opens. Empty leaves it unset.",
+          "description": "Window open animation. Empty leaves it unset (slide); `none` disables it.",
           "default": ""
         },
         "animation_type_close": {
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
           "title": "Close Animation Type",
-          "description": "Animation style when a window closes. Empty leaves it unset.",
+          "description": "Window close animation. Empty leaves it unset (zoom); `none` disables it.",
           "default": ""
         },
         "layer_animation_type_open": {
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
           "title": "Layer Open Animation Type",
-          "description": "Animation style when a layer surface opens. Empty leaves it unset.",
+          "description": "Layer surface open animation. Empty leaves it unset; `none` disables it.",
           "default": ""
         },
         "layer_animation_type_close": {
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
           "title": "Layer Close Animation Type",
-          "description": "Animation style when a layer surface closes. Empty leaves it unset.",
+          "description": "Layer surface close animation. Empty leaves it unset; `none` disables it.",
           "default": ""
         },
         "animation_fade_in": {
@@ -3407,13 +3407,13 @@
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Open Animation",
-                "description": "Animation used when the layer surface opens; empty inherits the global setting."
+                "description": "Layer surface open animation. Empty inherits the global setting; `none` disables it."
               },
               "animation_type_close": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Close Animation",
-                "description": "Animation used when the layer surface closes; empty inherits the global setting."
+                "description": "Layer surface close animation. Empty inherits the global setting; `none` disables it."
               },
               "shield_when_capture": {
                 "anyOf": [
@@ -3505,13 +3505,13 @@
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Open Animation",
-                "description": "Animation used when the window opens; empty inherits the global setting."
+                "description": "Window open animation. Empty inherits the global setting; `none` disables it."
               },
               "animation_type_close": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Close Animation",
-                "description": "Animation used when the window closes; empty inherits the global setting."
+                "description": "Window close animation. Empty inherits the global setting; `none` disables it."
               },
               "tags": {
                 "anyOf": [
@@ -4039,13 +4039,13 @@
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Open Animation",
-                "description": "Animation used when the window opens; empty inherits the global setting."
+                "description": "Window open animation. Empty inherits the global setting; `none` disables it."
               },
               "animation_type_close": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Close Animation",
-                "description": "Animation used when the window closes; empty inherits the global setting."
+                "description": "Window close animation. Empty inherits the global setting; `none` disables it."
               },
               "tags": {
                 "anyOf": [

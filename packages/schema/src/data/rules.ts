@@ -253,7 +253,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Open Animation",
         description:
-          "Animation used when the layer surface opens; empty inherits the global setting.",
+          "Layer surface open animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
@@ -261,7 +261,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Close Animation",
         description:
-          "Animation used when the layer surface closes; empty inherits the global setting.",
+          "Layer surface close animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
@@ -319,14 +319,16 @@ export const RULES: readonly RuleDef[] = [
         key: "animation_type_open",
         type: "enum",
         label: "Open Animation",
-        description: "Animation used when the window opens; empty inherits the global setting.",
+        description:
+          "Window open animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "animation_type_close",
         type: "enum",
         label: "Close Animation",
-        description: "Animation used when the window closes; empty inherits the global setting.",
+        description:
+          "Window close animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
@@ -631,14 +633,16 @@ export const RULES: readonly RuleDef[] = [
         key: "animation_type_open",
         type: "enum",
         label: "Open Animation",
-        description: "Animation used when the window opens; empty inherits the global setting.",
+        description:
+          "Window open animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "animation_type_close",
         type: "enum",
         label: "Close Animation",
-        description: "Animation used when the window closes; empty inherits the global setting.",
+        description:
+          "Window close animation. Empty inherits the global setting; `none` disables it.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
