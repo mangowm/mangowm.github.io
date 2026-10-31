@@ -26,10 +26,10 @@ const canonicalConfig = {
   var: { term: "foot" },
   bind: {
     default: {
-      "SUPER+r": "reload_config",
-      "SUPER+Return": ["spawn,foot"],
-      lock: { "CTRL+comma": "spawn,brightnessctl set 10%+" },
-      release: { conflict: { "SUPER+x": "reload_config" } },
+      "SUPER+r": [{ dispatcher: "reload_config" }],
+      "SUPER+Return": [{ dispatcher: "spawn", args: "foot" }],
+      lock: { "CTRL+comma": [{ dispatcher: "spawn", args: "brightnessctl set 10%+" }] },
+      release: { conflict: { "SUPER+x": [{ dispatcher: "reload_config" }] } },
     },
   },
   rule: {
@@ -83,12 +83,14 @@ describe("canonical schema", () => {
     expect(Value.Check(schema, canonicalConfig)).toBe(true);
   });
 
-  it("rejects raw TOML scalar forms", () => {
+  it("rejects raw TOML forms", () => {
     expect(Value.Check(schema, { global: { blur: 1 } })).toBe(false);
     expect(Value.Check(schema, { global: { root_color: 0x323232ff } })).toBe(false);
     expect(Value.Check(schema, { env: { DPI: 140 } })).toBe(false);
     expect(Value.Check(schema, { var: { FLAG: true } })).toBe(false);
     expect(Value.Check(schema, { global: { exec: "waybar" } })).toBe(false);
+    expect(Value.Check(schema, { bind: { default: { "SUPER+r": "reload_config" } } })).toBe(false);
+    expect(Value.Check(schema, { rule: { window_rule: [{ tags: "1|2" }] } })).toBe(false);
   });
 
   it("accepts a .conf-derived canonical object", () => {
@@ -102,8 +104,8 @@ describe("canonical schema", () => {
           source: ["./extra.conf"],
         },
         env: { QT_IM_MODULE: "fcitx" },
-        bind: { default: { "SUPER+Return": "spawn,foot" } },
-        rule: { tag_rule: [{ id: 1, layout_name: "tile" }] },
+        bind: { default: { "SUPER+Return": [{ dispatcher: "spawn", args: "foot" }] } },
+        rule: { tag_rule: [{ id: 1, layout_name: "tile" }], window_rule: [{ tags: [1, 2] }] },
       }),
     ).toBe(true);
   });
@@ -127,46 +129,96 @@ describe("canonical schema", () => {
 
   it("accepts every dispatcher name", () => {
     const bind = Object.fromEntries(
-      DISPATCHERS.map((dispatcher, index) => [`SUPER+F${index}`, dispatcher]),
+      DISPATCHERS.map((dispatcher, index) => [`SUPER+F${index}`, [{ dispatcher }]]),
     );
     expect(Value.Check(schema, { bind: { default: bind } })).toBe(true);
   });
 
   it("rejects unknown dispatchers", () => {
-    expect(Value.Check(schema, { bind: { default: { "SUPER+r": "reload_confg" } } })).toBe(false);
     expect(
-      Value.Check(schema, { bind: { default: { lock: { "SUPER+r": "reload_confg" } } } }),
+      Value.Check(schema, { bind: { default: { "SUPER+r": [{ dispatcher: "reload_confg" }] } } }),
+    ).toBe(false);
+    expect(
+      Value.Check(schema, {
+        bind: { default: { lock: { "SUPER+r": [{ dispatcher: "reload_confg" }] } } },
+      }),
     ).toBe(false);
   });
 
-  it("accepts variable actions and uppercase hex colors", () => {
+  it("accepts action objects", () => {
     expect(
       Value.Check(schema, {
-        global: { root_color: "0X323232FF" },
-        bind: { default: { "SUPER+r": "${myAction}", "SUPER+x": " reload_config " } },
+        bind: {
+          default: {
+            "SUPER+r": [{ dispatcher: "reload_config" }],
+            "SUPER+t": [{ variable: "term" }],
+            "SUPER+s": [{ dispatcher: "spawn", args: "foot" }],
+            "SUPER+v": [{ variable: "term", args: "--hold" }],
+          },
+        },
       }),
     ).toBe(true);
+    expect(
+      Value.Check(schema, {
+        bind: { default: { "SUPER+r": [{ dispatcher: "reload_config", variable: "x" }] } },
+      }),
+    ).toBe(false);
+    expect(Value.Check(schema, { bind: { default: { "SUPER+r": [{ args: "x" }] } } })).toBe(false);
+  });
+
+  it("accepts uppercase hex colors", () => {
+    expect(Value.Check(schema, { global: { root_color: "0X323232FF" } })).toBe(true);
+  });
+
+  it("clamps saturation in canonical output", () => {
+    expect(Value.Check(schema, { global: { blur_params_saturation: 1 } })).toBe(true);
+    expect(Value.Check(schema, { global: { blur_params_saturation: 1.2 } })).toBe(false);
+    expect(Value.Check(tomlSchema, { global: { blur_params_saturation: 1.2 } })).toBe(true);
+  });
+
+  it("accepts an empty animation type", () => {
+    expect(Value.Check(schema, { rule: { window_rule: [{ animation_type_open: "" }] } })).toBe(
+      true,
+    );
   });
 
   it("accepts flags, numeric tag ids, and layout lists", () => {
     expect(
       Value.Check(schema, {
         global: { circle_layout: ["tile", "scroller"] },
-        bind: { default: { release: { conflict: { "SUPER+r": "reload_config" } } } },
+        bind: {
+          default: {
+            release: { conflict: { "SUPER+r": [{ dispatcher: "reload_config" }] } },
+          },
+        },
         rule: { tag_rule: [{ id: 1, layout_name: "tile" }] },
       }),
     ).toBe(true);
+    expect(Value.Check(schema, { global: { circle_layout: ["not_a_layout"] } })).toBe(false);
   });
 
-  it("validates tag ids and tag masks", () => {
+  it("validates tag ids and tag arrays", () => {
     expect(Value.Check(schema, { rule: { tag_rule: [{ id: "*" }, { id: 1 }] } })).toBe(true);
     expect(Value.Check(schema, { rule: { tag_rule: [{ id: "abc" }] } })).toBe(false);
     expect(Value.Check(schema, { rule: { tag_rule: [{ id: "99" }] } })).toBe(false);
-    expect(Value.Check(schema, { rule: { window_rule: [{ tags: "1|2" }, { tags: 0 }] } })).toBe(
+    expect(Value.Check(schema, { rule: { window_rule: [{ tags: [1, 2] }, { tags: [0] }] } })).toBe(
       true,
     );
-    expect(Value.Check(schema, { rule: { window_rule: [{ tags: "foo" }] } })).toBe(false);
-    expect(Value.Check(schema, { rule: { window_rule: [{ tags: "99" }] } })).toBe(false);
+    expect(Value.Check(schema, { rule: { window_rule: [{ tags: [0, 1] }] } })).toBe(false);
+    expect(Value.Check(schema, { rule: { window_rule: [{ tags: [] }] } })).toBe(false);
+    expect(Value.Check(schema, { rule: { window_rule: [{ tags: [1, 1] }] } })).toBe(false);
+    expect(Value.Check(schema, { rule: { window_rule: [{ tags: [1, 32] }] } })).toBe(false);
+  });
+
+  it("validates global key bindings", () => {
+    expect(
+      Value.Check(schema, {
+        rule: { window_rule: [{ global_key_binding: "SUPER-XF86AudioMute" }] },
+      }),
+    ).toBe(true);
+    expect(Value.Check(schema, { rule: { window_rule: [{ global_key_binding: "SUPER" }] } })).toBe(
+      false,
+    );
   });
 
   it("rejects unknown global options", () => {
@@ -190,7 +242,7 @@ describe("TOML schema", () => {
     expect(exportedTomlSchema).toEqual(tomlSchema);
   });
 
-  it("accepts raw TOML scalar forms", () => {
+  it("accepts raw TOML forms", () => {
     expect(
       Value.Check(tomlSchema, {
         global: {
@@ -201,13 +253,29 @@ describe("TOML schema", () => {
         },
         env: { DPI: 140, FLAG: true },
         var: { scale: 1.5 },
-        rule: { window_rule: [{ is_floating: 1, width: 0.5 }] },
+        bind: { default: { "SUPER+r": "reload_config", "SUPER+Return": ["spawn,foot"] } },
+        rule: { window_rule: [{ is_floating: 1, width: 0.5, tags: "1 | 2" }] },
       }),
     ).toBe(true);
   });
 
-  it("also accepts canonical forms", () => {
-    expect(Value.Check(tomlSchema, canonicalConfig)).toBe(true);
+  it("accepts canonical scalar forms", () => {
+    expect(
+      Value.Check(tomlSchema, {
+        global: { animations: true, root_color: "0x323232ff", exec: ["waybar"] },
+        env: { DPI: "140" },
+        bind: { default: { "SUPER+r": "reload_config" } },
+      }),
+    ).toBe(true);
+  });
+
+  it("rejects canonical actions and tag arrays", () => {
+    expect(
+      Value.Check(tomlSchema, {
+        bind: { default: { "SUPER+r": [{ dispatcher: "reload_config" }] } },
+      }),
+    ).toBe(false);
+    expect(Value.Check(tomlSchema, { rule: { window_rule: [{ tags: [1, 2] }] } })).toBe(false);
   });
 
   it("accepts custom off as an integer", () => {
@@ -225,5 +293,6 @@ describe("TOML schema", () => {
         },
       }),
     ).toBe(true);
+    expect(Value.Check(tomlSchema, { rule: { tag_rule: [{ id: "99" }] } })).toBe(false);
   });
 });

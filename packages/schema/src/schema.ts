@@ -2,6 +2,7 @@ import Type, { type TSchema } from "typebox";
 
 import { DISPATCHERS } from "./data/dispatchers";
 import { GLOBALS } from "./data/globals";
+import { LAYOUTS } from "./data/layouts";
 import { RULES } from "./data/rules";
 import type { GlobalDef, RuleDef, RuleFieldDef } from "./data/types";
 import { MANGO_VERSION } from "./version";
@@ -65,7 +66,7 @@ function parseDefault(option: GlobalDef): unknown {
     case "curve":
     case "preset":
       return option.default ? option.default.split(",").map(Number) : [];
-    case "string-array":
+    case "layout-array":
       return option.default ? option.default.split(",").map((value) => value.trim()) : [];
     case "enum":
       return NUMERIC_ENUMS.has(option.key) ? Number(option.default) : option.default;
@@ -110,13 +111,20 @@ function globalProperty(option: GlobalDef, mode: SchemaMode): TSchema {
         ...(option.min === undefined ? {} : { minimum: option.min }),
         ...(option.max === undefined ? {} : { maximum: option.max }),
       });
-    case "float":
+    case "float": {
+      // The source default is 1.2, but the runtime clamps it to 1.
+      const saturation = option.key === "blur_params_saturation";
+      const canonicalSaturation = saturation && mode === "canonical";
+      const maximum = canonicalSaturation ? 1 : option.max;
       return Type.Number({
-        ...metadata,
-        default: defaultValue,
+        ...(canonicalSaturation
+          ? { ...metadata, description: "Saturation multiplier for the blurred layer (0-1)." }
+          : metadata),
+        default: canonicalSaturation ? 1 : defaultValue,
         ...(option.min === undefined ? {} : { minimum: option.min }),
-        ...(option.max === undefined ? {} : { maximum: option.max }),
+        ...(maximum === undefined ? {} : { maximum }),
       });
+    }
     case "string":
       return Type.String({ ...metadata, default: defaultValue });
     case "color":
@@ -142,8 +150,11 @@ function globalProperty(option: GlobalDef, mode: SchemaMode): TSchema {
         ...metadata,
         default: defaultValue,
       });
-    case "string-array":
-      return Type.Array(Type.String(), { ...metadata, default: defaultValue });
+    case "layout-array":
+      return Type.Array(Type.String({ enum: LAYOUTS }), {
+        ...metadata,
+        default: defaultValue,
+      });
     case "enum": {
       const values = option.options ?? [];
       return enumSchema(
@@ -218,35 +229,69 @@ const TAG_NUMBER_PATTERN = "(?:[0-9]|[12][0-9]|3[01])";
 const TAG_MASK_PATTERN = `^\\s*${TAG_NUMBER_PATTERN}\\s*(?:\\|\\s*${TAG_NUMBER_PATTERN}\\s*)*$`;
 const TAG_ID_STRINGS = ["*", ...Array.from({ length: 32 }, (_, index) => String(index))];
 
-const ActionString = Type.String({
+const TomlActionString = Type.String({
   title: "Action",
   description: "A dispatcher name followed by optional comma-separated arguments.",
   pattern: ACTION_PATTERN,
 });
 
-const Action = Type.Union([ActionString, Type.Array(ActionString)], {
+const TomlAction = Type.Union([TomlActionString, Type.Array(TomlActionString)], {
   title: "Action",
   description: "One action, or an array of actions for the same key combination.",
 });
 
-const BindingNode: TSchema = Type.Unsafe<TSchema>({
-  title: "Binding node",
-  description: "A key combination map with optional flag sub-tables.",
+const CanonicalAction: TSchema = Type.Unsafe<TSchema>({
+  title: "Action",
+  description: "A dispatcher call or a variable reference.",
   type: "object",
   properties: {
-    sym: { $ref: "#/$defs/BindingNode" },
-    lock: { $ref: "#/$defs/BindingNode" },
-    release: { $ref: "#/$defs/BindingNode" },
-    pass: { $ref: "#/$defs/BindingNode" },
-    conflict: { $ref: "#/$defs/BindingNode" },
+    dispatcher: { type: "string", enum: DISPATCHERS, title: "Dispatcher" },
+    variable: {
+      type: "string",
+      pattern: "^[A-Za-z_][A-Za-z0-9_]*$",
+      title: "Variable",
+      description: "Name of a config variable.",
+    },
+    args: {
+      type: "string",
+      title: "Arguments",
+      description: "Raw text after the first comma.",
+    },
   },
-  additionalProperties: Action,
+  additionalProperties: false,
+  oneOf: [
+    { properties: { dispatcher: {} }, required: ["dispatcher"] },
+    { properties: { variable: {} }, required: ["variable"] },
+  ],
 });
 
-const BindingRef: TSchema = Type.Unsafe<TSchema>({ $ref: "#/$defs/BindingNode" });
+const CanonicalActions = Type.Array(CanonicalAction, {
+  title: "Actions",
+  description: "One or more actions for the same key combination.",
+  minItems: 1,
+});
+
+function bindingNode(mode: SchemaMode): TSchema {
+  return Type.Unsafe<TSchema>({
+    title: "Binding node",
+    description: "A key combination map with optional flag sub-tables.",
+    type: "object",
+    properties: {
+      sym: { $ref: "#/$defs/BindingNode" },
+      lock: { $ref: "#/$defs/BindingNode" },
+      release: { $ref: "#/$defs/BindingNode" },
+      pass: { $ref: "#/$defs/BindingNode" },
+      conflict: { $ref: "#/$defs/BindingNode" },
+    },
+    additionalProperties: mode === "canonical" ? CanonicalActions : TomlAction,
+  });
+}
 
 function bindingMap(title: string, description: string): TSchema {
-  return Type.Record(Type.String(), BindingRef, { title, description });
+  return Type.Record(Type.String(), Type.Unsafe<TSchema>({ $ref: "#/$defs/BindingNode" }), {
+    title,
+    description,
+  });
 }
 
 function tagIdSchema(mode: SchemaMode, metadata: Record<string, unknown>): TSchema {
@@ -265,6 +310,21 @@ function tagIdSchema(mode: SchemaMode, metadata: Record<string, unknown>): TSche
 function tagMaskSchema(metadata: Record<string, unknown>): TSchema {
   return Type.Union(
     [Type.Integer({ minimum: 0, maximum: 31 }), Type.String({ pattern: TAG_MASK_PATTERN })],
+    metadata,
+  );
+}
+
+function tagArraySchema(metadata: Record<string, unknown>): TSchema {
+  return Type.Union(
+    [
+      Type.Unsafe<TSchema>({ const: [0] }),
+      Type.Unsafe<TSchema>({
+        type: "array",
+        items: { type: "integer", minimum: 1, maximum: 31 },
+        minItems: 1,
+        uniqueItems: true,
+      }),
+    ],
     metadata,
   );
 }
@@ -298,9 +358,17 @@ function ruleField(field: RuleFieldDef, ruleKey: string, mode: SchemaMode): TSch
         ],
         metadata,
       );
+    case "key-binding":
+      return Type.String({ ...metadata, pattern: "^[^-]+-\\S+$" });
     case "tag-id":
       return tagIdSchema(mode, metadata);
     case "tag-mask":
+      if (mode === "canonical") {
+        return tagArraySchema({
+          ...metadata,
+          description: "Tags to assign. Use 0 for the special workspace.",
+        });
+      }
       return tagMaskSchema(metadata);
     case "string":
       return Type.String(metadata);
@@ -409,7 +477,7 @@ export function buildSchema(version: string, mode: SchemaMode = "canonical") {
   return {
     $schema: "https://json-schema.org/draft/2020-12/schema",
     $id: `https://mangowm.github.io/schema/${version}/${file}`,
-    $defs: { BindingNode },
+    $defs: { BindingNode: bindingNode(mode) },
     ...rootSchema(mode),
     title:
       mode === "canonical"

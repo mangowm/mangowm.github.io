@@ -752,7 +752,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   },
   {
     key: "circle_layout",
-    type: "string-array",
+    type: "layout-array",
     default: "",
     label: "Circle Layout",
     description: "Ordered layouts cycled by switch_layout.",

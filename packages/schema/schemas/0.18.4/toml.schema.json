@@ -1027,7 +1027,23 @@
         "circle_layout": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "tile",
+              "scroller",
+              "grid",
+              "monocle",
+              "deck",
+              "center_tile",
+              "right_tile",
+              "vertical_scroller",
+              "vertical_tile",
+              "vertical_grid",
+              "vertical_deck",
+              "dwindle",
+              "fair",
+              "vertical_fair"
+            ]
           },
           "title": "Circle Layout",
           "description": "Ordered layouts cycled by switch_layout.",
@@ -2891,7 +2907,7 @@
                 "type": "integer",
                 "enum": [0, 1, 2, 3, 4, 5, 6, 7],
                 "title": "Transform",
-                "description": "Monitor transform. 0 normal, 1 90° left, 2 180°, 3 270° left, 4 vertical flip, 5 flip+90°, 6 flip+180°, 7 flip+270°."
+                "description": "Monitor transform. 0 normal, 1 90° CCW, 2 180°, 3 270° CCW, 4 vertical flip, 5 flip+90° CCW, 6 flip+180°, 7 flip+270° CCW."
               },
               "scale": {
                 "type": "number",
@@ -3287,13 +3303,13 @@
               },
               "animation_type_open": {
                 "type": "string",
-                "enum": ["none", "fade", "slide", "zoom"],
+                "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Open Animation",
                 "description": "Animation used when the layer surface opens."
               },
               "animation_type_close": {
                 "type": "string",
-                "enum": ["none", "fade", "slide", "zoom"],
+                "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Close Animation",
                 "description": "Animation used when the layer surface closes."
               },
@@ -3385,13 +3401,13 @@
               },
               "animation_type_open": {
                 "type": "string",
-                "enum": ["none", "fade", "slide", "zoom"],
+                "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Open Animation",
                 "description": "Animation used when the window opens."
               },
               "animation_type_close": {
                 "type": "string",
-                "enum": ["none", "fade", "slide", "zoom"],
+                "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Close Animation",
                 "description": "Animation used when the window closes."
               },
@@ -3887,7 +3903,8 @@
               "global_key_binding": {
                 "type": "string",
                 "title": "Global Key Binding",
-                "description": "Global keybinding (only works for Wayland apps)"
+                "description": "Global keybinding (only works for Wayland apps)",
+                "pattern": "^[^-]+-\\S+$"
               }
             },
             "title": "Window Rules",
@@ -3925,13 +3942,13 @@
               },
               "animation_type_open": {
                 "type": "string",
-                "enum": ["none", "fade", "slide", "zoom"],
+                "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Open Animation",
                 "description": "Animation used when the window opens."
               },
               "animation_type_close": {
                 "type": "string",
-                "enum": ["none", "fade", "slide", "zoom"],
+                "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Close Animation",
                 "description": "Animation used when the window closes."
               },
@@ -4427,7 +4444,8 @@
               "global_key_binding": {
                 "type": "string",
                 "title": "Global Key Binding",
-                "description": "Global keybinding (only works for Wayland apps)"
+                "description": "Global keybinding (only works for Wayland apps)",
+                "pattern": "^[^-]+-\\S+$"
               }
             },
             "title": "Window Rules (Once)",

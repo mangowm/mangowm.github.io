@@ -7,7 +7,7 @@ export type GlobalType =
   | "color"
   | "curve"
   | "preset"
-  | "string-array";
+  | "layout-array";
 
 export interface EnumOption {
   value: string;
@@ -40,6 +40,7 @@ export type RuleFieldType =
   | "string"
   | "enum"
   | "color"
+  | "key-binding"
   | "tag-id"
   | "tag-mask";
 

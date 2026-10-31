@@ -1,3 +1,4 @@
+import { LAYOUTS } from "./layouts";
 import type { RuleDef } from "./types";
 
 export const RULES: readonly RuleDef[] = [
@@ -36,7 +37,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Transform",
         description:
-          "Monitor transform. 0 normal, 1 90° left, 2 180°, 3 270° left, 4 vertical flip, 5 flip+90°, 6 flip+180°, 7 flip+270°.",
+          "Monitor transform. 0 normal, 1 90° CCW, 2 180°, 3 270° CCW, 4 vertical flip, 5 flip+90° CCW, 6 flip+180°, 7 flip+270° CCW.",
         options: ["0", "1", "2", "3", "4", "5", "6", "7"],
       },
       {
@@ -158,22 +159,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Layout",
         description: "Layout to apply to this tag.",
-        options: [
-          "tile",
-          "scroller",
-          "grid",
-          "monocle",
-          "deck",
-          "center_tile",
-          "right_tile",
-          "vertical_scroller",
-          "vertical_tile",
-          "vertical_grid",
-          "vertical_deck",
-          "dwindle",
-          "fair",
-          "vertical_fair",
-        ],
+        options: LAYOUTS,
       },
       {
         key: "monitor_name",
@@ -266,14 +252,14 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Open Animation",
         description: "Animation used when the layer surface opens.",
-        options: ["none", "fade", "slide", "zoom"],
+        options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "animation_type_close",
         type: "enum",
         label: "Close Animation",
         description: "Animation used when the layer surface closes.",
-        options: ["none", "fade", "slide", "zoom"],
+        options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "shield_when_capture",
@@ -331,14 +317,14 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Open Animation",
         description: "Animation used when the window opens.",
-        options: ["none", "fade", "slide", "zoom"],
+        options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "animation_type_close",
         type: "enum",
         label: "Close Animation",
         description: "Animation used when the window closes.",
-        options: ["none", "fade", "slide", "zoom"],
+        options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "tags",
@@ -604,7 +590,7 @@ export const RULES: readonly RuleDef[] = [
       },
       {
         key: "global_key_binding",
-        type: "string",
+        type: "key-binding",
         label: "Global Key Binding",
         description: "Global keybinding (only works for Wayland apps)",
       },
@@ -638,14 +624,14 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Open Animation",
         description: "Animation used when the window opens.",
-        options: ["none", "fade", "slide", "zoom"],
+        options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "animation_type_close",
         type: "enum",
         label: "Close Animation",
         description: "Animation used when the window closes.",
-        options: ["none", "fade", "slide", "zoom"],
+        options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "tags",
@@ -911,7 +897,7 @@ export const RULES: readonly RuleDef[] = [
       },
       {
         key: "global_key_binding",
-        type: "string",
+        type: "key-binding",
         label: "Global Key Binding",
         description: "Global keybinding (only works for Wayland apps)",
       },
