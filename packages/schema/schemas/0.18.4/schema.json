@@ -2992,16 +2992,14 @@
               },
               "scroll_method": {
                 "type": "integer",
-                "enum": [0, 1, 2, 4],
+                "enum": [0, 1, 2, 4, 8],
                 "title": "Scroll Method",
-                "description": "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button."
+                "description": "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button, 8 circular."
               },
               "scroll_button": {
                 "type": "integer",
                 "title": "Scroll Button",
-                "description": "Button used for button scrolling (272-279).",
-                "minimum": 272,
-                "maximum": 279
+                "description": "libinput button code used for button scrolling; 0 disables it."
               },
               "click_method": {
                 "type": "integer",

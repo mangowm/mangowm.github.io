@@ -1012,14 +1012,14 @@ export const RULES: readonly RuleDef[] = [
         key: "scroll_method",
         type: "enum",
         label: "Scroll Method",
-        description: "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button.",
-        options: ["0", "1", "2", "4"],
+        description: "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button, 8 circular.",
+        options: ["0", "1", "2", "4", "8"],
       },
       {
         key: "scroll_button",
         type: "int",
         label: "Scroll Button",
-        description: "Button used for button scrolling (272-279).",
+        description: "libinput button code used for button scrolling; 0 disables it.",
       },
       {
         key: "click_method",

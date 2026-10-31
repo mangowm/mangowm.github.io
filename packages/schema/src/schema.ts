@@ -53,7 +53,6 @@ const RULE_RANGES: Record<string, { min?: number; max?: number }> = {
   "device_rule.repeat_rate": { min: 0, max: 1000 },
   "device_rule.repeat_delay": { min: 0, max: 10000 },
   "device_rule.accel_speed": { min: -1, max: 1 },
-  "device_rule.scroll_button": { min: 272, max: 279 },
 };
 
 function parseDefault(option: GlobalDef): unknown {

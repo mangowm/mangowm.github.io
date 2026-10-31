@@ -221,6 +221,15 @@ describe("canonical schema", () => {
     );
   });
 
+  it("accepts device scroll options", () => {
+    expect(
+      Value.Check(schema, {
+        rule: { device_rule: [{ scroll_button: 0 }, { scroll_button: 300 }, { scroll_method: 8 }] },
+      }),
+    ).toBe(true);
+    expect(Value.Check(schema, { global: { mouse_scroll_method: 8 } })).toBe(false);
+  });
+
   it("accepts tearing overrides", () => {
     expect(Value.Check(schema, { rule: { window_rule: [{ force_tearing: 2 }] } })).toBe(true);
     expect(Value.Check(schema, { rule: { window_rule: [{ force_tearing: 3 }] } })).toBe(false);
