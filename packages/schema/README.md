@@ -96,8 +96,12 @@ decimal integer or an integer with underscores is misread or rejected.
 Mango's TOML reader is a line-oriented subset, not full TOML. Use decimal
 integers and floats and single-line strings for option values. The schema
 covers the documented `[global]`, `[bind.*]`, and `[[rule.*]]` forms. Mango also
-accepts top-level globals, `[keybind.*]`, and `[[window_rule]]`; those forms are
-not modeled.
+accepts top-level globals, `[keybind.*]`, `[[window_rule]]`, and single rule
+tables; those forms are not modeled.
+
+`[env]` values containing `~/` are HOME-expanded at parse. Empty `[env]` values
+and empty `exec` or `source` array elements are skipped. Rule string values are
+split on commas by Mango, so they cannot contain commas.
 
 Arrays with more than one action require a `.conflict` node. Mouse, axis,
 gesture, and switch tables do not support action arrays. The TOML schema
