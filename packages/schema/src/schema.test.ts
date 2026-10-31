@@ -331,6 +331,27 @@ describe("TOML schema", () => {
     ).toBe(true);
   });
 
+  it("accepts all binding sections and source_optional", () => {
+    expect(
+      Value.Check(tomlSchema, {
+        global: { source_optional: ["a.toml"], exec_once: ["x"] },
+        mousebind: { default: { "SUPER+btn_left": "moveresize,curmove" } },
+        axisbind: { default: { "SUPER+UP": "viewtoleft_have_client" } },
+        gesturebind: { default: { "none+left+3": "focusdir,left" } },
+        switchbind: { default: { fold: "spawn,a" } },
+        bind: { default: { conflict: { "SUPER+r": ["spawn,a", "reload_config"] } } },
+      }),
+    ).toBe(true);
+  });
+
+  it("accepts toml tag zero forms", () => {
+    expect(
+      Value.Check(tomlSchema, {
+        rule: { window_rule: [{ tags: "0" }, { tags: "0|1" }, { tags: "1|2" }] },
+      }),
+    ).toBe(true);
+  });
+
   it("validates toml comma strings", () => {
     expect(Value.Check(tomlSchema, { global: { animation_curve_open: "0.46,1,0.29" } })).toBe(
       false,
