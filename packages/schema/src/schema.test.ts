@@ -227,6 +227,13 @@ describe("canonical schema", () => {
       [{ dispatcher: "killclient", args: "maybe" }, "killclient,maybe", false],
       [{ dispatcher: "setoption", args: "blur,1,2" }, "setoption,blur,1,2", true],
       [
+        { dispatcher: "setoption", args: "blur_params_radius,3" },
+        "setoption,blur_params_radius,3",
+        true,
+      ],
+      [{ dispatcher: "setoption", args: "not_an_option,1" }, "setoption,not_an_option,1", false],
+      [{ dispatcher: "setoption", args: "blur" }, "setoption,blur", true],
+      [
         { dispatcher: "toggle_named_scratchpad", args: "a,none,cmd" },
         "toggle_named_scratchpad,a,none,cmd",
         true,
@@ -291,6 +298,7 @@ describe("canonical schema", () => {
       "tag-mask": "1|3",
       layout: "scroller",
       monitor: "eDP-1",
+      option: "blur",
       string: "foo",
       free: "echo hi",
       "mouse-action": "curmove",

@@ -1,5 +1,6 @@
 // Derived from src/config/binding_parse.c parse_func_name and docs/bindings/keys.md.
 import type { DispatcherName } from "./dispatchers";
+import { GLOBALS } from "./globals";
 import { LAYOUTS } from "./layouts";
 
 export type DispatcherArgKind =
@@ -13,6 +14,7 @@ export type DispatcherArgKind =
   | "tag-mask"
   | "layout"
   | "monitor"
+  | "option"
   | "string"
   | "free"
   | "mouse-action"
@@ -47,6 +49,10 @@ const TAG_MASK = `${TAG_NUMBER}(?:\\|${TAG_NUMBER})*`;
 const MONITOR_VALUE = "(?:(?!&&)[^,])+";
 const MONITOR_FIELD = `(?:name|make|model|serial):${MONITOR_VALUE}`;
 const MONITOR_SPEC = `(?:${MONITOR_FIELD}(?:&&${MONITOR_FIELD})*|[^,:&]+)`;
+const OPTION_NAME = `(?:${[...GLOBALS]
+  .map((option) => option.key)
+  .sort((a, b) => b.length - a.length)
+  .join("|")})`;
 
 const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
   direction: DIRECTION,
@@ -59,6 +65,7 @@ const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
   "tag-mask": TAG_MASK,
   layout: `(?:${LAYOUTS.join("|")})`,
   monitor: MONITOR_SPEC,
+  option: OPTION_NAME,
   string: "[^,]+",
   free: ".*",
   "mouse-action": MOUSE_ACTION,
@@ -112,7 +119,7 @@ export const DISPATCHER_ARGS: Record<DispatcherName, readonly DispatcherArgKind[
   setkeymode: ["string"],
   setlayout: ["layout"],
   setmfact: ["float"],
-  setoption: ["string", "free"],
+  setoption: ["option", "free"],
   set_proportion: ["unit-float"],
   sleep_monitor: ["monitor"],
   sleep_toggle_monitor: ["monitor"],

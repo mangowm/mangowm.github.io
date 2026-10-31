@@ -90,6 +90,7 @@ it for editor validation:
   states; a `$variable` is accepted as a trigger or modifier
 - monitor arguments accept a bare monitor name or a monitor spec such as
   `make:Chimei Innolux Corporation&&model:0x15F5`
+- `setoption` checks its first argument against the global option names
 - `global_key_binding` is checked as `MOD-KEY`, for example `ctrl+alt-o`
 - device rule names must be non-empty and cannot contain commas
 - `window_rule.tags` can be a tag number (`0` for the special workspace) or a
