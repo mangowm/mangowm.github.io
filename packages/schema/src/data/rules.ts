@@ -548,9 +548,11 @@ export const RULES: readonly RuleDef[] = [
       },
       {
         key: "force_tearing",
-        type: "bool",
+        type: "enum",
         label: "Force Tearing",
-        description: "Permit tearing for this window; global allow_tearing must also permit it.",
+        description:
+          "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Global allow_tearing must also permit tearing.",
+        options: ["0", "1", "2"],
       },
       {
         key: "no_swallow",
@@ -855,9 +857,11 @@ export const RULES: readonly RuleDef[] = [
       },
       {
         key: "force_tearing",
-        type: "bool",
+        type: "enum",
         label: "Force Tearing",
-        description: "Permit tearing for this window; global allow_tearing must also permit it.",
+        description:
+          "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Global allow_tearing must also permit tearing.",
+        options: ["0", "1", "2"],
       },
       {
         key: "no_swallow",

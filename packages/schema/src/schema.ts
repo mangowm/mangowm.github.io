@@ -35,6 +35,7 @@ const NUMERIC_RULE_ENUMS = new Set([
   "click_method",
   "send_events_mode",
   "button_map",
+  "force_tearing",
 ]);
 
 const RULE_RANGES: Record<string, { min?: number; max?: number }> = {

@@ -3818,17 +3818,10 @@
                 "description": "Report the window as tiled even when it is floating."
               },
               "force_tearing": {
-                "anyOf": [
-                  {
-                    "type": "boolean"
-                  },
-                  {
-                    "type": "integer",
-                    "enum": [0, 1]
-                  }
-                ],
+                "type": "integer",
+                "enum": [0, 1, 2],
                 "title": "Force Tearing",
-                "description": "Permit tearing for this window; global allow_tearing must also permit it."
+                "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Global allow_tearing must also permit tearing."
               },
               "no_swallow": {
                 "anyOf": [
@@ -4359,17 +4352,10 @@
                 "description": "Report the window as tiled even when it is floating."
               },
               "force_tearing": {
-                "anyOf": [
-                  {
-                    "type": "boolean"
-                  },
-                  {
-                    "type": "integer",
-                    "enum": [0, 1]
-                  }
-                ],
+                "type": "integer",
+                "enum": [0, 1, 2],
                 "title": "Force Tearing",
-                "description": "Permit tearing for this window; global allow_tearing must also permit it."
+                "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Global allow_tearing must also permit tearing."
               },
               "no_swallow": {
                 "anyOf": [

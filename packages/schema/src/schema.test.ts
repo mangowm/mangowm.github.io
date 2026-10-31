@@ -221,6 +221,11 @@ describe("canonical schema", () => {
     );
   });
 
+  it("accepts tearing overrides", () => {
+    expect(Value.Check(schema, { rule: { window_rule: [{ force_tearing: 2 }] } })).toBe(true);
+    expect(Value.Check(schema, { rule: { window_rule: [{ force_tearing: 3 }] } })).toBe(false);
+  });
+
   it("rejects unknown global options", () => {
     expect(Value.Check(schema, { global: { not_an_option: true } })).toBe(false);
   });
