@@ -283,27 +283,54 @@ const CURVE_STRING_PATTERN = `^\\s*${NUMBER_PATTERN}(?:\\s*,\\s*${NUMBER_PATTERN
 const NUMBER_LIST_PATTERN = `^\\s*${NUMBER_PATTERN}(?:\\s*,\\s*${NUMBER_PATTERN})*\\s*$`;
 const LAYOUT_LIST_PATTERN = `^\\s*(?:${LAYOUTS.join("|")})(?:\\s*,\\s*(?:${LAYOUTS.join("|")}))*\\s*$`;
 
-const TomlActionString = Type.String({
-  title: "Action",
-  description: "A dispatcher name followed by optional comma-separated arguments.",
-  pattern: ACTION_PATTERN,
+const TomlActionName = Type.Unsafe<TSchema>({
+  type: "string",
+  enum: DISPATCHERS,
+  title: "Dispatcher",
+  description: "A mangowm dispatcher name.",
 });
 
-const TomlSingleAction = Type.Union(
-  [TomlActionString, Type.Array(TomlActionString, { minItems: 1, maxItems: 1 })],
+const TomlActionString = Type.Union(
+  [
+    TomlActionName,
+    Type.String({
+      title: "Action",
+      description: "A dispatcher name followed by optional comma-separated arguments.",
+      pattern: ACTION_PATTERN,
+    }),
+  ],
   {
     title: "Action",
-    description: "One action for the key combination.",
+    description: "A dispatcher name with optional arguments, or a variable reference.",
   },
 );
 
-const TomlMultipleActions = Type.Union(
-  [TomlActionString, Type.Array(TomlActionString, { minItems: 1 })],
-  {
-    title: "Actions",
-    description: "One or more actions for the same key combination.",
-  },
-);
+const TomlSingleAction = Type.Unsafe<TSchema>({
+  title: "Action",
+  description: "One action for the key combination.",
+  anyOf: [
+    { $ref: "#/$defs/TomlActionString" },
+    {
+      type: "array",
+      items: { $ref: "#/$defs/TomlActionString" },
+      minItems: 1,
+      maxItems: 1,
+    },
+  ],
+});
+
+const TomlMultipleActions = Type.Unsafe<TSchema>({
+  title: "Actions",
+  description: "One or more actions for the same key combination.",
+  anyOf: [
+    { $ref: "#/$defs/TomlActionString" },
+    {
+      type: "array",
+      items: { $ref: "#/$defs/TomlActionString" },
+      minItems: 1,
+    },
+  ],
+});
 
 const CanonicalAction: TSchema = Type.Unsafe<TSchema>({
   title: "Action",
@@ -384,7 +411,9 @@ function bindingNode(mode: SchemaMode, kind: BindingKind, conflict = false): TSc
       pass: { $ref: ref },
       conflict: { $ref: `#/$defs/${conflictDef}` },
     },
-    additionalProperties: kind === "key" && conflict ? TomlMultipleActions : TomlSingleAction,
+    additionalProperties: {
+      $ref: kind === "key" && conflict ? "#/$defs/TomlMultipleActions" : "#/$defs/TomlSingleAction",
+    },
   });
 }
 
@@ -614,6 +643,9 @@ export function buildSchema(version: string, mode: SchemaMode = "canonical") {
     mode === "canonical"
       ? { BindingNode: bindingNode(mode, "key") }
       : {
+          TomlActionString,
+          TomlSingleAction,
+          TomlMultipleActions,
           KeyBindingNode: bindingNode(mode, "key", false),
           KeyConflictBindingNode: bindingNode(mode, "key", true),
           MouseBindingNode: bindingNode(mode, "mouse", false),

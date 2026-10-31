@@ -77,7 +77,8 @@ it for editor validation:
 - `[env]` and `[var]` values can be strings, numbers, or booleans
 - `source`, `exec`, `exec_once`, and `source_optional` can be a string or an
   array of strings
-- binding actions are strings such as `"spawn,foot"` or arrays of strings
+- binding actions are strings such as `"spawn,foot"` or arrays of strings;
+  dispatcher names are exposed as an enum so editors can suggest them
 - `window_rule.tags` can be a tag number (`0` for the special workspace) or a
   string such as `"1|2"` for several tags
 
