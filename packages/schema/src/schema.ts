@@ -226,7 +226,7 @@ function globalProperties(mode: SchemaMode) {
   );
 }
 
-const EnvValue = Type.Union([Type.String(), Type.Number(), Type.Boolean()]);
+const EnvValue = Type.Union([Type.String({ minLength: 1 }), Type.Number(), Type.Boolean()]);
 
 function envMap(mode: SchemaMode) {
   return Type.Unsafe<TSchema>({
@@ -234,7 +234,7 @@ function envMap(mode: SchemaMode) {
     title: "Environment",
     description:
       "Environment variables exported before startup and re-applied on every config reload.",
-    additionalProperties: mode === "canonical" ? Type.String() : EnvValue,
+    additionalProperties: mode === "canonical" ? Type.String({ minLength: 1 }) : EnvValue,
     propertyNames: { minLength: 1 },
   });
 }
@@ -251,8 +251,12 @@ function varMap(mode: SchemaMode) {
 }
 
 function directive(mode: SchemaMode, title: string, description: string) {
-  if (mode === "canonical") return Type.Array(Type.String(), { title, description });
-  return Type.Union([Type.String(), Type.Array(Type.String())], { title, description });
+  if (mode === "canonical")
+    return Type.Array(Type.String({ minLength: 1 }), { title, description });
+  return Type.Union([Type.String({ minLength: 1 }), Type.Array(Type.String({ minLength: 1 }))], {
+    title,
+    description,
+  });
 }
 
 function globalSchema(mode: SchemaMode) {
@@ -549,7 +553,7 @@ function ruleField(field: RuleFieldDef, ruleKey: string, mode: SchemaMode): TSch
       }
       return tagMaskSchema(metadata);
     case "string":
-      return Type.String(metadata);
+      return Type.String({ ...metadata, pattern: "^[^,]*$" });
     case "enum": {
       const values = field.options ?? [];
       const schema = enumSchema(

@@ -471,6 +471,40 @@ describe("canonical schema", () => {
     expect(Value.Check(tomlSchema, { env: { "": "x" } })).toBe(false);
   });
 
+  it("rejects commas in rule strings", () => {
+    const rules = [
+      { window_rule: [{ title: "a,b" }] },
+      { window_rule: [{ app_id: "a,b" }] },
+      { window_rule: [{ monitor: "name:a,b" }] },
+      { monitor_rule: [{ name: "a,b" }] },
+      { monitor_rule: [{ make: "a,b" }] },
+      { layer_rule: [{ layer_name: "a,b" }] },
+      { device_rule: [{ kb_layout: "us,ru" }] },
+    ];
+    for (const rule of rules) {
+      expect(Value.Check(schema, { rule })).toBe(false);
+      expect(Value.Check(tomlSchema, { rule })).toBe(false);
+    }
+    expect(Value.Check(schema, { rule: { window_rule: [{ title: "^a.b$" }] } })).toBe(true);
+    expect(Value.Check(tomlSchema, { rule: { window_rule: [{ title: "^a.b$" }] } })).toBe(true);
+  });
+
+  it("rejects empty directives and env values", () => {
+    for (const value of [
+      { global: { exec: [""] } },
+      { global: { exec: "" } },
+      { global: { exec_once: [""] } },
+      { global: { source: [""] } },
+      { global: { source_optional: [""] } },
+      { env: { EMPTY: "" } },
+    ]) {
+      expect(Value.Check(schema, value)).toBe(false);
+      expect(Value.Check(tomlSchema, value)).toBe(false);
+    }
+    expect(Value.Check(schema, { global: { exec: ["waybar"] }, env: { DPI: "140" } })).toBe(true);
+    expect(Value.Check(tomlSchema, { global: { exec: "waybar" }, env: { DPI: 140 } })).toBe(true);
+  });
+
   it("accepts device scroll options", () => {
     expect(
       Value.Check(schema, {

@@ -114,9 +114,10 @@ covers the documented `[global]`, `[bind.*]`, and `[[rule.*]]` forms. Mango also
 accepts top-level globals, `[keybind.*]`, `[[window_rule]]`, and single rule
 tables; those forms are not modeled.
 
-`[env]` values containing `~/` are HOME-expanded at parse. Empty `[env]` values
-and empty `exec` or `source` array elements are skipped. Rule string values are
-split on commas by Mango, so they cannot contain commas.
+`[env]` values containing `~/` are HOME-expanded at parse. Mango skips empty
+`[env]` values and empty `exec` or `source` array elements; the schema rejects
+them because they have no effect. Rule strings are split on commas by Mango, so
+the schema rejects commas in every rule string field.
 
 Arrays with more than one action require a `.conflict` node. Mouse, axis,
 gesture, and switch tables do not support action arrays. The TOML schema

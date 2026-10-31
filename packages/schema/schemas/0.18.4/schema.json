@@ -11417,7 +11417,8 @@
         "exec": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "title": "Run on Load/Reload",
           "description": "Commands run at startup and every time the config is reloaded."
@@ -11425,7 +11426,8 @@
         "exec_once": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "title": "Run Once",
           "description": "Commands run once at startup."
@@ -11433,7 +11435,8 @@
         "source": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "title": "Includes",
           "description": "Config files loaded as part of this config."
@@ -11441,7 +11444,8 @@
         "source_optional": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "title": "Optional Includes",
           "description": "Config files loaded if they exist; missing files are ignored."
@@ -11456,7 +11460,8 @@
       "title": "Environment",
       "description": "Environment variables exported before startup and re-applied on every config reload.",
       "additionalProperties": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       },
       "propertyNames": {
         "minLength": 1
@@ -11534,22 +11539,26 @@
               "name": {
                 "type": "string",
                 "title": "Name",
-                "description": "Match by monitor name (supports regex)"
+                "description": "Match by monitor name (supports regex)",
+                "pattern": "^[^,]*$"
               },
               "make": {
                 "type": "string",
                 "title": "Make",
-                "description": "Match by monitor manufacturer"
+                "description": "Match by monitor manufacturer",
+                "pattern": "^[^,]*$"
               },
               "model": {
                 "type": "string",
                 "title": "Model",
-                "description": "Match by monitor model"
+                "description": "Match by monitor model",
+                "pattern": "^[^,]*$"
               },
               "serial": {
                 "type": "string",
                 "title": "Serial",
-                "description": "Match by monitor serial number"
+                "description": "Match by monitor serial number",
+                "pattern": "^[^,]*$"
               },
               "rr": {
                 "type": "integer",
@@ -11674,7 +11683,8 @@
               "icc": {
                 "type": "string",
                 "title": "ICC Profile",
-                "description": "Path to an ICC profile. Ignored when HDR is on."
+                "description": "Path to an ICC profile. Ignored when HDR is on.",
+                "pattern": "^[^,]*$"
               },
               "disable": {
                 "type": "boolean",
@@ -11796,22 +11806,26 @@
               "monitor_name": {
                 "type": "string",
                 "title": "Monitor Name",
-                "description": "Match by monitor name"
+                "description": "Match by monitor name",
+                "pattern": "^[^,]*$"
               },
               "monitor_make": {
                 "type": "string",
                 "title": "Monitor Make",
-                "description": "Match by monitor manufacturer"
+                "description": "Match by monitor manufacturer",
+                "pattern": "^[^,]*$"
               },
               "monitor_model": {
                 "type": "string",
                 "title": "Monitor Model",
-                "description": "Match by monitor model"
+                "description": "Match by monitor model",
+                "pattern": "^[^,]*$"
               },
               "monitor_serial": {
                 "type": "string",
                 "title": "Monitor Serial",
-                "description": "Match by monitor serial number"
+                "description": "Match by monitor serial number",
+                "pattern": "^[^,]*$"
               },
               "no_render_border": {
                 "type": "boolean",
@@ -11875,7 +11889,8 @@
               "layer_name": {
                 "type": "string",
                 "title": "Layer Name",
-                "description": "Match name of layer, supports regex"
+                "description": "Match name of layer, supports regex",
+                "pattern": "^[^,]*$"
               },
               "animation_type_open": {
                 "type": "string",
@@ -11982,12 +11997,14 @@
               "title": {
                 "type": "string",
                 "title": "Title",
-                "description": "Match by window title, supports regex"
+                "description": "Match by window title, supports regex",
+                "pattern": "^[^,]*$"
               },
               "app_id": {
                 "type": "string",
                 "title": "App ID",
-                "description": "Match by application ID, supports regex"
+                "description": "Match by application ID, supports regex",
+                "pattern": "^[^,]*$"
               },
               "animation_type_open": {
                 "type": "string",
@@ -12077,7 +12094,8 @@
               "monitor": {
                 "type": "string",
                 "title": "Monitor",
-                "description": "Assign to monitor by monitor spec (name, make, model, or serial)"
+                "description": "Assign to monitor by monitor spec (name, make, model, or serial)",
+                "pattern": "^[^,]*$"
               },
               "offset_x": {
                 "type": "integer",
@@ -12335,12 +12353,14 @@
               "title": {
                 "type": "string",
                 "title": "Title",
-                "description": "Match by window title, supports regex"
+                "description": "Match by window title, supports regex",
+                "pattern": "^[^,]*$"
               },
               "app_id": {
                 "type": "string",
                 "title": "App ID",
-                "description": "Match by application ID, supports regex"
+                "description": "Match by application ID, supports regex",
+                "pattern": "^[^,]*$"
               },
               "animation_type_open": {
                 "type": "string",
@@ -12430,7 +12450,8 @@
               "monitor": {
                 "type": "string",
                 "title": "Monitor",
-                "description": "Assign to monitor by monitor spec (name, make, model, or serial)"
+                "description": "Assign to monitor by monitor spec (name, make, model, or serial)",
+                "pattern": "^[^,]*$"
               },
               "offset_x": {
                 "type": "integer",
@@ -12760,27 +12781,32 @@
               "kb_rules": {
                 "type": "string",
                 "title": "Keyboard Rules",
-                "description": "XKB rules file for this keyboard."
+                "description": "XKB rules file for this keyboard.",
+                "pattern": "^[^,]*$"
               },
               "kb_model": {
                 "type": "string",
                 "title": "Keyboard Model",
-                "description": "XKB model for this keyboard."
+                "description": "XKB model for this keyboard.",
+                "pattern": "^[^,]*$"
               },
               "kb_layout": {
                 "type": "string",
                 "title": "Keyboard Layout",
-                "description": "Keyboard layout code, e.g. us or ru."
+                "description": "Keyboard layout code, e.g. us or ru.",
+                "pattern": "^[^,]*$"
               },
               "kb_variant": {
                 "type": "string",
                 "title": "Keyboard Variant",
-                "description": "Keyboard layout variant, e.g. dvorak or colemak."
+                "description": "Keyboard layout variant, e.g. dvorak or colemak.",
+                "pattern": "^[^,]*$"
               },
               "kb_options": {
                 "type": "string",
                 "title": "Keyboard Options",
-                "description": "XKB options, e.g. caps:escape."
+                "description": "XKB options, e.g. caps:escape.",
+                "pattern": "^[^,]*$"
               },
               "natural_scrolling": {
                 "type": "boolean",
@@ -12952,7 +12978,8 @@
               "monitor": {
                 "type": "string",
                 "title": "Monitor",
-                "description": "Pin a touch or tablet device to one output. Unset touch devices follow the current screen; unset tablets stay unmapped."
+                "description": "Pin a touch or tablet device to one output. Unset touch devices follow the current screen; unset tablets stay unmapped.",
+                "pattern": "^[^,]*$"
               },
               "map_focus_monitor": {
                 "type": "boolean",
