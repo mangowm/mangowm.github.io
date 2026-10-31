@@ -85,6 +85,9 @@ it for editor validation:
 - binding actions are strings such as `"spawn,foot"` or arrays of strings;
   dispatcher names are exposed as an enum so editors can suggest them, and
   argument shapes are checked when arguments are present
+- binding triggers are checked per section: keyboard modifiers, `code:N`,
+  mouse buttons, axis directions, gesture direction and finger count, and fold
+  states; a `$variable` is accepted as a trigger or modifier
 - `window_rule.tags` can be a tag number (`0` for the special workspace) or a
   string such as `"1|2"` for several tags
 - `window_rule.force_tearing` accepts `true` / `false` as aliases for `1` / `0`,

@@ -169,9 +169,12 @@
           "$ref": "#/$defs/KeyConflictBindingNode"
         }
       },
-      "additionalProperties": {
-        "$ref": "#/$defs/TomlSingleAction"
-      }
+      "patternProperties": {
+        "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\+)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
+          "$ref": "#/$defs/TomlSingleAction"
+        }
+      },
+      "additionalProperties": false
     },
     "KeyConflictBindingNode": {
       "title": "Conflict binding node",
@@ -194,9 +197,12 @@
           "$ref": "#/$defs/KeyConflictBindingNode"
         }
       },
-      "additionalProperties": {
-        "$ref": "#/$defs/TomlMultipleActions"
-      }
+      "patternProperties": {
+        "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\+)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
+          "$ref": "#/$defs/TomlMultipleActions"
+        }
+      },
+      "additionalProperties": false
     },
     "MouseBindingNode": {
       "title": "Binding node",
@@ -219,9 +225,12 @@
           "$ref": "#/$defs/MouseBindingNode"
         }
       },
-      "additionalProperties": {
-        "$ref": "#/$defs/TomlSingleAction"
-      }
+      "patternProperties": {
+        "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\+)*(?:[bB][tT][nN]_[lL][eE][fF][tT]|[bB][tT][nN]_[rR][iI][gG][hH][tT]|[bB][tT][nN]_[mM][iI][dD][dD][lL][eE]|[bB][tT][nN]_[sS][iI][dD][eE]|[bB][tT][nN]_[eE][xX][tT][rR][aA]|[bB][tT][nN]_[fF][oO][rR][wW][aA][rR][dD]|[bB][tT][nN]_[bB][aA][cC][kK]|[bB][tT][nN]_[tT][aA][sS][kK]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
+          "$ref": "#/$defs/TomlSingleAction"
+        }
+      },
+      "additionalProperties": false
     },
     "AxisBindingNode": {
       "title": "Binding node",
@@ -244,9 +253,12 @@
           "$ref": "#/$defs/AxisBindingNode"
         }
       },
-      "additionalProperties": {
-        "$ref": "#/$defs/TomlSingleAction"
-      }
+      "patternProperties": {
+        "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\+)*(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
+          "$ref": "#/$defs/TomlSingleAction"
+        }
+      },
+      "additionalProperties": false
     },
     "GestureBindingNode": {
       "title": "Binding node",
@@ -269,9 +281,12 @@
           "$ref": "#/$defs/GestureBindingNode"
         }
       },
-      "additionalProperties": {
-        "$ref": "#/$defs/TomlSingleAction"
-      }
+      "patternProperties": {
+        "^(?!(?:sym|lock|release|pass|conflict)$)(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\+(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\+(?:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
+          "$ref": "#/$defs/TomlSingleAction"
+        }
+      },
+      "additionalProperties": false
     },
     "SwitchBindingNode": {
       "title": "Binding node",
@@ -294,9 +309,12 @@
           "$ref": "#/$defs/SwitchBindingNode"
         }
       },
-      "additionalProperties": {
-        "$ref": "#/$defs/TomlSingleAction"
-      }
+      "patternProperties": {
+        "^(?!(?:sym|lock|release|pass|conflict)$)(?:[fF][oO][lL][dD]|[uU][nN][fF][oO][lL][dD]|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
+          "$ref": "#/$defs/TomlSingleAction"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "type": "object",

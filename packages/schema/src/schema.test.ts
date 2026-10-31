@@ -131,6 +131,49 @@ describe("canonical schema", () => {
     ).toBe(false);
   });
 
+  it("validates binding trigger keys per section", () => {
+    const canonicalBinding = (section: string, key: string) =>
+      Value.Check(schema, {
+        [section]: { default: { [key]: [{ dispatcher: "reload_config" }] } },
+      });
+
+    const valid: [string, string][] = [
+      ["bind", "SUPER+r"],
+      ["bind", "ctrl+alt+shift+F1"],
+      ["bind", "none+XF86AudioMute"],
+      ["bind", "SUPER+code:24"],
+      ["bind", "super_l+UA1B2"],
+      ["bind", "$mod+r"],
+      ["mousebind", "SUPER+btn_left"],
+      ["mousebind", "none+code:272"],
+      ["axisbind", "SUPER+UP"],
+      ["axisbind", "ctrl+left"],
+      ["gesturebind", "none+left+3"],
+      ["gesturebind", "SUPER+right+4"],
+      ["switchbind", "fold"],
+      ["switchbind", "unfold"],
+    ];
+    for (const [section, key] of valid) expect(canonicalBinding(section, key)).toBe(true);
+
+    const invalid: [string, string][] = [
+      ["bind", "SUPER+"],
+      ["bind", "SUPER++r"],
+      ["bind", "sideways+SUPER"],
+      ["bind", "sym"],
+      ["bind", "pass"],
+      ["mousebind", "SUPER+btn_nope"],
+      ["mousebind", "SUPER+left"],
+      ["axisbind", "SUPER+sideways"],
+      ["axisbind", "SUPER+btn_left"],
+      ["gesturebind", "none+left"],
+      ["gesturebind", "none+left+3+4"],
+      ["gesturebind", "none+left+x"],
+      ["switchbind", "SUPER+fold"],
+      ["switchbind", "fold+unfold"],
+    ];
+    for (const [section, key] of invalid) expect(canonicalBinding(section, key)).toBe(false);
+  });
+
   it("validates dispatcher arguments", () => {
     const canonical = (action: object) =>
       Value.Check(schema, { bind: { default: { "SUPER+r": [action] } } });
@@ -459,6 +502,44 @@ describe("TOML schema", () => {
         bind: { default: { conflict: { "SUPER+r": ["spawn,a", "reload_config"] } } },
       }),
     ).toBe(true);
+  });
+
+  it("validates binding trigger keys per section", () => {
+    const tomlBinding = (section: string, key: string) =>
+      Value.Check(tomlSchema, { [section]: { default: { [key]: "reload_config" } } });
+
+    const valid: [string, string][] = [
+      ["bind", "SUPER+r"],
+      ["bind", "CTRL+ALT+shift+F1"],
+      ["bind", "none+XF86AudioMute"],
+      ["bind", "SUPER+code:24"],
+      ["bind", "$mod+r"],
+      ["mousebind", "SUPER+btn_left"],
+      ["mousebind", "none+code:272"],
+      ["axisbind", "SUPER+UP"],
+      ["axisbind", "ctrl+left"],
+      ["gesturebind", "none+left+3"],
+      ["gesturebind", "SUPER+right+4"],
+      ["switchbind", "fold"],
+      ["switchbind", "unfold"],
+    ];
+    for (const [section, key] of valid) expect(tomlBinding(section, key)).toBe(true);
+
+    const invalid: [string, string][] = [
+      ["bind", "SUPER+"],
+      ["bind", "SUPER++r"],
+      ["bind", "sym"],
+      ["bind", "lock"],
+      ["mousebind", "SUPER+btn_nope"],
+      ["mousebind", "SUPER+left"],
+      ["axisbind", "SUPER+sideways"],
+      ["axisbind", "SUPER+btn_left"],
+      ["gesturebind", "none+left"],
+      ["gesturebind", "none+left+3+4"],
+      ["switchbind", "SUPER+fold"],
+      ["switchbind", "fold+unfold"],
+    ];
+    for (const [section, key] of invalid) expect(tomlBinding(section, key)).toBe(false);
   });
 
   it("accepts toml tag zero forms", () => {
