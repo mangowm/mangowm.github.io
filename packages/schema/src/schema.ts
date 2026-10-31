@@ -624,9 +624,19 @@ function rulesSchema(mode: SchemaMode) {
   });
 }
 
-function rootSchema(mode: SchemaMode) {
+function rootSchema(mode: SchemaMode, version: string) {
   return Type.Object(
     {
+      ...(mode === "canonical"
+        ? {
+            $schema: Type.Optional(
+              Type.Literal(`https://mangowm.github.io/schema/${version}/schema.json`, {
+                title: "Schema",
+                description: "Canonical schema URL for editor tooling.",
+              }),
+            ),
+          }
+        : {}),
       global: Type.Optional(globalSchema(mode)),
       env: Type.Optional(envMap(mode)),
       var: Type.Optional(varMap(mode)),
@@ -677,7 +687,7 @@ export function buildSchema(version: string, mode: SchemaMode = "canonical") {
     $schema: "https://json-schema.org/draft/2020-12/schema",
     $id: `https://mangowm.github.io/schema/${version}/${file}`,
     $defs: defs,
-    ...rootSchema(mode),
+    ...rootSchema(mode, version),
     title:
       mode === "canonical"
         ? `mangowm configuration ${version}`

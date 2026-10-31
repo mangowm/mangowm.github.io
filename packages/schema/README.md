@@ -12,7 +12,8 @@ https://mangowm.github.io/schema/<version>/schema.json
 
 The semantic contract for one configuration file. It is a pre-expansion model:
 Mango expands `$var` and `${var}` at parse time, while canonical keeps the
-reference. It does not merge `source` files. Values are normalized:
+reference. It does not merge `source` files. An optional root `$schema` key may
+hold this URL for editor tooling. Values are normalized:
 
 - booleans are `true` or `false`
 - colors are `"0xRRGGBBAA"` strings

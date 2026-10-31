@@ -11158,6 +11158,12 @@
   },
   "type": "object",
   "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "https://mangowm.github.io/schema/0.18.4/schema.json",
+      "title": "Schema",
+      "description": "Canonical schema URL for editor tooling."
+    },
     "global": {
       "type": "object",
       "properties": {

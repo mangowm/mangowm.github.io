@@ -84,6 +84,13 @@ describe("canonical schema", () => {
     expect(Value.Check(schema, canonicalConfig)).toBe(true);
   });
 
+  it("accepts an optional canonical $schema key", () => {
+    const url = `https://mangowm.github.io/schema/${MANGO_VERSION}/schema.json`;
+    expect(Value.Check(schema, { $schema: url, global: { animations: true } })).toBe(true);
+    expect(Value.Check(schema, { $schema: "https://example.com/schema.json" })).toBe(false);
+    expect(Value.Check(tomlSchema, { $schema: url })).toBe(false);
+  });
+
   it("rejects raw TOML forms", () => {
     expect(Value.Check(schema, { global: { blur: 1 } })).toBe(false);
     expect(Value.Check(schema, { global: { root_color: 0x323232ff } })).toBe(false);
