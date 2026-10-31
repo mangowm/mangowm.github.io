@@ -91,6 +91,9 @@ describe("canonical schema", () => {
     expect(Value.Check(schema, { global: { exec: "waybar" } })).toBe(false);
     expect(Value.Check(schema, { bind: { default: { "SUPER+r": "reload_config" } } })).toBe(false);
     expect(Value.Check(schema, { rule: { window_rule: [{ tags: "1|2" }] } })).toBe(false);
+    expect(Value.Check(schema, { global: { animation_curve_open: "0.46,1,0.29,1" } })).toBe(false);
+    expect(Value.Check(schema, { global: { scroller_proportion_preset: "0.5,0.9" } })).toBe(false);
+    expect(Value.Check(schema, { global: { circle_layout: "tile,scroller" } })).toBe(false);
   });
 
   it("accepts a .conf-derived canonical object", () => {
@@ -287,6 +290,9 @@ describe("TOML schema", () => {
           root_color: 0x323232ff,
           exec: "waybar",
           source: "./extra.toml",
+          animation_curve_open: "0.46,1,0.29,1",
+          scroller_proportion_preset: "0.5,0.9",
+          circle_layout: "tile,scroller",
         },
         env: { DPI: 140, FLAG: true },
         var: { scale: 1.5 },
@@ -294,6 +300,11 @@ describe("TOML schema", () => {
         rule: { window_rule: [{ is_floating: 1, width: 0.5, tags: "1 | 2" }] },
       }),
     ).toBe(true);
+  });
+
+  it("accepts a scalar proportion preset", () => {
+    expect(Value.Check(tomlSchema, { global: { scroller_proportion_preset: 0.5 } })).toBe(true);
+    expect(Value.Check(schema, { global: { scroller_proportion_preset: 0.5 } })).toBe(false);
   });
 
   it("accepts canonical scalar forms", () => {

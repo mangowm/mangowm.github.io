@@ -215,88 +215,158 @@
           "maximum": 50000
         },
         "animation_curve_move": {
-          "type": "array",
-          "items": {
-            "type": "number",
-            "minimum": 0
-          },
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0
+              },
+              "title": "Move Curve",
+              "description": "Cubic bezier curve for move/resize animations (x1,y1,x2,y2)",
+              "default": [0.46, 1, 0.29, 0.99],
+              "minItems": 4,
+              "maxItems": 4
+            },
+            {
+              "type": "string"
+            }
+          ],
           "title": "Move Curve",
           "description": "Cubic bezier curve for move/resize animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
-          "minItems": 4,
-          "maxItems": 4
+          "default": [0.46, 1, 0.29, 0.99]
         },
         "animation_curve_open": {
-          "type": "array",
-          "items": {
-            "type": "number",
-            "minimum": 0
-          },
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0
+              },
+              "title": "Open Curve",
+              "description": "Cubic bezier curve for window open animations (x1,y1,x2,y2)",
+              "default": [0.46, 1, 0.29, 0.99],
+              "minItems": 4,
+              "maxItems": 4
+            },
+            {
+              "type": "string"
+            }
+          ],
           "title": "Open Curve",
           "description": "Cubic bezier curve for window open animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
-          "minItems": 4,
-          "maxItems": 4
+          "default": [0.46, 1, 0.29, 0.99]
         },
         "animation_curve_tag": {
-          "type": "array",
-          "items": {
-            "type": "number",
-            "minimum": 0
-          },
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0
+              },
+              "title": "Tag Switch Curve",
+              "description": "Cubic bezier curve for tag-switch animations (x1,y1,x2,y2)",
+              "default": [0.46, 1, 0.29, 0.99],
+              "minItems": 4,
+              "maxItems": 4
+            },
+            {
+              "type": "string"
+            }
+          ],
           "title": "Tag Switch Curve",
           "description": "Cubic bezier curve for tag-switch animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
-          "minItems": 4,
-          "maxItems": 4
+          "default": [0.46, 1, 0.29, 0.99]
         },
         "animation_curve_close": {
-          "type": "array",
-          "items": {
-            "type": "number",
-            "minimum": 0
-          },
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0
+              },
+              "title": "Close Curve",
+              "description": "Cubic bezier curve for window close animations (x1,y1,x2,y2)",
+              "default": [0.46, 1, 0.29, 0.99],
+              "minItems": 4,
+              "maxItems": 4
+            },
+            {
+              "type": "string"
+            }
+          ],
           "title": "Close Curve",
           "description": "Cubic bezier curve for window close animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
-          "minItems": 4,
-          "maxItems": 4
+          "default": [0.46, 1, 0.29, 0.99]
         },
         "animation_curve_focus": {
-          "type": "array",
-          "items": {
-            "type": "number",
-            "minimum": 0
-          },
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0
+              },
+              "title": "Focus Curve",
+              "description": "Cubic bezier curve for focus-change animations (x1,y1,x2,y2)",
+              "default": [0.46, 1, 0.29, 0.99],
+              "minItems": 4,
+              "maxItems": 4
+            },
+            {
+              "type": "string"
+            }
+          ],
           "title": "Focus Curve",
           "description": "Cubic bezier curve for focus-change animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
-          "minItems": 4,
-          "maxItems": 4
+          "default": [0.46, 1, 0.29, 0.99]
         },
         "animation_curve_opacity_fade_in": {
-          "type": "array",
-          "items": {
-            "type": "number",
-            "minimum": 0
-          },
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0
+              },
+              "title": "Fade In Curve",
+              "description": "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2)",
+              "default": [0.46, 1, 0.29, 0.99],
+              "minItems": 4,
+              "maxItems": 4
+            },
+            {
+              "type": "string"
+            }
+          ],
           "title": "Fade In Curve",
           "description": "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
-          "minItems": 4,
-          "maxItems": 4
+          "default": [0.46, 1, 0.29, 0.99]
         },
         "animation_curve_opacity_fade_out": {
-          "type": "array",
-          "items": {
-            "type": "number",
-            "minimum": 0
-          },
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0
+              },
+              "title": "Fade Out Curve",
+              "description": "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2)",
+              "default": [0.5, 0.5, 0.5, 0.5],
+              "minItems": 4,
+              "maxItems": 4
+            },
+            {
+              "type": "string"
+            }
+          ],
           "title": "Fade Out Curve",
           "description": "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2)",
-          "default": [0.5, 0.5, 0.5, 0.5],
-          "minItems": 4,
-          "maxItems": 4
+          "default": [0.5, 0.5, 0.5, 0.5]
         },
         "scroller_structs": {
           "type": "integer",
@@ -1021,40 +1091,63 @@
           "default": ""
         },
         "scroller_proportion_preset": {
-          "type": "array",
-          "items": {
-            "type": "number",
-            "minimum": 0.1,
-            "maximum": 1
-          },
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0.1,
+                "maximum": 1
+              },
+              "title": "Proportion Presets",
+              "description": "Comma-separated preset proportion values (0.1-1.0) for quick switching. Empty disables cycling.",
+              "minItems": 1
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 1
+            }
+          ],
           "title": "Proportion Presets",
-          "description": "Comma-separated preset proportion values (0.1-1.0) for quick switching. Empty disables cycling.",
-          "minItems": 1
+          "description": "Comma-separated preset proportion values (0.1-1.0) for quick switching. Empty disables cycling."
         },
         "circle_layout": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": [
-              "tile",
-              "scroller",
-              "grid",
-              "monocle",
-              "deck",
-              "center_tile",
-              "right_tile",
-              "vertical_scroller",
-              "vertical_tile",
-              "vertical_grid",
-              "vertical_deck",
-              "dwindle",
-              "fair",
-              "vertical_fair"
-            ]
-          },
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "tile",
+                  "scroller",
+                  "grid",
+                  "monocle",
+                  "deck",
+                  "center_tile",
+                  "right_tile",
+                  "vertical_scroller",
+                  "vertical_tile",
+                  "vertical_grid",
+                  "vertical_deck",
+                  "dwindle",
+                  "fair",
+                  "vertical_fair"
+                ]
+              },
+              "title": "Circle Layout",
+              "description": "Ordered layouts cycled by switch_layout.",
+              "minItems": 1
+            },
+            {
+              "type": "string"
+            }
+          ],
           "title": "Circle Layout",
-          "description": "Ordered layouts cycled by switch_layout.",
-          "minItems": 1
+          "description": "Ordered layouts cycled by switch_layout."
         },
         "new_is_master": {
           "anyOf": [

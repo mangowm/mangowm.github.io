@@ -138,27 +138,40 @@ function globalProperty(option: GlobalDef, mode: SchemaMode): TSchema {
         ],
         { ...metadata, default: defaultValue },
       );
-    case "curve":
-      return Type.Array(Type.Number({ minimum: 0 }), {
+    case "curve": {
+      const array = Type.Array(Type.Number({ minimum: 0 }), {
         ...metadata,
         default: defaultValue,
         minItems: 4,
         maxItems: 4,
       });
+      if (mode === "canonical") return array;
+      return Type.Union([array, Type.String()], { ...metadata, default: defaultValue });
+    }
     case "preset": {
       const hasDefault = Array.isArray(defaultValue) && defaultValue.length > 0;
-      return Type.Array(Type.Number({ minimum: 0.1, maximum: 1 }), {
+      const array = Type.Array(Type.Number({ minimum: 0.1, maximum: 1 }), {
         ...metadata,
         ...(hasDefault ? { default: defaultValue } : {}),
         minItems: 1,
       });
+      if (mode === "canonical") return array;
+      return Type.Union([array, Type.String(), Type.Number({ minimum: 0.1, maximum: 1 })], {
+        ...metadata,
+        ...(hasDefault ? { default: defaultValue } : {}),
+      });
     }
     case "layout-array": {
       const hasDefault = Array.isArray(defaultValue) && defaultValue.length > 0;
-      return Type.Array(Type.String({ enum: LAYOUTS }), {
+      const array = Type.Array(Type.String({ enum: LAYOUTS }), {
         ...metadata,
         ...(hasDefault ? { default: defaultValue } : {}),
         minItems: 1,
+      });
+      if (mode === "canonical") return array;
+      return Type.Union([array, Type.String()], {
+        ...metadata,
+        ...(hasDefault ? { default: defaultValue } : {}),
       });
     }
     case "enum": {
