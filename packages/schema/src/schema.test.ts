@@ -157,6 +157,7 @@ describe("canonical schema", () => {
       [{ dispatcher: "view_insert", args: "next" }, "view_insert,next", true],
       [{ dispatcher: "view_insert", args: "sideways" }, "view_insert,sideways", false],
       [{ dispatcher: "switch_keyboard_layout", args: "2" }, "switch_keyboard_layout,2", true],
+      [{ dispatcher: "switch_keyboard_layout", args: "+2" }, "switch_keyboard_layout,+2", true],
       [{ dispatcher: "switch_keyboard_layout", args: "foo" }, "switch_keyboard_layout,foo", false],
       [{ dispatcher: "setmfact", args: "1e-2" }, "setmfact,1e-2", true],
       [{ dispatcher: "setmfact", args: "abc" }, "setmfact,abc", false],

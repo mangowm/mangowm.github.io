@@ -63,7 +63,7 @@ const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
   switcher: SWITCHER,
   "on-off": ON_OFF,
   "prev-next": PREV_NEXT,
-  index100: "(?:[0-9]|[1-9][0-9]|100)",
+  index100: "[+]?(?:[0-9]|[1-9][0-9]|100)",
   "unit-float": "[+]?(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?)",
 };
 
