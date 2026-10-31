@@ -1,5 +1,6 @@
 import Type, { type TSchema } from "typebox";
 
+import { DISPATCHERS } from "./data/dispatchers";
 import { GLOBALS } from "./data/globals";
 import { RULES } from "./data/rules";
 import type { GlobalDef, RuleDef, RuleFieldDef } from "./data/types";
@@ -47,22 +48,6 @@ const RULE_RANGES: Record<string, { min?: number; max?: number }> = {
   "tag_rule.master_factor": { min: 0.1, max: 0.9 },
   "tag_rule.scroller_default_proportion": { min: 0, max: 1 },
   "tag_rule.scroller_default_proportion_single": { min: 0, max: 1 },
-  "window_rule.width": { min: 0, max: 9999 },
-  "window_rule.height": { min: 0, max: 9999 },
-  "window_rule.offset_x": { min: -999, max: 999 },
-  "window_rule.offset_y": { min: -999, max: 999 },
-  "window_rule.focused_opacity": { min: 0, max: 1 },
-  "window_rule.unfocused_opacity": { min: 0, max: 1 },
-  "window_rule.scroller_proportion": { min: 0.1, max: 1 },
-  "window_rule.scroller_proportion_single": { min: 0.1, max: 1 },
-  "window_rule_once.width": { min: 0, max: 9999 },
-  "window_rule_once.height": { min: 0, max: 9999 },
-  "window_rule_once.offset_x": { min: -999, max: 999 },
-  "window_rule_once.offset_y": { min: -999, max: 999 },
-  "window_rule_once.focused_opacity": { min: 0, max: 1 },
-  "window_rule_once.unfocused_opacity": { min: 0, max: 1 },
-  "window_rule_once.scroller_proportion": { min: 0.1, max: 1 },
-  "window_rule_once.scroller_proportion_single": { min: 0.1, max: 1 },
   "device_rule.repeat_rate": { min: 0, max: 1000 },
   "device_rule.repeat_delay": { min: 0, max: 10000 },
   "device_rule.accel_speed": { min: -1, max: 1 },
@@ -103,13 +88,21 @@ function enumSchema(
   });
 }
 
-function globalProperty(option: GlobalDef): TSchema {
+type SchemaMode = "canonical" | "toml";
+
+function globalProperty(option: GlobalDef, mode: SchemaMode): TSchema {
   const metadata = { title: option.label, description: option.description };
   const defaultValue = parseDefault(option);
 
   switch (option.type) {
     case "bool":
-      return Type.Boolean({ ...metadata, default: defaultValue });
+      if (mode === "canonical") {
+        return Type.Boolean({ ...metadata, default: defaultValue });
+      }
+      return Type.Union([Type.Boolean(), Type.Integer({ enum: [0, 1] })], {
+        ...metadata,
+        default: defaultValue,
+      });
     case "int":
       return Type.Integer({
         ...metadata,
@@ -127,7 +120,16 @@ function globalProperty(option: GlobalDef): TSchema {
     case "string":
       return Type.String({ ...metadata, default: defaultValue });
     case "color":
-      return Type.String({ ...metadata, default: defaultValue, pattern: COLOR_PATTERN });
+      if (mode === "canonical") {
+        return Type.String({ ...metadata, default: defaultValue, pattern: COLOR_PATTERN });
+      }
+      return Type.Union(
+        [
+          Type.String({ pattern: COLOR_PATTERN }),
+          Type.Integer({ minimum: 0, maximum: 0xffffffff }),
+        ],
+        { ...metadata, default: defaultValue },
+      );
     case "curve":
       return Type.Array(Type.Number(), {
         ...metadata,
@@ -154,25 +156,27 @@ function globalProperty(option: GlobalDef): TSchema {
   }
 }
 
-const globalProperties = Object.fromEntries(
-  GLOBALS.map((option) => [option.key, Type.Optional(globalProperty(option))]),
-);
+function globalProperties(mode: SchemaMode) {
+  return Object.fromEntries(
+    GLOBALS.map((option) => [option.key, Type.Optional(globalProperty(option, mode))]),
+  );
+}
 
-const GlobalSchema = Type.Object(globalProperties, {
-  title: "Global options",
-  description: "Top-level mangowm options.",
-  additionalProperties: false,
-});
+const EnvValue = Type.Union([Type.String(), Type.Number(), Type.Boolean()]);
 
-const EnvMap = Type.Record(Type.String(), Type.String(), {
-  title: "Environment",
-  description: "Environment variables exported before startup.",
-});
+function envMap(mode: SchemaMode) {
+  return Type.Record(Type.String(), mode === "canonical" ? Type.String() : EnvValue, {
+    title: "Environment",
+    description: "Environment variables exported before startup.",
+  });
+}
 
-const VarMap = Type.Record(Type.String(), Type.String(), {
-  title: "Variables",
-  description: "User-defined variables expanded as $name in config values.",
-});
+function varMap(mode: SchemaMode) {
+  return Type.Record(Type.String(), mode === "canonical" ? Type.String() : EnvValue, {
+    title: "Variables",
+    description: "User-defined variables expanded as $name in config values.",
+  });
+}
 
 const ExecList = Type.Array(Type.String(), {
   title: "Run on Reload",
@@ -194,16 +198,40 @@ const SourceOptionalList = Type.Array(Type.String(), {
   description: "Config files loaded if they exist; missing files are ignored.",
 });
 
-const Action = Type.Union([Type.String(), Type.Array(Type.String())], {
+function globalSchema(mode: SchemaMode) {
+  return Type.Object(
+    {
+      ...globalProperties(mode),
+      exec: Type.Optional(ExecList),
+      exec_once: Type.Optional(ExecOnceList),
+      source: Type.Optional(SourceList),
+      source_optional: Type.Optional(SourceOptionalList),
+    },
+    {
+      title: "Global options",
+      description: "Top-level mangowm options.",
+      additionalProperties: false,
+    },
+  );
+}
+
+const ACTION_PATTERN = `^(?:${DISPATCHERS.join("|")}|\\$[A-Za-z_][A-Za-z0-9_]*)(?:,.*)?$`;
+
+const ActionString = Type.String({
   title: "Action",
-  description: "A dispatcher invocation such as `spawn,foot`, or an array of invocations.",
+  description: "A dispatcher name followed by optional comma-separated arguments.",
+  pattern: ACTION_PATTERN,
+});
+
+const Action = Type.Union([ActionString, Type.Array(ActionString)], {
+  title: "Action",
+  description: "One action, or an array of actions for the same key combination.",
 });
 
 const BindingNode: TSchema = Type.Unsafe<TSchema>({
+  title: "Binding node",
+  description: "A key combination map with optional flag sub-tables.",
   type: "object",
-  patternProperties: {
-    "^(?!(?:sym|lock|release|pass|conflict)$).+$": Action,
-  },
   properties: {
     sym: { $ref: "#/$defs/BindingNode" },
     lock: { $ref: "#/$defs/BindingNode" },
@@ -211,20 +239,23 @@ const BindingNode: TSchema = Type.Unsafe<TSchema>({
     pass: { $ref: "#/$defs/BindingNode" },
     conflict: { $ref: "#/$defs/BindingNode" },
   },
-  additionalProperties: false,
+  additionalProperties: Action,
 });
 
+const BindingRef: TSchema = Type.Unsafe<TSchema>({ $ref: "#/$defs/BindingNode" });
+
 function bindingMap(title: string, description: string): TSchema {
-  return Type.Record(Type.String(), BindingNode, { title, description });
+  return Type.Record(Type.String(), BindingRef, { title, description });
 }
 
-function ruleField(field: RuleFieldDef, ruleKey: string): TSchema {
+function ruleField(field: RuleFieldDef, ruleKey: string, mode: SchemaMode): TSchema {
   const metadata = { title: field.label, description: field.description };
   const range = RULE_RANGES[`${ruleKey}.${field.key}`];
 
   switch (field.type) {
     case "bool":
-      return Type.Boolean(metadata);
+      if (mode === "canonical") return Type.Boolean(metadata);
+      return Type.Union([Type.Boolean(), Type.Integer({ enum: [0, 1] })], metadata);
     case "int":
       return Type.Integer({
         ...metadata,
@@ -238,7 +269,14 @@ function ruleField(field: RuleFieldDef, ruleKey: string): TSchema {
         ...(range?.max === undefined ? {} : { maximum: range.max }),
       });
     case "color":
-      return Type.String({ ...metadata, pattern: COLOR_PATTERN });
+      if (mode === "canonical") return Type.String({ ...metadata, pattern: COLOR_PATTERN });
+      return Type.Union(
+        [
+          Type.String({ pattern: COLOR_PATTERN }),
+          Type.Integer({ minimum: 0, maximum: 0xffffffff }),
+        ],
+        metadata,
+      );
     case "mask":
       return Type.Union([Type.Integer({ minimum: 0, maximum: 31 }), Type.String()], metadata);
     case "string":
@@ -250,9 +288,9 @@ function ruleField(field: RuleFieldDef, ruleKey: string): TSchema {
   }
 }
 
-function ruleSchema(rule: RuleDef): TSchema {
+function ruleSchema(rule: RuleDef, mode: SchemaMode): TSchema {
   const properties = Object.fromEntries(
-    rule.fields.map((field) => [field.key, Type.Optional(ruleField(field, rule.key))]),
+    rule.fields.map((field) => [field.key, Type.Optional(ruleField(field, rule.key, mode))]),
   );
 
   const object = Type.Object(properties, {
@@ -281,7 +319,12 @@ function ruleSchema(rule: RuleDef): TSchema {
     dependentSchemas: {
       custom: {
         anyOf: [
-          { properties: { custom: { const: false } }, required: ["custom"] },
+          {
+            properties: {
+              custom: mode === "canonical" ? { const: false } : { enum: [false, 0] },
+            },
+            required: ["custom"],
+          },
           {
             properties: { width: {}, height: {}, refresh: {} },
             required: ["width", "height", "refresh"],
@@ -292,56 +335,65 @@ function ruleSchema(rule: RuleDef): TSchema {
   });
 }
 
-const rules = Object.fromEntries(
-  RULES.map((rule) => [rule.key, Type.Optional(Type.Array(ruleSchema(rule)))]),
-);
+function rulesSchema(mode: SchemaMode) {
+  const rules = Object.fromEntries(
+    RULES.map((rule) => [rule.key, Type.Optional(Type.Array(ruleSchema(rule, mode)))]),
+  );
 
-const RulesSchema = Type.Object(rules, {
-  title: "Rules",
-  description: "Monitor, tag, layer, window, and device rules.",
-  additionalProperties: false,
-});
-
-const root = Type.Object(
-  {
-    global: Type.Optional(GlobalSchema),
-    env: Type.Optional(EnvMap),
-    var: Type.Optional(VarMap),
-    exec: Type.Optional(ExecList),
-    exec_once: Type.Optional(ExecOnceList),
-    source: Type.Optional(SourceList),
-    source_optional: Type.Optional(SourceOptionalList),
-    bind: Type.Optional(
-      bindingMap("Key bindings", "Keyboard bindings by key mode and key combination."),
-    ),
-    mousebind: Type.Optional(
-      bindingMap("Mouse bindings", "Mouse bindings by key mode and button combination."),
-    ),
-    axisbind: Type.Optional(
-      bindingMap("Axis bindings", "Scroll axis bindings by key mode and direction."),
-    ),
-    gesturebind: Type.Optional(
-      bindingMap("Gesture bindings", "Gesture bindings by key mode and gesture combination."),
-    ),
-    switchbind: Type.Optional(
-      bindingMap("Switch bindings", "Switch bindings by key mode and fold state."),
-    ),
-    rule: Type.Optional(RulesSchema),
-  },
-  {
-    description: "Canonical JSON representation of a mangowm configuration.",
+  return Type.Object(rules, {
+    title: "Rules",
+    description: "Monitor, tag, layer, window, and device rules.",
     additionalProperties: false,
-  },
-);
+  });
+}
 
-export function buildSchema(version: string) {
+function rootSchema(mode: SchemaMode) {
+  return Type.Object(
+    {
+      global: Type.Optional(globalSchema(mode)),
+      env: Type.Optional(envMap(mode)),
+      var: Type.Optional(varMap(mode)),
+      bind: Type.Optional(
+        bindingMap("Key bindings", "Keyboard bindings by key mode and key combination."),
+      ),
+      mousebind: Type.Optional(
+        bindingMap("Mouse bindings", "Mouse bindings by key mode and button combination."),
+      ),
+      axisbind: Type.Optional(
+        bindingMap("Axis bindings", "Scroll axis bindings by key mode and direction."),
+      ),
+      gesturebind: Type.Optional(
+        bindingMap("Gesture bindings", "Gesture bindings by key mode and gesture combination."),
+      ),
+      switchbind: Type.Optional(
+        bindingMap("Switch bindings", "Switch bindings by key mode and fold state."),
+      ),
+      rule: Type.Optional(rulesSchema(mode)),
+    },
+    {
+      description:
+        mode === "canonical"
+          ? "Canonical JSON representation of a mangowm configuration."
+          : "TOML representation of a mangowm configuration.",
+      additionalProperties: false,
+    },
+  );
+}
+
+export function buildSchema(version: string, mode: SchemaMode = "canonical") {
+  const file = mode === "canonical" ? "schema.json" : "toml.schema.json";
+
   return {
     $schema: "https://json-schema.org/draft/2020-12/schema",
-    $id: `https://mangowm.github.io/schema/${version}/schema.json`,
+    $id: `https://mangowm.github.io/schema/${version}/${file}`,
     $defs: { BindingNode },
-    ...root,
-    title: `mangowm configuration ${version}`,
+    ...rootSchema(mode),
+    title:
+      mode === "canonical"
+        ? `mangowm configuration ${version}`
+        : `mangowm TOML configuration ${version}`,
   } as const;
 }
 
-export const schema = buildSchema(MANGO_VERSION);
+export const schema = buildSchema(MANGO_VERSION, "canonical");
+export const tomlSchema = buildSchema(MANGO_VERSION, "toml");

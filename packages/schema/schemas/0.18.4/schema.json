@@ -3,24 +3,9 @@
   "$id": "https://mangowm.github.io/schema/0.18.4/schema.json",
   "$defs": {
     "BindingNode": {
+      "title": "Binding node",
+      "description": "A key combination map with optional flag sub-tables.",
       "type": "object",
-      "patternProperties": {
-        "^(?!(?:sym|lock|release|pass|conflict)$).+$": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          ],
-          "title": "Action",
-          "description": "A dispatcher invocation such as `spawn,foot`, or an array of invocations."
-        }
-      },
       "properties": {
         "sym": {
           "$ref": "#/$defs/BindingNode"
@@ -38,7 +23,27 @@
           "$ref": "#/$defs/BindingNode"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string",
+            "title": "Action",
+            "description": "A dispatcher name followed by optional comma-separated arguments.",
+            "pattern": "^(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$[A-Za-z_][A-Za-z0-9_]*)(?:,.*)?$"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "title": "Action",
+              "description": "A dispatcher name followed by optional comma-separated arguments.",
+              "pattern": "^(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$[A-Za-z_][A-Za-z0-9_]*)(?:,.*)?$"
+            }
+          }
+        ],
+        "title": "Action",
+        "description": "One action, or an array of actions for the same key combination."
+      }
     }
   },
   "type": "object",
@@ -421,10 +426,9 @@
         "blur_params_saturation": {
           "type": "number",
           "title": "Blur Saturation",
-          "description": "Saturation multiplier for the blurred layer",
+          "description": "Saturation multiplier for the blurred layer. Values above 1 are clamped to 1.",
           "default": 1.2,
-          "minimum": 0,
-          "maximum": 2
+          "minimum": 0
         },
         "shadows": {
           "type": "boolean",
@@ -1753,6 +1757,38 @@
           "description": "Border color for overlay windows.",
           "default": "0x14a57cff",
           "pattern": "^0x[0-9a-fA-F]{8}$"
+        },
+        "exec": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Run on Reload",
+          "description": "Commands run every time the config is reloaded."
+        },
+        "exec_once": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Run Once",
+          "description": "Commands run once at startup."
+        },
+        "source": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Includes",
+          "description": "Config files loaded as part of this config."
+        },
+        "source_optional": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Optional Includes",
+          "description": "Config files loaded if they exist; missing files are ignored."
         }
       },
       "title": "Global options",
@@ -1779,78 +1815,11 @@
       "title": "Variables",
       "description": "User-defined variables expanded as $name in config values."
     },
-    "exec": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "title": "Run on Reload",
-      "description": "Commands run every time the config is reloaded."
-    },
-    "exec_once": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "title": "Run Once",
-      "description": "Commands run once at startup."
-    },
-    "source": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "title": "Includes",
-      "description": "Config files loaded as part of this config."
-    },
-    "source_optional": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "title": "Optional Includes",
-      "description": "Config files loaded if they exist; missing files are ignored."
-    },
     "bind": {
       "type": "object",
       "patternProperties": {
         "^.*$": {
-          "type": "object",
-          "patternProperties": {
-            "^(?!(?:sym|lock|release|pass|conflict)$).+$": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              ],
-              "title": "Action",
-              "description": "A dispatcher invocation such as `spawn,foot`, or an array of invocations."
-            }
-          },
-          "properties": {
-            "sym": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "lock": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "release": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "pass": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "conflict": {
-              "$ref": "#/$defs/BindingNode"
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/$defs/BindingNode"
         }
       },
       "title": "Key bindings",
@@ -1860,42 +1829,7 @@
       "type": "object",
       "patternProperties": {
         "^.*$": {
-          "type": "object",
-          "patternProperties": {
-            "^(?!(?:sym|lock|release|pass|conflict)$).+$": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              ],
-              "title": "Action",
-              "description": "A dispatcher invocation such as `spawn,foot`, or an array of invocations."
-            }
-          },
-          "properties": {
-            "sym": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "lock": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "release": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "pass": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "conflict": {
-              "$ref": "#/$defs/BindingNode"
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/$defs/BindingNode"
         }
       },
       "title": "Mouse bindings",
@@ -1905,42 +1839,7 @@
       "type": "object",
       "patternProperties": {
         "^.*$": {
-          "type": "object",
-          "patternProperties": {
-            "^(?!(?:sym|lock|release|pass|conflict)$).+$": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              ],
-              "title": "Action",
-              "description": "A dispatcher invocation such as `spawn,foot`, or an array of invocations."
-            }
-          },
-          "properties": {
-            "sym": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "lock": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "release": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "pass": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "conflict": {
-              "$ref": "#/$defs/BindingNode"
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/$defs/BindingNode"
         }
       },
       "title": "Axis bindings",
@@ -1950,42 +1849,7 @@
       "type": "object",
       "patternProperties": {
         "^.*$": {
-          "type": "object",
-          "patternProperties": {
-            "^(?!(?:sym|lock|release|pass|conflict)$).+$": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              ],
-              "title": "Action",
-              "description": "A dispatcher invocation such as `spawn,foot`, or an array of invocations."
-            }
-          },
-          "properties": {
-            "sym": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "lock": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "release": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "pass": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "conflict": {
-              "$ref": "#/$defs/BindingNode"
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/$defs/BindingNode"
         }
       },
       "title": "Gesture bindings",
@@ -1995,42 +1859,7 @@
       "type": "object",
       "patternProperties": {
         "^.*$": {
-          "type": "object",
-          "patternProperties": {
-            "^(?!(?:sym|lock|release|pass|conflict)$).+$": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              ],
-              "title": "Action",
-              "description": "A dispatcher invocation such as `spawn,foot`, or an array of invocations."
-            }
-          },
-          "properties": {
-            "sym": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "lock": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "release": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "pass": {
-              "$ref": "#/$defs/BindingNode"
-            },
-            "conflict": {
-              "$ref": "#/$defs/BindingNode"
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/$defs/BindingNode"
         }
       },
       "title": "Switch bindings",
@@ -2439,16 +2268,12 @@
               "offset_x": {
                 "type": "integer",
                 "title": "X Offset",
-                "description": "X offset from center (%), 100 is the edge of screen with outer gap",
-                "minimum": -999,
-                "maximum": 999
+                "description": "X offset from center (%), 100 is the edge of screen with outer gap"
               },
               "offset_y": {
                 "type": "integer",
                 "title": "Y Offset",
-                "description": "Y offset from center (%), 100 is the edge of screen with outer gap",
-                "minimum": -999,
-                "maximum": 999
+                "description": "Y offset from center (%), 100 is the edge of screen with outer gap"
               },
               "no_focus": {
                 "type": "boolean",
@@ -2473,16 +2298,12 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "Floating window width. Values below 1 are a fraction of the screen width.",
-                "minimum": 0,
-                "maximum": 9999
+                "description": "Floating window width. Values below 1 are a fraction of the screen width."
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "Floating window height. Values below 1 are a fraction of the screen height.",
-                "minimum": 0,
-                "maximum": 9999
+                "description": "Floating window height. Values below 1 are a fraction of the screen height."
               },
               "no_border": {
                 "type": "boolean",
@@ -2532,23 +2353,17 @@
               "scroller_proportion_single": {
                 "type": "number",
                 "title": "Scroller Proportion (Single)",
-                "description": "Width proportion used while this window is the only tiled window.",
-                "minimum": 0.1,
-                "maximum": 1
+                "description": "Width proportion used while this window is the only tiled window."
               },
               "unfocused_opacity": {
                 "type": "number",
                 "title": "Unfocused Opacity",
-                "description": "Opacity for inactive windows (0.0 - 1.0).",
-                "minimum": 0,
-                "maximum": 1
+                "description": "Opacity for inactive windows (0.0 - 1.0)."
               },
               "focused_opacity": {
                 "type": "number",
                 "title": "Focused Opacity",
-                "description": "Opacity for the active window (0.0 - 1.0).",
-                "minimum": 0,
-                "maximum": 1
+                "description": "Opacity for the active window (0.0 - 1.0)."
               },
               "is_overlay": {
                 "type": "boolean",
@@ -2643,9 +2458,7 @@
               "scroller_proportion": {
                 "type": "number",
                 "title": "Scroller Proportion",
-                "description": "Width proportion for this window in the scroller layout (0.1-1.0).",
-                "minimum": 0.1,
-                "maximum": 1
+                "description": "Width proportion for this window in the scroller layout (0.1-1.0)."
               },
               "is_fullscreen": {
                 "type": "boolean",
@@ -2722,16 +2535,12 @@
               "offset_x": {
                 "type": "integer",
                 "title": "X Offset",
-                "description": "X offset from center (%), 100 is the edge of screen with outer gap",
-                "minimum": -999,
-                "maximum": 999
+                "description": "X offset from center (%), 100 is the edge of screen with outer gap"
               },
               "offset_y": {
                 "type": "integer",
                 "title": "Y Offset",
-                "description": "Y offset from center (%), 100 is the edge of screen with outer gap",
-                "minimum": -999,
-                "maximum": 999
+                "description": "Y offset from center (%), 100 is the edge of screen with outer gap"
               },
               "no_focus": {
                 "type": "boolean",
@@ -2756,16 +2565,12 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "Floating window width. Values below 1 are a fraction of the screen width.",
-                "minimum": 0,
-                "maximum": 9999
+                "description": "Floating window width. Values below 1 are a fraction of the screen width."
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "Floating window height. Values below 1 are a fraction of the screen height.",
-                "minimum": 0,
-                "maximum": 9999
+                "description": "Floating window height. Values below 1 are a fraction of the screen height."
               },
               "no_border": {
                 "type": "boolean",
@@ -2815,23 +2620,17 @@
               "scroller_proportion_single": {
                 "type": "number",
                 "title": "Scroller Proportion (Single)",
-                "description": "Width proportion used while this window is the only tiled window.",
-                "minimum": 0.1,
-                "maximum": 1
+                "description": "Width proportion used while this window is the only tiled window."
               },
               "unfocused_opacity": {
                 "type": "number",
                 "title": "Unfocused Opacity",
-                "description": "Opacity for inactive windows (0.0 - 1.0).",
-                "minimum": 0,
-                "maximum": 1
+                "description": "Opacity for inactive windows (0.0 - 1.0)."
               },
               "focused_opacity": {
                 "type": "number",
                 "title": "Focused Opacity",
-                "description": "Opacity for the active window (0.0 - 1.0).",
-                "minimum": 0,
-                "maximum": 1
+                "description": "Opacity for the active window (0.0 - 1.0)."
               },
               "is_overlay": {
                 "type": "boolean",
@@ -2926,9 +2725,7 @@
               "scroller_proportion": {
                 "type": "number",
                 "title": "Scroller Proportion",
-                "description": "Width proportion for this window in the scroller layout (0.1-1.0).",
-                "minimum": 0.1,
-                "maximum": 1
+                "description": "Width proportion for this window in the scroller layout (0.1-1.0)."
               },
               "is_fullscreen": {
                 "type": "boolean",

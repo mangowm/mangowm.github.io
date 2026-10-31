@@ -2,21 +2,27 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vite-plus/test";
 import Value from "typebox/value";
 
-import { schema } from "./schema";
+import { schema, tomlSchema } from "./schema";
 import { MANGO_VERSION } from "./version";
 
 const exportedSchema = JSON.parse(
   readFileSync(new URL(`../schemas/${MANGO_VERSION}/schema.json`, import.meta.url), "utf8"),
 );
 
-const validConfig = {
+const exportedTomlSchema = JSON.parse(
+  readFileSync(new URL(`../schemas/${MANGO_VERSION}/toml.schema.json`, import.meta.url), "utf8"),
+);
+
+const canonicalConfig = {
   global: {
     animations: true,
     gap_inner_horizontal: 5,
     animation_type_open: "slide",
+    root_color: "0x323232ff",
+    exec: ["waybar"],
   },
-  env: { QT_IM_MODULE: "fcitx" },
-  exec: ["waybar"],
+  env: { QT_IM_MODULE: "fcitx", DPI: "140" },
+  var: { term: "foot" },
   bind: {
     default: {
       "SUPER+r": "reload_config",
@@ -30,7 +36,7 @@ const validConfig = {
   },
 };
 
-describe("mangowm schema", () => {
+describe("canonical schema", () => {
   it("uses the expected dialect and URL", () => {
     expect(schema.$schema).toBe("https://json-schema.org/draft/2020-12/schema");
     expect(schema.$id).toBe(`https://mangowm.github.io/schema/${MANGO_VERSION}/schema.json`);
@@ -44,7 +50,11 @@ describe("mangowm schema", () => {
     const global = schema.properties.global as {
       properties: Record<string, unknown>;
     };
-    expect(Object.keys(global.properties)).toHaveLength(240);
+    const keys = Object.keys(global.properties);
+    expect(keys).toHaveLength(244);
+    expect(
+      keys.filter((key) => !["exec", "exec_once", "source", "source_optional"].includes(key)),
+    ).toHaveLength(240);
   });
 
   it("has six rule types and 165 fields", () => {
@@ -60,13 +70,48 @@ describe("mangowm schema", () => {
   it("validates every global default", () => {
     const global = schema.properties.global.properties as Record<string, any>;
     const defaults = Object.fromEntries(
-      Object.entries(global).map(([key, value]) => [key, value.default]),
+      Object.entries(global)
+        .filter(([, value]) => value.default !== undefined)
+        .map(([key, value]) => [key, value.default]),
     );
     expect(Value.Check(schema, { global: defaults })).toBe(true);
+    expect(Value.Check(tomlSchema, { global: defaults })).toBe(true);
   });
 
   it("validates a canonical config object", () => {
-    expect(Value.Check(schema, validConfig)).toBe(true);
+    expect(Value.Check(schema, canonicalConfig)).toBe(true);
+  });
+
+  it("rejects raw TOML scalar forms", () => {
+    expect(Value.Check(schema, { global: { blur: 1 } })).toBe(false);
+    expect(Value.Check(schema, { global: { root_color: 0x323232ff } })).toBe(false);
+    expect(Value.Check(schema, { env: { DPI: 140 } })).toBe(false);
+    expect(Value.Check(schema, { var: { FLAG: true } })).toBe(false);
+  });
+
+  it("accepts a .conf-derived canonical object", () => {
+    expect(
+      Value.Check(schema, {
+        global: {
+          blur: false,
+          root_color: "0x323232ff",
+          animation_curve_open: [0.46, 1, 0.29, 1],
+          exec_once: ["waybar"],
+          source: ["./extra.conf"],
+        },
+        env: { QT_IM_MODULE: "fcitx" },
+        bind: { default: { "SUPER+Return": "spawn,foot" } },
+        rule: { tag_rule: [{ id: 1, layout_name: "tile" }] },
+      }),
+    ).toBe(true);
+  });
+
+  it("rejects a monitor rule without a match field", () => {
+    expect(Value.Check(schema, { rule: { monitor_rule: [{ scale: 1 }] } })).toBe(false);
+  });
+
+  it("rejects unknown dispatchers", () => {
+    expect(Value.Check(schema, { bind: { default: { "SUPER+r": "reload_confg" } } })).toBe(false);
   });
 
   it("accepts flags, numeric tag ids, and layout lists", () => {
@@ -85,5 +130,39 @@ describe("mangowm schema", () => {
 
   it("rejects wrong value types", () => {
     expect(Value.Check(schema, { global: { animations: "yes" } })).toBe(false);
+  });
+});
+
+describe("TOML schema", () => {
+  it("uses the expected dialect and URL", () => {
+    expect(tomlSchema.$schema).toBe("https://json-schema.org/draft/2020-12/schema");
+    expect(tomlSchema.$id).toBe(
+      `https://mangowm.github.io/schema/${MANGO_VERSION}/toml.schema.json`,
+    );
+  });
+
+  it("matches the published snapshot", () => {
+    expect(exportedTomlSchema).toEqual(tomlSchema);
+  });
+
+  it("accepts raw TOML scalar forms", () => {
+    expect(
+      Value.Check(tomlSchema, {
+        global: { blur: 0, root_color: 0x323232ff, exec: ["waybar"] },
+        env: { DPI: 140, FLAG: true },
+        var: { scale: 1.5 },
+        rule: { window_rule: [{ is_floating: 1, width: 0.5 }] },
+      }),
+    ).toBe(true);
+  });
+
+  it("also accepts canonical forms", () => {
+    expect(Value.Check(tomlSchema, canonicalConfig)).toBe(true);
+  });
+
+  it("accepts custom off as an integer", () => {
+    expect(
+      Value.Check(tomlSchema, { rule: { monitor_rule: [{ name: "eDP-1", custom: 0 }] } }),
+    ).toBe(true);
   });
 });

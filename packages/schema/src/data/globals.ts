@@ -422,9 +422,8 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "float",
     default: "1.2",
     label: "Blur Saturation",
-    description: "Saturation multiplier for the blurred layer",
+    description: "Saturation multiplier for the blurred layer. Values above 1 are clamped to 1.",
     min: 0,
-    max: 2,
   },
   {
     key: "shadows",

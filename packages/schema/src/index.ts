@@ -1,1 +1,1 @@
-export { schema } from "./schema";
+export { schema, tomlSchema } from "./schema";

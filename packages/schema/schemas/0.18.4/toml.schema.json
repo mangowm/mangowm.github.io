@@ -1,0 +1,4605 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mangowm.github.io/schema/0.18.4/toml.schema.json",
+  "$defs": {
+    "BindingNode": {
+      "title": "Binding node",
+      "description": "A key combination map with optional flag sub-tables.",
+      "type": "object",
+      "properties": {
+        "sym": {
+          "$ref": "#/$defs/BindingNode"
+        },
+        "lock": {
+          "$ref": "#/$defs/BindingNode"
+        },
+        "release": {
+          "$ref": "#/$defs/BindingNode"
+        },
+        "pass": {
+          "$ref": "#/$defs/BindingNode"
+        },
+        "conflict": {
+          "$ref": "#/$defs/BindingNode"
+        }
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string",
+            "title": "Action",
+            "description": "A dispatcher name followed by optional comma-separated arguments.",
+            "pattern": "^(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$[A-Za-z_][A-Za-z0-9_]*)(?:,.*)?$"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "title": "Action",
+              "description": "A dispatcher name followed by optional comma-separated arguments.",
+              "pattern": "^(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$[A-Za-z_][A-Za-z0-9_]*)(?:,.*)?$"
+            }
+          }
+        ],
+        "title": "Action",
+        "description": "One action, or an array of actions for the same key combination."
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "global": {
+      "type": "object",
+      "properties": {
+        "animations": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Enable Animations",
+          "description": "Master toggle for all window animations",
+          "default": true
+        },
+        "layer_animations": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Layer Animations",
+          "description": "Animate layer-shell surfaces such as panels and notifications.",
+          "default": false
+        },
+        "animation_type_open": {
+          "type": "string",
+          "enum": ["", "none", "fade", "slide", "zoom"],
+          "title": "Open Animation Type",
+          "description": "Animation style when a window opens",
+          "default": ""
+        },
+        "animation_type_close": {
+          "type": "string",
+          "enum": ["", "none", "fade", "slide", "zoom"],
+          "title": "Close Animation Type",
+          "description": "Animation style when a window closes",
+          "default": ""
+        },
+        "layer_animation_type_open": {
+          "type": "string",
+          "enum": ["", "none", "fade", "slide", "zoom"],
+          "title": "Layer Open Animation Type",
+          "description": "Animation style when a layer-surface opens",
+          "default": ""
+        },
+        "layer_animation_type_close": {
+          "type": "string",
+          "enum": ["", "none", "fade", "slide", "zoom"],
+          "title": "Layer Close Animation Type",
+          "description": "Animation style when a layer-surface closes",
+          "default": ""
+        },
+        "animation_fade_in": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Fade In",
+          "description": "Fade windows in when they appear",
+          "default": true
+        },
+        "animation_fade_out": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Fade Out",
+          "description": "Fade windows out when they close",
+          "default": true
+        },
+        "tag_animation_direction": {
+          "type": "integer",
+          "enum": [1, 0],
+          "title": "Tag Animation Direction",
+          "description": "Direction of tag-switch animation (horizontal or vertical)",
+          "default": 1
+        },
+        "zoom_initial_ratio": {
+          "type": "number",
+          "title": "Zoom Initial Ratio",
+          "description": "Starting scale for zoom animations (0.1-1.0)",
+          "default": 0.4,
+          "minimum": 0.1,
+          "maximum": 1
+        },
+        "zoom_end_ratio": {
+          "type": "number",
+          "title": "Zoom End Ratio",
+          "description": "Ending scale for zoom animations (0.1-1.0)",
+          "default": 0.8,
+          "minimum": 0.1,
+          "maximum": 1
+        },
+        "fade_in_begin_opacity": {
+          "type": "number",
+          "title": "Fade In Start Opacity",
+          "description": "Starting opacity for fade-in animations (0.0-1.0)",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1
+        },
+        "fade_out_begin_opacity": {
+          "type": "number",
+          "title": "Fade Out Start Opacity",
+          "description": "Starting opacity for fade-out animations (0.0-1.0)",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1
+        },
+        "animation_duration_move": {
+          "type": "integer",
+          "title": "Move Duration",
+          "description": "Duration of window move/resize animations in milliseconds (0-50000)",
+          "default": 500,
+          "minimum": 0,
+          "maximum": 50000
+        },
+        "animation_duration_open": {
+          "type": "integer",
+          "title": "Open Duration",
+          "description": "Duration of window open animations in milliseconds (0-50000)",
+          "default": 400,
+          "minimum": 0,
+          "maximum": 50000
+        },
+        "animation_duration_tag": {
+          "type": "integer",
+          "title": "Tag Switch Duration",
+          "description": "Duration of tag-switch (workspace) animations in milliseconds (0-50000)",
+          "default": 300,
+          "minimum": 0,
+          "maximum": 50000
+        },
+        "animation_duration_close": {
+          "type": "integer",
+          "title": "Close Duration",
+          "description": "Duration of window close animations in milliseconds (0-50000)",
+          "default": 300,
+          "minimum": 0,
+          "maximum": 50000
+        },
+        "animation_duration_focus": {
+          "type": "integer",
+          "title": "Focus Duration",
+          "description": "Duration of focus-change animations in milliseconds (0-50000)",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 50000
+        },
+        "animation_curve_move": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "title": "Move Curve",
+          "description": "Cubic bezier curve for move/resize animations (x1,y1,x2,y2)",
+          "default": [0.46, 1, 0.29, 0.99],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "animation_curve_open": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "title": "Open Curve",
+          "description": "Cubic bezier curve for window open animations (x1,y1,x2,y2)",
+          "default": [0.46, 1, 0.29, 0.99],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "animation_curve_tag": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "title": "Tag Switch Curve",
+          "description": "Cubic bezier curve for tag-switch animations (x1,y1,x2,y2)",
+          "default": [0.46, 1, 0.29, 0.99],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "animation_curve_close": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "title": "Close Curve",
+          "description": "Cubic bezier curve for window close animations (x1,y1,x2,y2)",
+          "default": [0.46, 1, 0.29, 0.99],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "animation_curve_focus": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "title": "Focus Curve",
+          "description": "Cubic bezier curve for focus-change animations (x1,y1,x2,y2)",
+          "default": [0.46, 1, 0.29, 0.99],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "animation_curve_opacity_fade_in": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "title": "Fade In Curve",
+          "description": "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2)",
+          "default": [0.46, 1, 0.29, 0.99],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "animation_curve_opacity_fade_out": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "title": "Fade Out Curve",
+          "description": "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2)",
+          "default": [0.5, 0.5, 0.5, 0.5],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "scroller_structs": {
+          "type": "integer",
+          "title": "Scroller Edge Inset",
+          "description": "Pixel inset at the edges of the scroller viewport (0-1000).",
+          "default": 20,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "scroller_default_proportion": {
+          "type": "number",
+          "title": "Default Proportion",
+          "description": "Default width proportion for new windows in the scroller layout.",
+          "default": 0.9,
+          "minimum": 0.1,
+          "maximum": 1
+        },
+        "scroller_default_proportion_single": {
+          "type": "number",
+          "title": "Single Window Proportion",
+          "description": "Width proportion used when the tag has one window. Requires scroller_ignore_proportion_single=0.",
+          "default": 1,
+          "minimum": 0.1,
+          "maximum": 1
+        },
+        "scroller_ignore_proportion_single": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Ignore Proportion When Solo",
+          "description": "Ignore scroller_default_proportion_single when the tag has one window.",
+          "default": true
+        },
+        "scroller_focus_center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Scroller Focus Center",
+          "description": "Always center the focused window in the scroller viewport.",
+          "default": false
+        },
+        "scroller_prefer_center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Scroller Prefer Center",
+          "description": "Center the focused window only when it was outside the viewport.",
+          "default": false
+        },
+        "scroller_prefer_overspread": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Prefer Overspread",
+          "description": "Let the focused edge window expand into unused space. Takes priority over scroller_focus_center and scroller_prefer_center.",
+          "default": true
+        },
+        "edge_scroller_pointer_focus": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Edge Pointer Focus",
+          "description": "Focus scroller windows that are partly off-screen.",
+          "default": true
+        },
+        "edge_scroller_focus_allow_speed": {
+          "type": "number",
+          "title": "Edge Focus Speed",
+          "description": "Minimum pointer speed required before edge focus triggers (0-1000).",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "focus_cross_monitor": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Cross-Monitor Focus",
+          "description": "Let directional focus cross monitor boundaries.",
+          "default": false
+        },
+        "focus_direction_only_zone_overlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Focus Direction Zone Overlap",
+          "description": "Directional focus only selects windows that overlap the current window on the perpendicular axis.",
+          "default": true
+        },
+        "exchange_cross_monitor": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Cross-Monitor Exchange",
+          "description": "Let exchange_client and move_client cross monitor boundaries.",
+          "default": false
+        },
+        "scratchpad_cross_monitor": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Scratchpad Cross Monitor",
+          "description": "Share the scratchpad pool across all monitors.",
+          "default": false
+        },
+        "focus_cross_tag": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Cross-Tag Focus",
+          "description": "Let directional focus cross tag boundaries.",
+          "default": false
+        },
+        "view_current_to_back": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "View Current to Back",
+          "description": "Viewing current tag sends it to back and shows previous tag",
+          "default": false
+        },
+        "blur": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Enable Blur",
+          "description": "Toggle background blur behind windows",
+          "default": false
+        },
+        "blur_layer": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Blur Layer Surfaces",
+          "description": "Apply blur to layer-shell surfaces (panels, notifications)",
+          "default": false
+        },
+        "blur_optimized": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Optimized Blur",
+          "description": "Cache the wallpaper and background for faster blur.",
+          "default": true
+        },
+        "border_radius": {
+          "type": "integer",
+          "title": "Border Radius",
+          "description": "Corner rounding in pixels",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "blur_params_num_passes": {
+          "type": "integer",
+          "title": "Blur Passes",
+          "description": "Number of blur iterations",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 10
+        },
+        "blur_params_radius": {
+          "type": "integer",
+          "title": "Blur Radius",
+          "description": "Pixel radius of the blur kernel",
+          "default": 5,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "blur_params_noise": {
+          "type": "number",
+          "title": "Blur Noise",
+          "description": "Noise level added to the blur.",
+          "default": 0.02,
+          "minimum": 0,
+          "maximum": 1
+        },
+        "blur_params_brightness": {
+          "type": "number",
+          "title": "Blur Brightness",
+          "description": "Brightness multiplier for the blurred layer",
+          "default": 0.9,
+          "minimum": 0,
+          "maximum": 1
+        },
+        "blur_params_contrast": {
+          "type": "number",
+          "title": "Blur Contrast",
+          "description": "Contrast multiplier for the blurred layer",
+          "default": 0.9,
+          "minimum": 0,
+          "maximum": 1
+        },
+        "blur_params_saturation": {
+          "type": "number",
+          "title": "Blur Saturation",
+          "description": "Saturation multiplier for the blurred layer. Values above 1 are clamped to 1.",
+          "default": 1.2,
+          "minimum": 0
+        },
+        "shadows": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Enable Shadows",
+          "description": "Render drop shadows behind windows",
+          "default": false
+        },
+        "shadow_only_floating": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Shadows Floating Only",
+          "description": "Only draw shadows for floating windows",
+          "default": true
+        },
+        "layer_shadows": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Layer Shadow Surfaces",
+          "description": "Draw shadows under layer-shell surfaces",
+          "default": false
+        },
+        "shadows_size": {
+          "type": "integer",
+          "title": "Shadow Size",
+          "description": "How far the shadow extends beyond window edges",
+          "default": 10,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "shadows_blur": {
+          "type": "number",
+          "title": "Shadow Softness",
+          "description": "Gaussian blur sigma for softer shadows",
+          "default": 15,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "shadows_position_x": {
+          "type": "integer",
+          "title": "Shadow Offset X",
+          "description": "Horizontal shadow offset",
+          "default": 0,
+          "minimum": -1000,
+          "maximum": 1000
+        },
+        "shadows_position_y": {
+          "type": "integer",
+          "title": "Shadow Offset Y",
+          "description": "Vertical shadow offset",
+          "default": 0,
+          "minimum": -1000,
+          "maximum": 1000
+        },
+        "single_scratchpad": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Single Scratchpad",
+          "description": "Show only one scratchpad window (named or standard) at a time.",
+          "default": true
+        },
+        "xwayland_persistence": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "XWayland Persistence",
+          "description": "Keep XWayland running even when no X11 clients are active",
+          "default": true
+        },
+        "xwayland_ignore_scale": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Ignore XWayland Scale",
+          "description": "Make XWayland use physical pixels instead of the output scale.",
+          "default": false
+        },
+        "sync_obj_enable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Sync Objects",
+          "description": "Use DRM sync object timelines. Requires a restart.",
+          "default": true
+        },
+        "tag_carousel": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Tag Carousel",
+          "description": "Tags wrap around in a carousel",
+          "default": false
+        },
+        "allow_tearing": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "Allow Tearing",
+          "description": "Permit screen tearing for lower latency",
+          "default": 0
+        },
+        "hdr_depth": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "HDR Bit Depth",
+          "description": "Bit depth for HDR output: 0 default, 1 HDR8, 2 HDR10.",
+          "default": 2
+        },
+        "allow_shortcuts_inhibit": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Allow Shortcuts Inhibit",
+          "description": "Let apps suspend compositor keybindings",
+          "default": true
+        },
+        "disable_middle_paste": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Disable Middle Paste",
+          "description": "Disable middle-click paste by turning off primary selection for Wayland apps.",
+          "default": false
+        },
+        "allow_lock_transparent": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Allow Lock Transparent",
+          "description": "Permit transparent/translucent lockscreens",
+          "default": false
+        },
+        "auto_reload_config": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Auto Reload Config",
+          "description": "Watch the main config file and every `source`/`source_optional` file, then reload immediately after any of them changes.",
+          "default": true
+        },
+        "no_border_when_single": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Hide Border When Solo",
+          "description": "Remove borders when only one window is visible",
+          "default": false
+        },
+        "no_radius_when_single": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Hide Radius When Solo",
+          "description": "Remove corner radius when only one window is visible",
+          "default": false
+        },
+        "monocle_no_border": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Monocle No Border",
+          "description": "Remove borders in monocle layout.",
+          "default": false
+        },
+        "monocle_no_gap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Monocle No Gap",
+          "description": "Remove gaps in monocle layout.",
+          "default": false
+        },
+        "monocle_no_radius": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Monocle No Radius",
+          "description": "Remove corner radius in monocle layout.",
+          "default": false
+        },
+        "snap_distance": {
+          "type": "integer",
+          "title": "Snap Distance",
+          "description": "Maximum distance in pixels at which a floating window snaps to an edge or another window (0-99999).",
+          "default": 30,
+          "minimum": 0,
+          "maximum": 99999
+        },
+        "enable_floating_snap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Floating Snap",
+          "description": "Snap floating windows to screen edges and other windows.",
+          "default": false
+        },
+        "float_full_to_top": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Raise Full Floating Windows",
+          "description": "Keep fullscreen, floating, and layer-shell top windows in one layer. The most recently raised window is on top.",
+          "default": false
+        },
+        "drag_tile_to_tile": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Tile-to-Tile Drag",
+          "description": "Reorder tiled windows by dragging.",
+          "default": true
+        },
+        "drag_tile_small": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Small Tile Preview",
+          "description": "Shrink dragged tile to a small thumbnail",
+          "default": true
+        },
+        "swipe_min_threshold": {
+          "type": "integer",
+          "title": "Swipe Minimum Threshold",
+          "description": "Minimum distance in pixels to trigger a swipe gesture (1-1000)",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "gesture_live": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Live Gestures",
+          "description": "Drive tag/focus/overview transitions while the fingers are still moving (`1`), instead of only after release (`0`).",
+          "default": true
+        },
+        "gesture_swipe_distance": {
+          "type": "integer",
+          "title": "Swipe Distance",
+          "description": "Finger travel (px) that corresponds to one full page transition.",
+          "default": 300,
+          "minimum": 32,
+          "maximum": 4096
+        },
+        "gesture_swipe_cancel_ratio": {
+          "type": "number",
+          "title": "Swipe Cancel Ratio",
+          "description": "Releasing after the last page was dragged past this fraction commits it; below it, the transition animates back.",
+          "default": 0.5,
+          "minimum": 0.05,
+          "maximum": 0.95
+        },
+        "gesture_swipe_min_speed_to_force": {
+          "type": "number",
+          "title": "Swipe Force Speed",
+          "description": "Average per-event speed (px) that forces a commit even below the cancel ratio (for quick flicks).",
+          "default": 10,
+          "minimum": 0
+        },
+        "focused_opacity": {
+          "type": "number",
+          "title": "Focused Opacity",
+          "description": "Opacity of the currently focused window",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 1
+        },
+        "unfocused_opacity": {
+          "type": "number",
+          "title": "Unfocused Opacity",
+          "description": "Opacity of unfocused background windows",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 1
+        },
+        "xkb_rules_rules": {
+          "type": "string",
+          "title": "XKB Rules",
+          "description": "XKB rules file",
+          "default": ""
+        },
+        "xkb_rules_model": {
+          "type": "string",
+          "title": "XKB Model",
+          "description": "Keyboard model for XKB",
+          "default": ""
+        },
+        "xkb_rules_layout": {
+          "type": "string",
+          "title": "XKB Layout",
+          "description": "Keyboard layout codes, for example 'us' or 'us,ru'.",
+          "default": ""
+        },
+        "xkb_rules_variant": {
+          "type": "string",
+          "title": "XKB Variant",
+          "description": "Keyboard layout variant",
+          "default": ""
+        },
+        "xkb_rules_options": {
+          "type": "string",
+          "title": "XKB Options",
+          "description": "XKB options, for example 'ctrl:nocaps'.",
+          "default": ""
+        },
+        "scroller_proportion_preset": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0.1,
+            "maximum": 1
+          },
+          "title": "Proportion Presets",
+          "description": "Comma-separated preset proportion values (0.1-1.0) for quick switching. Empty disables cycling.",
+          "default": []
+        },
+        "circle_layout": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Circle Layout",
+          "description": "Ordered layouts cycled by switch_layout.",
+          "default": []
+        },
+        "new_is_master": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "New Windows as Master",
+          "description": "New windows open in the master area instead of the stack",
+          "default": true
+        },
+        "default_master_factor": {
+          "type": "number",
+          "title": "Master Area Factor",
+          "description": "Fraction of the tag area used by the master area: width in horizontal layouts, height in vertical layouts (0.1-0.9).",
+          "default": 0.55,
+          "minimum": 0.1,
+          "maximum": 0.9
+        },
+        "default_master_count": {
+          "type": "integer",
+          "title": "Number of Masters",
+          "description": "How many windows are kept in the master area",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "tag_num": {
+          "type": "integer",
+          "title": "Number of Tags",
+          "description": "How many tags/workspaces are available (1-31)",
+          "default": 9,
+          "minimum": 1,
+          "maximum": 31
+        },
+        "tag_gather": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Gather Tags",
+          "description": "Compact occupied tags to consecutive numbers starting at 1; the current view follows.",
+          "default": false
+        },
+        "center_master_overspread": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Center Master Overspread",
+          "description": "In center_tile, let the master area fill the screen when there are no stack windows.",
+          "default": false
+        },
+        "center_when_single_stack": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Center Master With One Stack Window",
+          "description": "Center the master when the stack has only one window.",
+          "default": true
+        },
+        "dwindle_vertical_split": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "Vertical Split",
+          "description": "Where a new window goes in a vertical split: 0 follows the cursor, 1 below, 2 above.",
+          "default": 1
+        },
+        "dwindle_horizontal_split": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "Horizontal Split",
+          "description": "Where a new window goes in a horizontal split: 0 follows the cursor, 1 right, 2 left.",
+          "default": 1
+        },
+        "dwindle_preserve_split": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Dwindle Preserve Split",
+          "description": "Keep the sibling split geometry when a window closes.",
+          "default": false
+        },
+        "dwindle_smart_split": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Dwindle Smart Split",
+          "description": "Choose the split direction from the cursor position inside the focused window.",
+          "default": false
+        },
+        "dwindle_smart_resize": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Smart Resize",
+          "description": "When dragging a split, move it toward the cursor regardless of which side was grabbed.",
+          "default": false
+        },
+        "dwindle_drop_simple_split": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Dwindle Drop Simple Split",
+          "description": "Select the drag-to-tile preview style: 1 uses a 2-zone preview, 0 uses a 4-quadrant preview.",
+          "default": true
+        },
+        "dwindle_manual_split": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Manual Split",
+          "description": "Use the direction set by dwindle_toggle_split_direction for new splits.",
+          "default": false
+        },
+        "dwindle_split_ratio": {
+          "type": "number",
+          "title": "Split Ratio",
+          "description": "Proportion of space for the first child when splitting",
+          "default": 0.5,
+          "minimum": 0.05,
+          "maximum": 0.95
+        },
+        "hotarea_size": {
+          "type": "integer",
+          "title": "Hotarea Size",
+          "description": "Size of the corner activation zone in pixels (1-1000)",
+          "default": 10,
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "hotarea_corner": {
+          "type": "integer",
+          "enum": [0, 1, 2, 3],
+          "title": "Hotarea Corner",
+          "description": "Screen corner that triggers the overview: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right.",
+          "default": 2
+        },
+        "enable_hotarea": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Enable Hotarea",
+          "description": "Activate overview by moving the cursor to a screen corner",
+          "default": false
+        },
+        "hotarea_disable_on_fullscreen": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Hotarea Disable On Fullscreen",
+          "description": "Do not trigger the hot area while a fullscreen window is focused.",
+          "default": true
+        },
+        "overview_gap_inner": {
+          "type": "integer",
+          "title": "Overview Inner Gap",
+          "description": "Gap between overview cards (0-1000).",
+          "default": 5,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "overview_gap_outer": {
+          "type": "integer",
+          "title": "Overview Outer Gap",
+          "description": "Gap around the overview layout (0-1000).",
+          "default": 30,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "overcircle_center_ratio": {
+          "type": "number",
+          "title": "Overcircle Center Ratio",
+          "description": "Width of the centered focused window as a fraction of the usable screen width. Range: 0.1-0.9.",
+          "default": 0.5,
+          "minimum": 0.1,
+          "maximum": 0.9
+        },
+        "jump_labels": {
+          "type": "string",
+          "title": "Jump Label Characters",
+          "description": "Ordered characters used for quick window selection in jump label mode",
+          "default": "HJKLASDFGQWERTYUIOPZXCVBNM"
+        },
+        "cursor_hide_timeout": {
+          "type": "integer",
+          "title": "Cursor Hide Timeout",
+          "description": "Seconds of inactivity before auto-hiding the cursor (0 = never)",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 36000
+        },
+        "cursor_hide_on_keypress": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Hide Cursor on Keypress",
+          "description": "Auto-hide the cursor whenever any keyboard key is pressed",
+          "default": false
+        },
+        "axis_bind_apply_timeout": {
+          "type": "integer",
+          "title": "Axis Bind Apply Timeout",
+          "description": "Minimum time in milliseconds between axis binding invocations; scroll events closer together are ignored (0-1000).",
+          "default": 100,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "focus_on_activate": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Focus on Activate",
+          "description": "Focus windows immediately when they request activation",
+          "default": true
+        },
+        "numlock_on": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "NumLock on Startup",
+          "description": "Turn on NumLock at startup.",
+          "default": false
+        },
+        "idle_inhibit_ignore_visible": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Ignore Visible Windows for Idle",
+          "description": "Let invisible clients inhibit idle.",
+          "default": false
+        },
+        "idle_inhibit_when_fullscreen": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Inhibit Idle When Fullscreen",
+          "description": "Keep idle inhibited while a fullscreen window is focused.",
+          "default": false
+        },
+        "sloppy_focus": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Sloppy Focus",
+          "description": "Focus follows the mouse pointer",
+          "default": true
+        },
+        "warp_cursor": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Warp Cursor",
+          "description": "Warp the pointer to the center of the focused window when focus changes by keybinding.",
+          "default": true
+        },
+        "drag_corner": {
+          "type": "integer",
+          "title": "Resize Corner",
+          "description": "Resize corner for floating windows: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right, 4 nearest.",
+          "default": 3,
+          "minimum": 0,
+          "maximum": 4
+        },
+        "drag_warp_cursor": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Warp Cursor on Drag Resize",
+          "description": "Warp the pointer to the chosen resize corner when a floating-window resize starts.",
+          "default": true
+        },
+        "enable_border_resize": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Enable Border Resize",
+          "description": "Resize by dragging a window border with the left mouse button. Tiled windows only expose edges shared with a neighbor.",
+          "default": true
+        },
+        "border_resize_size": {
+          "type": "integer",
+          "title": "Border Resize Hitbox",
+          "description": "Width in pixels of the border resize grab strip. 0 uses the border width.",
+          "default": 10,
+          "minimum": 0,
+          "maximum": 50
+        },
+        "smart_gaps": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Smart Gaps",
+          "description": "Only show gaps with multiple windows on the same tag",
+          "default": false
+        },
+        "monocle_tab_mode": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Monocle Tab Mode",
+          "description": "Merge stacked windows into tabs in monocle layout.",
+          "default": true
+        },
+        "monocle_right_button_close": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Right Click to Close",
+          "description": "Right click on the tab bar closes that window.",
+          "default": false
+        },
+        "deck_tab_mode": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Deck Tab Mode",
+          "description": "Merge the deck layout's stack windows into a tab.",
+          "default": true
+        },
+        "repeat_rate": {
+          "type": "integer",
+          "title": "Repeat Rate",
+          "description": "Keyboard repeat rate in characters per second",
+          "default": 25,
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "repeat_delay": {
+          "type": "integer",
+          "title": "Repeat Delay",
+          "description": "Delay before key repeat starts, in milliseconds",
+          "default": 600,
+          "minimum": 1,
+          "maximum": 20000
+        },
+        "disable_trackpad": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Disable Trackpad",
+          "description": "Disable all trackpad devices.",
+          "default": false
+        },
+        "touch_enable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Enable Touch",
+          "description": "Turn on touchscreen input.",
+          "default": true
+        },
+        "touch_enable_mouse_emulation": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Touch Mouse Emulation",
+          "description": "Emulate a left-button click for touches on surfaces that do not accept touch.",
+          "default": false
+        },
+        "tap_to_click": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Tap to Click",
+          "description": "Tap the trackpad to click.",
+          "default": true
+        },
+        "tap_and_drag": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Tap and Drag",
+          "description": "Tap and hold to drag items.",
+          "default": true
+        },
+        "drag_lock": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Drag Lock",
+          "description": "Keep dragging after lifting the finger.",
+          "default": true
+        },
+        "mouse_natural_scrolling": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Mouse Natural Scrolling",
+          "description": "Invert mouse scroll direction.",
+          "default": false
+        },
+        "trackpad_natural_scrolling": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Trackpad Natural Scrolling",
+          "description": "Invert trackpad scroll direction.",
+          "default": false
+        },
+        "cursor_size": {
+          "type": "integer",
+          "title": "Cursor Size",
+          "description": "XCursor size in pixels",
+          "default": 24,
+          "minimum": 4,
+          "maximum": 512
+        },
+        "cursor_theme": {
+          "type": "string",
+          "title": "Cursor Theme",
+          "description": "XCursor theme name. Empty uses the system XCursor theme.",
+          "default": ""
+        },
+        "group_bar_decorate_font_desc": {
+          "type": "string",
+          "title": "Group Bar Font",
+          "description": "Pango font description for the group bar.",
+          "default": "monospace Bold 13"
+        },
+        "group_bar_decorate_fg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Group Bar Text Color",
+          "description": "Text color of the group bar.",
+          "default": "0xc0caf5ff"
+        },
+        "group_bar_decorate_bg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Group Bar Background",
+          "description": "Background color of the group bar.",
+          "default": "0x1d2021ff"
+        },
+        "group_bar_decorate_focus_fg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Group Bar Focus Text Color",
+          "description": "Text color of the focused group bar entry.",
+          "default": "0x9ece6aff"
+        },
+        "group_bar_decorate_focus_bg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Group Bar Focus Background",
+          "description": "Background color of the focused group bar entry.",
+          "default": "0x3c3836ff"
+        },
+        "group_bar_decorate_border_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Group Bar Border Color",
+          "description": "Border color of the group bar.",
+          "default": "0x3b4261ff"
+        },
+        "group_bar_decorate_border_width": {
+          "type": "integer",
+          "title": "Group Bar Border Width",
+          "description": "Border width of the group bar in pixels.",
+          "default": 4,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "group_bar_decorate_corner_radius": {
+          "type": "integer",
+          "title": "Group Bar Corner Radius",
+          "description": "Corner radius of the group bar in pixels.",
+          "default": 5,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "group_bar_decorate_padding_x": {
+          "type": "integer",
+          "title": "Group Bar Horizontal Padding",
+          "description": "Horizontal padding inside the group bar in pixels.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "group_bar_decorate_padding_y": {
+          "type": "integer",
+          "title": "Group Bar Vertical Padding",
+          "description": "Vertical padding inside the group bar in pixels.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "title_message_bar_decorate_font_desc": {
+          "type": "string",
+          "title": "Title Bar Font",
+          "description": "Pango font description for the title message bar.",
+          "default": "monospace Bold 13"
+        },
+        "title_message_bar_decorate_fg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Title Bar Text Color",
+          "description": "Text color of the title message bar.",
+          "default": "0xc0caf5ff"
+        },
+        "title_message_bar_decorate_bg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Title Bar Background",
+          "description": "Background color of the title message bar.",
+          "default": "0x1d2021ff"
+        },
+        "title_message_bar_decorate_focus_fg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Title Bar Focus Text Color",
+          "description": "Text color of the focused title message bar entry.",
+          "default": "0x9ece6aff"
+        },
+        "title_message_bar_decorate_focus_bg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Title Bar Focus Background",
+          "description": "Background color of the focused title message bar entry.",
+          "default": "0x3c3836ff"
+        },
+        "title_message_bar_decorate_border_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Title Bar Border Color",
+          "description": "Border color of the title message bar.",
+          "default": "0x3b4261ff"
+        },
+        "title_message_bar_decorate_border_width": {
+          "type": "integer",
+          "title": "Title Bar Border Width",
+          "description": "Border width of the title message bar in pixels.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "title_message_bar_decorate_corner_radius": {
+          "type": "integer",
+          "title": "Title Bar Corner Radius",
+          "description": "Corner radius of the title message bar in pixels.",
+          "default": 15,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "title_message_bar_decorate_padding_x": {
+          "type": "integer",
+          "title": "Title Bar Horizontal Padding",
+          "description": "Horizontal padding inside the title message bar in pixels.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "title_message_bar_decorate_padding_y": {
+          "type": "integer",
+          "title": "Title Bar Vertical Padding",
+          "description": "Vertical padding inside the title message bar in pixels.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "tab_bar_decorate_font_desc": {
+          "type": "string",
+          "title": "Tab Bar Font",
+          "description": "Pango font description for the tab bar.",
+          "default": "monospace Bold 13"
+        },
+        "tab_bar_decorate_fg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Tab Bar Text Color",
+          "description": "Text color of the tab bar.",
+          "default": "0xc0caf5ff"
+        },
+        "tab_bar_decorate_bg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Tab Bar Background",
+          "description": "Background color of the tab bar.",
+          "default": "0x1d2021ff"
+        },
+        "tab_bar_decorate_focus_fg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Tab Bar Focus Text Color",
+          "description": "Text color of the focused tab bar entry.",
+          "default": "0x7aa2f7ff"
+        },
+        "tab_bar_decorate_focus_bg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Tab Bar Focus Background",
+          "description": "Background color of the focused tab bar entry.",
+          "default": "0x3c3836ff"
+        },
+        "tab_bar_decorate_border_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Tab Bar Border Color",
+          "description": "Border color of the tab bar.",
+          "default": "0x3b4261ff"
+        },
+        "tab_bar_decorate_border_width": {
+          "type": "integer",
+          "title": "Tab Bar Border Width",
+          "description": "Border width of the tab bar in pixels.",
+          "default": 4,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "tab_bar_decorate_corner_radius": {
+          "type": "integer",
+          "title": "Tab Bar Corner Radius",
+          "description": "Corner radius of the tab bar in pixels.",
+          "default": 5,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "tab_bar_decorate_padding_x": {
+          "type": "integer",
+          "title": "Tab Bar Horizontal Padding",
+          "description": "Horizontal padding inside the tab bar in pixels.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "tab_bar_decorate_padding_y": {
+          "type": "integer",
+          "title": "Tab Bar Vertical Padding",
+          "description": "Vertical padding inside the tab bar in pixels.",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "jump_label_decorate_font_desc": {
+          "type": "string",
+          "title": "Jump Label Font",
+          "description": "Pango font description for the jump label.",
+          "default": "monospace Bold 16"
+        },
+        "jump_label_decorate_fg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Jump Label Text Color",
+          "description": "Text color of the jump label.",
+          "default": "0xc4939dff"
+        },
+        "jump_label_decorate_bg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Jump Label Background",
+          "description": "Background color of the jump label.",
+          "default": "0x323232ff"
+        },
+        "jump_label_decorate_focus_fg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Jump Label Focus Text Color",
+          "description": "Text color of the focused jump label entry.",
+          "default": "0xeda6b4ff"
+        },
+        "jump_label_decorate_focus_bg_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Jump Label Focus Background",
+          "description": "Background color of the focused jump label entry.",
+          "default": "0x4e453cff"
+        },
+        "jump_label_decorate_border_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Jump Label Border Color",
+          "description": "Border color of the jump label.",
+          "default": "0x8baa9bff"
+        },
+        "jump_label_decorate_border_width": {
+          "type": "integer",
+          "title": "Jump Label Border Width",
+          "description": "Border width of the jump label in pixels.",
+          "default": 4,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "jump_label_decorate_corner_radius": {
+          "type": "integer",
+          "title": "Jump Label Corner Radius",
+          "description": "Corner radius of the jump label in pixels.",
+          "default": 5,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "jump_label_decorate_padding_x": {
+          "type": "integer",
+          "title": "Jump Label Horizontal Padding",
+          "description": "Horizontal padding inside the jump label in pixels.",
+          "default": 10,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "jump_label_decorate_padding_y": {
+          "type": "integer",
+          "title": "Jump Label Vertical Padding",
+          "description": "Vertical padding inside the jump label in pixels.",
+          "default": 10,
+          "minimum": 0,
+          "maximum": 100
+        },
+        "mouse_accel_profile": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "Mouse Acceleration Profile",
+          "description": "Mouse acceleration profile: 0 none, 1 flat, 2 adaptive.",
+          "default": 2
+        },
+        "mouse_accel_speed": {
+          "type": "number",
+          "title": "Mouse Acceleration Speed",
+          "description": "Mouse acceleration speed from -1.0 to 1.0.",
+          "default": 0,
+          "minimum": -1,
+          "maximum": 1
+        },
+        "trackpad_accel_profile": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "Trackpad Acceleration Profile",
+          "description": "Trackpad acceleration profile: 0 none, 1 flat, 2 adaptive.",
+          "default": 2
+        },
+        "trackpad_accel_speed": {
+          "type": "number",
+          "title": "Trackpad Acceleration Speed",
+          "description": "Trackpad acceleration speed from -1.0 to 1.0.",
+          "default": 0,
+          "minimum": -1,
+          "maximum": 1
+        },
+        "mouse_left_handed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Mouse Left Handed",
+          "description": "Swap left and right mouse buttons.",
+          "default": false
+        },
+        "mouse_middle_button_emulation": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Mouse Middle Button Emulation",
+          "description": "Emulate middle-click on the mouse.",
+          "default": false
+        },
+        "mouse_scroll_method": {
+          "type": "integer",
+          "enum": [0, 1, 2, 4],
+          "title": "Mouse Scroll Method",
+          "description": "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button.",
+          "default": 1
+        },
+        "mouse_scroll_button": {
+          "type": "integer",
+          "title": "Mouse Scroll Button",
+          "description": "Button used for button scrolling on the mouse (272-279).",
+          "default": 274,
+          "minimum": 272,
+          "maximum": 279
+        },
+        "mouse_click_method": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "Mouse Click Method",
+          "description": "Click method: 0 no emulation, 1 button areas, 2 clickfinger.",
+          "default": 1
+        },
+        "mouse_send_events_mode": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "Mouse Send Events Mode",
+          "description": "Send events: 0 on, 1 off, 2 off with an external pointer.",
+          "default": 0
+        },
+        "trackpad_left_handed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Trackpad Left Handed",
+          "description": "Swap left and right trackpad buttons.",
+          "default": false
+        },
+        "trackpad_middle_button_emulation": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Trackpad Middle Button Emulation",
+          "description": "Emulate middle-click on the trackpad.",
+          "default": false
+        },
+        "trackpad_disable_while_typing": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Disable While Typing",
+          "description": "Temporarily disable the trackpad while typing.",
+          "default": true
+        },
+        "trackpad_scroll_method": {
+          "type": "integer",
+          "enum": [0, 1, 2, 4],
+          "title": "Trackpad Scroll Method",
+          "description": "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button.",
+          "default": 1
+        },
+        "trackpad_scroll_button": {
+          "type": "integer",
+          "title": "Trackpad Scroll Button",
+          "description": "Button used for button scrolling on the trackpad (272-279).",
+          "default": 274,
+          "minimum": 272,
+          "maximum": 279
+        },
+        "trackpad_click_method": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "Trackpad Click Method",
+          "description": "Click method: 0 no emulation, 1 button areas, 2 clickfinger.",
+          "default": 1
+        },
+        "trackpad_send_events_mode": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "Trackpad Send Events Mode",
+          "description": "Send events: 0 on, 1 off, 2 off with an external pointer.",
+          "default": 0
+        },
+        "send_events_mode": {
+          "type": "integer",
+          "enum": [0, 1, 2],
+          "title": "Send Events Mode",
+          "description": "Send events: 0 on, 1 off, 2 off with an external pointer.",
+          "default": 0
+        },
+        "button_map": {
+          "type": "integer",
+          "enum": [0, 1],
+          "title": "Button Map",
+          "description": "Trackpad tap-to-button mapping: LMR or LRM.",
+          "default": 0
+        },
+        "axis_scroll_factor": {
+          "type": "number",
+          "title": "Axis Scroll Factor",
+          "description": "Multiplier for axis (wheel) scroll speed (0.1-10.0)",
+          "default": 1,
+          "minimum": 0.1,
+          "maximum": 10
+        },
+        "trackpad_scroll_factor": {
+          "type": "number",
+          "title": "Trackpad Scroll Factor",
+          "description": "Multiplier for trackpad scroll speed (0.1-10.0).",
+          "default": 1,
+          "minimum": 0.1,
+          "maximum": 10
+        },
+        "gap_inner_horizontal": {
+          "type": "integer",
+          "title": "Inner Gap Horizontal",
+          "description": "Horizontal gap between tiled windows",
+          "default": 5,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "gap_inner_vertical": {
+          "type": "integer",
+          "title": "Inner Gap Vertical",
+          "description": "Vertical gap between tiled windows",
+          "default": 5,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "gap_outer_horizontal": {
+          "type": "integer",
+          "title": "Outer Gap Horizontal",
+          "description": "Horizontal gap between windows and screen edges",
+          "default": 10,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "gap_outer_vertical": {
+          "type": "integer",
+          "title": "Outer Gap Vertical",
+          "description": "Vertical gap between windows and screen edges",
+          "default": 10,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "scratchpad_width_ratio": {
+          "type": "number",
+          "title": "Scratchpad Width Ratio",
+          "description": "Width of a scratchpad window relative to the monitor (0.1-1.0); used when the rule sets no width.",
+          "default": 0.8,
+          "minimum": 0.1,
+          "maximum": 1
+        },
+        "scratchpad_height_ratio": {
+          "type": "number",
+          "title": "Scratchpad Height Ratio",
+          "description": "Height of a scratchpad window relative to the monitor (0.1-1.0); used when the rule sets no height.",
+          "default": 0.9,
+          "minimum": 0.1,
+          "maximum": 1
+        },
+        "special_dim": {
+          "type": "number",
+          "title": "Special Workspace Dim",
+          "description": "Background dim level while the special workspace is active.",
+          "default": 0.5,
+          "minimum": 0,
+          "maximum": 1
+        },
+        "special_gap_inner_horizontal": {
+          "type": "integer",
+          "title": "Special Inner Gap Horizontal",
+          "description": "Horizontal inner gap for windows on the special workspace.",
+          "default": 10,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "special_gap_inner_vertical": {
+          "type": "integer",
+          "title": "Special Inner Gap Vertical",
+          "description": "Vertical inner gap for windows on the special workspace.",
+          "default": 10,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "special_gap_outer_horizontal": {
+          "type": "integer",
+          "title": "Special Outer Gap Horizontal",
+          "description": "Horizontal outer gap for windows on the special workspace.",
+          "default": 20,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "special_gap_outer_vertical": {
+          "type": "integer",
+          "title": "Special Outer Gap Vertical",
+          "description": "Vertical outer gap for windows on the special workspace.",
+          "default": 20,
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "border_px": {
+          "type": "integer",
+          "title": "Border Width",
+          "description": "Thickness of window borders in pixels",
+          "default": 4,
+          "minimum": 0,
+          "maximum": 200
+        },
+        "group_bar_height": {
+          "type": "integer",
+          "title": "Group Bar Height",
+          "description": "Height of the per-window group bar in pixels",
+          "default": 33,
+          "minimum": 0,
+          "maximum": 500
+        },
+        "tab_bar_height": {
+          "type": "integer",
+          "title": "Tab Bar Height",
+          "description": "Height of the tab bar in pixels.",
+          "default": 33,
+          "minimum": 0,
+          "maximum": 500
+        },
+        "title_message_bar_height": {
+          "type": "integer",
+          "title": "Title Message Bar Height",
+          "description": "Height of the focused window's title message bar. 0 disables it.",
+          "default": 52,
+          "minimum": 0,
+          "maximum": 500
+        },
+        "title_message_bar_gap": {
+          "type": "integer",
+          "title": "Title Message Bar Gap",
+          "description": "Gap between the title message bar and the focused overview card or switcher panel.",
+          "default": 20,
+          "minimum": 0,
+          "maximum": 500
+        },
+        "always_show_group_bar": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Always Show Group Bar",
+          "description": "Show the group bar on every window.",
+          "default": false
+        },
+        "group_bar_close_button_enable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Close Button",
+          "description": "Show the close button. Independent of `always_show_group_bar`.",
+          "default": false
+        },
+        "group_bar_button_size": {
+          "type": "integer",
+          "title": "Close Button Size",
+          "description": "Close button size in px.",
+          "default": 16,
+          "minimum": 4,
+          "maximum": 64
+        },
+        "group_bar_button_margin": {
+          "type": "integer",
+          "title": "Close Button Margin",
+          "description": "Close button inset from the right edge in px.",
+          "default": 4,
+          "minimum": 0,
+          "maximum": 50
+        },
+        "group_bar_button_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Close Button Color",
+          "description": "Close button colour.",
+          "default": "0xad401fff"
+        },
+        "root_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Root Background",
+          "description": "Desktop background behind all windows",
+          "default": "0x323232ff"
+        },
+        "shadows_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Shadow Color",
+          "description": "Drop shadow color for windows",
+          "default": "0x000000ff"
+        },
+        "dim_enable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          ],
+          "title": "Dim Enable",
+          "description": "Dim unfocused windows.",
+          "default": false
+        },
+        "dim_focused_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Dim Focused Color",
+          "description": "Dim color of the focused window.",
+          "default": "0x00000000"
+        },
+        "dim_unfocused_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Dim Unfocused Color",
+          "description": "Dim color of the unfocused windows.",
+          "default": "0x00000055"
+        },
+        "border_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Inactive Border Color",
+          "description": "Border color for unfocused windows.",
+          "default": "0x444444ff"
+        },
+        "drop_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Drop Target Color",
+          "description": "Color of the drop target rectangle shown while dragging a tiled window.",
+          "default": "0xd5899d80"
+        },
+        "split_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Split Indicator",
+          "description": "Dwindle manual-split guide line",
+          "default": "0xeb441eff"
+        },
+        "focus_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Active Border",
+          "description": "Focused window border on the selected monitor",
+          "default": "0xc66b25ff"
+        },
+        "maximized_screen_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Maximized Border",
+          "description": "Border color for a focused maximized window.",
+          "default": "0x89aa61ff"
+        },
+        "urgent_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Urgent Border Color",
+          "description": "Border color for urgent windows.",
+          "default": "0xad401fff"
+        },
+        "scratchpad_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Scratchpad Border Color",
+          "description": "Border color for a focused scratchpad window.",
+          "default": "0x516c93ff"
+        },
+        "global_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Global Border Color",
+          "description": "Border color for a focused global window.",
+          "default": "0xb153a7ff"
+        },
+        "overlay_color": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{8}$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          ],
+          "title": "Overlay Color",
+          "description": "Border color for overlay windows.",
+          "default": "0x14a57cff"
+        },
+        "exec": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Run on Reload",
+          "description": "Commands run every time the config is reloaded."
+        },
+        "exec_once": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Run Once",
+          "description": "Commands run once at startup."
+        },
+        "source": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Includes",
+          "description": "Config files loaded as part of this config."
+        },
+        "source_optional": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Optional Includes",
+          "description": "Config files loaded if they exist; missing files are ignored."
+        }
+      },
+      "title": "Global options",
+      "description": "Top-level mangowm options.",
+      "additionalProperties": false
+    },
+    "env": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "title": "Environment",
+      "description": "Environment variables exported before startup."
+    },
+    "var": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "title": "Variables",
+      "description": "User-defined variables expanded as $name in config values."
+    },
+    "bind": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "$ref": "#/$defs/BindingNode"
+        }
+      },
+      "title": "Key bindings",
+      "description": "Keyboard bindings by key mode and key combination."
+    },
+    "mousebind": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "$ref": "#/$defs/BindingNode"
+        }
+      },
+      "title": "Mouse bindings",
+      "description": "Mouse bindings by key mode and button combination."
+    },
+    "axisbind": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "$ref": "#/$defs/BindingNode"
+        }
+      },
+      "title": "Axis bindings",
+      "description": "Scroll axis bindings by key mode and direction."
+    },
+    "gesturebind": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "$ref": "#/$defs/BindingNode"
+        }
+      },
+      "title": "Gesture bindings",
+      "description": "Gesture bindings by key mode and gesture combination."
+    },
+    "switchbind": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "$ref": "#/$defs/BindingNode"
+        }
+      },
+      "title": "Switch bindings",
+      "description": "Switch bindings by key mode and fold state."
+    },
+    "rule": {
+      "type": "object",
+      "properties": {
+        "monitor_rule": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name",
+                "description": "Match by monitor name (supports regex)"
+              },
+              "make": {
+                "type": "string",
+                "title": "Make",
+                "description": "Match by monitor manufacturer"
+              },
+              "model": {
+                "type": "string",
+                "title": "Model",
+                "description": "Match by monitor model"
+              },
+              "serial": {
+                "type": "string",
+                "title": "Serial",
+                "description": "Match by monitor serial number"
+              },
+              "rr": {
+                "type": "integer",
+                "enum": [0, 1, 2, 3, 4, 5, 6, 7],
+                "title": "Transform",
+                "description": "Monitor transform. 0 normal, 1 90° left, 2 180°, 3 270° left, 4 vertical flip, 5 flip+90°, 6 flip+180°, 7 flip+270°."
+              },
+              "scale": {
+                "type": "number",
+                "title": "Scale",
+                "description": "Monitor scale",
+                "minimum": 0.001,
+                "maximum": 1000
+              },
+              "x": {
+                "type": "integer",
+                "title": "X",
+                "description": "X position"
+              },
+              "y": {
+                "type": "integer",
+                "title": "Y",
+                "description": "Y position"
+              },
+              "width": {
+                "type": "integer",
+                "title": "Width",
+                "description": "Monitor width in pixels.",
+                "minimum": 1
+              },
+              "height": {
+                "type": "integer",
+                "title": "Height",
+                "description": "Monitor height in pixels.",
+                "minimum": 1
+              },
+              "refresh": {
+                "type": "number",
+                "title": "Refresh Rate",
+                "description": "Monitor refresh rate",
+                "minimum": 0.001,
+                "maximum": 1000
+              },
+              "vrr": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "VRR",
+                "description": "Turn on variable refresh rate."
+              },
+              "hdr": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "HDR",
+                "description": "Turn on HDR for this output. Requires the Vulkan renderer (WLR_RENDERER=vulkan)."
+              },
+              "hdr_min_lum": {
+                "type": "number",
+                "title": "HDR Min Luminance",
+                "description": "Mastering display minimum luminance, cd/m² (0 = unset)",
+                "minimum": 0,
+                "maximum": 10000
+              },
+              "hdr_max_lum": {
+                "type": "number",
+                "title": "HDR Max Luminance",
+                "description": "Mastering display peak luminance, also sent as max_cll, cd/m² (0 = unset)",
+                "minimum": 0,
+                "maximum": 10000
+              },
+              "hdr_max_avg_lum": {
+                "type": "number",
+                "title": "HDR Max Average Luminance",
+                "description": "Max frame-average light level (max_fall), cd/m² (0 = unset)",
+                "minimum": 0,
+                "maximum": 10000
+              },
+              "hdr_force": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Force HDR",
+                "description": "Skip the EDID BT.2020/PQ checks when hdr is on. HDR also requires the Vulkan renderer."
+              },
+              "icc": {
+                "type": "string",
+                "title": "ICC Profile",
+                "description": "Path to an ICC profile. Ignored when HDR is on."
+              },
+              "disable": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Disable",
+                "description": "Disable the monitor"
+              },
+              "primary": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Primary",
+                "description": "Make this monitor the X11 (RandR) primary output for XWayland"
+              },
+              "custom": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Custom Mode",
+                "description": "Use a custom display mode. Not supported by all displays; can cause a black screen."
+              }
+            },
+            "title": "Monitor Rules",
+            "description": "Set mode, scale, HDR, and position for the first output matching every field set.",
+            "additionalProperties": false,
+            "anyOf": [
+              {
+                "properties": {
+                  "name": {}
+                },
+                "required": ["name"]
+              },
+              {
+                "properties": {
+                  "make": {}
+                },
+                "required": ["make"]
+              },
+              {
+                "properties": {
+                  "model": {}
+                },
+                "required": ["model"]
+              },
+              {
+                "properties": {
+                  "serial": {}
+                },
+                "required": ["serial"]
+              }
+            ],
+            "dependentRequired": {
+              "width": ["height", "refresh"],
+              "height": ["width", "refresh"],
+              "refresh": ["width", "height"],
+              "x": ["y"],
+              "y": ["x"]
+            },
+            "dependentSchemas": {
+              "custom": {
+                "anyOf": [
+                  {
+                    "properties": {
+                      "custom": {
+                        "enum": [false, 0]
+                      }
+                    },
+                    "required": ["custom"]
+                  },
+                  {
+                    "properties": {
+                      "width": {},
+                      "height": {},
+                      "refresh": {}
+                    },
+                    "required": ["width", "height", "refresh"]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "tag_rule": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 31
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "title": "Tag ID",
+                "description": "Tag id to match; 0 targets the special workspace (tag 0). Use * for all tags."
+              },
+              "layout_name": {
+                "type": "string",
+                "enum": [
+                  "tile",
+                  "scroller",
+                  "grid",
+                  "monocle",
+                  "deck",
+                  "center_tile",
+                  "right_tile",
+                  "vertical_scroller",
+                  "vertical_tile",
+                  "vertical_grid",
+                  "vertical_deck",
+                  "dwindle",
+                  "fair",
+                  "vertical_fair"
+                ],
+                "title": "Layout",
+                "description": "Layout to apply to this tag."
+              },
+              "monitor_name": {
+                "type": "string",
+                "title": "Monitor Name",
+                "description": "Match by monitor name"
+              },
+              "monitor_make": {
+                "type": "string",
+                "title": "Monitor Make",
+                "description": "Match by monitor manufacturer"
+              },
+              "monitor_model": {
+                "type": "string",
+                "title": "Monitor Model",
+                "description": "Match by monitor model"
+              },
+              "monitor_serial": {
+                "type": "string",
+                "title": "Monitor Serial",
+                "description": "Match by monitor serial number"
+              },
+              "no_render_border": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Render Border",
+                "description": "Do not draw window borders on this tag."
+              },
+              "open_as_floating": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Open as Floating",
+                "description": "Open new windows floating on this tag."
+              },
+              "no_hide": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Persistent Tag",
+                "description": "Keep the tag advertised to ext-workspace clients when it is empty."
+              },
+              "master_count": {
+                "type": "integer",
+                "title": "Master Count",
+                "description": "Number of master windows",
+                "minimum": 1,
+                "maximum": 99
+              },
+              "master_factor": {
+                "type": "number",
+                "title": "Master Factor",
+                "description": "Fraction of the tag area used by the master area (0.1-0.9).",
+                "minimum": 0.1,
+                "maximum": 0.9
+              },
+              "scroller_default_proportion": {
+                "type": "number",
+                "title": "Scroller Proportion",
+                "description": "Default width proportion for new windows.",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "scroller_default_proportion_single": {
+                "type": "number",
+                "title": "Scroller Proportion (Single)",
+                "description": "Scroller proportion for a single window. Only used when scroller_ignore_proportion_single is off.",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "scroller_ignore_proportion_single": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Ignore Single Proportion",
+                "description": "Ignore proportion adjustments for single windows."
+              }
+            },
+            "title": "Tag Rules",
+            "description": "Set layout, master, and scroller options per tag; every monitor field set must match.",
+            "additionalProperties": false
+          }
+        },
+        "layer_rule": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "layer_name": {
+                "type": "string",
+                "title": "Layer Name",
+                "description": "Match name of layer, supports regex"
+              },
+              "animation_type_open": {
+                "type": "string",
+                "enum": ["none", "fade", "slide", "zoom"],
+                "title": "Open Animation",
+                "description": "Animation used when the layer surface opens."
+              },
+              "animation_type_close": {
+                "type": "string",
+                "enum": ["none", "fade", "slide", "zoom"],
+                "title": "Close Animation",
+                "description": "Animation used when the layer surface closes."
+              },
+              "shield_when_capture": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Shield When Captured",
+                "description": "Black out this layer while a screen capture is active; pair with no_animation:1."
+              },
+              "no_blur": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Blur",
+                "description": "Disable blur for this layer."
+              },
+              "no_animation": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Animation",
+                "description": "Disable layer animations."
+              },
+              "no_shadow": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Shadow",
+                "description": "Disable the layer shadow."
+              }
+            },
+            "title": "Layer Rules",
+            "description": "Configure layer-shell surfaces such as bars, launchers, and notifications.",
+            "additionalProperties": false
+          }
+        },
+        "window_rule": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "is_floating": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Floating",
+                "description": "Force floating state"
+              },
+              "title": {
+                "type": "string",
+                "title": "Title",
+                "description": "Match by window title, supports regex"
+              },
+              "app_id": {
+                "type": "string",
+                "title": "App ID",
+                "description": "Match by application ID, supports regex"
+              },
+              "animation_type_open": {
+                "type": "string",
+                "enum": ["none", "fade", "slide", "zoom"],
+                "title": "Open Animation",
+                "description": "Animation used when the window opens."
+              },
+              "animation_type_close": {
+                "type": "string",
+                "enum": ["none", "fade", "slide", "zoom"],
+                "title": "Close Animation",
+                "description": "Animation used when the window closes."
+              },
+              "tags": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 31
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "title": "Tags",
+                "description": "Assign to one tag, several tags separated by |, or the special workspace with 0."
+              },
+              "monitor": {
+                "type": "string",
+                "title": "Monitor",
+                "description": "Assign to monitor by monitor spec (name, make, model, or serial)"
+              },
+              "offset_x": {
+                "type": "integer",
+                "title": "X Offset",
+                "description": "X offset from center (%), 100 is the edge of screen with outer gap"
+              },
+              "offset_y": {
+                "type": "integer",
+                "title": "Y Offset",
+                "description": "Y offset from center (%), 100 is the edge of screen with outer gap"
+              },
+              "no_focus": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Focus",
+                "description": "Never give this window keyboard focus."
+              },
+              "no_fade_in": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Fade In",
+                "description": "Window ignores fade-in animation"
+              },
+              "no_fade_out": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Fade Out",
+                "description": "Window ignores fade-out animation"
+              },
+              "no_force_center": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Force Center",
+                "description": "Do not center the window automatically."
+              },
+              "width": {
+                "type": "number",
+                "title": "Width",
+                "description": "Floating window width. Values below 1 are a fraction of the screen width."
+              },
+              "height": {
+                "type": "number",
+                "title": "Height",
+                "description": "Floating window height. Values below 1 are a fraction of the screen height."
+              },
+              "no_border": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Border",
+                "description": "Remove window border"
+              },
+              "no_shadow": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Shadow",
+                "description": "Disable the window shadow."
+              },
+              "no_radius": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Radius",
+                "description": "Disable corner radius."
+              },
+              "no_animation": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Animation",
+                "description": "Disable window animations."
+              },
+              "is_open_silent": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Open Silent",
+                "description": "Open without focus"
+              },
+              "is_tag_silent": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Tag Silent",
+                "description": "Do not focus the window when it opens on a tag that is not currently visible."
+              },
+              "is_named_scratchpad": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Named Scratchpad",
+                "description": "Mark the window as a named scratchpad toggled by toggle_named_scratchpad."
+              },
+              "is_unmanaged_global": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Unmanaged Global",
+                "description": "Open as unmanaged global window (for desktop pets or camera windows)"
+              },
+              "is_global": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Global",
+                "description": "Open as global window (sticky across tags)"
+              },
+              "scroller_proportion_single": {
+                "type": "number",
+                "title": "Scroller Proportion (Single)",
+                "description": "Width proportion used while this window is the only tiled window."
+              },
+              "unfocused_opacity": {
+                "type": "number",
+                "title": "Unfocused Opacity",
+                "description": "Opacity for inactive windows (0.0 - 1.0)."
+              },
+              "focused_opacity": {
+                "type": "number",
+                "title": "Focused Opacity",
+                "description": "Opacity for the active window (0.0 - 1.0)."
+              },
+              "is_overlay": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Overlay",
+                "description": "Keep the window in the top layer."
+              },
+              "shield_when_capture": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Shield When Captured",
+                "description": "Fill the window with black while a screen capture is active."
+              },
+              "allow_shortcuts_inhibit": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Allow Shortcuts Inhibit",
+                "description": "Let this window's client inhibit compositor shortcuts."
+              },
+              "ignore_maximize": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Ignore Maximize",
+                "description": "Ignore maximize requests from the client."
+              },
+              "ignore_minimize": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Ignore Minimize",
+                "description": "Ignore minimize requests from the client."
+              },
+              "no_size_hint": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Size Hint",
+                "description": "Ignore the client's minimum and maximum size hints when resizing."
+              },
+              "idle_inhibit_when_focus": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Inhibit Idle When Focused",
+                "description": "Automatically keep idle inhibit active when this window is focused"
+              },
+              "vrr_only_fullscreen": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "VRR Only Fullscreen",
+                "description": "Turn on VRR only while this window is fullscreen. Requires vrr off in its monitor rule."
+              },
+              "force_render": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Force Render",
+                "description": "Force render frame even if the window is not visible"
+              },
+              "activation_bypass": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Activation Bypass",
+                "description": "Treat activation requests for this window as authenticated."
+              },
+              "is_term": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Terminal",
+                "description": "Mark the window as a terminal that a newly opened window replaces."
+              },
+              "allow_csd": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Allow CSD",
+                "description": "Let clients draw their own window decorations."
+              },
+              "force_fake_maximize": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Force Fake Maximize",
+                "description": "Report the window as maximized to the client while keeping the tiled geometry."
+              },
+              "force_tiled_state": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Force Tiled State",
+                "description": "Report the window as tiled even when it is floating."
+              },
+              "force_tearing": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Force Tearing",
+                "description": "Permit tearing for this window; global allow_tearing must also permit it."
+              },
+              "no_swallow": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Swallow",
+                "description": "Do not let this window replace an is_term window."
+              },
+              "confine_pointer": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Confine Pointer",
+                "description": "Keep the pointer inside this window while it is focused and visible."
+              },
+              "no_blur": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Blur",
+                "description": "Disable blur for this window."
+              },
+              "scroller_proportion": {
+                "type": "number",
+                "title": "Scroller Proportion",
+                "description": "Width proportion for this window in the scroller layout (0.1-1.0)."
+              },
+              "is_fullscreen": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Fullscreen",
+                "description": "Force fullscreen state"
+              },
+              "is_fake_fullscreen": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Fake Fullscreen",
+                "description": "Report fullscreen state to the client without resizing the window."
+              },
+              "global_key_binding": {
+                "type": "string",
+                "title": "Global Key Binding",
+                "description": "Global keybinding (only works for Wayland apps)"
+              }
+            },
+            "title": "Window Rules",
+            "description": "Apply properties whenever a window matching app_id or title opens; if both are set, both must match.",
+            "additionalProperties": false
+          }
+        },
+        "window_rule_once": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "is_floating": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Floating",
+                "description": "Force floating state"
+              },
+              "title": {
+                "type": "string",
+                "title": "Title",
+                "description": "Match by window title, supports regex"
+              },
+              "app_id": {
+                "type": "string",
+                "title": "App ID",
+                "description": "Match by application ID, supports regex"
+              },
+              "animation_type_open": {
+                "type": "string",
+                "enum": ["none", "fade", "slide", "zoom"],
+                "title": "Open Animation",
+                "description": "Animation used when the window opens."
+              },
+              "animation_type_close": {
+                "type": "string",
+                "enum": ["none", "fade", "slide", "zoom"],
+                "title": "Close Animation",
+                "description": "Animation used when the window closes."
+              },
+              "tags": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 31
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "title": "Tags",
+                "description": "Assign to one tag, several tags separated by |, or the special workspace with 0."
+              },
+              "monitor": {
+                "type": "string",
+                "title": "Monitor",
+                "description": "Assign to monitor by monitor spec (name, make, model, or serial)"
+              },
+              "offset_x": {
+                "type": "integer",
+                "title": "X Offset",
+                "description": "X offset from center (%), 100 is the edge of screen with outer gap"
+              },
+              "offset_y": {
+                "type": "integer",
+                "title": "Y Offset",
+                "description": "Y offset from center (%), 100 is the edge of screen with outer gap"
+              },
+              "no_focus": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Focus",
+                "description": "Never give this window keyboard focus."
+              },
+              "no_fade_in": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Fade In",
+                "description": "Window ignores fade-in animation"
+              },
+              "no_fade_out": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Fade Out",
+                "description": "Window ignores fade-out animation"
+              },
+              "no_force_center": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Force Center",
+                "description": "Do not center the window automatically."
+              },
+              "width": {
+                "type": "number",
+                "title": "Width",
+                "description": "Floating window width. Values below 1 are a fraction of the screen width."
+              },
+              "height": {
+                "type": "number",
+                "title": "Height",
+                "description": "Floating window height. Values below 1 are a fraction of the screen height."
+              },
+              "no_border": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Border",
+                "description": "Remove window border"
+              },
+              "no_shadow": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Shadow",
+                "description": "Disable the window shadow."
+              },
+              "no_radius": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Radius",
+                "description": "Disable corner radius."
+              },
+              "no_animation": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Animation",
+                "description": "Disable window animations."
+              },
+              "is_open_silent": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Open Silent",
+                "description": "Open without focus"
+              },
+              "is_tag_silent": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Tag Silent",
+                "description": "Do not focus the window when it opens on a tag that is not currently visible."
+              },
+              "is_named_scratchpad": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Named Scratchpad",
+                "description": "Mark the window as a named scratchpad toggled by toggle_named_scratchpad."
+              },
+              "is_unmanaged_global": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Unmanaged Global",
+                "description": "Open as unmanaged global window (for desktop pets or camera windows)"
+              },
+              "is_global": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Global",
+                "description": "Open as global window (sticky across tags)"
+              },
+              "scroller_proportion_single": {
+                "type": "number",
+                "title": "Scroller Proportion (Single)",
+                "description": "Width proportion used while this window is the only tiled window."
+              },
+              "unfocused_opacity": {
+                "type": "number",
+                "title": "Unfocused Opacity",
+                "description": "Opacity for inactive windows (0.0 - 1.0)."
+              },
+              "focused_opacity": {
+                "type": "number",
+                "title": "Focused Opacity",
+                "description": "Opacity for the active window (0.0 - 1.0)."
+              },
+              "is_overlay": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Overlay",
+                "description": "Keep the window in the top layer."
+              },
+              "shield_when_capture": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Shield When Captured",
+                "description": "Fill the window with black while a screen capture is active."
+              },
+              "allow_shortcuts_inhibit": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Allow Shortcuts Inhibit",
+                "description": "Let this window's client inhibit compositor shortcuts."
+              },
+              "ignore_maximize": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Ignore Maximize",
+                "description": "Ignore maximize requests from the client."
+              },
+              "ignore_minimize": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Ignore Minimize",
+                "description": "Ignore minimize requests from the client."
+              },
+              "no_size_hint": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Size Hint",
+                "description": "Ignore the client's minimum and maximum size hints when resizing."
+              },
+              "idle_inhibit_when_focus": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Inhibit Idle When Focused",
+                "description": "Automatically keep idle inhibit active when this window is focused"
+              },
+              "vrr_only_fullscreen": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "VRR Only Fullscreen",
+                "description": "Turn on VRR only while this window is fullscreen. Requires vrr off in its monitor rule."
+              },
+              "force_render": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Force Render",
+                "description": "Force render frame even if the window is not visible"
+              },
+              "activation_bypass": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Activation Bypass",
+                "description": "Treat activation requests for this window as authenticated."
+              },
+              "is_term": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Terminal",
+                "description": "Mark the window as a terminal that a newly opened window replaces."
+              },
+              "allow_csd": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Allow CSD",
+                "description": "Let clients draw their own window decorations."
+              },
+              "force_fake_maximize": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Force Fake Maximize",
+                "description": "Report the window as maximized to the client while keeping the tiled geometry."
+              },
+              "force_tiled_state": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Force Tiled State",
+                "description": "Report the window as tiled even when it is floating."
+              },
+              "force_tearing": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Force Tearing",
+                "description": "Permit tearing for this window; global allow_tearing must also permit it."
+              },
+              "no_swallow": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Swallow",
+                "description": "Do not let this window replace an is_term window."
+              },
+              "confine_pointer": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Confine Pointer",
+                "description": "Keep the pointer inside this window while it is focused and visible."
+              },
+              "no_blur": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "No Blur",
+                "description": "Disable blur for this window."
+              },
+              "scroller_proportion": {
+                "type": "number",
+                "title": "Scroller Proportion",
+                "description": "Width proportion for this window in the scroller layout (0.1-1.0)."
+              },
+              "is_fullscreen": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Fullscreen",
+                "description": "Force fullscreen state"
+              },
+              "is_fake_fullscreen": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Fake Fullscreen",
+                "description": "Report fullscreen state to the client without resizing the window."
+              },
+              "global_key_binding": {
+                "type": "string",
+                "title": "Global Key Binding",
+                "description": "Global keybinding (only works for Wayland apps)"
+              }
+            },
+            "title": "Window Rules (Once)",
+            "description": "Apply properties only the first time a matching window opens.",
+            "additionalProperties": false
+          }
+        },
+        "device_rule": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name",
+                "description": "Match by input device name or vendor:product:name."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "keyboard",
+                  "pointer",
+                  "trackpad",
+                  "touch",
+                  "switch",
+                  "tablet",
+                  "pad",
+                  "touchpad"
+                ],
+                "title": "Device Type",
+                "description": "Device type to match. touchpad is accepted as an alias for trackpad."
+              },
+              "repeat_rate": {
+                "type": "integer",
+                "title": "Repeat Rate",
+                "description": "How many times a key repeats per second.",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "repeat_delay": {
+                "type": "integer",
+                "title": "Repeat Delay",
+                "description": "Delay (ms) before a held key starts repeating.",
+                "minimum": 0,
+                "maximum": 10000
+              },
+              "kb_rules": {
+                "type": "string",
+                "title": "Keyboard Rules",
+                "description": "XKB rules file for this keyboard."
+              },
+              "kb_model": {
+                "type": "string",
+                "title": "Keyboard Model",
+                "description": "XKB model for this keyboard."
+              },
+              "kb_layout": {
+                "type": "string",
+                "title": "Keyboard Layout",
+                "description": "Keyboard layout code, e.g. us or ru."
+              },
+              "kb_variant": {
+                "type": "string",
+                "title": "Keyboard Variant",
+                "description": "Keyboard layout variant, e.g. dvorak or colemak."
+              },
+              "kb_options": {
+                "type": "string",
+                "title": "Keyboard Options",
+                "description": "XKB options, e.g. caps:escape."
+              },
+              "natural_scrolling": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Natural Scrolling",
+                "description": "Invert scrolling direction for this device."
+              },
+              "accel_profile": {
+                "type": "integer",
+                "enum": [0, 1, 2],
+                "title": "Acceleration Profile",
+                "description": "Pointer acceleration profile: 0 none, 1 flat, 2 adaptive."
+              },
+              "accel_speed": {
+                "type": "number",
+                "title": "Acceleration Speed",
+                "description": "Pointer speed from -1.0 to 1.0.",
+                "minimum": -1,
+                "maximum": 1
+              },
+              "left_handed": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Left Handed",
+                "description": "Swap left and right buttons."
+              },
+              "middle_button_emulation": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Middle Button Emulation",
+                "description": "Emulate the middle button."
+              },
+              "scroll_method": {
+                "type": "integer",
+                "enum": [0, 1, 2, 4],
+                "title": "Scroll Method",
+                "description": "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button."
+              },
+              "scroll_button": {
+                "type": "integer",
+                "title": "Scroll Button",
+                "description": "Button used for button scrolling (272-279).",
+                "minimum": 272,
+                "maximum": 279
+              },
+              "click_method": {
+                "type": "integer",
+                "enum": [0, 1, 2],
+                "title": "Click Method",
+                "description": "Click method: 0 no emulation, 1 button areas, 2 clickfinger."
+              },
+              "send_events_mode": {
+                "type": "integer",
+                "enum": [0, 1, 2],
+                "title": "Send Events Mode",
+                "description": "Send events: 0 on, 1 off, 2 off with an external pointer."
+              },
+              "tap_to_click": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Tap to Click",
+                "description": "Tap to trigger a left click."
+              },
+              "tap_and_drag": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Tap and Drag",
+                "description": "Tap and hold to drag items."
+              },
+              "drag_lock": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Drag Lock",
+                "description": "Lock dragging after tapping."
+              },
+              "button_map": {
+                "type": "integer",
+                "enum": [0, 1],
+                "title": "Button Map",
+                "description": "`0` (Left/right/middle), `1` (Left/middle/right)."
+              },
+              "disable_while_typing": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Disable While Typing",
+                "description": "Disable the trackpad while typing."
+              },
+              "monitor": {
+                "type": "string",
+                "title": "Monitor",
+                "description": "Pin a touch or tablet device to one output (monitor spec). Unset follows the current screen."
+              },
+              "map_focus_monitor": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                ],
+                "title": "Map to Focused Monitor",
+                "description": "Make the tablet follow the currently focused monitor."
+              }
+            },
+            "title": "Device Rules",
+            "description": "Override settings for devices matched by exact name or type. A keyboard rule compiles its own keymap from only the kb_* fields it sets.",
+            "additionalProperties": false
+          }
+        }
+      },
+      "title": "Rules",
+      "description": "Monitor, tag, layer, window, and device rules.",
+      "additionalProperties": false
+    }
+  },
+  "description": "TOML representation of a mangowm configuration.",
+  "additionalProperties": false,
+  "title": "mangowm TOML configuration 0.18.4"
+}
