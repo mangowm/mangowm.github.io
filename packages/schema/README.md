@@ -56,6 +56,11 @@ Action objects:
 first comma, so commas and shell fragments are preserved. Mango trims each
 argument field and treats a field of `0` as the end of the list.
 
+Dispatcher arguments are checked against argument shapes from Mango: directions,
+circle directions, layouts, tag masks, monitor strings, numbers, booleans, and
+free-form commands. Arguments stay optional where Mango applies defaults, and a
+trailing empty argument is accepted.
+
 Tags use `[1, 2]` for normal tags and `[0]` for the special workspace.
 
 The canonical model is semantic, not a document model. It does not preserve
@@ -78,7 +83,8 @@ it for editor validation:
 - `source`, `exec`, `exec_once`, and `source_optional` can be a string or an
   array of strings
 - binding actions are strings such as `"spawn,foot"` or arrays of strings;
-  dispatcher names are exposed as an enum so editors can suggest them
+  dispatcher names are exposed as an enum so editors can suggest them, and
+  argument shapes are checked when arguments are present
 - `window_rule.tags` can be a tag number (`0` for the special workspace) or a
   string such as `"1|2"` for several tags
 - `window_rule.force_tearing` accepts `true` / `false` as aliases for `1` / `0`,
