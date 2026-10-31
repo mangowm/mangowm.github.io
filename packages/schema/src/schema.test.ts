@@ -197,6 +197,22 @@ describe("canonical schema", () => {
       [{ dispatcher: "moveresize", args: "curnormal" }, "moveresize,curnormal", true],
       [{ dispatcher: "setlayout", args: "scroller" }, "setlayout,scroller", true],
       [{ dispatcher: "setlayout", args: "foo" }, "setlayout,foo", false],
+      [{ dispatcher: "focusmon", args: "next" }, "focusmon,next", true],
+      [{ dispatcher: "focusmon", args: "left" }, "focusmon,left", true],
+      [{ dispatcher: "focusmon", args: "eDP-1" }, "focusmon,eDP-1", true],
+      [
+        { dispatcher: "focusmon", args: "make:Chimei Innolux Corporation&&model:0x15F5" },
+        "focusmon,make:Chimei Innolux Corporation&&model:0x15F5",
+        true,
+      ],
+      [{ dispatcher: "focusmon", args: "foo:bar" }, "focusmon,foo:bar", false],
+      [{ dispatcher: "disable_monitor", args: "name:" }, "disable_monitor,name:", false],
+      [
+        { dispatcher: "disable_monitor", args: "name:eDP-1&&" },
+        "disable_monitor,name:eDP-1&&",
+        false,
+      ],
+      [{ dispatcher: "disable_monitor", args: "eDP-1" }, "disable_monitor,eDP-1", true],
       [{ dispatcher: "view_insert", args: "next" }, "view_insert,next", true],
       [{ dispatcher: "view_insert", args: "sideways" }, "view_insert,sideways", false],
       [{ dispatcher: "switch_keyboard_layout", args: "2" }, "switch_keyboard_layout,2", true],
@@ -394,14 +410,53 @@ describe("canonical schema", () => {
         rule: {
           window_rule: [
             { global_key_binding: "SUPER-XF86AudioMute" },
-            { global_key_binding: "SUPER - XF86AudioMute extra" },
+            { global_key_binding: "ctrl+alt-o" },
+            { global_key_binding: "SUPER - XF86AudioMute" },
+            { global_key_binding: "$mod-o" },
+            { global_key_binding: "SUPER-code:24" },
           ],
         },
       }),
     ).toBe(true);
-    expect(Value.Check(schema, { rule: { window_rule: [{ global_key_binding: "SUPER" }] } })).toBe(
-      false,
-    );
+    expect(
+      Value.Check(tomlSchema, {
+        rule: {
+          window_rule: [
+            { global_key_binding: "SUPER-XF86AudioMute" },
+            { global_key_binding: "ctrl+alt-o" },
+          ],
+        },
+      }),
+    ).toBe(true);
+    for (const global_key_binding of [
+      "SUPER",
+      "SUPER - XF86AudioMute extra",
+      "SUPER-",
+      "-r",
+      "nope-r",
+      "SUPER+r",
+    ]) {
+      expect(Value.Check(schema, { rule: { window_rule: [{ global_key_binding }] } })).toBe(false);
+      expect(Value.Check(tomlSchema, { rule: { window_rule: [{ global_key_binding }] } })).toBe(
+        false,
+      );
+    }
+  });
+
+  it("constrains device rule names", () => {
+    expect(
+      Value.Check(schema, {
+        rule: {
+          device_rule: [
+            { name: "AT Translated Set 2 keyboard" },
+            { name: "1:2:AT Translated Set 2 keyboard" },
+          ],
+        },
+      }),
+    ).toBe(true);
+    expect(Value.Check(schema, { rule: { device_rule: [{ name: "a,b" }] } })).toBe(false);
+    expect(Value.Check(schema, { rule: { device_rule: [{ name: "" }] } })).toBe(false);
+    expect(Value.Check(tomlSchema, { rule: { device_rule: [{ name: "a,b" }] } })).toBe(false);
   });
 
   it("constrains env and var names", () => {

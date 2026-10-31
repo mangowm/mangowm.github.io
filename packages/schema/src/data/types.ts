@@ -41,6 +41,7 @@ export type RuleFieldType =
   | "enum"
   | "color"
   | "key-binding"
+  | "device-name"
   | "tag-id"
   | "tag-mask";
 

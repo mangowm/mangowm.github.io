@@ -47,3 +47,5 @@ export const BINDING_KEY_PATTERNS: Record<BindingKind, string> = {
   gesture: `^${RESERVED}${MODIFIER}\\+${DIRECTION}\\+(?:[0-9]+|${VARIABLE})$`,
   switch: `^${RESERVED}(?:${ci("fold")}|${ci("unfold")}|${VARIABLE})$`,
 };
+
+export const GLOBAL_KEY_BINDING_PATTERN = `^${MODIFIER}(?:\\s*\\+\\s*${MODIFIER})*\\s*-\\s*${KEYSYM}$`;

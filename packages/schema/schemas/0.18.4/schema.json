@@ -262,7 +262,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -352,7 +352,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -478,7 +478,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -946,7 +946,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -964,7 +964,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -1180,7 +1180,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -1198,7 +1198,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+)(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
                     }
                   }
                 }
@@ -1432,7 +1432,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -1486,7 +1486,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -1684,7 +1684,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -1828,7 +1828,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -2120,7 +2120,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -2210,7 +2210,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -2336,7 +2336,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -2804,7 +2804,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -2822,7 +2822,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -3038,7 +3038,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -3056,7 +3056,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+)(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
                     }
                   }
                 }
@@ -3290,7 +3290,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -3344,7 +3344,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -3542,7 +3542,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -3686,7 +3686,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -3978,7 +3978,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -4068,7 +4068,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -4194,7 +4194,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -4662,7 +4662,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -4680,7 +4680,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -4896,7 +4896,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -4914,7 +4914,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+)(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
                     }
                   }
                 }
@@ -5148,7 +5148,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -5202,7 +5202,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -5400,7 +5400,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -5544,7 +5544,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -5836,7 +5836,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -5926,7 +5926,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -6052,7 +6052,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -6520,7 +6520,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -6538,7 +6538,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -6754,7 +6754,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -6772,7 +6772,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+)(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
                     }
                   }
                 }
@@ -7006,7 +7006,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -7060,7 +7060,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -7258,7 +7258,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -7402,7 +7402,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -7694,7 +7694,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -7784,7 +7784,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -7910,7 +7910,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -8378,7 +8378,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -8396,7 +8396,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -8612,7 +8612,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -8630,7 +8630,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+)(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
                     }
                   }
                 }
@@ -8864,7 +8864,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -8918,7 +8918,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -9116,7 +9116,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                      "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
                     }
                   }
                 }
@@ -9260,7 +9260,7 @@
                   "properties": {
                     "args": {
                       "type": "string",
-                      "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                      "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
                     }
                   }
                 }
@@ -12314,7 +12314,7 @@
                 "type": "string",
                 "title": "Global Key Binding",
                 "description": "Global keybinding written as MOD-KEY, for example ctrl+alt-o (Wayland apps only).",
-                "pattern": "^[^-]+\\s*-\\s*\\S+"
+                "pattern": "^(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*\\+\\s*(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})))*\\s*-\\s*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
               }
             },
             "title": "Window Rules",
@@ -12667,7 +12667,7 @@
                 "type": "string",
                 "title": "Global Key Binding",
                 "description": "Global keybinding written as MOD-KEY, for example ctrl+alt-o (Wayland apps only).",
-                "pattern": "^[^-]+\\s*-\\s*\\S+"
+                "pattern": "^(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*\\+\\s*(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})))*\\s*-\\s*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
               }
             },
             "title": "Window Rules (Once)",
@@ -12683,7 +12683,8 @@
               "name": {
                 "type": "string",
                 "title": "Name",
-                "description": "Match by input device name or vendor:product:name."
+                "description": "Match by input device name or vendor:product:name.",
+                "pattern": "^[^,]+$"
               },
               "type": {
                 "type": "string",

@@ -946,7 +946,7 @@ export const RULES: readonly RuleDef[] = [
     fields: [
       {
         key: "name",
-        type: "string",
+        type: "device-name",
         label: "Name",
         description: "Match by input device name or vendor:product:name.",
       },

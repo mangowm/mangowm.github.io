@@ -44,6 +44,9 @@ const ON_OFF = "(?:on|off|toggle)";
 const PREV_NEXT = "(?:prev|next)";
 const TAG_NUMBER = "(?:-1|00|[0-9]|[12][0-9]|3[01])";
 const TAG_MASK = `${TAG_NUMBER}(?:\\|${TAG_NUMBER})*`;
+const MONITOR_VALUE = "(?:(?!&&)[^,])+";
+const MONITOR_FIELD = `(?:name|make|model|serial):${MONITOR_VALUE}`;
+const MONITOR_SPEC = `(?:${MONITOR_FIELD}(?:&&${MONITOR_FIELD})*|[^,:&]+)`;
 
 const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
   direction: DIRECTION,
@@ -55,7 +58,7 @@ const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
   bool: "[01]",
   "tag-mask": TAG_MASK,
   layout: `(?:${LAYOUTS.join("|")})`,
-  monitor: "[^,]+",
+  monitor: MONITOR_SPEC,
   string: "[^,]+",
   free: ".*",
   "mouse-action": MOUSE_ACTION,

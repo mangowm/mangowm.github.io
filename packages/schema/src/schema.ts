@@ -1,6 +1,10 @@
 import Type, { type TSchema } from "typebox";
 
-import { BINDING_KEY_PATTERNS, type BindingKind } from "./data/bindingKeys";
+import {
+  BINDING_KEY_PATTERNS,
+  GLOBAL_KEY_BINDING_PATTERN,
+  type BindingKind,
+} from "./data/bindingKeys";
 import { canonicalArgsPattern, tomlActionPattern } from "./data/dispatcherArgs";
 import { DISPATCHERS } from "./data/dispatchers";
 import { GLOBALS } from "./data/globals";
@@ -530,7 +534,9 @@ function ruleField(field: RuleFieldDef, ruleKey: string, mode: SchemaMode): TSch
         metadata,
       );
     case "key-binding":
-      return Type.String({ ...metadata, pattern: "^[^-]+\\s*-\\s*\\S+" });
+      return Type.String({ ...metadata, pattern: GLOBAL_KEY_BINDING_PATTERN });
+    case "device-name":
+      return Type.String({ ...metadata, pattern: "^[^,]+$" });
     case "tag-id":
       return tagIdSchema(mode, metadata);
     case "tag-mask":
