@@ -303,7 +303,8 @@
         "animation_curve_move": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0
           },
           "title": "Move Curve",
           "description": "Cubic bezier curve for move/resize animations (x1,y1,x2,y2)",
@@ -314,7 +315,8 @@
         "animation_curve_open": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0
           },
           "title": "Open Curve",
           "description": "Cubic bezier curve for window open animations (x1,y1,x2,y2)",
@@ -325,7 +327,8 @@
         "animation_curve_tag": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0
           },
           "title": "Tag Switch Curve",
           "description": "Cubic bezier curve for tag-switch animations (x1,y1,x2,y2)",
@@ -336,7 +339,8 @@
         "animation_curve_close": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0
           },
           "title": "Close Curve",
           "description": "Cubic bezier curve for window close animations (x1,y1,x2,y2)",
@@ -347,7 +351,8 @@
         "animation_curve_focus": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0
           },
           "title": "Focus Curve",
           "description": "Cubic bezier curve for focus-change animations (x1,y1,x2,y2)",
@@ -358,7 +363,8 @@
         "animation_curve_opacity_fade_in": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0
           },
           "title": "Fade In Curve",
           "description": "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2)",
@@ -369,7 +375,8 @@
         "animation_curve_opacity_fade_out": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0
           },
           "title": "Fade Out Curve",
           "description": "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2)",
@@ -821,7 +828,7 @@
           },
           "title": "Proportion Presets",
           "description": "Comma-separated preset proportion values (0.1-1.0) for quick switching. Empty disables cycling.",
-          "default": []
+          "minItems": 1
         },
         "circle_layout": {
           "type": "array",
@@ -846,7 +853,7 @@
           },
           "title": "Circle Layout",
           "description": "Ordered layouts cycled by switch_layout.",
-          "default": []
+          "minItems": 1
         },
         "new_is_master": {
           "type": "boolean",

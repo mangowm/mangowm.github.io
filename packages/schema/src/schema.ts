@@ -139,22 +139,28 @@ function globalProperty(option: GlobalDef, mode: SchemaMode): TSchema {
         { ...metadata, default: defaultValue },
       );
     case "curve":
-      return Type.Array(Type.Number(), {
+      return Type.Array(Type.Number({ minimum: 0 }), {
         ...metadata,
         default: defaultValue,
         minItems: 4,
         maxItems: 4,
       });
-    case "preset":
+    case "preset": {
+      const hasDefault = Array.isArray(defaultValue) && defaultValue.length > 0;
       return Type.Array(Type.Number({ minimum: 0.1, maximum: 1 }), {
         ...metadata,
-        default: defaultValue,
+        ...(hasDefault ? { default: defaultValue } : {}),
+        minItems: 1,
       });
-    case "layout-array":
+    }
+    case "layout-array": {
+      const hasDefault = Array.isArray(defaultValue) && defaultValue.length > 0;
       return Type.Array(Type.String({ enum: LAYOUTS }), {
         ...metadata,
-        default: defaultValue,
+        ...(hasDefault ? { default: defaultValue } : {}),
+        minItems: 1,
       });
+    }
     case "enum": {
       const values = option.options ?? [];
       return enumSchema(

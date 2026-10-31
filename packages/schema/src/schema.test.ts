@@ -210,6 +210,17 @@ describe("canonical schema", () => {
     expect(Value.Check(schema, { rule: { window_rule: [{ tags: [1, 32] }] } })).toBe(false);
   });
 
+  it("tightens array bounds", () => {
+    expect(Value.Check(schema, { global: { animation_curve_open: [-0.1, 0, 1, 1] } })).toBe(false);
+    expect(Value.Check(tomlSchema, { global: { animation_curve_open: [-0.1, 0, 1, 1] } })).toBe(
+      false,
+    );
+    expect(Value.Check(schema, { global: { scroller_proportion_preset: [] } })).toBe(false);
+    expect(Value.Check(tomlSchema, { global: { scroller_proportion_preset: [] } })).toBe(false);
+    expect(Value.Check(schema, { global: { circle_layout: [] } })).toBe(false);
+    expect(Value.Check(tomlSchema, { global: { circle_layout: [] } })).toBe(false);
+  });
+
   it("validates global key bindings", () => {
     expect(
       Value.Check(schema, {
