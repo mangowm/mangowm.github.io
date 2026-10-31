@@ -51,7 +51,7 @@ const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
   overcircle: OVERCIRCLE,
   int: "[+-]?[0-9]+",
   uint: "[+]?[0-9]+",
-  float: "[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)",
+  float: "[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?",
   bool: "[01]",
   "tag-mask": TAG_MASK,
   layout: `(?:${LAYOUTS.join("|")})`,

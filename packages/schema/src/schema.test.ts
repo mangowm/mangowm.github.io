@@ -158,6 +158,8 @@ describe("canonical schema", () => {
       [{ dispatcher: "view_insert", args: "sideways" }, "view_insert,sideways", false],
       [{ dispatcher: "switch_keyboard_layout", args: "2" }, "switch_keyboard_layout,2", true],
       [{ dispatcher: "switch_keyboard_layout", args: "foo" }, "switch_keyboard_layout,foo", false],
+      [{ dispatcher: "setmfact", args: "1e-2" }, "setmfact,1e-2", true],
+      [{ dispatcher: "setmfact", args: "abc" }, "setmfact,abc", false],
       [{ dispatcher: "set_proportion", args: "0.5" }, "set_proportion,0.5", true],
       [{ dispatcher: "set_proportion", args: "1.5" }, "set_proportion,1.5", false],
       [{ dispatcher: "switch_keyboard_layout", args: "101" }, "switch_keyboard_layout,101", false],
@@ -180,6 +182,34 @@ describe("canonical schema", () => {
       expect(canonical(action)).toBe(expected);
       expect(toml(string)).toBe(expected);
     }
+  });
+
+  it("accepts variable and empty-argument actions", () => {
+    expect(
+      Value.Check(tomlSchema, {
+        bind: {
+          default: {
+            "SUPER+a": "$term",
+            "SUPER+b": "${term},--hold",
+            "SUPER+c": "reload_config,",
+            "SUPER+d": "toggleglobal,0",
+            "SUPER+e": "killclient,",
+            "SUPER+f": "view,1,",
+          },
+        },
+      }),
+    ).toBe(true);
+  });
+
+  it("rejects extra arguments on no-argument dispatchers", () => {
+    expect(Value.Check(tomlSchema, { bind: { default: { "SUPER+r": "reload_config,foo" } } })).toBe(
+      false,
+    );
+    expect(
+      Value.Check(schema, {
+        bind: { default: { "SUPER+r": [{ dispatcher: "reload_config", args: "foo" }] } },
+      }),
+    ).toBe(false);
   });
 
   it("accepts every dispatcher name", () => {
