@@ -1932,23 +1932,25 @@
     },
     "env": {
       "type": "object",
-      "patternProperties": {
-        "^.*$": {
-          "type": "string"
-        }
-      },
       "title": "Environment",
-      "description": "Environment variables exported before startup."
+      "description": "Environment variables exported before startup.",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "propertyNames": {
+        "minLength": 1
+      }
     },
     "var": {
       "type": "object",
-      "patternProperties": {
-        "^.*$": {
-          "type": "string"
-        }
-      },
       "title": "Variables",
-      "description": "User-defined variables expanded as $name in config values."
+      "description": "User-defined variables expanded as $name in config values.",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "propertyNames": {
+        "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+      }
     },
     "bind": {
       "type": "object",

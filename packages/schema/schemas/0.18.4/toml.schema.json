@@ -2787,43 +2787,45 @@
     },
     "env": {
       "type": "object",
-      "patternProperties": {
-        "^.*$": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            },
-            {
-              "type": "boolean"
-            }
-          ]
-        }
-      },
       "title": "Environment",
-      "description": "Environment variables exported before startup."
+      "description": "Environment variables exported before startup.",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      },
+      "propertyNames": {
+        "minLength": 1
+      }
     },
     "var": {
       "type": "object",
-      "patternProperties": {
-        "^.*$": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            },
-            {
-              "type": "boolean"
-            }
-          ]
-        }
-      },
       "title": "Variables",
-      "description": "User-defined variables expanded as $name in config values."
+      "description": "User-defined variables expanded as $name in config values.",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      },
+      "propertyNames": {
+        "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+      }
     },
     "bind": {
       "type": "object",

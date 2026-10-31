@@ -221,6 +221,18 @@ describe("canonical schema", () => {
     );
   });
 
+  it("constrains env and var names", () => {
+    expect(Value.Check(schema, { env: { "": "x" } })).toBe(false);
+    expect(Value.Check(schema, { var: { "1bad": "x" } })).toBe(false);
+    expect(
+      Value.Check(schema, {
+        env: { QT_IM_MODULE: "fcitx" },
+        var: { term: "foot" },
+      }),
+    ).toBe(true);
+    expect(Value.Check(tomlSchema, { env: { "": "x" } })).toBe(false);
+  });
+
   it("accepts device scroll options", () => {
     expect(
       Value.Check(schema, {

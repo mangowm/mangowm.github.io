@@ -176,16 +176,22 @@ function globalProperties(mode: SchemaMode) {
 const EnvValue = Type.Union([Type.String(), Type.Number(), Type.Boolean()]);
 
 function envMap(mode: SchemaMode) {
-  return Type.Record(Type.String(), mode === "canonical" ? Type.String() : EnvValue, {
+  return Type.Unsafe<TSchema>({
+    type: "object",
     title: "Environment",
     description: "Environment variables exported before startup.",
+    additionalProperties: mode === "canonical" ? Type.String() : EnvValue,
+    propertyNames: { minLength: 1 },
   });
 }
 
 function varMap(mode: SchemaMode) {
-  return Type.Record(Type.String(), mode === "canonical" ? Type.String() : EnvValue, {
+  return Type.Unsafe<TSchema>({
+    type: "object",
     title: "Variables",
     description: "User-defined variables expanded as $name in config values.",
+    additionalProperties: mode === "canonical" ? Type.String() : EnvValue,
+    propertyNames: { pattern: "^[A-Za-z_][A-Za-z0-9_]*$" },
   });
 }
 
