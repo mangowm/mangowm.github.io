@@ -33,7 +33,15 @@ export type RuleKey =
   | "window_rule_once"
   | "device_rule";
 
-export type RuleFieldType = "bool" | "int" | "float" | "string" | "enum" | "color" | "mask";
+export type RuleFieldType =
+  | "bool"
+  | "int"
+  | "float"
+  | "string"
+  | "enum"
+  | "color"
+  | "tag-id"
+  | "tag-mask";
 
 export interface RuleFieldDef {
   key: string;

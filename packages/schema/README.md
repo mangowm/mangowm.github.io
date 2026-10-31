@@ -45,6 +45,8 @@ validation:
 - booleans can be `true` / `false` or `0` / `1`
 - colors can be `"0xRRGGBBAA"` or a 32-bit integer
 - `[env]` and `[var]` values can be strings, numbers, or booleans
+- `source`, `exec`, `exec_once`, and `source_optional` can be a string or an
+  array of strings
 
 Use with Taplo:
 
@@ -59,11 +61,11 @@ integer, which is why the TOML schema accepts the integer form.
 
 Normalize parsed configs to the canonical object:
 
-- `.conf`: `0` / `1` become booleans; `0xRRGGBBAA` strings stay strings;
+- `.conf`: boolean fields use `0` / `1`; `0xRRGGBBAA` strings stay strings;
   comma lists become arrays; flat keys move under `global`; `[env]` and `[var]`
   values stay strings.
-- TOML: `true` / `false` become booleans; `0` / `1` become booleans; `0x...`
-  integers become `"0xRRGGBBAA"` strings; scalar `[env]` and `[var]` values
-  become strings.
+- TOML: boolean fields can be `true` / `false` or `0` / `1` and become
+  booleans; numeric enums stay integers; `0x...` integers become
+  `"0xRRGGBBAA"` strings; scalar `[env]` and `[var]` values become strings.
 
 A `.conf` parser must produce this object before validation.

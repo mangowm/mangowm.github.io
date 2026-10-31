@@ -148,7 +148,7 @@ export const RULES: readonly RuleDef[] = [
     fields: [
       {
         key: "id",
-        type: "mask",
+        type: "tag-id",
         label: "Tag ID",
         description:
           "Tag id to match; 0 targets the special workspace (tag 0). Use * for all tags.",
@@ -342,7 +342,7 @@ export const RULES: readonly RuleDef[] = [
       },
       {
         key: "tags",
-        type: "mask",
+        type: "tag-mask",
         label: "Tags",
         description:
           "Assign to one tag, several tags separated by |, or the special workspace with 0.",
@@ -649,7 +649,7 @@ export const RULES: readonly RuleDef[] = [
       },
       {
         key: "tags",
-        type: "mask",
+        type: "tag-mask",
         label: "Tags",
         description:
           "Assign to one tag, several tags separated by |, or the special workspace with 0.",

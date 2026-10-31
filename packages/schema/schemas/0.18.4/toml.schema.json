@@ -29,7 +29,7 @@
             "type": "string",
             "title": "Action",
             "description": "A dispatcher name followed by optional comma-separated arguments.",
-            "pattern": "^(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$[A-Za-z_][A-Za-z0-9_]*)(?:,.*)?$"
+            "pattern": "^\\s*(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:,.*)?\\s*$"
           },
           {
             "type": "array",
@@ -37,7 +37,7 @@
               "type": "string",
               "title": "Action",
               "description": "A dispatcher name followed by optional comma-separated arguments.",
-              "pattern": "^(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$[A-Za-z_][A-Za-z0-9_]*)(?:,.*)?$"
+              "pattern": "^\\s*(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:,.*)?\\s*$"
             }
           }
         ],
@@ -1644,7 +1644,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1660,7 +1660,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1676,7 +1676,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1692,7 +1692,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1708,7 +1708,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1762,7 +1762,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1778,7 +1778,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1794,7 +1794,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1810,7 +1810,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1826,7 +1826,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1880,7 +1880,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1896,7 +1896,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1912,7 +1912,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1928,7 +1928,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1944,7 +1944,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -1998,7 +1998,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2014,7 +2014,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2030,7 +2030,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2046,7 +2046,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2062,7 +2062,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2470,7 +2470,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2486,7 +2486,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2502,7 +2502,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2532,7 +2532,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2548,7 +2548,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2564,7 +2564,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2580,7 +2580,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2596,7 +2596,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2612,7 +2612,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2628,7 +2628,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2644,7 +2644,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2660,7 +2660,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2676,7 +2676,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2692,7 +2692,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^0x[0-9a-fA-F]{8}$"
+              "pattern": "^0[xX][0-9a-fA-F]{8}$"
             },
             {
               "type": "integer",
@@ -2705,34 +2705,62 @@
           "default": "0x14a57cff"
         },
         "exec": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
           "title": "Run on Reload",
           "description": "Commands run every time the config is reloaded."
         },
         "exec_once": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
           "title": "Run Once",
           "description": "Commands run once at startup."
         },
         "source": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
           "title": "Includes",
           "description": "Config files loaded as part of this config."
         },
         "source_optional": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
           "title": "Optional Includes",
           "description": "Config files loaded if they exist; missing files are ignored."
         }
@@ -3079,7 +3107,42 @@
                     "maximum": 31
                   },
                   {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "*",
+                      "0",
+                      "1",
+                      "2",
+                      "3",
+                      "4",
+                      "5",
+                      "6",
+                      "7",
+                      "8",
+                      "9",
+                      "10",
+                      "11",
+                      "12",
+                      "13",
+                      "14",
+                      "15",
+                      "16",
+                      "17",
+                      "18",
+                      "19",
+                      "20",
+                      "21",
+                      "22",
+                      "23",
+                      "24",
+                      "25",
+                      "26",
+                      "27",
+                      "28",
+                      "29",
+                      "30",
+                      "31"
+                    ]
                   }
                 ],
                 "title": "Tag ID",
@@ -3340,7 +3403,8 @@
                     "maximum": 31
                   },
                   {
-                    "type": "string"
+                    "type": "string",
+                    "pattern": "^\\s*(?:[0-9]|[12][0-9]|3[01])\\s*(?:\\|\\s*(?:[0-9]|[12][0-9]|3[01])\\s*)*$"
                   }
                 ],
                 "title": "Tags",
@@ -3879,7 +3943,8 @@
                     "maximum": 31
                   },
                   {
-                    "type": "string"
+                    "type": "string",
+                    "pattern": "^\\s*(?:[0-9]|[12][0-9]|3[01])\\s*(?:\\|\\s*(?:[0-9]|[12][0-9]|3[01])\\s*)*$"
                   }
                 ],
                 "title": "Tags",

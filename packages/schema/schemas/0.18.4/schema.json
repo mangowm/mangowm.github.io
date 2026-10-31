@@ -29,7 +29,7 @@
             "type": "string",
             "title": "Action",
             "description": "A dispatcher name followed by optional comma-separated arguments.",
-            "pattern": "^(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$[A-Za-z_][A-Za-z0-9_]*)(?:,.*)?$"
+            "pattern": "^\\s*(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:,.*)?\\s*$"
           },
           {
             "type": "array",
@@ -37,7 +37,7 @@
               "type": "string",
               "title": "Action",
               "description": "A dispatcher name followed by optional comma-separated arguments.",
-              "pattern": "^(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$[A-Za-z_][A-Za-z0-9_]*)(?:,.*)?$"
+              "pattern": "^\\s*(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:,.*)?\\s*$"
             }
           }
         ],
@@ -1069,35 +1069,35 @@
           "title": "Group Bar Text Color",
           "description": "Text color of the group bar.",
           "default": "0xc0caf5ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "group_bar_decorate_bg_color": {
           "type": "string",
           "title": "Group Bar Background",
           "description": "Background color of the group bar.",
           "default": "0x1d2021ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "group_bar_decorate_focus_fg_color": {
           "type": "string",
           "title": "Group Bar Focus Text Color",
           "description": "Text color of the focused group bar entry.",
           "default": "0x9ece6aff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "group_bar_decorate_focus_bg_color": {
           "type": "string",
           "title": "Group Bar Focus Background",
           "description": "Background color of the focused group bar entry.",
           "default": "0x3c3836ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "group_bar_decorate_border_color": {
           "type": "string",
           "title": "Group Bar Border Color",
           "description": "Border color of the group bar.",
           "default": "0x3b4261ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "group_bar_decorate_border_width": {
           "type": "integer",
@@ -1142,35 +1142,35 @@
           "title": "Title Bar Text Color",
           "description": "Text color of the title message bar.",
           "default": "0xc0caf5ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "title_message_bar_decorate_bg_color": {
           "type": "string",
           "title": "Title Bar Background",
           "description": "Background color of the title message bar.",
           "default": "0x1d2021ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "title_message_bar_decorate_focus_fg_color": {
           "type": "string",
           "title": "Title Bar Focus Text Color",
           "description": "Text color of the focused title message bar entry.",
           "default": "0x9ece6aff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "title_message_bar_decorate_focus_bg_color": {
           "type": "string",
           "title": "Title Bar Focus Background",
           "description": "Background color of the focused title message bar entry.",
           "default": "0x3c3836ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "title_message_bar_decorate_border_color": {
           "type": "string",
           "title": "Title Bar Border Color",
           "description": "Border color of the title message bar.",
           "default": "0x3b4261ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "title_message_bar_decorate_border_width": {
           "type": "integer",
@@ -1215,35 +1215,35 @@
           "title": "Tab Bar Text Color",
           "description": "Text color of the tab bar.",
           "default": "0xc0caf5ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "tab_bar_decorate_bg_color": {
           "type": "string",
           "title": "Tab Bar Background",
           "description": "Background color of the tab bar.",
           "default": "0x1d2021ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "tab_bar_decorate_focus_fg_color": {
           "type": "string",
           "title": "Tab Bar Focus Text Color",
           "description": "Text color of the focused tab bar entry.",
           "default": "0x7aa2f7ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "tab_bar_decorate_focus_bg_color": {
           "type": "string",
           "title": "Tab Bar Focus Background",
           "description": "Background color of the focused tab bar entry.",
           "default": "0x3c3836ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "tab_bar_decorate_border_color": {
           "type": "string",
           "title": "Tab Bar Border Color",
           "description": "Border color of the tab bar.",
           "default": "0x3b4261ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "tab_bar_decorate_border_width": {
           "type": "integer",
@@ -1288,35 +1288,35 @@
           "title": "Jump Label Text Color",
           "description": "Text color of the jump label.",
           "default": "0xc4939dff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "jump_label_decorate_bg_color": {
           "type": "string",
           "title": "Jump Label Background",
           "description": "Background color of the jump label.",
           "default": "0x323232ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "jump_label_decorate_focus_fg_color": {
           "type": "string",
           "title": "Jump Label Focus Text Color",
           "description": "Text color of the focused jump label entry.",
           "default": "0xeda6b4ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "jump_label_decorate_focus_bg_color": {
           "type": "string",
           "title": "Jump Label Focus Background",
           "description": "Background color of the focused jump label entry.",
           "default": "0x4e453cff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "jump_label_decorate_border_color": {
           "type": "string",
           "title": "Jump Label Border Color",
           "description": "Border color of the jump label.",
           "default": "0x8baa9bff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "jump_label_decorate_border_width": {
           "type": "integer",
@@ -1659,21 +1659,21 @@
           "title": "Close Button Color",
           "description": "Close button colour.",
           "default": "0xad401fff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "root_color": {
           "type": "string",
           "title": "Root Background",
           "description": "Desktop background behind all windows",
           "default": "0x323232ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "shadows_color": {
           "type": "string",
           "title": "Shadow Color",
           "description": "Drop shadow color for windows",
           "default": "0x000000ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "dim_enable": {
           "type": "boolean",
@@ -1686,77 +1686,77 @@
           "title": "Dim Focused Color",
           "description": "Dim color of the focused window.",
           "default": "0x00000000",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "dim_unfocused_color": {
           "type": "string",
           "title": "Dim Unfocused Color",
           "description": "Dim color of the unfocused windows.",
           "default": "0x00000055",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "border_color": {
           "type": "string",
           "title": "Inactive Border Color",
           "description": "Border color for unfocused windows.",
           "default": "0x444444ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "drop_color": {
           "type": "string",
           "title": "Drop Target Color",
           "description": "Color of the drop target rectangle shown while dragging a tiled window.",
           "default": "0xd5899d80",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "split_color": {
           "type": "string",
           "title": "Split Indicator",
           "description": "Dwindle manual-split guide line",
           "default": "0xeb441eff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "focus_color": {
           "type": "string",
           "title": "Active Border",
           "description": "Focused window border on the selected monitor",
           "default": "0xc66b25ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "maximized_screen_color": {
           "type": "string",
           "title": "Maximized Border",
           "description": "Border color for a focused maximized window.",
           "default": "0x89aa61ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "urgent_color": {
           "type": "string",
           "title": "Urgent Border Color",
           "description": "Border color for urgent windows.",
           "default": "0xad401fff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "scratchpad_color": {
           "type": "string",
           "title": "Scratchpad Border Color",
           "description": "Border color for a focused scratchpad window.",
           "default": "0x516c93ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "global_color": {
           "type": "string",
           "title": "Global Border Color",
           "description": "Border color for a focused global window.",
           "default": "0xb153a7ff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "overlay_color": {
           "type": "string",
           "title": "Overlay Color",
           "description": "Border color for overlay windows.",
           "default": "0x14a57cff",
-          "pattern": "^0x[0-9a-fA-F]{8}$"
+          "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "exec": {
           "type": "array",
@@ -2065,7 +2065,8 @@
                     "maximum": 31
                   },
                   {
-                    "type": "string"
+                    "type": "string",
+                    "const": "*"
                   }
                 ],
                 "title": "Tag ID",
@@ -2254,7 +2255,8 @@
                     "maximum": 31
                   },
                   {
-                    "type": "string"
+                    "type": "string",
+                    "pattern": "^\\s*(?:[0-9]|[12][0-9]|3[01])\\s*(?:\\|\\s*(?:[0-9]|[12][0-9]|3[01])\\s*)*$"
                   }
                 ],
                 "title": "Tags",
@@ -2521,7 +2523,8 @@
                     "maximum": 31
                   },
                   {
-                    "type": "string"
+                    "type": "string",
+                    "pattern": "^\\s*(?:[0-9]|[12][0-9]|3[01])\\s*(?:\\|\\s*(?:[0-9]|[12][0-9]|3[01])\\s*)*$"
                   }
                 ],
                 "title": "Tags",

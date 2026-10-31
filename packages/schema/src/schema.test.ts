@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vite-plus/test";
 import Value from "typebox/value";
 
+import { DISPATCHERS } from "./data/dispatchers";
 import { schema, tomlSchema } from "./schema";
 import { MANGO_VERSION } from "./version";
 
@@ -87,6 +88,7 @@ describe("canonical schema", () => {
     expect(Value.Check(schema, { global: { root_color: 0x323232ff } })).toBe(false);
     expect(Value.Check(schema, { env: { DPI: 140 } })).toBe(false);
     expect(Value.Check(schema, { var: { FLAG: true } })).toBe(false);
+    expect(Value.Check(schema, { global: { exec: "waybar" } })).toBe(false);
   });
 
   it("accepts a .conf-derived canonical object", () => {
@@ -110,8 +112,40 @@ describe("canonical schema", () => {
     expect(Value.Check(schema, { rule: { monitor_rule: [{ scale: 1 }] } })).toBe(false);
   });
 
+  it("enforces monitor rule groups", () => {
+    expect(Value.Check(schema, { rule: { monitor_rule: [{ name: "eDP-1", width: 1920 }] } })).toBe(
+      false,
+    );
+    expect(Value.Check(schema, { rule: { monitor_rule: [{ name: "eDP-1", x: 0 }] } })).toBe(false);
+  });
+
+  it("rejects unknown rule fields", () => {
+    expect(
+      Value.Check(schema, { rule: { window_rule: [{ app_id: "foot", not_a_rule: true }] } }),
+    ).toBe(false);
+  });
+
+  it("accepts every dispatcher name", () => {
+    const bind = Object.fromEntries(
+      DISPATCHERS.map((dispatcher, index) => [`SUPER+F${index}`, dispatcher]),
+    );
+    expect(Value.Check(schema, { bind: { default: bind } })).toBe(true);
+  });
+
   it("rejects unknown dispatchers", () => {
     expect(Value.Check(schema, { bind: { default: { "SUPER+r": "reload_confg" } } })).toBe(false);
+    expect(
+      Value.Check(schema, { bind: { default: { lock: { "SUPER+r": "reload_confg" } } } }),
+    ).toBe(false);
+  });
+
+  it("accepts variable actions and uppercase hex colors", () => {
+    expect(
+      Value.Check(schema, {
+        global: { root_color: "0X323232FF" },
+        bind: { default: { "SUPER+r": "${myAction}", "SUPER+x": " reload_config " } },
+      }),
+    ).toBe(true);
   });
 
   it("accepts flags, numeric tag ids, and layout lists", () => {
@@ -122,6 +156,17 @@ describe("canonical schema", () => {
         rule: { tag_rule: [{ id: 1, layout_name: "tile" }] },
       }),
     ).toBe(true);
+  });
+
+  it("validates tag ids and tag masks", () => {
+    expect(Value.Check(schema, { rule: { tag_rule: [{ id: "*" }, { id: 1 }] } })).toBe(true);
+    expect(Value.Check(schema, { rule: { tag_rule: [{ id: "abc" }] } })).toBe(false);
+    expect(Value.Check(schema, { rule: { tag_rule: [{ id: "99" }] } })).toBe(false);
+    expect(Value.Check(schema, { rule: { window_rule: [{ tags: "1|2" }, { tags: 0 }] } })).toBe(
+      true,
+    );
+    expect(Value.Check(schema, { rule: { window_rule: [{ tags: "foo" }] } })).toBe(false);
+    expect(Value.Check(schema, { rule: { window_rule: [{ tags: "99" }] } })).toBe(false);
   });
 
   it("rejects unknown global options", () => {
@@ -148,7 +193,12 @@ describe("TOML schema", () => {
   it("accepts raw TOML scalar forms", () => {
     expect(
       Value.Check(tomlSchema, {
-        global: { blur: 0, root_color: 0x323232ff, exec: ["waybar"] },
+        global: {
+          blur: 0,
+          root_color: 0x323232ff,
+          exec: "waybar",
+          source: "./extra.toml",
+        },
         env: { DPI: 140, FLAG: true },
         var: { scale: 1.5 },
         rule: { window_rule: [{ is_floating: 1, width: 0.5 }] },
@@ -163,6 +213,17 @@ describe("TOML schema", () => {
   it("accepts custom off as an integer", () => {
     expect(
       Value.Check(tomlSchema, { rule: { monitor_rule: [{ name: "eDP-1", custom: 0 }] } }),
+    ).toBe(true);
+  });
+
+  it("accepts quoted tag ids and spaced tag masks", () => {
+    expect(
+      Value.Check(tomlSchema, {
+        rule: {
+          tag_rule: [{ id: "*" }, { id: "1" }],
+          window_rule: [{ tags: "1 | 2" }],
+        },
+      }),
     ).toBe(true);
   });
 });

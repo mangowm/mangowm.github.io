@@ -6,7 +6,7 @@ import { RULES } from "./data/rules";
 import type { GlobalDef, RuleDef, RuleFieldDef } from "./data/types";
 import { MANGO_VERSION } from "./version";
 
-const COLOR_PATTERN = "^0x[0-9a-fA-F]{8}$";
+const COLOR_PATTERN = "^0[xX][0-9a-fA-F]{8}$";
 
 const NUMERIC_ENUMS = new Set([
   "tag_animation_direction",
@@ -178,34 +178,29 @@ function varMap(mode: SchemaMode) {
   });
 }
 
-const ExecList = Type.Array(Type.String(), {
-  title: "Run on Reload",
-  description: "Commands run every time the config is reloaded.",
-});
-
-const ExecOnceList = Type.Array(Type.String(), {
-  title: "Run Once",
-  description: "Commands run once at startup.",
-});
-
-const SourceList = Type.Array(Type.String(), {
-  title: "Includes",
-  description: "Config files loaded as part of this config.",
-});
-
-const SourceOptionalList = Type.Array(Type.String(), {
-  title: "Optional Includes",
-  description: "Config files loaded if they exist; missing files are ignored.",
-});
+function directive(mode: SchemaMode, title: string, description: string) {
+  if (mode === "canonical") return Type.Array(Type.String(), { title, description });
+  return Type.Union([Type.String(), Type.Array(Type.String())], { title, description });
+}
 
 function globalSchema(mode: SchemaMode) {
   return Type.Object(
     {
       ...globalProperties(mode),
-      exec: Type.Optional(ExecList),
-      exec_once: Type.Optional(ExecOnceList),
-      source: Type.Optional(SourceList),
-      source_optional: Type.Optional(SourceOptionalList),
+      exec: Type.Optional(
+        directive(mode, "Run on Reload", "Commands run every time the config is reloaded."),
+      ),
+      exec_once: Type.Optional(directive(mode, "Run Once", "Commands run once at startup.")),
+      source: Type.Optional(
+        directive(mode, "Includes", "Config files loaded as part of this config."),
+      ),
+      source_optional: Type.Optional(
+        directive(
+          mode,
+          "Optional Includes",
+          "Config files loaded if they exist; missing files are ignored.",
+        ),
+      ),
     },
     {
       title: "Global options",
@@ -215,7 +210,13 @@ function globalSchema(mode: SchemaMode) {
   );
 }
 
-const ACTION_PATTERN = `^(?:${DISPATCHERS.join("|")}|\\$[A-Za-z_][A-Za-z0-9_]*)(?:,.*)?$`;
+// Generated from DISPATCHERS. JSON Schema has no prefix-enum keyword.
+const VARIABLE_PATTERN = "\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})";
+const ACTION_PATTERN = `^\\s*(?:${DISPATCHERS.join("|")}|${VARIABLE_PATTERN})(?:,.*)?\\s*$`;
+
+const TAG_NUMBER_PATTERN = "(?:[0-9]|[12][0-9]|3[01])";
+const TAG_MASK_PATTERN = `^\\s*${TAG_NUMBER_PATTERN}\\s*(?:\\|\\s*${TAG_NUMBER_PATTERN}\\s*)*$`;
+const TAG_ID_STRINGS = ["*", ...Array.from({ length: 32 }, (_, index) => String(index))];
 
 const ActionString = Type.String({
   title: "Action",
@@ -248,6 +249,26 @@ function bindingMap(title: string, description: string): TSchema {
   return Type.Record(Type.String(), BindingRef, { title, description });
 }
 
+function tagIdSchema(mode: SchemaMode, metadata: Record<string, unknown>): TSchema {
+  const wildcard = Type.Unsafe<TSchema>({ type: "string", const: "*" });
+
+  if (mode === "canonical") {
+    return Type.Union([Type.Integer({ minimum: 0, maximum: 31 }), wildcard], metadata);
+  }
+
+  return Type.Union(
+    [Type.Integer({ minimum: 0, maximum: 31 }), Type.String({ enum: TAG_ID_STRINGS })],
+    metadata,
+  );
+}
+
+function tagMaskSchema(metadata: Record<string, unknown>): TSchema {
+  return Type.Union(
+    [Type.Integer({ minimum: 0, maximum: 31 }), Type.String({ pattern: TAG_MASK_PATTERN })],
+    metadata,
+  );
+}
+
 function ruleField(field: RuleFieldDef, ruleKey: string, mode: SchemaMode): TSchema {
   const metadata = { title: field.label, description: field.description };
   const range = RULE_RANGES[`${ruleKey}.${field.key}`];
@@ -277,8 +298,10 @@ function ruleField(field: RuleFieldDef, ruleKey: string, mode: SchemaMode): TSch
         ],
         metadata,
       );
-    case "mask":
-      return Type.Union([Type.Integer({ minimum: 0, maximum: 31 }), Type.String()], metadata);
+    case "tag-id":
+      return tagIdSchema(mode, metadata);
+    case "tag-mask":
+      return tagMaskSchema(metadata);
     case "string":
       return Type.String(metadata);
     case "enum": {
