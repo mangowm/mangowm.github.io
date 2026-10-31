@@ -81,6 +81,8 @@ it for editor validation:
   dispatcher names are exposed as an enum so editors can suggest them
 - `window_rule.tags` can be a tag number (`0` for the special workspace) or a
   string such as `"1|2"` for several tags
+- `window_rule.force_tearing` accepts `true` / `false` as aliases for `1` / `0`,
+  or the explicit values `0` / `1` / `2`
 
 Use with Taplo:
 
