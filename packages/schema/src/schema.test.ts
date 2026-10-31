@@ -157,6 +157,7 @@ describe("canonical schema", () => {
             "SUPER+t": [{ variable: "term" }],
             "SUPER+s": [{ dispatcher: "spawn", args: "foot" }],
             "SUPER+v": [{ variable: "term", args: "--hold" }],
+            "SUPER+m": [{ dispatcher: "spawn", args: "a" }, { dispatcher: "reload_config" }],
           },
         },
       }),
@@ -338,6 +339,37 @@ describe("TOML schema", () => {
       }),
     ).toBe(false);
     expect(Value.Check(tomlSchema, { rule: { window_rule: [{ tags: [1, 2] }] } })).toBe(false);
+  });
+
+  it("enforces binding array conflict rules", () => {
+    expect(
+      Value.Check(tomlSchema, {
+        bind: { default: { "SUPER+r": ["spawn,a", "reload_config"] } },
+      }),
+    ).toBe(false);
+    expect(
+      Value.Check(tomlSchema, {
+        bind: { default: { conflict: { "SUPER+r": ["spawn,a", "reload_config"] } } },
+      }),
+    ).toBe(true);
+    expect(
+      Value.Check(tomlSchema, {
+        mousebind: { default: { "SUPER+btn_left": ["spawn,a", "reload_config"] } },
+      }),
+    ).toBe(false);
+    expect(
+      Value.Check(tomlSchema, {
+        mousebind: { default: { "SUPER+btn_left": ["spawn,a"] } },
+      }),
+    ).toBe(true);
+    expect(
+      Value.Check(tomlSchema, {
+        mousebind: {
+          default: { conflict: { "SUPER+btn_left": ["spawn,a", "reload_config"] } },
+        },
+      }),
+    ).toBe(false);
+    expect(Value.Check(tomlSchema, { bind: { default: { "SUPER+r": [] } } })).toBe(false);
   });
 
   it("accepts boolean force_tearing in toml", () => {

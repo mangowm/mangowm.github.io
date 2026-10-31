@@ -266,10 +266,21 @@ const TomlActionString = Type.String({
   pattern: ACTION_PATTERN,
 });
 
-const TomlAction = Type.Union([TomlActionString, Type.Array(TomlActionString)], {
-  title: "Action",
-  description: "One action, or an array of actions for the same key combination.",
-});
+const TomlSingleAction = Type.Union(
+  [TomlActionString, Type.Array(TomlActionString, { minItems: 1, maxItems: 1 })],
+  {
+    title: "Action",
+    description: "One action for the key combination.",
+  },
+);
+
+const TomlMultipleActions = Type.Union(
+  [TomlActionString, Type.Array(TomlActionString, { minItems: 1 })],
+  {
+    title: "Actions",
+    description: "One or more actions for the same key combination.",
+  },
+);
 
 const CanonicalAction: TSchema = Type.Unsafe<TSchema>({
   title: "Action",
@@ -302,25 +313,66 @@ const CanonicalActions = Type.Array(CanonicalAction, {
   minItems: 1,
 });
 
-function bindingNode(mode: SchemaMode): TSchema {
+type BindingKind = "key" | "mouse" | "axis" | "gesture" | "switch";
+
+const TOML_BINDING_DEFS: Record<BindingKind, string> = {
+  key: "KeyBindingNode",
+  mouse: "MouseBindingNode",
+  axis: "AxisBindingNode",
+  gesture: "GestureBindingNode",
+  switch: "SwitchBindingNode",
+};
+
+const TOML_CONFLICT_DEF = "KeyConflictBindingNode";
+
+function bindingNode(mode: SchemaMode, kind: BindingKind, conflict = false): TSchema {
+  const description =
+    "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.";
+
+  if (mode === "canonical") {
+    return Type.Unsafe<TSchema>({
+      title: "Binding node",
+      description,
+      type: "object",
+      properties: {
+        sym: { $ref: "#/$defs/BindingNode" },
+        lock: { $ref: "#/$defs/BindingNode" },
+        release: { $ref: "#/$defs/BindingNode" },
+        pass: { $ref: "#/$defs/BindingNode" },
+        conflict: { $ref: "#/$defs/BindingNode" },
+      },
+      additionalProperties: CanonicalActions,
+    });
+  }
+
+  const def = TOML_BINDING_DEFS[kind];
+  const nodeDef = kind === "key" && conflict ? TOML_CONFLICT_DEF : def;
+  const conflictDef = kind === "key" ? TOML_CONFLICT_DEF : def;
+  const ref = `#/$defs/${nodeDef}`;
+
   return Type.Unsafe<TSchema>({
-    title: "Binding node",
-    description:
-      "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+    title: conflict ? "Conflict binding node" : "Binding node",
+    description,
     type: "object",
     properties: {
-      sym: { $ref: "#/$defs/BindingNode" },
-      lock: { $ref: "#/$defs/BindingNode" },
-      release: { $ref: "#/$defs/BindingNode" },
-      pass: { $ref: "#/$defs/BindingNode" },
-      conflict: { $ref: "#/$defs/BindingNode" },
+      sym: { $ref: ref },
+      lock: { $ref: ref },
+      release: { $ref: ref },
+      pass: { $ref: ref },
+      conflict: { $ref: `#/$defs/${conflictDef}` },
     },
-    additionalProperties: mode === "canonical" ? CanonicalActions : TomlAction,
+    additionalProperties: kind === "key" && conflict ? TomlMultipleActions : TomlSingleAction,
   });
 }
 
-function bindingMap(title: string, description: string): TSchema {
-  return Type.Record(Type.String(), Type.Unsafe<TSchema>({ $ref: "#/$defs/BindingNode" }), {
+function bindingMap(
+  mode: SchemaMode,
+  kind: BindingKind,
+  title: string,
+  description: string,
+): TSchema {
+  const ref = mode === "canonical" ? "#/$defs/BindingNode" : `#/$defs/${TOML_BINDING_DEFS[kind]}`;
+  return Type.Record(Type.String(), Type.Unsafe<TSchema>({ $ref: ref }), {
     title,
     description,
   });
@@ -482,19 +534,44 @@ function rootSchema(mode: SchemaMode) {
       env: Type.Optional(envMap(mode)),
       var: Type.Optional(varMap(mode)),
       bind: Type.Optional(
-        bindingMap("Key bindings", "Keyboard bindings by key mode and key combination."),
+        bindingMap(
+          mode,
+          "key",
+          "Key bindings",
+          "Keyboard bindings by key mode and key combination.",
+        ),
       ),
       mousebind: Type.Optional(
-        bindingMap("Mouse bindings", "Mouse bindings by key mode and button combination."),
+        bindingMap(
+          mode,
+          "mouse",
+          "Mouse bindings",
+          "Mouse bindings by key mode and button combination.",
+        ),
       ),
       axisbind: Type.Optional(
-        bindingMap("Axis bindings", "Scroll axis bindings by key mode and direction."),
+        bindingMap(
+          mode,
+          "axis",
+          "Axis bindings",
+          "Scroll axis bindings by key mode and direction.",
+        ),
       ),
       gesturebind: Type.Optional(
-        bindingMap("Gesture bindings", "Gesture bindings by key mode and gesture combination."),
+        bindingMap(
+          mode,
+          "gesture",
+          "Gesture bindings",
+          "Gesture bindings by key mode and gesture combination.",
+        ),
       ),
       switchbind: Type.Optional(
-        bindingMap("Switch bindings", "Switch bindings by key mode and fold state."),
+        bindingMap(
+          mode,
+          "switch",
+          "Switch bindings",
+          "Switch bindings by key mode and fold state.",
+        ),
       ),
       rule: Type.Optional(rulesSchema(mode)),
     },
@@ -510,11 +587,22 @@ function rootSchema(mode: SchemaMode) {
 
 export function buildSchema(version: string, mode: SchemaMode = "canonical") {
   const file = mode === "canonical" ? "schema.json" : "toml.schema.json";
+  const defs =
+    mode === "canonical"
+      ? { BindingNode: bindingNode(mode, "key") }
+      : {
+          KeyBindingNode: bindingNode(mode, "key", false),
+          KeyConflictBindingNode: bindingNode(mode, "key", true),
+          MouseBindingNode: bindingNode(mode, "mouse", false),
+          AxisBindingNode: bindingNode(mode, "axis", false),
+          GestureBindingNode: bindingNode(mode, "gesture", false),
+          SwitchBindingNode: bindingNode(mode, "switch", false),
+        };
 
   return {
     $schema: "https://json-schema.org/draft/2020-12/schema",
     $id: `https://mangowm.github.io/schema/${version}/${file}`,
-    $defs: { BindingNode: bindingNode(mode) },
+    $defs: defs,
     ...rootSchema(mode),
     title:
       mode === "canonical"

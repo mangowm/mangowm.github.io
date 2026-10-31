@@ -99,7 +99,8 @@ accepts top-level globals, `[keybind.*]`, and `[[window_rule]]`; those forms are
 not modeled.
 
 Arrays with more than one action require a `.conflict` node. Mouse, axis,
-gesture, and switch tables do not support action arrays.
+gesture, and switch tables do not support action arrays. The TOML schema
+enforces these limits.
 
 ## Normalization
 
