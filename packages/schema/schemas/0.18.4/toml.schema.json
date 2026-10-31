@@ -4,7 +4,7 @@
   "$defs": {
     "BindingNode": {
       "title": "Binding node",
-      "description": "A key combination map with optional flag sub-tables.",
+      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
       "type": "object",
       "properties": {
         "sym": {
@@ -62,7 +62,7 @@
             }
           ],
           "title": "Enable Animations",
-          "description": "Master toggle for all window animations",
+          "description": "Master toggle for normal window animations; gesture-driven transitions can still animate.",
           "default": true
         },
         "layer_animations": {
@@ -139,7 +139,7 @@
           "type": "integer",
           "enum": [1, 0],
           "title": "Tag Animation Direction",
-          "description": "Direction of tag-switch animation (horizontal or vertical)",
+          "description": "Tag-switch animation direction: 1 horizontal, 0 vertical.",
           "default": 1
         },
         "zoom_initial_ratio": {
@@ -799,7 +799,7 @@
           "type": "integer",
           "enum": [0, 1, 2],
           "title": "Allow Tearing",
-          "description": "Permit screen tearing for lower latency",
+          "description": "Tearing policy: 0 disabled, 1 enabled for any window, 2 enabled only for fullscreen windows.",
           "default": 0
         },
         "hdr_depth": {
@@ -938,7 +938,7 @@
         "snap_distance": {
           "type": "integer",
           "title": "Snap Distance",
-          "description": "Maximum distance in pixels at which a floating window snaps to an edge or another window (0-99999).",
+          "description": "Maximum distance in pixels at which a floating window snaps to an edge or another visible floating window (0-99999).",
           "default": 30,
           "minimum": 0,
           "maximum": 99999
@@ -954,7 +954,7 @@
             }
           ],
           "title": "Floating Snap",
-          "description": "Snap floating windows to screen edges and other windows.",
+          "description": "Snap floating windows to screen edges and other visible floating windows.",
           "default": false
         },
         "float_full_to_top": {
@@ -1100,7 +1100,7 @@
                 "maximum": 1
               },
               "title": "Proportion Presets",
-              "description": "Comma-separated preset proportion values (0.1-1.0) for quick switching. Empty disables cycling.",
+              "description": "Preset width proportions (0.1-1.0) cycled by switch_proportion_preset.",
               "minItems": 1
             },
             {
@@ -1113,7 +1113,7 @@
             }
           ],
           "title": "Proportion Presets",
-          "description": "Comma-separated preset proportion values (0.1-1.0) for quick switching. Empty disables cycling."
+          "description": "Preset width proportions (0.1-1.0) cycled by switch_proportion_preset."
         },
         "circle_layout": {
           "anyOf": [
@@ -1527,7 +1527,7 @@
             }
           ],
           "title": "Warp Cursor on Drag Resize",
-          "description": "Warp the pointer to the chosen resize corner when a floating-window resize starts.",
+          "description": "Warp the pointer to the chosen corner when a resize starts from the window body.",
           "default": true
         },
         "enable_border_resize": {
@@ -1611,7 +1611,7 @@
         "repeat_rate": {
           "type": "integer",
           "title": "Repeat Rate",
-          "description": "Keyboard repeat rate in characters per second",
+          "description": "Keyboard repeat rate in key presses per second.",
           "default": 25,
           "minimum": 1,
           "maximum": 1000
@@ -2384,14 +2384,14 @@
           "type": "integer",
           "enum": [0, 1, 2],
           "title": "Send Events Mode",
-          "description": "Send events: 0 on, 1 off, 2 off with an external pointer.",
+          "description": "Send events for touch and tablet devices: 0 on, 1 off, 2 off with an external pointer.",
           "default": 0
         },
         "button_map": {
           "type": "integer",
           "enum": [0, 1],
           "title": "Button Map",
-          "description": "Trackpad tap-to-button mapping: LMR or LRM.",
+          "description": "Trackpad tap-to-button mapping: 0 left/right/middle, 1 left/middle/right.",
           "default": 0
         },
         "axis_scroll_factor": {
@@ -2832,8 +2832,8 @@
               }
             }
           ],
-          "title": "Run on Reload",
-          "description": "Commands run every time the config is reloaded."
+          "title": "Run on Load/Reload",
+          "description": "Commands run at startup and every time the config is reloaded."
         },
         "exec_once": {
           "anyOf": [
@@ -2888,7 +2888,7 @@
     "env": {
       "type": "object",
       "title": "Environment",
-      "description": "Environment variables exported before startup.",
+      "description": "Environment variables exported before startup and re-applied on every config reload.",
       "additionalProperties": {
         "anyOf": [
           {
@@ -2909,7 +2909,7 @@
     "var": {
       "type": "object",
       "title": "Variables",
-      "description": "User-defined variables expanded as $name in config values.",
+      "description": "User-defined variables referenced as $name or ${name} in config values and binding keys; undefined names are left untouched.",
       "additionalProperties": {
         "anyOf": [
           {

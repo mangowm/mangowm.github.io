@@ -6,7 +6,8 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "bool",
     default: "1",
     label: "Enable Animations",
-    description: "Master toggle for all window animations",
+    description:
+      "Master toggle for normal window animations; gesture-driven transitions can still animate.",
   },
   {
     key: "layer_animations",
@@ -90,7 +91,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "enum",
     default: "1",
     label: "Tag Animation Direction",
-    description: "Direction of tag-switch animation (horizontal or vertical)",
+    description: "Tag-switch animation direction: 1 horizontal, 0 vertical.",
     options: [
       { value: "1", label: "Horizontal" },
       { value: "0", label: "Vertical" },
@@ -522,7 +523,8 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "enum",
     default: "0",
     label: "Allow Tearing",
-    description: "Permit screen tearing for lower latency",
+    description:
+      "Tearing policy: 0 disabled, 1 enabled for any window, 2 enabled only for fullscreen windows.",
     options: [
       { value: "0", label: "Disabled" },
       { value: "1", label: "Enabled" },
@@ -611,7 +613,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: "30",
     label: "Snap Distance",
     description:
-      "Maximum distance in pixels at which a floating window snaps to an edge or another window (0-99999).",
+      "Maximum distance in pixels at which a floating window snaps to an edge or another visible floating window (0-99999).",
     min: 0,
     max: 99999,
   },
@@ -620,7 +622,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "bool",
     default: "0",
     label: "Floating Snap",
-    description: "Snap floating windows to screen edges and other windows.",
+    description: "Snap floating windows to screen edges and other visible floating windows.",
   },
   {
     key: "float_full_to_top",
@@ -747,8 +749,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "preset",
     default: "",
     label: "Proportion Presets",
-    description:
-      "Comma-separated preset proportion values (0.1-1.0) for quick switching. Empty disables cycling.",
+    description: "Preset width proportions (0.1-1.0) cycled by switch_proportion_preset.",
   },
   {
     key: "circle_layout",
@@ -1043,8 +1044,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "bool",
     default: "1",
     label: "Warp Cursor on Drag Resize",
-    description:
-      "Warp the pointer to the chosen resize corner when a floating-window resize starts.",
+    description: "Warp the pointer to the chosen corner when a resize starts from the window body.",
   },
   {
     key: "enable_border_resize",
@@ -1096,7 +1096,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "int",
     default: "25",
     label: "Repeat Rate",
-    description: "Keyboard repeat rate in characters per second",
+    description: "Keyboard repeat rate in key presses per second.",
     min: 1,
     max: 1000,
   },
@@ -1667,7 +1667,8 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "enum",
     default: "0",
     label: "Send Events Mode",
-    description: "Send events: 0 on, 1 off, 2 off with an external pointer.",
+    description:
+      "Send events for touch and tablet devices: 0 on, 1 off, 2 off with an external pointer.",
     options: [
       { value: "0", label: "Enabled" },
       { value: "1", label: "Disabled" },
@@ -1679,7 +1680,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "enum",
     default: "0",
     label: "Button Map",
-    description: "Trackpad tap-to-button mapping: LMR or LRM.",
+    description: "Trackpad tap-to-button mapping: 0 left/right/middle, 1 left/middle/right.",
     options: [
       { value: "0", label: "Left / right / middle" },
       { value: "1", label: "Left / middle / right" },

@@ -198,7 +198,8 @@ function envMap(mode: SchemaMode) {
   return Type.Unsafe<TSchema>({
     type: "object",
     title: "Environment",
-    description: "Environment variables exported before startup.",
+    description:
+      "Environment variables exported before startup and re-applied on every config reload.",
     additionalProperties: mode === "canonical" ? Type.String() : EnvValue,
     propertyNames: { minLength: 1 },
   });
@@ -208,7 +209,8 @@ function varMap(mode: SchemaMode) {
   return Type.Unsafe<TSchema>({
     type: "object",
     title: "Variables",
-    description: "User-defined variables expanded as $name in config values.",
+    description:
+      "User-defined variables referenced as $name or ${name} in config values and binding keys; undefined names are left untouched.",
     additionalProperties: mode === "canonical" ? Type.String() : EnvValue,
     propertyNames: { pattern: "^[A-Za-z_][A-Za-z0-9_]*$" },
   });
@@ -224,7 +226,11 @@ function globalSchema(mode: SchemaMode) {
     {
       ...globalProperties(mode),
       exec: Type.Optional(
-        directive(mode, "Run on Reload", "Commands run every time the config is reloaded."),
+        directive(
+          mode,
+          "Run on Load/Reload",
+          "Commands run at startup and every time the config is reloaded.",
+        ),
       ),
       exec_once: Type.Optional(directive(mode, "Run Once", "Commands run once at startup.")),
       source: Type.Optional(
@@ -299,7 +305,8 @@ const CanonicalActions = Type.Array(CanonicalAction, {
 function bindingNode(mode: SchemaMode): TSchema {
   return Type.Unsafe<TSchema>({
     title: "Binding node",
-    description: "A key combination map with optional flag sub-tables.",
+    description:
+      "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
     type: "object",
     properties: {
       sym: { $ref: "#/$defs/BindingNode" },
