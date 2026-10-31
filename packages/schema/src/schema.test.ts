@@ -265,6 +265,20 @@ describe("canonical schema", () => {
     expect(Value.Check(schema, { global: { mouse_scroll_method: 8 } })).toBe(false);
   });
 
+  it("bounds window opacity and scroller proportions", () => {
+    expect(Value.Check(schema, { rule: { window_rule: [{ focused_opacity: 1.5 }] } })).toBe(false);
+    expect(Value.Check(schema, { rule: { window_rule: [{ focused_opacity: 0.5 }] } })).toBe(true);
+    expect(Value.Check(schema, { rule: { window_rule: [{ scroller_proportion: 0.05 }] } })).toBe(
+      false,
+    );
+    expect(
+      Value.Check(schema, { rule: { window_rule: [{ scroller_proportion_single: 0.5 }] } }),
+    ).toBe(true);
+    expect(Value.Check(tomlSchema, { rule: { window_rule: [{ unfocused_opacity: 2 }] } })).toBe(
+      false,
+    );
+  });
+
   it("accepts tearing overrides", () => {
     expect(Value.Check(schema, { rule: { window_rule: [{ force_tearing: 2 }] } })).toBe(true);
     expect(Value.Check(schema, { rule: { window_rule: [{ force_tearing: 3 }] } })).toBe(false);

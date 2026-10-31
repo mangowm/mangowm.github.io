@@ -453,7 +453,7 @@ export const RULES: readonly RuleDef[] = [
         key: "scroller_proportion_single",
         type: "float",
         label: "Scroller Proportion (Single)",
-        description: "Width proportion used while this window is the only tiled window.",
+        description: "Width proportion used while this window is the only tiled window (0.1-1.0).",
       },
       {
         key: "unfocused_opacity",
@@ -767,7 +767,7 @@ export const RULES: readonly RuleDef[] = [
         key: "scroller_proportion_single",
         type: "float",
         label: "Scroller Proportion (Single)",
-        description: "Width proportion used while this window is the only tiled window.",
+        description: "Width proportion used while this window is the only tiled window (0.1-1.0).",
       },
       {
         key: "unfocused_opacity",
