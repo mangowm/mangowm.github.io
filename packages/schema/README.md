@@ -10,8 +10,9 @@ syntax.
 https://mangowm.github.io/schema/<version>/schema.json
 ```
 
-The semantic contract for one configuration file. It does not merge `source`
-files or expand variables. Values are normalized:
+The semantic contract for one configuration file. It is a pre-expansion model:
+Mango expands `$var` and `${var}` at parse time, while canonical keeps the
+reference. It does not merge `source` files. Values are normalized:
 
 - booleans are `true` or `false`
 - colors are `"0xRRGGBBAA"` strings
@@ -41,7 +42,7 @@ Example:
 }
 ```
 
-An action object is one of:
+Action objects:
 
 ```json
 { "dispatcher": "spawn", "args": "foot" }
@@ -51,9 +52,11 @@ An action object is one of:
 { "variable": "term" }
 ```
 
-`args` is the raw text after the first comma, so commas and shell fragments are
-preserved. Tags use `[1, 2]` for normal tags and `[0]` for the special
-workspace.
+`args` may accompany either form. For a dispatcher, it is the text after the
+first comma, so commas and shell fragments are preserved. Mango trims each
+argument field and treats a field of `0` as the end of the list.
+
+Tags use `[1, 2]` for normal tags and `[0]` for the special workspace.
 
 The canonical model is semantic, not a document model. It does not preserve
 comments, blank lines, ordering, or duplicate keys. Use a document model for
@@ -85,7 +88,18 @@ Use with Taplo:
 ```
 
 Write colors as `0xRRGGBBAA` in TOML. A TOML parser exposes that token as an
-integer, which is why the TOML schema accepts the integer form.
+integer, which is why the TOML schema accepts the integer form. Only use
+integers that came from a `0x` literal. Mango reads the raw token as hex, so a
+decimal integer or an integer with underscores is misread or rejected.
+
+Mango's TOML reader is a line-oriented subset, not full TOML. Use decimal
+integers and floats and single-line strings for option values. The schema
+covers the documented `[global]`, `[bind.*]`, and `[[rule.*]]` forms. Mango also
+accepts top-level globals, `[keybind.*]`, and `[[window_rule]]`; those forms are
+not modeled.
+
+Arrays with more than one action require a `.conflict` node. Mouse, axis,
+gesture, and switch tables do not support action arrays.
 
 ## Normalization
 
@@ -102,6 +116,16 @@ Normalize parsed configs to the canonical object:
   action strings become action objects; tag numbers and `|` strings become tag
   arrays.
 
+Additional `.conf` rules:
+
+- `key_mode` sets the current bind mode and is consumed, not stored under
+  `global`.
+- `bind` lines become `bind.<mode>`. The `sym`, `l`, `r`, `p`, and `c` flags
+  nest under `sym`, `lock`, `release`, `pass`, and `conflict`.
+- multiple binds with the same mode and trigger merge into one action array.
+- quoted tag ids such as `"1"` become integer `1`, and quoted tags such as `"5"`
+  become `[5]`.
+
 Tag `0` is exclusive. If a tag value contains `0` and other tags, normalize it
 to `[0]`. Raw bitmasks above `31` are not supported by the schema.
 
@@ -111,10 +135,12 @@ A `.conf` parser must produce this object before validation.
 
 Canonical describes one file. `source` and `source_optional` stay in the
 object, variables stay as references, and includes are not merged. A resolved
-model can merge includes and expand variables later.
+model must replay source files in document order; merging the arrays is not
+equivalent.
 
 ## Validation policy
 
-Canonical values are normalized and must be in range. The TOML schema also
-rejects values that Mango would clamp. A parser should report those as warnings
-before normalization.
+Canonical values are normalized and must be in range. The TOML schema rejects
+values Mango would clamp, except `blur_params_saturation`: the source default is
+`1.2` and the runtime clamps it to `1`, so canonical uses `1`. A parser should
+report clamped values as warnings before normalization.
