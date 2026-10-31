@@ -333,7 +333,6 @@ describe("canonical schema", () => {
             "SUPER+t": [{ variable: "term" }],
             "SUPER+s": [{ dispatcher: "spawn", args: "foot" }],
             "SUPER+v": [{ variable: "term", args: "--hold" }],
-            "SUPER+m": [{ dispatcher: "spawn", args: "a" }, { dispatcher: "reload_config" }],
           },
         },
       }),
@@ -344,6 +343,33 @@ describe("canonical schema", () => {
       }),
     ).toBe(false);
     expect(Value.Check(schema, { bind: { default: { "SUPER+r": [{ args: "x" }] } } })).toBe(false);
+  });
+
+  it("enforces canonical action arrays", () => {
+    const actions = [{ dispatcher: "spawn", args: "a" }, { dispatcher: "reload_config" }];
+    const keys: Record<string, string> = {
+      bind: "SUPER+r",
+      mousebind: "SUPER+btn_left",
+      axisbind: "SUPER+UP",
+      gesturebind: "none+left+3",
+      switchbind: "fold",
+    };
+    for (const [section, key] of Object.entries(keys)) {
+      expect(Value.Check(schema, { [section]: { default: { [key]: actions } } })).toBe(false);
+      expect(
+        Value.Check(schema, { [section]: { default: { conflict: { [key]: actions } } } }),
+      ).toBe(section === "bind");
+    }
+    expect(
+      Value.Check(schema, {
+        bind: {
+          default: {
+            release: { conflict: { "SUPER+r": actions } },
+            conflict: { release: { "SUPER+r": actions } },
+          },
+        },
+      }),
+    ).toBe(true);
   });
 
   it("accepts uppercase hex colors", () => {

@@ -402,7 +402,14 @@ const CanonicalAction: TSchema = Type.Unsafe<TSchema>({
   allOf: CANONICAL_ARG_RULES,
 });
 
-const CanonicalActions = Type.Array(CanonicalAction, {
+const CanonicalSingleAction = Type.Array(CanonicalAction, {
+  title: "Action",
+  description: "The action for this key combination.",
+  minItems: 1,
+  maxItems: 1,
+});
+
+const CanonicalConflictActions = Type.Array(CanonicalAction, {
   title: "Actions",
   description: "One or more actions for the same key combination.",
   minItems: 1,
@@ -416,33 +423,25 @@ const BINDING_DEFS: Record<BindingKind, string> = {
   switch: "SwitchBindingNode",
 };
 
-const TOML_CONFLICT_DEF = "KeyConflictBindingNode";
+const CONFLICT_DEF = "KeyConflictBindingNode";
 
 function bindingNode(mode: SchemaMode, kind: BindingKind, conflict = false): TSchema {
   const description =
     "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.";
 
   const def = BINDING_DEFS[kind];
-  const nodeDef = kind === "key" && conflict ? TOML_CONFLICT_DEF : def;
-  const conflictDef = mode === "toml" && kind === "key" ? TOML_CONFLICT_DEF : def;
+  const nodeDef = kind === "key" && conflict ? CONFLICT_DEF : def;
+  const conflictDef = kind === "key" ? CONFLICT_DEF : def;
   const ref = `#/$defs/${nodeDef}`;
-
-  if (mode === "canonical") {
-    return Type.Unsafe<TSchema>({
-      title: "Binding node",
-      description,
-      type: "object",
-      properties: {
-        sym: { $ref: ref },
-        lock: { $ref: ref },
-        release: { $ref: ref },
-        pass: { $ref: ref },
-        conflict: { $ref: `#/$defs/${conflictDef}` },
-      },
-      patternProperties: { [BINDING_KEY_PATTERNS[kind]]: CanonicalActions },
-      additionalProperties: false,
-    });
-  }
+  const valueSchema =
+    mode === "canonical"
+      ? nodeDef === CONFLICT_DEF
+        ? CanonicalConflictActions
+        : CanonicalSingleAction
+      : {
+          $ref:
+            nodeDef === CONFLICT_DEF ? "#/$defs/TomlMultipleActions" : "#/$defs/TomlSingleAction",
+        };
 
   return Type.Unsafe<TSchema>({
     title: conflict ? "Conflict binding node" : "Binding node",
@@ -455,12 +454,7 @@ function bindingNode(mode: SchemaMode, kind: BindingKind, conflict = false): TSc
       pass: { $ref: ref },
       conflict: { $ref: `#/$defs/${conflictDef}` },
     },
-    patternProperties: {
-      [BINDING_KEY_PATTERNS[kind]]: {
-        $ref:
-          kind === "key" && conflict ? "#/$defs/TomlMultipleActions" : "#/$defs/TomlSingleAction",
-      },
-    },
+    patternProperties: { [BINDING_KEY_PATTERNS[kind]]: valueSchema },
     additionalProperties: false,
   });
 }
@@ -669,26 +663,15 @@ function rootSchema(mode: SchemaMode) {
 
 export function buildSchema(version: string, mode: SchemaMode = "canonical") {
   const file = mode === "canonical" ? "schema.json" : "toml.schema.json";
-  const defs =
-    mode === "canonical"
-      ? {
-          KeyBindingNode: bindingNode(mode, "key", false),
-          MouseBindingNode: bindingNode(mode, "mouse", false),
-          AxisBindingNode: bindingNode(mode, "axis", false),
-          GestureBindingNode: bindingNode(mode, "gesture", false),
-          SwitchBindingNode: bindingNode(mode, "switch", false),
-        }
-      : {
-          TomlActionString,
-          TomlSingleAction,
-          TomlMultipleActions,
-          KeyBindingNode: bindingNode(mode, "key", false),
-          KeyConflictBindingNode: bindingNode(mode, "key", true),
-          MouseBindingNode: bindingNode(mode, "mouse", false),
-          AxisBindingNode: bindingNode(mode, "axis", false),
-          GestureBindingNode: bindingNode(mode, "gesture", false),
-          SwitchBindingNode: bindingNode(mode, "switch", false),
-        };
+  const defs = {
+    ...(mode === "canonical" ? {} : { TomlActionString, TomlSingleAction, TomlMultipleActions }),
+    KeyBindingNode: bindingNode(mode, "key", false),
+    KeyConflictBindingNode: bindingNode(mode, "key", true),
+    MouseBindingNode: bindingNode(mode, "mouse", false),
+    AxisBindingNode: bindingNode(mode, "axis", false),
+    GestureBindingNode: bindingNode(mode, "gesture", false),
+    SwitchBindingNode: bindingNode(mode, "switch", false),
+  };
 
   return {
     $schema: "https://json-schema.org/draft/2020-12/schema",

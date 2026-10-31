@@ -19,7 +19,7 @@ reference. It does not merge `source` files. Values are normalized:
 - `[env]` and `[var]` values are strings
 - `exec`, `exec_once`, `source`, and `source_optional` are string arrays under
   `global`
-- bindings hold arrays of action objects
+- bindings hold one action object, or several under a `conflict` sub-table
 - window tags are arrays of integers
 
 Example:
@@ -119,9 +119,9 @@ tables; those forms are not modeled.
 them because they have no effect. Rule strings are split on commas by Mango, so
 the schema rejects commas in every rule string field.
 
-Arrays with more than one action require a `.conflict` node. Mouse, axis,
-gesture, and switch tables do not support action arrays. The TOML schema
-enforces these limits.
+Arrays with more than one action require a `.conflict` node on a key binding.
+Mouse, axis, gesture, and switch bindings accept one action. Both schemas
+enforce these limits.
 
 ## Normalization
 
@@ -144,7 +144,8 @@ Additional `.conf` rules:
   `global`.
 - `bind` lines become `bind.<mode>`. The `sym`, `l`, `r`, `p`, and `c` flags
   nest under `sym`, `lock`, `release`, `pass`, and `conflict`.
-- multiple binds with the same mode and trigger merge into one action array.
+- multiple conflict binds with the same mode, flags, and trigger merge into one
+  action array.
 - quoted tag ids such as `"1"` become integer `1`, and quoted tags such as `"5"`
   become `[5]`.
 
