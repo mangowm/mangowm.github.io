@@ -1,5 +1,6 @@
 import Type, { type TSchema } from "typebox";
 
+import { canonicalArgsPattern, tomlActionPattern } from "./data/dispatcherArgs";
 import { DISPATCHERS } from "./data/dispatchers";
 import { GLOBALS } from "./data/globals";
 import { LAYOUTS } from "./data/layouts";
@@ -270,9 +271,10 @@ function globalSchema(mode: SchemaMode) {
   );
 }
 
-// Generated from DISPATCHERS. JSON Schema has no prefix-enum keyword.
+// Generated from DISPATCHER_ARGS. JSON Schema has no prefix-enum keyword.
 const VARIABLE_PATTERN = "\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})";
-const ACTION_PATTERN = `^\\s*(?:${DISPATCHERS.join("|")}|${VARIABLE_PATTERN})(?:\\s*,.*)?\\s*$`;
+const DISPATCHER_PATTERNS = DISPATCHERS.map((name) => tomlActionPattern(name)).join("|");
+const ACTION_PATTERN = `^\\s*(?:${DISPATCHER_PATTERNS}|${VARIABLE_PATTERN}(?:\\s*,.*)?)\\s*$`;
 
 const TAG_NUMBER_PATTERN = "(?:[0-9]|[12][0-9]|3[01])";
 const TAG_MASK_PATTERN = `^\\s*${TAG_NUMBER_PATTERN}\\s*(?:\\|\\s*${TAG_NUMBER_PATTERN}\\s*)*$`;
@@ -332,6 +334,29 @@ const TomlMultipleActions = Type.Unsafe<TSchema>({
   ],
 });
 
+function dispatcherArgRule(name: (typeof DISPATCHERS)[number]) {
+  return Object.fromEntries([
+    [
+      "if",
+      {
+        properties: { dispatcher: { const: name } },
+        required: ["dispatcher"],
+      },
+    ],
+    [
+      // oxlint-disable-next-line unicorn/no-thenable
+      "then",
+      {
+        properties: {
+          args: { type: "string", pattern: canonicalArgsPattern(name) },
+        },
+      },
+    ],
+  ]);
+}
+
+const CANONICAL_ARG_RULES = DISPATCHERS.map(dispatcherArgRule);
+
 const CanonicalAction: TSchema = Type.Unsafe<TSchema>({
   title: "Action",
   description: "A dispatcher call or a variable reference.",
@@ -355,6 +380,7 @@ const CanonicalAction: TSchema = Type.Unsafe<TSchema>({
     { properties: { dispatcher: {} }, required: ["dispatcher"] },
     { properties: { variable: {} }, required: ["variable"] },
   ],
+  allOf: CANONICAL_ARG_RULES,
 });
 
 const CanonicalActions = Type.Array(CanonicalAction, {

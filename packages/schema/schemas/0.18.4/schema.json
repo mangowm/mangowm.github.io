@@ -156,6 +156,1700 @@
               },
               "required": ["variable"]
             }
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "centerwin"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "chvt"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[+]?[0-9]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "comboview"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "create_virtual_output"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "destroy_all_virtual_output"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "disable_monitor"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "dwindle_split_horizontal"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "dwindle_split_vertical"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "dwindle_toggle_current_split"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "dwindle_toggle_split_direction"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "enable_monitor"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "enteroverview"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "exchange_client"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "exchange_stack_client"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "focusdir"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "focusid"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "focuslast"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "focusmon"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "focusstack"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "focus_window_or_workspace"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "groupfocus"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "groupjoin"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "groupleave"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "incgaps"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "incnmaster"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "killclient"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[fF][oO][rR][cC][eE]|[uU][nN][fF][oO][rR][cC][eE]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "leaveoverview"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "load_config_file"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "minimized"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "move_client"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "moveresize"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[cC][uU][rR][mM][oO][vV][eE]|[cC][uU][rR][rR][eE][sS][iI][zZ][eE]|[cC][uU][rR][nN][oO][rR][mM][aA][lL]|[cC][uU][rR][pP][rR][eE][sS][sS][eE][dD]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "movewin"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[+-]?[0-9]+(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "overcircle"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]|[cC][uU][rR][rR][eE][nN][tT]_[nN][eE][xX][tT]|[cC][uU][rR][rR][eE][nN][tT]_[pP][rR][eE][vV]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "quit"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "reload_config"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "resizewin"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[+-]?[0-9]+(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "restore_minimized"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "scroller_stack"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "setkeymode"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "setlayout"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:tile|scroller|grid|monocle|deck|center_tile|right_tile|vertical_scroller|vertical_tile|vertical_grid|vertical_deck|dwindle|fair|vertical_fair))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "setmfact"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "setoption"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:.*)?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "set_proportion"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[+]?(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "sleep_monitor"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "sleep_toggle_monitor"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "smartkillclient"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "smartmovewin"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "smartresizewin"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "spawn"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:.*)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "spawn_on_empty"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "spawn_shell"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:.*)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "switcher"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:next|prev|all_next|all_prev|all_tag_next|all_tag_prev))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "switch_keyboard_layout"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[0-9]|[1-9][0-9]|100))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "switch_layout"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "switch_proportion_preset"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "tag"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "tagcrossmon"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "tagmon"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "tagsilent"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "tag_special_silent"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "tag_special_tag"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "tagtoleft"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[01])?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "tagtoright"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[01])?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggle_all_floating"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "togglefakefullscreen"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "togglefloating"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "togglefullscreen"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "togglegaps"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggleglobal"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "togglegroupbar"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "togglehdr"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "togglejump"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "togglemaximizescreen"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggle_monitor"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggle_named_scratchpad"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:[^,]+)?(?:\\s*,\\s*(?:[^,]+)?)?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggleoverlay"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggleoverview"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[01])?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggle_render_border"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggle_scratchpad"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggle_special_tag"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggletag"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggle_trackpad_enable"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "toggleview"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "view"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "viewcrossmon"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\|(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[^,]+)?)?)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "view_insert"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:(?:prev|next))?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "viewnext_have_client"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[01])?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "viewprev_have_client"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[01])?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "viewtoleft"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[01])?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "viewtoleft_have_client"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[01])?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "viewtoright"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[01])?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "viewtoright_have_client"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[01])?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "wakeup_monitor"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:[^,]+)?\\s*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "dispatcher": {
+                    "const": "zoom"
+                  }
+                },
+                "required": ["dispatcher"]
+              },
+              "then": {
+                "properties": {
+                  "args": {
+                    "type": "string",
+                    "pattern": "^\\s*(?:0)?\\s*$"
+                  }
+                }
+              }
+            }
           ]
         },
         "title": "Actions",

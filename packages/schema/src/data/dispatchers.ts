@@ -94,3 +94,5 @@ export const DISPATCHERS = [
   "wakeup_monitor",
   "zoom",
 ] as const;
+
+export type DispatcherName = (typeof DISPATCHERS)[number];

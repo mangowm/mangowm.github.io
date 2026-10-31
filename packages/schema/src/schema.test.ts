@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vite-plus/test";
 import Value from "typebox/value";
 
+import { DISPATCHER_ARGS, type DispatcherArgKind } from "./data/dispatcherArgs";
 import { DISPATCHERS } from "./data/dispatchers";
 import { schema, tomlSchema } from "./schema";
 import { MANGO_VERSION } from "./version";
@@ -130,11 +131,96 @@ describe("canonical schema", () => {
     ).toBe(false);
   });
 
+  it("validates dispatcher arguments", () => {
+    const canonical = (action: object) =>
+      Value.Check(schema, { bind: { default: { "SUPER+r": [action] } } });
+    const toml = (action: string) =>
+      Value.Check(tomlSchema, { bind: { default: { "SUPER+r": action } } });
+
+    const cases: [object, string, boolean][] = [
+      [{ dispatcher: "reload_config" }, "reload_config", true],
+      [{ dispatcher: "reload_config", args: "x" }, "reload_config,x", false],
+      [{ dispatcher: "focusdir", args: "left" }, "focusdir,left", true],
+      [{ dispatcher: "focusdir", args: "sideways" }, "focusdir,sideways", false],
+      [{ dispatcher: "focusdir" }, "focusdir", true],
+      [{ dispatcher: "tag", args: "1|3,1" }, "tag,1|3,1", true],
+      [{ dispatcher: "tag", args: "99" }, "tag,99", false],
+      [{ dispatcher: "view", args: "1,2" }, "view,1,2", false],
+      [{ dispatcher: "spawn", args: 'sh -c "echo a,b"' }, 'spawn,sh -c "echo a,b"', true],
+      [{ dispatcher: "movewin", args: "+10,-5" }, "movewin,+10,-5", true],
+      [{ dispatcher: "movewin", args: "a,b" }, "movewin,a,b", false],
+      [{ dispatcher: "togglehdr", args: "on,eDP-1" }, "togglehdr,on,eDP-1", true],
+      [{ dispatcher: "togglehdr", args: "eDP-1" }, "togglehdr,eDP-1", false],
+      [{ dispatcher: "moveresize", args: "curnormal" }, "moveresize,curnormal", true],
+      [{ dispatcher: "setlayout", args: "scroller" }, "setlayout,scroller", true],
+      [{ dispatcher: "setlayout", args: "foo" }, "setlayout,foo", false],
+      [{ dispatcher: "view_insert", args: "next" }, "view_insert,next", true],
+      [{ dispatcher: "view_insert", args: "sideways" }, "view_insert,sideways", false],
+      [{ dispatcher: "switch_keyboard_layout", args: "2" }, "switch_keyboard_layout,2", true],
+      [{ dispatcher: "switch_keyboard_layout", args: "foo" }, "switch_keyboard_layout,foo", false],
+      [{ dispatcher: "set_proportion", args: "0.5" }, "set_proportion,0.5", true],
+      [{ dispatcher: "set_proportion", args: "1.5" }, "set_proportion,1.5", false],
+      [{ dispatcher: "switch_keyboard_layout", args: "101" }, "switch_keyboard_layout,101", false],
+      [{ dispatcher: "killclient", args: "force" }, "killclient,force", true],
+      [{ dispatcher: "killclient", args: "maybe" }, "killclient,maybe", false],
+      [{ dispatcher: "setoption", args: "blur,1,2" }, "setoption,blur,1,2", true],
+      [
+        { dispatcher: "toggle_named_scratchpad", args: "a,none,cmd" },
+        "toggle_named_scratchpad,a,none,cmd",
+        true,
+      ],
+      [
+        { dispatcher: "toggle_named_scratchpad", args: "a,none,cmd,extra" },
+        "toggle_named_scratchpad,a,none,cmd,extra",
+        false,
+      ],
+    ];
+
+    for (const [action, string, expected] of cases) {
+      expect(canonical(action)).toBe(expected);
+      expect(toml(string)).toBe(expected);
+    }
+  });
+
   it("accepts every dispatcher name", () => {
     const bind = Object.fromEntries(
       DISPATCHERS.map((dispatcher, index) => [`SUPER+F${index}`, [{ dispatcher }]]),
     );
     expect(Value.Check(schema, { bind: { default: bind } })).toBe(true);
+  });
+
+  it("validates every dispatcher with sample arguments", () => {
+    const samples: Record<DispatcherArgKind, string> = {
+      direction: "left",
+      circle: "next",
+      overcircle: "current_next",
+      int: "+1",
+      uint: "1",
+      float: "+0.5",
+      bool: "1",
+      "tag-mask": "1|3",
+      layout: "scroller",
+      monitor: "eDP-1",
+      string: "foo",
+      free: "echo hi",
+      "mouse-action": "curmove",
+      force: "force",
+      switcher: "all_next",
+      "on-off": "on",
+      "prev-next": "next",
+      index100: "2",
+      "unit-float": "0.5",
+    };
+
+    expect(Object.keys(DISPATCHER_ARGS)).toHaveLength(DISPATCHERS.length);
+
+    for (const dispatcher of DISPATCHERS) {
+      const args = DISPATCHER_ARGS[dispatcher].map((kind) => samples[kind]);
+      const string = args.length === 0 ? dispatcher : `${dispatcher},${args.join(",")}`;
+      const action = args.length === 0 ? { dispatcher } : { dispatcher, args: args.join(",") };
+      expect(Value.Check(tomlSchema, { bind: { default: { "SUPER+r": string } } })).toBe(true);
+      expect(Value.Check(schema, { bind: { default: { "SUPER+r": [action] } } })).toBe(true);
+    }
   });
 
   it("rejects unknown dispatchers", () => {
