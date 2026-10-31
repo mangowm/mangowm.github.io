@@ -83,28 +83,28 @@
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
           "title": "Open Animation Type",
-          "description": "Animation style when a window opens",
+          "description": "Animation style when a window opens. Empty leaves it unset.",
           "default": ""
         },
         "animation_type_close": {
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
           "title": "Close Animation Type",
-          "description": "Animation style when a window closes",
+          "description": "Animation style when a window closes. Empty leaves it unset.",
           "default": ""
         },
         "layer_animation_type_open": {
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
           "title": "Layer Open Animation Type",
-          "description": "Animation style when a layer-surface opens",
+          "description": "Animation style when a layer surface opens. Empty leaves it unset.",
           "default": ""
         },
         "layer_animation_type_close": {
           "type": "string",
           "enum": ["", "none", "fade", "slide", "zoom"],
           "title": "Layer Close Animation Type",
-          "description": "Animation style when a layer-surface closes",
+          "description": "Animation style when a layer surface closes. Empty leaves it unset.",
           "default": ""
         },
         "animation_fade_in": {
@@ -3407,13 +3407,13 @@
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Open Animation",
-                "description": "Animation used when the layer surface opens."
+                "description": "Animation used when the layer surface opens; empty inherits the global setting."
               },
               "animation_type_close": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Close Animation",
-                "description": "Animation used when the layer surface closes."
+                "description": "Animation used when the layer surface closes; empty inherits the global setting."
               },
               "shield_when_capture": {
                 "anyOf": [
@@ -3505,13 +3505,13 @@
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Open Animation",
-                "description": "Animation used when the window opens."
+                "description": "Animation used when the window opens; empty inherits the global setting."
               },
               "animation_type_close": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Close Animation",
-                "description": "Animation used when the window closes."
+                "description": "Animation used when the window closes; empty inherits the global setting."
               },
               "tags": {
                 "anyOf": [
@@ -3598,12 +3598,12 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "Floating window width. Values below 1 are a fraction of the screen width."
+                "description": "Values greater than 0 and up to 1 are a fraction of the screen width; values above 1 are pixels."
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "Floating window height. Values below 1 are a fraction of the screen height."
+                "description": "Values greater than 0 and up to 1 are a fraction of the screen height; values above 1 are pixels."
               },
               "no_border": {
                 "anyOf": [
@@ -3998,7 +3998,7 @@
               "global_key_binding": {
                 "type": "string",
                 "title": "Global Key Binding",
-                "description": "Global keybinding (only works for Wayland apps)",
+                "description": "Global keybinding written as MOD-KEY, for example ctrl+alt-o (Wayland apps only).",
                 "pattern": "^[^-]+\\s*-\\s*\\S+"
               }
             },
@@ -4039,13 +4039,13 @@
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Open Animation",
-                "description": "Animation used when the window opens."
+                "description": "Animation used when the window opens; empty inherits the global setting."
               },
               "animation_type_close": {
                 "type": "string",
                 "enum": ["", "none", "fade", "slide", "zoom"],
                 "title": "Close Animation",
-                "description": "Animation used when the window closes."
+                "description": "Animation used when the window closes; empty inherits the global setting."
               },
               "tags": {
                 "anyOf": [
@@ -4132,12 +4132,12 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "Floating window width. Values below 1 are a fraction of the screen width."
+                "description": "Values greater than 0 and up to 1 are a fraction of the screen width; values above 1 are pixels."
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "Floating window height. Values below 1 are a fraction of the screen height."
+                "description": "Values greater than 0 and up to 1 are a fraction of the screen height; values above 1 are pixels."
               },
               "no_border": {
                 "anyOf": [
@@ -4532,7 +4532,7 @@
               "global_key_binding": {
                 "type": "string",
                 "title": "Global Key Binding",
-                "description": "Global keybinding (only works for Wayland apps)",
+                "description": "Global keybinding written as MOD-KEY, for example ctrl+alt-o (Wayland apps only).",
                 "pattern": "^[^-]+\\s*-\\s*\\S+"
               }
             },

@@ -21,7 +21,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "enum",
     default: "",
     label: "Open Animation Type",
-    description: "Animation style when a window opens",
+    description: "Animation style when a window opens. Empty leaves it unset.",
     options: [
       { value: "", label: "Unset" },
       { value: "none", label: "None" },
@@ -35,7 +35,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "enum",
     default: "",
     label: "Close Animation Type",
-    description: "Animation style when a window closes",
+    description: "Animation style when a window closes. Empty leaves it unset.",
     options: [
       { value: "", label: "Unset" },
       { value: "none", label: "None" },
@@ -49,7 +49,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "enum",
     default: "",
     label: "Layer Open Animation Type",
-    description: "Animation style when a layer-surface opens",
+    description: "Animation style when a layer surface opens. Empty leaves it unset.",
     options: [
       { value: "", label: "Unset" },
       { value: "none", label: "None" },
@@ -63,7 +63,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "enum",
     default: "",
     label: "Layer Close Animation Type",
-    description: "Animation style when a layer-surface closes",
+    description: "Animation style when a layer surface closes. Empty leaves it unset.",
     options: [
       { value: "", label: "Unset" },
       { value: "none", label: "None" },

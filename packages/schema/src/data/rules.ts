@@ -252,14 +252,16 @@ export const RULES: readonly RuleDef[] = [
         key: "animation_type_open",
         type: "enum",
         label: "Open Animation",
-        description: "Animation used when the layer surface opens.",
+        description:
+          "Animation used when the layer surface opens; empty inherits the global setting.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "animation_type_close",
         type: "enum",
         label: "Close Animation",
-        description: "Animation used when the layer surface closes.",
+        description:
+          "Animation used when the layer surface closes; empty inherits the global setting.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
@@ -317,14 +319,14 @@ export const RULES: readonly RuleDef[] = [
         key: "animation_type_open",
         type: "enum",
         label: "Open Animation",
-        description: "Animation used when the window opens.",
+        description: "Animation used when the window opens; empty inherits the global setting.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "animation_type_close",
         type: "enum",
         label: "Close Animation",
-        description: "Animation used when the window closes.",
+        description: "Animation used when the window closes; empty inherits the global setting.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
@@ -380,13 +382,15 @@ export const RULES: readonly RuleDef[] = [
         key: "width",
         type: "float",
         label: "Width",
-        description: "Floating window width. Values below 1 are a fraction of the screen width.",
+        description:
+          "Values greater than 0 and up to 1 are a fraction of the screen width; values above 1 are pixels.",
       },
       {
         key: "height",
         type: "float",
         label: "Height",
-        description: "Floating window height. Values below 1 are a fraction of the screen height.",
+        description:
+          "Values greater than 0 and up to 1 are a fraction of the screen height; values above 1 are pixels.",
       },
       {
         key: "no_border",
@@ -595,7 +599,8 @@ export const RULES: readonly RuleDef[] = [
         key: "global_key_binding",
         type: "key-binding",
         label: "Global Key Binding",
-        description: "Global keybinding (only works for Wayland apps)",
+        description:
+          "Global keybinding written as MOD-KEY, for example ctrl+alt-o (Wayland apps only).",
       },
     ],
   },
@@ -626,14 +631,14 @@ export const RULES: readonly RuleDef[] = [
         key: "animation_type_open",
         type: "enum",
         label: "Open Animation",
-        description: "Animation used when the window opens.",
+        description: "Animation used when the window opens; empty inherits the global setting.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
         key: "animation_type_close",
         type: "enum",
         label: "Close Animation",
-        description: "Animation used when the window closes.",
+        description: "Animation used when the window closes; empty inherits the global setting.",
         options: ["", "none", "fade", "slide", "zoom"],
       },
       {
@@ -689,13 +694,15 @@ export const RULES: readonly RuleDef[] = [
         key: "width",
         type: "float",
         label: "Width",
-        description: "Floating window width. Values below 1 are a fraction of the screen width.",
+        description:
+          "Values greater than 0 and up to 1 are a fraction of the screen width; values above 1 are pixels.",
       },
       {
         key: "height",
         type: "float",
         label: "Height",
-        description: "Floating window height. Values below 1 are a fraction of the screen height.",
+        description:
+          "Values greater than 0 and up to 1 are a fraction of the screen height; values above 1 are pixels.",
       },
       {
         key: "no_border",
@@ -904,7 +911,8 @@ export const RULES: readonly RuleDef[] = [
         key: "global_key_binding",
         type: "key-binding",
         label: "Global Key Binding",
-        description: "Global keybinding (only works for Wayland apps)",
+        description:
+          "Global keybinding written as MOD-KEY, for example ctrl+alt-o (Wayland apps only).",
       },
     ],
   },
