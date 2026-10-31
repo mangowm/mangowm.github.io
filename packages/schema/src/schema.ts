@@ -407,7 +407,11 @@ function ruleField(field: RuleFieldDef, ruleKey: string, mode: SchemaMode): TSch
       return Type.String(metadata);
     case "enum": {
       const values = field.options ?? [];
-      return enumSchema(values, NUMERIC_RULE_ENUMS.has(field.key), metadata);
+      const schema = enumSchema(values, NUMERIC_RULE_ENUMS.has(field.key), metadata);
+      if (field.key === "force_tearing" && mode === "toml") {
+        return Type.Union([Type.Boolean(), schema], metadata);
+      }
+      return schema;
     }
   }
 }

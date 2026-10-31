@@ -340,6 +340,17 @@ describe("TOML schema", () => {
     expect(Value.Check(tomlSchema, { rule: { window_rule: [{ tags: [1, 2] }] } })).toBe(false);
   });
 
+  it("accepts boolean force_tearing in toml", () => {
+    expect(
+      Value.Check(tomlSchema, {
+        rule: {
+          window_rule: [{ force_tearing: true }, { force_tearing: false }, { force_tearing: 2 }],
+        },
+      }),
+    ).toBe(true);
+    expect(Value.Check(schema, { rule: { window_rule: [{ force_tearing: true }] } })).toBe(false);
+  });
+
   it("accepts custom off as an integer", () => {
     expect(
       Value.Check(tomlSchema, { rule: { monitor_rule: [{ name: "eDP-1", custom: 0 }] } }),
