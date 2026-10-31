@@ -204,9 +204,12 @@ describe("canonical schema", () => {
     expect(Value.Check(schema, { rule: { tag_rule: [{ id: "*" }, { id: 1 }] } })).toBe(true);
     expect(Value.Check(schema, { rule: { tag_rule: [{ id: "abc" }] } })).toBe(false);
     expect(Value.Check(schema, { rule: { tag_rule: [{ id: "99" }] } })).toBe(false);
-    expect(Value.Check(schema, { rule: { window_rule: [{ tags: [1, 2] }, { tags: [0] }] } })).toBe(
-      true,
-    );
+    expect(
+      Value.Check(schema, {
+        rule: { window_rule: [{ tags: [1, 2] }, { tags: [0] }, { tags: [5] }] },
+      }),
+    ).toBe(true);
+    expect(Value.Check(tomlSchema, { rule: { window_rule: [{ tags: 5 }] } })).toBe(true);
     expect(Value.Check(schema, { rule: { window_rule: [{ tags: [0, 1] }] } })).toBe(false);
     expect(Value.Check(schema, { rule: { window_rule: [{ tags: [] }] } })).toBe(false);
     expect(Value.Check(schema, { rule: { window_rule: [{ tags: [1, 1] }] } })).toBe(false);

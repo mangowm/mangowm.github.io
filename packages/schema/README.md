@@ -75,7 +75,8 @@ it for editor validation:
 - `source`, `exec`, `exec_once`, and `source_optional` can be a string or an
   array of strings
 - binding actions are strings such as `"spawn,foot"` or arrays of strings
-- `window_rule.tags` can be an integer bitmask or a string such as `"1|2"`
+- `window_rule.tags` can be a tag number (`0` for the special workspace) or a
+  string such as `"1|2"` for several tags
 
 Use with Taplo:
 
@@ -91,15 +92,18 @@ integer, which is why the TOML schema accepts the integer form.
 Normalize parsed configs to the canonical object:
 
 - `.conf`: boolean fields use `0` / `1`; colors stay `0xRRGGBBAA` strings;
-  comma lists become arrays; action strings become action objects; tag masks
-  become tag arrays; flat keys move under `global`; `[env]` and `[var]` values
-  stay strings.
+  comma lists become arrays; action strings become action objects; tag numbers
+  become one-element arrays (`5` becomes `[5]`); `|` strings become arrays
+  (`"1|3"` becomes `[1,3]`); flat keys move under `global`; `[env]` and `[var]`
+  values stay strings.
 - TOML: boolean fields can be `true` / `false` or `0` / `1` and become
   booleans; numeric enums stay integers; `0x...` integers become
   `"0xRRGGBBAA"` strings; scalar `[env]` and `[var]` values become strings;
-  action strings become action objects; tag masks become tag arrays.
+  action strings become action objects; tag numbers and `|` strings become tag
+  arrays.
 
-Tag `0` is exclusive. If a tag mask contains `0` and other tags, keep only `0`.
+Tag `0` is exclusive. If a tag value contains `0` and other tags, normalize it
+to `[0]`. Raw bitmasks above `31` are not supported by the schema.
 
 A `.conf` parser must produce this object before validation.
 

@@ -391,7 +391,8 @@ function ruleField(field: RuleFieldDef, ruleKey: string, mode: SchemaMode): TSch
       if (mode === "canonical") {
         return tagArraySchema({
           ...metadata,
-          description: "Tags to assign. Use 0 for the special workspace.",
+          description:
+            "Tags to assign as an array. Use [0] for the special workspace; tag 0 cannot be combined with other tags.",
         });
       }
       return tagMaskSchema(metadata);
