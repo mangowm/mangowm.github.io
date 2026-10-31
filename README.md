@@ -2,20 +2,28 @@
 
 ## Development
 
-- Check everything is ready:
+This repo uses the [Vite+](https://viteplus.dev) toolchain.
+
+Install dependencies:
+
+```bash
+vp install
+```
+
+Check, test, and build:
 
 ```bash
 vp run ready
 ```
 
-- Build the monorepo:
-
-```bash
-vp run -r build
-```
-
-- Run the development server:
+Run the development server:
 
 ```bash
 vp dev
 ```
+
+## Documentation
+
+Docs are in the [mango repo](https://github.com/mangowm/mango/tree/main/docs).
+
+`apps/docs/content` is synced from there, so don't edit it here.
