@@ -6,7 +6,7 @@ export const RULES: readonly RuleDef[] = [
     key: "monitor_rule",
     label: "Monitor Rules",
     description:
-      "Set mode, scale, HDR, and position for the first output matching every field set.",
+      "Match outputs by name, make, model, or serial; every field set must match. The first matching rule is applied to each output.",
     fields: [
       {
         key: "name",
@@ -87,13 +87,14 @@ export const RULES: readonly RuleDef[] = [
         type: "bool",
         label: "HDR",
         description:
-          "Turn on HDR for this output. Requires the Vulkan renderer (WLR_RENDERER=vulkan).",
+          "Turn on HDR for this output. Requires the wl-only Vulkan build; not supported with scenefx.",
       },
       {
         key: "hdr_min_lum",
         type: "float",
         label: "HDR Min Luminance",
-        description: "Mastering display minimum luminance, cd/m² (0 = unset)",
+        description:
+          "Mastering display minimum luminance, cd/m² (0 = unset). No effect on wlroots 0.20.x.",
       },
       {
         key: "hdr_max_lum",
@@ -923,7 +924,7 @@ export const RULES: readonly RuleDef[] = [
         key: "type",
         type: "enum",
         label: "Device Type",
-        description: "Device type to match. touchpad is accepted as an alias for trackpad.",
+        description: "Device type to match. touchpad is a deprecated alias for trackpad.",
         options: [
           "keyboard",
           "pointer",
@@ -1071,7 +1072,7 @@ export const RULES: readonly RuleDef[] = [
         type: "string",
         label: "Monitor",
         description:
-          "Pin a touch or tablet device to one output (monitor spec). Unset follows the current screen.",
+          "Pin a touch or tablet device to one output. Unset touch devices follow the current screen; unset tablets stay unmapped.",
       },
       {
         key: "map_focus_monitor",
