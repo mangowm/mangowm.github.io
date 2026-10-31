@@ -2113,7 +2113,7 @@
               "hdr_force": {
                 "type": "boolean",
                 "title": "Force HDR",
-                "description": "Skip the EDID BT.2020/PQ checks when hdr is on. HDR also requires the Vulkan renderer."
+                "description": "Skip the EDID BT.2020/PQ checks when hdr is on. HDR requires the wl-only Vulkan build."
               },
               "icc": {
                 "type": "string",
@@ -2589,7 +2589,7 @@
                 "type": "integer",
                 "enum": [0, 1, 2],
                 "title": "Force Tearing",
-                "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Global allow_tearing must also permit tearing."
+                "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing."
               },
               "no_swallow": {
                 "type": "boolean",
@@ -2863,7 +2863,7 @@
                 "type": "integer",
                 "enum": [0, 1, 2],
                 "title": "Force Tearing",
-                "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Global allow_tearing must also permit tearing."
+                "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing."
               },
               "no_swallow": {
                 "type": "boolean",

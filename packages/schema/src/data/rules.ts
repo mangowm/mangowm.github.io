@@ -113,7 +113,7 @@ export const RULES: readonly RuleDef[] = [
         type: "bool",
         label: "Force HDR",
         description:
-          "Skip the EDID BT.2020/PQ checks when hdr is on. HDR also requires the Vulkan renderer.",
+          "Skip the EDID BT.2020/PQ checks when hdr is on. HDR requires the wl-only Vulkan build.",
       },
       {
         key: "icc",
@@ -556,7 +556,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Force Tearing",
         description:
-          "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Global allow_tearing must also permit tearing.",
+          "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing.",
         options: ["0", "1", "2"],
       },
       {
@@ -868,7 +868,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Force Tearing",
         description:
-          "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Global allow_tearing must also permit tearing.",
+          "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing.",
         options: ["0", "1", "2"],
       },
       {
