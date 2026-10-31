@@ -227,7 +227,12 @@ describe("canonical schema", () => {
   it("validates global key bindings", () => {
     expect(
       Value.Check(schema, {
-        rule: { window_rule: [{ global_key_binding: "SUPER-XF86AudioMute" }] },
+        rule: {
+          window_rule: [
+            { global_key_binding: "SUPER-XF86AudioMute" },
+            { global_key_binding: "SUPER - XF86AudioMute extra" },
+          ],
+        },
       }),
     ).toBe(true);
     expect(Value.Check(schema, { rule: { window_rule: [{ global_key_binding: "SUPER" }] } })).toBe(
@@ -296,7 +301,13 @@ describe("TOML schema", () => {
         },
         env: { DPI: 140, FLAG: true },
         var: { scale: 1.5 },
-        bind: { default: { "SUPER+r": "reload_config", "SUPER+Return": ["spawn,foot"] } },
+        bind: {
+          default: {
+            "SUPER+r": "reload_config",
+            "SUPER+Return": ["spawn,foot"],
+            "SUPER+x": "spawn , foot",
+          },
+        },
         rule: { window_rule: [{ is_floating: 1, width: 0.5, tags: "1 | 2" }] },
       }),
     ).toBe(true);

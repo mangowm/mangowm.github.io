@@ -29,7 +29,7 @@
             "type": "string",
             "title": "Action",
             "description": "A dispatcher name followed by optional comma-separated arguments.",
-            "pattern": "^\\s*(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:,.*)?\\s*$"
+            "pattern": "^\\s*(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*,.*)?\\s*$"
           },
           {
             "type": "array",
@@ -37,7 +37,7 @@
               "type": "string",
               "title": "Action",
               "description": "A dispatcher name followed by optional comma-separated arguments.",
-              "pattern": "^\\s*(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:,.*)?\\s*$"
+              "pattern": "^\\s*(?:centerwin|chvt|comboview|create_virtual_output|destroy_all_virtual_output|disable_monitor|dwindle_split_horizontal|dwindle_split_vertical|dwindle_toggle_current_split|dwindle_toggle_split_direction|enable_monitor|enteroverview|exchange_client|exchange_stack_client|focusdir|focusid|focuslast|focusmon|focusstack|focus_window_or_workspace|groupfocus|groupjoin|groupleave|incgaps|incnmaster|killclient|leaveoverview|load_config_file|minimized|move_client|moveresize|movewin|overcircle|quit|reload_config|resizewin|restore_minimized|scroller_stack|setkeymode|setlayout|setmfact|setoption|set_proportion|sleep_monitor|sleep_toggle_monitor|smartkillclient|smartmovewin|smartresizewin|spawn|spawn_on_empty|spawn_shell|switcher|switch_keyboard_layout|switch_layout|switch_proportion_preset|tag|tagcrossmon|tagmon|tagsilent|tag_special_silent|tag_special_tag|tagtoleft|tagtoright|toggle_all_floating|togglefakefullscreen|togglefloating|togglefullscreen|togglegaps|toggleglobal|togglegroupbar|togglehdr|togglejump|togglemaximizescreen|toggle_monitor|toggle_named_scratchpad|toggleoverlay|toggleoverview|toggle_render_border|toggle_scratchpad|toggle_special_tag|toggletag|toggle_trackpad_enable|toggleview|view|viewcrossmon|view_insert|viewnext_have_client|viewprev_have_client|viewtoleft|viewtoleft_have_client|viewtoright|viewtoright_have_client|wakeup_monitor|zoom|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*,.*)?\\s*$"
             }
           }
         ],
@@ -3999,7 +3999,7 @@
                 "type": "string",
                 "title": "Global Key Binding",
                 "description": "Global keybinding (only works for Wayland apps)",
-                "pattern": "^[^-]+-\\S+$"
+                "pattern": "^[^-]+\\s*-\\s*\\S+"
               }
             },
             "title": "Window Rules",
@@ -4533,7 +4533,7 @@
                 "type": "string",
                 "title": "Global Key Binding",
                 "description": "Global keybinding (only works for Wayland apps)",
-                "pattern": "^[^-]+-\\S+$"
+                "pattern": "^[^-]+\\s*-\\s*\\S+"
               }
             },
             "title": "Window Rules (Once)",

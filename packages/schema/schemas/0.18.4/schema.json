@@ -2625,7 +2625,7 @@
                 "type": "string",
                 "title": "Global Key Binding",
                 "description": "Global keybinding (only works for Wayland apps)",
-                "pattern": "^[^-]+-\\S+$"
+                "pattern": "^[^-]+\\s*-\\s*\\S+"
               }
             },
             "title": "Window Rules",
@@ -2899,7 +2899,7 @@
                 "type": "string",
                 "title": "Global Key Binding",
                 "description": "Global keybinding (only works for Wayland apps)",
-                "pattern": "^[^-]+-\\S+$"
+                "pattern": "^[^-]+\\s*-\\s*\\S+"
               }
             },
             "title": "Window Rules (Once)",

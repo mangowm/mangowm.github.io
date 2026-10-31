@@ -248,7 +248,7 @@ function globalSchema(mode: SchemaMode) {
 
 // Generated from DISPATCHERS. JSON Schema has no prefix-enum keyword.
 const VARIABLE_PATTERN = "\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})";
-const ACTION_PATTERN = `^\\s*(?:${DISPATCHERS.join("|")}|${VARIABLE_PATTERN})(?:,.*)?\\s*$`;
+const ACTION_PATTERN = `^\\s*(?:${DISPATCHERS.join("|")}|${VARIABLE_PATTERN})(?:\\s*,.*)?\\s*$`;
 
 const TAG_NUMBER_PATTERN = "(?:[0-9]|[12][0-9]|3[01])";
 const TAG_MASK_PATTERN = `^\\s*${TAG_NUMBER_PATTERN}\\s*(?:\\|\\s*${TAG_NUMBER_PATTERN}\\s*)*$`;
@@ -384,7 +384,7 @@ function ruleField(field: RuleFieldDef, ruleKey: string, mode: SchemaMode): TSch
         metadata,
       );
     case "key-binding":
-      return Type.String({ ...metadata, pattern: "^[^-]+-\\S+$" });
+      return Type.String({ ...metadata, pattern: "^[^-]+\\s*-\\s*\\S+" });
     case "tag-id":
       return tagIdSchema(mode, metadata);
     case "tag-mask":
