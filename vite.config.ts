@@ -5,7 +5,7 @@ export default defineConfig({
     "*": "vp check --fix",
   },
   fmt: {
-    ignorePatterns: ["**/routeTree.gen.ts"],
+    ignorePatterns: ["**/routeTree.gen.ts", "packages/schema/schemas/**"],
     sortTailwindcss: {
       stylesheet: "packages/ui/src/styles/tailwind.css",
       functions: ["cn", "cva"],

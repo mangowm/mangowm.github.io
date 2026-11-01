@@ -131,7 +131,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -143,7 +145,9 @@
               "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -155,7 +159,9 @@
               "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -167,7 +173,9 @@
               "pattern": "^\\s*(?:[^,]+)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -179,7 +187,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -191,7 +201,9 @@
               "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -203,7 +215,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -215,7 +229,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -227,7 +243,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -239,7 +257,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -251,7 +271,9 @@
               "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -263,7 +285,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -275,7 +299,9 @@
               "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -287,7 +313,9 @@
               "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -299,7 +327,9 @@
               "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -311,7 +341,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -323,7 +355,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -335,7 +369,9 @@
               "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -347,7 +383,9 @@
               "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -359,7 +397,9 @@
               "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -371,7 +411,9 @@
               "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -383,7 +425,9 @@
               "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -395,7 +439,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -407,7 +453,9 @@
               "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -419,7 +467,9 @@
               "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -431,7 +481,9 @@
               "pattern": "^\\s*(?:(?:[fF][oO][rR][cC][eE]|[uU][nN][fF][oO][rR][cC][eE]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -443,7 +495,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -455,7 +509,9 @@
               "pattern": "^\\s*(?:[^,]+)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -467,7 +523,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -479,7 +537,9 @@
               "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -491,7 +551,9 @@
               "pattern": "^\\s*(?:(?:[cC][uU][rR][mM][oO][vV][eE]|[cC][uU][rR][rR][eE][sS][iI][zZ][eE]|[cC][uU][rR][nN][oO][rR][mM][aA][lL]|[cC][uU][rR][pP][rR][eE][sS][sS][eE][dD]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -503,7 +565,9 @@
               "pattern": "^\\s*(?:[+-]?[0-9]+(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -515,7 +579,9 @@
               "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]|[cC][uU][rR][rR][eE][nN][tT]_[nN][eE][xX][tT]|[cC][uU][rR][rR][eE][nN][tT]_[pP][rR][eE][vV]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -527,7 +593,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -539,7 +607,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -551,7 +621,9 @@
               "pattern": "^\\s*(?:[+-]?[0-9]+(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -563,7 +635,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -575,7 +649,9 @@
               "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -587,7 +663,9 @@
               "pattern": "^\\s*(?:[^,]+)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -599,7 +677,9 @@
               "pattern": "^\\s*(?:(?:tile|scroller|grid|monocle|deck|center_tile|right_tile|vertical_scroller|vertical_tile|vertical_grid|vertical_deck|dwindle|fair|vertical_fair))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -611,7 +691,9 @@
               "pattern": "^\\s*(?:[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -623,7 +705,9 @@
               "pattern": "^\\s*(?:(?:title_message_bar_decorate_focus_fg_color|title_message_bar_decorate_focus_bg_color|title_message_bar_decorate_corner_radius|title_message_bar_decorate_border_color|title_message_bar_decorate_border_width|title_message_bar_decorate_font_desc|title_message_bar_decorate_padding_x|title_message_bar_decorate_padding_y|title_message_bar_decorate_fg_color|title_message_bar_decorate_bg_color|scroller_default_proportion_single|jump_label_decorate_focus_fg_color|jump_label_decorate_focus_bg_color|scroller_ignore_proportion_single|focus_direction_only_zone_overlap|group_bar_decorate_focus_fg_color|group_bar_decorate_focus_bg_color|jump_label_decorate_corner_radius|animation_curve_opacity_fade_out|gesture_swipe_min_speed_to_force|group_bar_decorate_corner_radius|jump_label_decorate_border_color|jump_label_decorate_border_width|trackpad_middle_button_emulation|animation_curve_opacity_fade_in|edge_scroller_focus_allow_speed|group_bar_decorate_border_color|group_bar_decorate_border_width|tab_bar_decorate_focus_fg_color|tab_bar_decorate_focus_bg_color|tab_bar_decorate_corner_radius|hotarea_disable_on_fullscreen|tab_bar_decorate_border_color|tab_bar_decorate_border_width|jump_label_decorate_font_desc|jump_label_decorate_padding_x|jump_label_decorate_padding_y|mouse_middle_button_emulation|trackpad_disable_while_typing|group_bar_close_button_enable|idle_inhibit_when_fullscreen|touch_enable_mouse_emulation|group_bar_decorate_font_desc|group_bar_decorate_padding_x|group_bar_decorate_padding_y|jump_label_decorate_fg_color|jump_label_decorate_bg_color|special_gap_inner_horizontal|special_gap_outer_horizontal|scroller_default_proportion|edge_scroller_pointer_focus|idle_inhibit_ignore_visible|group_bar_decorate_fg_color|group_bar_decorate_bg_color|layer_animation_type_close|scroller_prefer_overspread|gesture_swipe_cancel_ratio|scroller_proportion_preset|monocle_right_button_close|trackpad_natural_scrolling|tab_bar_decorate_font_desc|tab_bar_decorate_padding_x|tab_bar_decorate_padding_y|special_gap_inner_vertical|special_gap_outer_vertical|layer_animation_type_open|dwindle_drop_simple_split|tab_bar_decorate_fg_color|tab_bar_decorate_bg_color|trackpad_send_events_mode|animation_duration_close|animation_duration_focus|scratchpad_cross_monitor|center_master_overspread|center_when_single_stack|dwindle_horizontal_split|title_message_bar_height|tag_animation_direction|animation_duration_move|animation_duration_open|allow_shortcuts_inhibit|overcircle_center_ratio|cursor_hide_on_keypress|axis_bind_apply_timeout|mouse_natural_scrolling|scratchpad_height_ratio|group_bar_button_margin|fade_out_begin_opacity|animation_duration_tag|scroller_prefer_center|exchange_cross_monitor|blur_params_num_passes|blur_params_brightness|blur_params_saturation|allow_lock_transparent|gesture_swipe_distance|dwindle_vertical_split|dwindle_preserve_split|trackpad_accel_profile|mouse_send_events_mode|trackpad_scroll_method|trackpad_scroll_button|trackpad_scroll_factor|scratchpad_width_ratio|group_bar_button_color|maximized_screen_color|fade_in_begin_opacity|animation_curve_close|animation_curve_focus|scroller_focus_center|xwayland_ignore_scale|no_border_when_single|no_radius_when_single|default_master_factor|trackpad_click_method|title_message_bar_gap|always_show_group_bar|group_bar_button_size|animation_type_close|animation_curve_move|animation_curve_open|view_current_to_back|blur_params_contrast|shadow_only_floating|xwayland_persistence|disable_middle_paste|enable_floating_snap|default_master_count|dwindle_smart_resize|dwindle_manual_split|enable_border_resize|trackpad_accel_speed|trackpad_left_handed|gap_inner_horizontal|gap_outer_horizontal|animation_type_open|animation_curve_tag|focus_cross_monitor|swipe_min_threshold|dwindle_smart_split|dwindle_split_ratio|cursor_hide_timeout|mouse_accel_profile|mouse_scroll_method|mouse_scroll_button|dim_unfocused_color|animation_fade_out|zoom_initial_ratio|blur_params_radius|shadows_position_x|shadows_position_y|auto_reload_config|overview_gap_inner|overview_gap_outer|border_resize_size|mouse_click_method|axis_scroll_factor|gap_inner_vertical|gap_outer_vertical|animation_fade_in|blur_params_noise|single_scratchpad|monocle_no_border|monocle_no_radius|float_full_to_top|drag_tile_to_tile|unfocused_opacity|xkb_rules_variant|xkb_rules_options|focus_on_activate|mouse_accel_speed|mouse_left_handed|dim_focused_color|layer_animations|scroller_structs|xkb_rules_layout|drag_warp_cursor|monocle_tab_mode|disable_trackpad|send_events_mode|group_bar_height|scratchpad_color|window_rule_once|bind(?:[slrpc]*)|focus_cross_tag|sync_obj_enable|drag_tile_small|focused_opacity|xkb_rules_rules|xkb_rules_model|source_optional|zoom_end_ratio|blur_optimized|monocle_no_gap|hotarea_corner|enable_hotarea|tab_bar_height|border_radius|layer_shadows|allow_tearing|snap_distance|circle_layout|new_is_master|deck_tab_mode|shadows_color|overlay_color|shadows_size|shadows_blur|tag_carousel|gesture_live|hotarea_size|sloppy_focus|repeat_delay|touch_enable|tap_to_click|tap_and_drag|cursor_theme|border_color|urgent_color|global_color|monitor_rule|jump_labels|warp_cursor|drag_corner|repeat_rate|cursor_size|special_dim|split_color|focus_color|window_rule|device_rule|gesturebind|animations|blur_layer|tag_gather|numlock_on|smart_gaps|button_map|root_color|dim_enable|drop_color|layer_rule|switchbind|hdr_depth|drag_lock|border_px|exec_once|mousebind|key_mode|tag_rule|axisbind|shadows|tag_num|source|blur|exec|env|var)(?:\\s*,\\s*(?:.*)?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -635,7 +719,9 @@
               "pattern": "^\\s*(?:[+]?(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -647,7 +733,9 @@
               "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -659,7 +747,9 @@
               "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -671,7 +761,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -683,7 +775,9 @@
               "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -695,7 +789,9 @@
               "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -707,7 +803,9 @@
               "pattern": "^\\s*(?:.*)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -719,7 +817,9 @@
               "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -731,7 +831,9 @@
               "pattern": "^\\s*(?:.*)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -743,7 +845,9 @@
               "pattern": "^\\s*(?:(?:next|prev|all_next|all_prev|all_tag_next|all_tag_prev))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -755,7 +859,9 @@
               "pattern": "^\\s*(?:[+]?(?:[0-9]|[1-9][0-9]|100))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -767,7 +873,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -779,7 +887,9 @@
               "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -791,7 +901,9 @@
               "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -803,7 +915,9 @@
               "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -815,7 +929,9 @@
               "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+)(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -827,7 +943,9 @@
               "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -839,7 +957,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -851,7 +971,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -863,7 +985,9 @@
               "pattern": "^\\s*(?:[01])?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -875,7 +999,9 @@
               "pattern": "^\\s*(?:[01])?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -887,7 +1013,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -899,7 +1027,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -911,7 +1041,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -923,7 +1055,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -935,7 +1069,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -947,7 +1083,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -959,7 +1097,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -971,7 +1111,9 @@
               "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -983,7 +1125,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -995,7 +1139,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1007,7 +1153,9 @@
               "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1019,7 +1167,9 @@
               "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:[^,]+)?(?:\\s*,\\s*(?:[^,]+)?)?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1031,7 +1181,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1043,7 +1195,9 @@
               "pattern": "^\\s*(?:[01])?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1055,7 +1209,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1067,7 +1223,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1079,7 +1237,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1091,7 +1251,9 @@
               "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1103,7 +1265,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1115,7 +1279,9 @@
               "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1127,7 +1293,9 @@
               "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1139,7 +1307,9 @@
               "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1151,7 +1321,9 @@
               "pattern": "^\\s*(?:(?:prev|next))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1163,7 +1335,9 @@
               "pattern": "^\\s*(?:[01])?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1175,7 +1349,9 @@
               "pattern": "^\\s*(?:[01])?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1187,7 +1363,9 @@
               "pattern": "^\\s*(?:[01])?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1199,7 +1377,9 @@
               "pattern": "^\\s*(?:[01])?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1211,7 +1391,9 @@
               "pattern": "^\\s*(?:[01])?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1223,7 +1405,9 @@
               "pattern": "^\\s*(?:[01])?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1235,7 +1419,9 @@
               "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1247,7 +1433,9 @@
               "pattern": "^\\s*(?:0)?\\s*$"
             }
           },
-          "required": ["dispatcher"]
+          "required": [
+            "dispatcher"
+          ]
         },
         {
           "properties": {
@@ -1263,7 +1451,9 @@
               "description": "Raw text after the first comma."
             }
           },
-          "required": ["variable"]
+          "required": [
+            "variable"
+          ]
         }
       ]
     },
@@ -1398,7 +1588,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1410,7 +1602,9 @@
                 "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1422,7 +1616,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1434,7 +1630,9 @@
                 "pattern": "^\\s*(?:[^,]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1446,7 +1644,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1458,7 +1658,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1470,7 +1672,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1482,7 +1686,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1494,7 +1700,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1506,7 +1714,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1518,7 +1728,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1530,7 +1742,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1542,7 +1756,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1554,7 +1770,9 @@
                 "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1566,7 +1784,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1578,7 +1798,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1590,7 +1812,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1602,7 +1826,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1614,7 +1840,9 @@
                 "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1626,7 +1854,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1638,7 +1868,9 @@
                 "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1650,7 +1882,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1662,7 +1896,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1674,7 +1910,9 @@
                 "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1686,7 +1924,9 @@
                 "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1698,7 +1938,9 @@
                 "pattern": "^\\s*(?:(?:[fF][oO][rR][cC][eE]|[uU][nN][fF][oO][rR][cC][eE]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1710,7 +1952,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1722,7 +1966,9 @@
                 "pattern": "^\\s*(?:[^,]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1734,7 +1980,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1746,7 +1994,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1758,7 +2008,9 @@
                 "pattern": "^\\s*(?:(?:[cC][uU][rR][mM][oO][vV][eE]|[cC][uU][rR][rR][eE][sS][iI][zZ][eE]|[cC][uU][rR][nN][oO][rR][mM][aA][lL]|[cC][uU][rR][pP][rR][eE][sS][sS][eE][dD]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1770,7 +2022,9 @@
                 "pattern": "^\\s*(?:[+-]?[0-9]+(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1782,7 +2036,9 @@
                 "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]|[cC][uU][rR][rR][eE][nN][tT]_[nN][eE][xX][tT]|[cC][uU][rR][rR][eE][nN][tT]_[pP][rR][eE][vV]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1794,7 +2050,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1806,7 +2064,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1818,7 +2078,9 @@
                 "pattern": "^\\s*(?:[+-]?[0-9]+(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1830,7 +2092,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1842,7 +2106,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1854,7 +2120,9 @@
                 "pattern": "^\\s*(?:[^,]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1866,7 +2134,9 @@
                 "pattern": "^\\s*(?:(?:tile|scroller|grid|monocle|deck|center_tile|right_tile|vertical_scroller|vertical_tile|vertical_grid|vertical_deck|dwindle|fair|vertical_fair))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1878,7 +2148,9 @@
                 "pattern": "^\\s*(?:[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1890,7 +2162,9 @@
                 "pattern": "^\\s*(?:(?:title_message_bar_decorate_focus_fg_color|title_message_bar_decorate_focus_bg_color|title_message_bar_decorate_corner_radius|title_message_bar_decorate_border_color|title_message_bar_decorate_border_width|title_message_bar_decorate_font_desc|title_message_bar_decorate_padding_x|title_message_bar_decorate_padding_y|title_message_bar_decorate_fg_color|title_message_bar_decorate_bg_color|scroller_default_proportion_single|jump_label_decorate_focus_fg_color|jump_label_decorate_focus_bg_color|scroller_ignore_proportion_single|focus_direction_only_zone_overlap|group_bar_decorate_focus_fg_color|group_bar_decorate_focus_bg_color|jump_label_decorate_corner_radius|animation_curve_opacity_fade_out|gesture_swipe_min_speed_to_force|group_bar_decorate_corner_radius|jump_label_decorate_border_color|jump_label_decorate_border_width|trackpad_middle_button_emulation|animation_curve_opacity_fade_in|edge_scroller_focus_allow_speed|group_bar_decorate_border_color|group_bar_decorate_border_width|tab_bar_decorate_focus_fg_color|tab_bar_decorate_focus_bg_color|tab_bar_decorate_corner_radius|hotarea_disable_on_fullscreen|tab_bar_decorate_border_color|tab_bar_decorate_border_width|jump_label_decorate_font_desc|jump_label_decorate_padding_x|jump_label_decorate_padding_y|mouse_middle_button_emulation|trackpad_disable_while_typing|group_bar_close_button_enable|idle_inhibit_when_fullscreen|touch_enable_mouse_emulation|group_bar_decorate_font_desc|group_bar_decorate_padding_x|group_bar_decorate_padding_y|jump_label_decorate_fg_color|jump_label_decorate_bg_color|special_gap_inner_horizontal|special_gap_outer_horizontal|scroller_default_proportion|edge_scroller_pointer_focus|idle_inhibit_ignore_visible|group_bar_decorate_fg_color|group_bar_decorate_bg_color|layer_animation_type_close|scroller_prefer_overspread|gesture_swipe_cancel_ratio|scroller_proportion_preset|monocle_right_button_close|trackpad_natural_scrolling|tab_bar_decorate_font_desc|tab_bar_decorate_padding_x|tab_bar_decorate_padding_y|special_gap_inner_vertical|special_gap_outer_vertical|layer_animation_type_open|dwindle_drop_simple_split|tab_bar_decorate_fg_color|tab_bar_decorate_bg_color|trackpad_send_events_mode|animation_duration_close|animation_duration_focus|scratchpad_cross_monitor|center_master_overspread|center_when_single_stack|dwindle_horizontal_split|title_message_bar_height|tag_animation_direction|animation_duration_move|animation_duration_open|allow_shortcuts_inhibit|overcircle_center_ratio|cursor_hide_on_keypress|axis_bind_apply_timeout|mouse_natural_scrolling|scratchpad_height_ratio|group_bar_button_margin|fade_out_begin_opacity|animation_duration_tag|scroller_prefer_center|exchange_cross_monitor|blur_params_num_passes|blur_params_brightness|blur_params_saturation|allow_lock_transparent|gesture_swipe_distance|dwindle_vertical_split|dwindle_preserve_split|trackpad_accel_profile|mouse_send_events_mode|trackpad_scroll_method|trackpad_scroll_button|trackpad_scroll_factor|scratchpad_width_ratio|group_bar_button_color|maximized_screen_color|fade_in_begin_opacity|animation_curve_close|animation_curve_focus|scroller_focus_center|xwayland_ignore_scale|no_border_when_single|no_radius_when_single|default_master_factor|trackpad_click_method|title_message_bar_gap|always_show_group_bar|group_bar_button_size|animation_type_close|animation_curve_move|animation_curve_open|view_current_to_back|blur_params_contrast|shadow_only_floating|xwayland_persistence|disable_middle_paste|enable_floating_snap|default_master_count|dwindle_smart_resize|dwindle_manual_split|enable_border_resize|trackpad_accel_speed|trackpad_left_handed|gap_inner_horizontal|gap_outer_horizontal|animation_type_open|animation_curve_tag|focus_cross_monitor|swipe_min_threshold|dwindle_smart_split|dwindle_split_ratio|cursor_hide_timeout|mouse_accel_profile|mouse_scroll_method|mouse_scroll_button|dim_unfocused_color|animation_fade_out|zoom_initial_ratio|blur_params_radius|shadows_position_x|shadows_position_y|auto_reload_config|overview_gap_inner|overview_gap_outer|border_resize_size|mouse_click_method|axis_scroll_factor|gap_inner_vertical|gap_outer_vertical|animation_fade_in|blur_params_noise|single_scratchpad|monocle_no_border|monocle_no_radius|float_full_to_top|drag_tile_to_tile|unfocused_opacity|xkb_rules_variant|xkb_rules_options|focus_on_activate|mouse_accel_speed|mouse_left_handed|dim_focused_color|layer_animations|scroller_structs|xkb_rules_layout|drag_warp_cursor|monocle_tab_mode|disable_trackpad|send_events_mode|group_bar_height|scratchpad_color|window_rule_once|bind(?:[slrpc]*)|focus_cross_tag|sync_obj_enable|drag_tile_small|focused_opacity|xkb_rules_rules|xkb_rules_model|source_optional|zoom_end_ratio|blur_optimized|monocle_no_gap|hotarea_corner|enable_hotarea|tab_bar_height|border_radius|layer_shadows|allow_tearing|snap_distance|circle_layout|new_is_master|deck_tab_mode|shadows_color|overlay_color|shadows_size|shadows_blur|tag_carousel|gesture_live|hotarea_size|sloppy_focus|repeat_delay|touch_enable|tap_to_click|tap_and_drag|cursor_theme|border_color|urgent_color|global_color|monitor_rule|jump_labels|warp_cursor|drag_corner|repeat_rate|cursor_size|special_dim|split_color|focus_color|window_rule|device_rule|gesturebind|animations|blur_layer|tag_gather|numlock_on|smart_gaps|button_map|root_color|dim_enable|drop_color|layer_rule|switchbind|hdr_depth|drag_lock|border_px|exec_once|mousebind|key_mode|tag_rule|axisbind|shadows|tag_num|source|blur|exec|env|var)(?:\\s*,\\s*(?:.*)?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1902,7 +2176,9 @@
                 "pattern": "^\\s*(?:[+]?(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1914,7 +2190,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1926,7 +2204,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1938,7 +2218,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1950,7 +2232,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1962,7 +2246,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1974,7 +2260,9 @@
                 "pattern": "^\\s*(?:.*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1986,7 +2274,9 @@
                 "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -1998,7 +2288,9 @@
                 "pattern": "^\\s*(?:.*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2010,7 +2302,9 @@
                 "pattern": "^\\s*(?:(?:next|prev|all_next|all_prev|all_tag_next|all_tag_prev))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2022,7 +2316,9 @@
                 "pattern": "^\\s*(?:[+]?(?:[0-9]|[1-9][0-9]|100))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2034,7 +2330,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2046,7 +2344,9 @@
                 "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2058,7 +2358,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2070,7 +2372,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2082,7 +2386,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+)(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2094,7 +2400,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2106,7 +2414,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2118,7 +2428,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2130,7 +2442,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2142,7 +2456,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2154,7 +2470,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2166,7 +2484,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2178,7 +2498,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2190,7 +2512,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2202,7 +2526,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2214,7 +2540,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2226,7 +2554,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2238,7 +2568,9 @@
                 "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2250,7 +2582,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2262,7 +2596,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2274,7 +2610,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2286,7 +2624,9 @@
                 "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:[^,]+)?(?:\\s*,\\s*(?:[^,]+)?)?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2298,7 +2638,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2310,7 +2652,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2322,7 +2666,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2334,7 +2680,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2346,7 +2694,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2358,7 +2708,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2370,7 +2722,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2382,7 +2736,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2394,7 +2750,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2406,7 +2764,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2418,7 +2778,9 @@
                 "pattern": "^\\s*(?:(?:prev|next))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2430,7 +2792,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2442,7 +2806,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2454,7 +2820,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2466,7 +2834,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2478,7 +2848,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2490,7 +2862,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2502,7 +2876,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2514,7 +2890,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2530,7 +2908,9 @@
                 "description": "Raw text after the first comma."
               }
             },
-            "required": ["variable"]
+            "required": [
+              "variable"
+            ]
           }
         ]
       },
@@ -2670,7 +3050,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2682,7 +3064,9 @@
                 "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2694,7 +3078,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2706,7 +3092,9 @@
                 "pattern": "^\\s*(?:[^,]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2718,7 +3106,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2730,7 +3120,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2742,7 +3134,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2754,7 +3148,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2766,7 +3162,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2778,7 +3176,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2790,7 +3190,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2802,7 +3204,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2814,7 +3218,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2826,7 +3232,9 @@
                 "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2838,7 +3246,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2850,7 +3260,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2862,7 +3274,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2874,7 +3288,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2886,7 +3302,9 @@
                 "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2898,7 +3316,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2910,7 +3330,9 @@
                 "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2922,7 +3344,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2934,7 +3358,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2946,7 +3372,9 @@
                 "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2958,7 +3386,9 @@
                 "pattern": "^\\s*(?:[+-]?[0-9]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2970,7 +3400,9 @@
                 "pattern": "^\\s*(?:(?:[fF][oO][rR][cC][eE]|[uU][nN][fF][oO][rR][cC][eE]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2982,7 +3414,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -2994,7 +3428,9 @@
                 "pattern": "^\\s*(?:[^,]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3006,7 +3442,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3018,7 +3456,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3030,7 +3470,9 @@
                 "pattern": "^\\s*(?:(?:[cC][uU][rR][mM][oO][vV][eE]|[cC][uU][rR][rR][eE][sS][iI][zZ][eE]|[cC][uU][rR][nN][oO][rR][mM][aA][lL]|[cC][uU][rR][pP][rR][eE][sS][sS][eE][dD]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3042,7 +3484,9 @@
                 "pattern": "^\\s*(?:[+-]?[0-9]+(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3054,7 +3498,9 @@
                 "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]|[cC][uU][rR][rR][eE][nN][tT]_[nN][eE][xX][tT]|[cC][uU][rR][rR][eE][nN][tT]_[pP][rR][eE][vV]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3066,7 +3512,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3078,7 +3526,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3090,7 +3540,9 @@
                 "pattern": "^\\s*(?:[+-]?[0-9]+(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3102,7 +3554,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3114,7 +3568,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3126,7 +3582,9 @@
                 "pattern": "^\\s*(?:[^,]+)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3138,7 +3596,9 @@
                 "pattern": "^\\s*(?:(?:tile|scroller|grid|monocle|deck|center_tile|right_tile|vertical_scroller|vertical_tile|vertical_grid|vertical_deck|dwindle|fair|vertical_fair))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3150,7 +3610,9 @@
                 "pattern": "^\\s*(?:[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3162,7 +3624,9 @@
                 "pattern": "^\\s*(?:(?:title_message_bar_decorate_focus_fg_color|title_message_bar_decorate_focus_bg_color|title_message_bar_decorate_corner_radius|title_message_bar_decorate_border_color|title_message_bar_decorate_border_width|title_message_bar_decorate_font_desc|title_message_bar_decorate_padding_x|title_message_bar_decorate_padding_y|title_message_bar_decorate_fg_color|title_message_bar_decorate_bg_color|scroller_default_proportion_single|jump_label_decorate_focus_fg_color|jump_label_decorate_focus_bg_color|scroller_ignore_proportion_single|focus_direction_only_zone_overlap|group_bar_decorate_focus_fg_color|group_bar_decorate_focus_bg_color|jump_label_decorate_corner_radius|animation_curve_opacity_fade_out|gesture_swipe_min_speed_to_force|group_bar_decorate_corner_radius|jump_label_decorate_border_color|jump_label_decorate_border_width|trackpad_middle_button_emulation|animation_curve_opacity_fade_in|edge_scroller_focus_allow_speed|group_bar_decorate_border_color|group_bar_decorate_border_width|tab_bar_decorate_focus_fg_color|tab_bar_decorate_focus_bg_color|tab_bar_decorate_corner_radius|hotarea_disable_on_fullscreen|tab_bar_decorate_border_color|tab_bar_decorate_border_width|jump_label_decorate_font_desc|jump_label_decorate_padding_x|jump_label_decorate_padding_y|mouse_middle_button_emulation|trackpad_disable_while_typing|group_bar_close_button_enable|idle_inhibit_when_fullscreen|touch_enable_mouse_emulation|group_bar_decorate_font_desc|group_bar_decorate_padding_x|group_bar_decorate_padding_y|jump_label_decorate_fg_color|jump_label_decorate_bg_color|special_gap_inner_horizontal|special_gap_outer_horizontal|scroller_default_proportion|edge_scroller_pointer_focus|idle_inhibit_ignore_visible|group_bar_decorate_fg_color|group_bar_decorate_bg_color|layer_animation_type_close|scroller_prefer_overspread|gesture_swipe_cancel_ratio|scroller_proportion_preset|monocle_right_button_close|trackpad_natural_scrolling|tab_bar_decorate_font_desc|tab_bar_decorate_padding_x|tab_bar_decorate_padding_y|special_gap_inner_vertical|special_gap_outer_vertical|layer_animation_type_open|dwindle_drop_simple_split|tab_bar_decorate_fg_color|tab_bar_decorate_bg_color|trackpad_send_events_mode|animation_duration_close|animation_duration_focus|scratchpad_cross_monitor|center_master_overspread|center_when_single_stack|dwindle_horizontal_split|title_message_bar_height|tag_animation_direction|animation_duration_move|animation_duration_open|allow_shortcuts_inhibit|overcircle_center_ratio|cursor_hide_on_keypress|axis_bind_apply_timeout|mouse_natural_scrolling|scratchpad_height_ratio|group_bar_button_margin|fade_out_begin_opacity|animation_duration_tag|scroller_prefer_center|exchange_cross_monitor|blur_params_num_passes|blur_params_brightness|blur_params_saturation|allow_lock_transparent|gesture_swipe_distance|dwindle_vertical_split|dwindle_preserve_split|trackpad_accel_profile|mouse_send_events_mode|trackpad_scroll_method|trackpad_scroll_button|trackpad_scroll_factor|scratchpad_width_ratio|group_bar_button_color|maximized_screen_color|fade_in_begin_opacity|animation_curve_close|animation_curve_focus|scroller_focus_center|xwayland_ignore_scale|no_border_when_single|no_radius_when_single|default_master_factor|trackpad_click_method|title_message_bar_gap|always_show_group_bar|group_bar_button_size|animation_type_close|animation_curve_move|animation_curve_open|view_current_to_back|blur_params_contrast|shadow_only_floating|xwayland_persistence|disable_middle_paste|enable_floating_snap|default_master_count|dwindle_smart_resize|dwindle_manual_split|enable_border_resize|trackpad_accel_speed|trackpad_left_handed|gap_inner_horizontal|gap_outer_horizontal|animation_type_open|animation_curve_tag|focus_cross_monitor|swipe_min_threshold|dwindle_smart_split|dwindle_split_ratio|cursor_hide_timeout|mouse_accel_profile|mouse_scroll_method|mouse_scroll_button|dim_unfocused_color|animation_fade_out|zoom_initial_ratio|blur_params_radius|shadows_position_x|shadows_position_y|auto_reload_config|overview_gap_inner|overview_gap_outer|border_resize_size|mouse_click_method|axis_scroll_factor|gap_inner_vertical|gap_outer_vertical|animation_fade_in|blur_params_noise|single_scratchpad|monocle_no_border|monocle_no_radius|float_full_to_top|drag_tile_to_tile|unfocused_opacity|xkb_rules_variant|xkb_rules_options|focus_on_activate|mouse_accel_speed|mouse_left_handed|dim_focused_color|layer_animations|scroller_structs|xkb_rules_layout|drag_warp_cursor|monocle_tab_mode|disable_trackpad|send_events_mode|group_bar_height|scratchpad_color|window_rule_once|bind(?:[slrpc]*)|focus_cross_tag|sync_obj_enable|drag_tile_small|focused_opacity|xkb_rules_rules|xkb_rules_model|source_optional|zoom_end_ratio|blur_optimized|monocle_no_gap|hotarea_corner|enable_hotarea|tab_bar_height|border_radius|layer_shadows|allow_tearing|snap_distance|circle_layout|new_is_master|deck_tab_mode|shadows_color|overlay_color|shadows_size|shadows_blur|tag_carousel|gesture_live|hotarea_size|sloppy_focus|repeat_delay|touch_enable|tap_to_click|tap_and_drag|cursor_theme|border_color|urgent_color|global_color|monitor_rule|jump_labels|warp_cursor|drag_corner|repeat_rate|cursor_size|special_dim|split_color|focus_color|window_rule|device_rule|gesturebind|animations|blur_layer|tag_gather|numlock_on|smart_gaps|button_map|root_color|dim_enable|drop_color|layer_rule|switchbind|hdr_depth|drag_lock|border_px|exec_once|mousebind|key_mode|tag_rule|axisbind|shadows|tag_num|source|blur|exec|env|var)(?:\\s*,\\s*(?:.*)?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3174,7 +3638,9 @@
                 "pattern": "^\\s*(?:[+]?(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3186,7 +3652,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3198,7 +3666,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3210,7 +3680,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3222,7 +3694,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3234,7 +3708,9 @@
                 "pattern": "^\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3246,7 +3722,9 @@
                 "pattern": "^\\s*(?:.*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3258,7 +3736,9 @@
                 "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3270,7 +3750,9 @@
                 "pattern": "^\\s*(?:.*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3282,7 +3764,9 @@
                 "pattern": "^\\s*(?:(?:next|prev|all_next|all_prev|all_tag_next|all_tag_prev))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3294,7 +3778,9 @@
                 "pattern": "^\\s*(?:[+]?(?:[0-9]|[1-9][0-9]|100))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3306,7 +3792,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3318,7 +3806,9 @@
                 "pattern": "^\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3330,7 +3820,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3342,7 +3834,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3354,7 +3848,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+)(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3366,7 +3862,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3378,7 +3876,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3390,7 +3890,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3402,7 +3904,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3414,7 +3918,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3426,7 +3932,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3438,7 +3946,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3450,7 +3960,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3462,7 +3974,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3474,7 +3988,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3486,7 +4002,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3498,7 +4016,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3510,7 +4030,9 @@
                 "pattern": "^\\s*(?:(?:on|off|toggle)(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3522,7 +4044,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3534,7 +4058,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3546,7 +4072,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3558,7 +4086,9 @@
                 "pattern": "^\\s*(?:[^,]+(?:\\s*,\\s*(?:[^,]+)?(?:\\s*,\\s*(?:[^,]+)?)?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3570,7 +4100,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3582,7 +4114,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3594,7 +4128,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3606,7 +4142,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3618,7 +4156,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3630,7 +4170,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3642,7 +4184,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3654,7 +4198,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3666,7 +4212,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:[01])?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3678,7 +4226,9 @@
                 "pattern": "^\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3690,7 +4240,9 @@
                 "pattern": "^\\s*(?:(?:prev|next))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3702,7 +4254,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3714,7 +4268,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3726,7 +4282,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3738,7 +4296,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3750,7 +4310,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3762,7 +4324,9 @@
                 "pattern": "^\\s*(?:[01])?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3774,7 +4338,9 @@
                 "pattern": "^\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3786,7 +4352,9 @@
                 "pattern": "^\\s*(?:0)?\\s*$"
               }
             },
-            "required": ["dispatcher"]
+            "required": [
+              "dispatcher"
+            ]
           },
           {
             "properties": {
@@ -3802,7 +4370,9 @@
                 "description": "Raw text after the first comma."
               }
             },
-            "required": ["variable"]
+            "required": [
+              "variable"
+            ]
           }
         ]
       },
@@ -4004,7 +4574,13 @@
         },
         "animation_type_open": {
           "type": "string",
-          "enum": ["", "none", "fade", "slide", "zoom"],
+          "enum": [
+            "",
+            "none",
+            "fade",
+            "slide",
+            "zoom"
+          ],
           "oneOf": [
             {
               "type": "string",
@@ -4038,7 +4614,13 @@
         },
         "animation_type_close": {
           "type": "string",
-          "enum": ["", "none", "fade", "slide", "zoom"],
+          "enum": [
+            "",
+            "none",
+            "fade",
+            "slide",
+            "zoom"
+          ],
           "oneOf": [
             {
               "type": "string",
@@ -4072,7 +4654,13 @@
         },
         "layer_animation_type_open": {
           "type": "string",
-          "enum": ["", "none", "fade", "slide", "zoom"],
+          "enum": [
+            "",
+            "none",
+            "fade",
+            "slide",
+            "zoom"
+          ],
           "oneOf": [
             {
               "type": "string",
@@ -4106,7 +4694,13 @@
         },
         "layer_animation_type_close": {
           "type": "string",
-          "enum": ["", "none", "fade", "slide", "zoom"],
+          "enum": [
+            "",
+            "none",
+            "fade",
+            "slide",
+            "zoom"
+          ],
           "oneOf": [
             {
               "type": "string",
@@ -4152,7 +4746,10 @@
         },
         "tag_animation_direction": {
           "type": "integer",
-          "enum": [1, 0],
+          "enum": [
+            1,
+            0
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -4249,7 +4846,12 @@
           },
           "title": "Move Curve",
           "description": "Cubic bezier curve for move/resize animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
+          "default": [
+            0.46,
+            1,
+            0.29,
+            0.99
+          ],
           "minItems": 4,
           "maxItems": 4
         },
@@ -4261,7 +4863,12 @@
           },
           "title": "Open Curve",
           "description": "Cubic bezier curve for window open animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
+          "default": [
+            0.46,
+            1,
+            0.29,
+            0.99
+          ],
           "minItems": 4,
           "maxItems": 4
         },
@@ -4273,7 +4880,12 @@
           },
           "title": "Tag Switch Curve",
           "description": "Cubic bezier curve for tag-switch animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
+          "default": [
+            0.46,
+            1,
+            0.29,
+            0.99
+          ],
           "minItems": 4,
           "maxItems": 4
         },
@@ -4285,7 +4897,12 @@
           },
           "title": "Close Curve",
           "description": "Cubic bezier curve for window close animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
+          "default": [
+            0.46,
+            1,
+            0.29,
+            0.99
+          ],
           "minItems": 4,
           "maxItems": 4
         },
@@ -4297,7 +4914,12 @@
           },
           "title": "Focus Curve",
           "description": "Cubic bezier curve for focus-change animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
+          "default": [
+            0.46,
+            1,
+            0.29,
+            0.99
+          ],
           "minItems": 4,
           "maxItems": 4
         },
@@ -4309,7 +4931,12 @@
           },
           "title": "Fade In Curve",
           "description": "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2)",
-          "default": [0.46, 1, 0.29, 0.99],
+          "default": [
+            0.46,
+            1,
+            0.29,
+            0.99
+          ],
           "minItems": 4,
           "maxItems": 4
         },
@@ -4321,7 +4948,12 @@
           },
           "title": "Fade Out Curve",
           "description": "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2)",
-          "default": [0.5, 0.5, 0.5, 0.5],
+          "default": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ],
           "minItems": 4,
           "maxItems": 4
         },
@@ -4579,7 +5211,11 @@
         },
         "allow_tearing": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -4603,7 +5239,11 @@
         },
         "hdr_depth": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -4880,7 +5520,11 @@
         },
         "dwindle_vertical_split": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -4904,7 +5548,11 @@
         },
         "dwindle_horizontal_split": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -4974,7 +5622,12 @@
         },
         "hotarea_corner": {
           "type": "integer",
-          "enum": [0, 1, 2, 3],
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -5525,7 +6178,11 @@
         },
         "mouse_accel_profile": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -5557,7 +6214,11 @@
         },
         "trackpad_accel_profile": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -5601,7 +6262,12 @@
         },
         "mouse_scroll_method": {
           "type": "integer",
-          "enum": [0, 1, 2, 4],
+          "enum": [
+            0,
+            1,
+            2,
+            4
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -5638,7 +6304,11 @@
         },
         "mouse_click_method": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -5662,7 +6332,11 @@
         },
         "mouse_send_events_mode": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -5704,7 +6378,12 @@
         },
         "trackpad_scroll_method": {
           "type": "integer",
-          "enum": [0, 1, 2, 4],
+          "enum": [
+            0,
+            1,
+            2,
+            4
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -5741,7 +6420,11 @@
         },
         "trackpad_click_method": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -5765,7 +6448,11 @@
         },
         "trackpad_send_events_mode": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -5789,7 +6476,11 @@
         },
         "send_events_mode": {
           "type": "integer",
-          "enum": [0, 1, 2],
+          "enum": [
+            0,
+            1,
+            2
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -5813,7 +6504,10 @@
         },
         "button_map": {
           "type": "integer",
-          "enum": [0, 1],
+          "enum": [
+            0,
+            1
+          ],
           "oneOf": [
             {
               "type": "integer",
@@ -6254,7 +6948,16 @@
               },
               "rr": {
                 "type": "integer",
-                "enum": [0, 1, 2, 3, 4, 5, 6, 7],
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7
+                ],
                 "oneOf": [
                   {
                     "type": "integer",
@@ -6452,33 +7155,54 @@
                 "properties": {
                   "name": {}
                 },
-                "required": ["name"]
+                "required": [
+                  "name"
+                ]
               },
               {
                 "properties": {
                   "make": {}
                 },
-                "required": ["make"]
+                "required": [
+                  "make"
+                ]
               },
               {
                 "properties": {
                   "model": {}
                 },
-                "required": ["model"]
+                "required": [
+                  "model"
+                ]
               },
               {
                 "properties": {
                   "serial": {}
                 },
-                "required": ["serial"]
+                "required": [
+                  "serial"
+                ]
               }
             ],
             "dependentRequired": {
-              "width": ["height", "refresh"],
-              "height": ["width", "refresh"],
-              "refresh": ["width", "height"],
-              "x": ["y"],
-              "y": ["x"]
+              "width": [
+                "height",
+                "refresh"
+              ],
+              "height": [
+                "width",
+                "refresh"
+              ],
+              "refresh": [
+                "width",
+                "height"
+              ],
+              "x": [
+                "y"
+              ],
+              "y": [
+                "x"
+              ]
             },
             "dependentSchemas": {
               "custom": {
@@ -6489,7 +7213,9 @@
                         "const": false
                       }
                     },
-                    "required": ["custom"]
+                    "required": [
+                      "custom"
+                    ]
                   },
                   {
                     "properties": {
@@ -6497,7 +7223,11 @@
                       "height": {},
                       "refresh": {}
                     },
-                    "required": ["width", "height", "refresh"]
+                    "required": [
+                      "width",
+                      "height",
+                      "refresh"
+                    ]
                   }
                 ]
               }
@@ -6740,7 +7470,13 @@
               },
               "animation_type_open": {
                 "type": "string",
-                "enum": ["", "none", "fade", "slide", "zoom"],
+                "enum": [
+                  "",
+                  "none",
+                  "fade",
+                  "slide",
+                  "zoom"
+                ],
                 "oneOf": [
                   {
                     "type": "string",
@@ -6773,7 +7509,13 @@
               },
               "animation_type_close": {
                 "type": "string",
-                "enum": ["", "none", "fade", "slide", "zoom"],
+                "enum": [
+                  "",
+                  "none",
+                  "fade",
+                  "slide",
+                  "zoom"
+                ],
                 "oneOf": [
                   {
                     "type": "string",
@@ -6894,7 +7636,13 @@
               },
               "animation_type_open": {
                 "type": "string",
-                "enum": ["", "none", "fade", "slide", "zoom"],
+                "enum": [
+                  "",
+                  "none",
+                  "fade",
+                  "slide",
+                  "zoom"
+                ],
                 "oneOf": [
                   {
                     "type": "string",
@@ -6927,7 +7675,13 @@
               },
               "animation_type_close": {
                 "type": "string",
-                "enum": ["", "none", "fade", "slide", "zoom"],
+                "enum": [
+                  "",
+                  "none",
+                  "fade",
+                  "slide",
+                  "zoom"
+                ],
                 "oneOf": [
                   {
                     "type": "string",
@@ -6961,7 +7715,9 @@
               "tags": {
                 "anyOf": [
                   {
-                    "const": [0]
+                    "const": [
+                      0
+                    ]
                   },
                   {
                     "type": "array",
@@ -7377,7 +8133,11 @@
               },
               "force_tearing": {
                 "type": "integer",
-                "enum": [0, 1, 2],
+                "enum": [
+                  0,
+                  1,
+                  2
+                ],
                 "oneOf": [
                   {
                     "type": "integer",
@@ -7514,7 +8274,13 @@
               },
               "animation_type_open": {
                 "type": "string",
-                "enum": ["", "none", "fade", "slide", "zoom"],
+                "enum": [
+                  "",
+                  "none",
+                  "fade",
+                  "slide",
+                  "zoom"
+                ],
                 "oneOf": [
                   {
                     "type": "string",
@@ -7547,7 +8313,13 @@
               },
               "animation_type_close": {
                 "type": "string",
-                "enum": ["", "none", "fade", "slide", "zoom"],
+                "enum": [
+                  "",
+                  "none",
+                  "fade",
+                  "slide",
+                  "zoom"
+                ],
                 "oneOf": [
                   {
                     "type": "string",
@@ -7581,7 +8353,9 @@
               "tags": {
                 "anyOf": [
                   {
-                    "const": [0]
+                    "const": [
+                      0
+                    ]
                   },
                   {
                     "type": "array",
@@ -7997,7 +8771,11 @@
               },
               "force_tearing": {
                 "type": "integer",
-                "enum": [0, 1, 2],
+                "enum": [
+                  0,
+                  1,
+                  2
+                ],
                 "oneOf": [
                   {
                     "type": "integer",
@@ -8229,7 +9007,11 @@
               },
               "accel_profile": {
                 "type": "integer",
-                "enum": [0, 1, 2],
+                "enum": [
+                  0,
+                  1,
+                  2
+                ],
                 "oneOf": [
                   {
                     "type": "integer",
@@ -8285,7 +9067,12 @@
               },
               "scroll_method": {
                 "type": "integer",
-                "enum": [0, 1, 2, 4],
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  4
+                ],
                 "oneOf": [
                   {
                     "type": "integer",
@@ -8318,7 +9105,11 @@
               },
               "click_method": {
                 "type": "integer",
-                "enum": [0, 1, 2],
+                "enum": [
+                  0,
+                  1,
+                  2
+                ],
                 "oneOf": [
                   {
                     "type": "integer",
@@ -8341,7 +9132,11 @@
               },
               "send_events_mode": {
                 "type": "integer",
-                "enum": [0, 1, 2],
+                "enum": [
+                  0,
+                  1,
+                  2
+                ],
                 "oneOf": [
                   {
                     "type": "integer",
@@ -8403,7 +9198,10 @@
               },
               "button_map": {
                 "type": "integer",
-                "enum": [0, 1],
+                "enum": [
+                  0,
+                  1
+                ],
                 "oneOf": [
                   {
                     "type": "integer",
