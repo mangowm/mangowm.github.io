@@ -217,6 +217,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     description: "Duration of window open animations in milliseconds (0-50000).",
     min: 0,
     max: 50000,
+    examples: [400],
   },
   {
     key: "animation_duration_tag",
@@ -258,6 +259,8 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: [0.46, 1, 0.29, 0.99],
     label: "Open Curve",
     description: "Cubic bezier curve for window open animations (x1,y1,x2,y2).",
+    examples: [[0.46, 1, 0.29, 1]],
+    tomlExamples: ["0.46,1,0.29,1"],
   },
   {
     key: "animation_curve_tag",
@@ -703,6 +706,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     description: "Maximum snap distance in pixels for floating windows (0-99999).",
     min: 0,
     max: 99999,
+    examples: [10],
   },
   {
     key: "enable_floating_snap",
@@ -784,6 +788,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     description: "Opacity of the currently focused window.",
     min: 0,
     max: 1,
+    examples: [0.9],
   },
   {
     key: "unfocused_opacity",
@@ -835,6 +840,8 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: [],
     label: "Proportion Presets",
     description: "Preset width proportions (0.1-1.0) cycled by switch_proportion_preset.",
+    examples: [[0.5, 0.9]],
+    tomlExamples: ["0.5,0.9"],
   },
   {
     key: "circle_layout",
@@ -842,6 +849,8 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: [],
     label: "Circle Layout",
     description: "Ordered layouts cycled by switch_layout.",
+    examples: [["tile", "scroller"]],
+    tomlExamples: ["tile,scroller"],
   },
   {
     key: "new_is_master",
@@ -1297,6 +1306,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: "",
     label: "Cursor Theme",
     description: "XCursor theme name. Empty uses the system XCursor theme.",
+    examples: ["Adwaita"],
   },
   {
     key: "group_bar_decorate_font_desc",
@@ -1932,6 +1942,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     description: "Horizontal gap between tiled windows.",
     min: 0,
     max: 1000,
+    examples: [5],
   },
   {
     key: "gap_inner_vertical",
@@ -2116,6 +2127,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: "0x323232ff",
     label: "Root Background",
     description: "Desktop background behind all windows.",
+    examples: ["0x323232ff"],
   },
   {
     key: "shadows_color",

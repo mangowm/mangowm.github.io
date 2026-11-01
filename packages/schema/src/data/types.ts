@@ -7,6 +7,8 @@ interface GlobalBase {
   key: string;
   label: string;
   description: string;
+  examples?: readonly unknown[];
+  tomlExamples?: readonly unknown[];
 }
 
 export type GlobalDef =
@@ -81,6 +83,8 @@ interface RuleFieldBase {
   key: string;
   label: string;
   description: string;
+  examples?: readonly unknown[];
+  tomlExamples?: readonly unknown[];
 }
 
 export type RuleFieldDef =
@@ -126,5 +130,7 @@ export interface RuleDef {
   key: RuleKey;
   label: string;
   description: string;
+  examples?: readonly Record<string, unknown>[];
+  tomlExamples?: readonly Record<string, unknown>[];
   fields: readonly RuleFieldDef[];
 }

@@ -12,6 +12,7 @@ export const RULES: readonly RuleDef[] = [
         type: "string",
         label: "Name",
         description: "Match by monitor name (supports regex).",
+        examples: ["eDP-1"],
       },
       {
         key: "make",
@@ -79,6 +80,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Monitor scale.",
         min: 0.001,
         max: 1000,
+        examples: [1.5],
       },
       {
         key: "x",
@@ -145,6 +147,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Mastering display peak luminance, also sent as max_cll, cd/m² (0 = unset).",
         min: 0,
         max: 10000,
+        examples: [600],
       },
       {
         key: "hdr_max_avg_lum",
@@ -187,6 +190,16 @@ export const RULES: readonly RuleDef[] = [
           "Custom display mode. Also requires width, height, and refresh. May cause a black screen.",
       },
     ],
+    examples: [
+      {
+        name: "eDP-1",
+        width: 1920,
+        height: 1080,
+        refresh: 60,
+        x: 0,
+        y: 0,
+      },
+    ],
   },
   {
     key: "tag_rule",
@@ -200,6 +213,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Tag ID",
         description:
           "Tag id to match; 0 targets the special workspace (tag 0). Use * for all tags.",
+        examples: [1],
       },
       {
         key: "layout_name",
@@ -264,6 +278,7 @@ export const RULES: readonly RuleDef[] = [
             label: "vertical_fair",
           },
         ],
+        examples: ["tile"],
       },
       {
         key: "monitor_name",
@@ -322,6 +337,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Master area share of the layout (0.1-0.9).",
         min: 0.1,
         max: 0.9,
+        examples: [0.6],
       },
       {
         key: "scroller_default_proportion",
@@ -330,6 +346,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Default width proportion for new windows (0-1; 0 keeps the global value).",
         min: 0,
         max: 1,
+        examples: [0.6],
       },
       {
         key: "scroller_default_proportion_single",
@@ -347,6 +364,12 @@ export const RULES: readonly RuleDef[] = [
         description: "Use the normal scroller proportion when only one window is open.",
       },
     ],
+    examples: [
+      {
+        id: 1,
+        layout_name: "tile",
+      },
+    ],
   },
   {
     key: "layer_rule",
@@ -358,6 +381,7 @@ export const RULES: readonly RuleDef[] = [
         type: "string",
         label: "Layer Name",
         description: "Layer surface name. Supports regex.",
+        examples: ["rofi"],
       },
       {
         key: "animation_type_open",
@@ -443,6 +467,12 @@ export const RULES: readonly RuleDef[] = [
         description: "Disable the layer shadow.",
       },
     ],
+    examples: [
+      {
+        layer_name: "rofi",
+        animation_type_open: "zoom",
+      },
+    ],
   },
   {
     key: "window_rule",
@@ -461,12 +491,14 @@ export const RULES: readonly RuleDef[] = [
         type: "string",
         label: "Title",
         description: "Match by window title, supports regex.",
+        examples: ["^Picture-in-Picture$"],
       },
       {
         key: "app_id",
         type: "string",
         label: "App ID",
         description: "Match by application ID, supports regex.",
+        examples: ["firefox"],
       },
       {
         key: "animation_type_open",
@@ -532,12 +564,15 @@ export const RULES: readonly RuleDef[] = [
         label: "Tags",
         description:
           "Assign to one tag, several tags separated by |, or the special workspace with 0.",
+        examples: [[1, 3]],
+        tomlExamples: ["1|3"],
       },
       {
         key: "monitor",
         type: "string",
         label: "Monitor",
         description: "Assign to monitor by monitor spec (name, make, model, or serial).",
+        examples: ["make:BOE&&model:0x1234"],
       },
       {
         key: "offset_x",
@@ -581,6 +616,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Width",
         description:
           "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels.",
+        examples: [800],
       },
       {
         key: "height",
@@ -588,6 +624,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Height",
         description:
           "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels.",
+        examples: [600],
       },
       {
         key: "no_border",
@@ -659,6 +696,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Opacity for inactive windows. 0 keeps the global opacity.",
         min: 0,
         max: 1,
+        examples: [0.85],
       },
       {
         key: "focused_opacity",
@@ -667,6 +705,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Opacity for the active window. 0 keeps the global opacity.",
         min: 0,
         max: 1,
+        examples: [0.9],
       },
       {
         key: "is_overlay",
@@ -802,6 +841,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Width proportion for this window in the scroller layout (0.1-1.0).",
         min: 0.1,
         max: 1,
+        examples: [0.6],
       },
       {
         key: "is_fullscreen",
@@ -820,6 +860,19 @@ export const RULES: readonly RuleDef[] = [
         type: "key-binding",
         label: "Global Key Binding",
         description: "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
+        examples: ["ctrl+alt-o"],
+      },
+    ],
+    examples: [
+      {
+        app_id: "firefox",
+        is_floating: true,
+      },
+    ],
+    tomlExamples: [
+      {
+        app_id: "firefox",
+        is_floating: 1,
       },
     ],
   },
@@ -911,6 +964,8 @@ export const RULES: readonly RuleDef[] = [
         label: "Tags",
         description:
           "Assign to one tag, several tags separated by |, or the special workspace with 0.",
+        examples: [[1, 3]],
+        tomlExamples: ["1|3"],
       },
       {
         key: "monitor",
@@ -960,6 +1015,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Width",
         description:
           "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels.",
+        examples: [800],
       },
       {
         key: "height",
@@ -967,6 +1023,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Height",
         description:
           "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels.",
+        examples: [600],
       },
       {
         key: "no_border",
@@ -1038,6 +1095,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Opacity for inactive windows. 0 keeps the global opacity.",
         min: 0,
         max: 1,
+        examples: [0.85],
       },
       {
         key: "focused_opacity",
@@ -1046,6 +1104,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Opacity for the active window. 0 keeps the global opacity.",
         min: 0,
         max: 1,
+        examples: [0.9],
       },
       {
         key: "is_overlay",
@@ -1201,6 +1260,18 @@ export const RULES: readonly RuleDef[] = [
         description: "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
       },
     ],
+    examples: [
+      {
+        title: "Picture-in-Picture",
+        is_floating: true,
+      },
+    ],
+    tomlExamples: [
+      {
+        title: "Picture-in-Picture",
+        is_floating: 1,
+      },
+    ],
   },
   {
     key: "device_rule",
@@ -1213,6 +1284,7 @@ export const RULES: readonly RuleDef[] = [
         type: "device-name",
         label: "Name",
         description: "Match by input device name or vendor:product:name.",
+        examples: ["AT Translated Set 2 keyboard"],
       },
       {
         key: "type",
@@ -1261,6 +1333,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Key repeat rate per second.",
         min: 0,
         max: 1000,
+        examples: [40],
       },
       {
         key: "repeat_delay",
@@ -1287,6 +1360,7 @@ export const RULES: readonly RuleDef[] = [
         type: "string",
         label: "Keyboard Layout",
         description: "Keyboard layout code, e.g. us or ru.",
+        examples: ["us"],
       },
       {
         key: "kb_variant",
@@ -1334,6 +1408,7 @@ export const RULES: readonly RuleDef[] = [
         description: "Pointer speed from -1.0 to 1.0.",
         min: -1,
         max: 1,
+        examples: [0.1],
       },
       {
         key: "left_handed",
@@ -1467,12 +1542,19 @@ export const RULES: readonly RuleDef[] = [
         label: "Monitor",
         description:
           "Pin touch or tablet input to one output. Unset touch follows focus. Unset tablet stays unmapped.",
+        examples: ["HDMI-A-1"],
       },
       {
         key: "map_focus_monitor",
         type: "bool",
         label: "Map to Focused Monitor",
         description: "Make the tablet follow the currently focused monitor.",
+      },
+    ],
+    examples: [
+      {
+        name: "AT Translated Set 2 keyboard",
+        kb_layout: "us",
       },
     ],
   },

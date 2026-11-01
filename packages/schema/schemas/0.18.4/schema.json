@@ -5,6 +5,20 @@
     "CanonicalAction": {
       "title": "Action",
       "description": "Dispatcher call or variable reference.",
+      "examples": [
+        {
+          "dispatcher": "spawn",
+          "args": "foot"
+        },
+        {
+          "dispatcher": "focusdir",
+          "args": "left"
+        },
+        {
+          "variable": "term",
+          "args": "--hold"
+        }
+      ],
       "type": "object",
       "properties": {
         "dispatcher": {
@@ -1462,6 +1476,20 @@
       "items": {
         "title": "Action",
         "description": "Dispatcher call or variable reference.",
+        "examples": [
+          {
+            "dispatcher": "spawn",
+            "args": "foot"
+          },
+          {
+            "dispatcher": "focusdir",
+            "args": "left"
+          },
+          {
+            "variable": "term",
+            "args": "--hold"
+          }
+        ],
         "type": "object",
         "properties": {
           "dispatcher": {
@@ -2924,6 +2952,20 @@
       "items": {
         "title": "Action",
         "description": "Dispatcher call or variable reference.",
+        "examples": [
+          {
+            "dispatcher": "spawn",
+            "args": "foot"
+          },
+          {
+            "dispatcher": "focusdir",
+            "args": "left"
+          },
+          {
+            "variable": "term",
+            "args": "--hold"
+          }
+        ],
         "type": "object",
         "properties": {
           "dispatcher": {
@@ -4810,6 +4852,9 @@
           "type": "integer",
           "title": "Open Duration",
           "description": "Duration of window open animations in milliseconds (0-50000).",
+          "examples": [
+            400
+          ],
           "default": 400,
           "minimum": 0,
           "maximum": 50000
@@ -4863,6 +4908,14 @@
           },
           "title": "Open Curve",
           "description": "Cubic bezier curve for window open animations (x1,y1,x2,y2).",
+          "examples": [
+            [
+              0.46,
+              1,
+              0.29,
+              1
+            ]
+          ],
           "default": [
             0.46,
             1,
@@ -5323,6 +5376,9 @@
           "type": "integer",
           "title": "Snap Distance",
           "description": "Maximum snap distance in pixels for floating windows (0-99999).",
+          "examples": [
+            10
+          ],
           "default": 30,
           "minimum": 0,
           "maximum": 99999
@@ -5392,6 +5448,9 @@
           "type": "number",
           "title": "Focused Opacity",
           "description": "Opacity of the currently focused window.",
+          "examples": [
+            0.9
+          ],
           "default": 1,
           "minimum": 0,
           "maximum": 1
@@ -5443,6 +5502,12 @@
           },
           "title": "Proportion Presets",
           "description": "Preset width proportions (0.1-1.0) cycled by switch_proportion_preset.",
+          "examples": [
+            [
+              0.5,
+              0.9
+            ]
+          ],
           "minItems": 1
         },
         "circle_layout": {
@@ -5468,6 +5533,12 @@
           },
           "title": "Circle Layout",
           "description": "Ordered layouts cycled by switch_layout.",
+          "examples": [
+            [
+              "tile",
+              "scroller"
+            ]
+          ],
           "minItems": 1
         },
         "new_is_master": {
@@ -5882,6 +5953,9 @@
           "type": "string",
           "title": "Cursor Theme",
           "description": "XCursor theme name. Empty uses the system XCursor theme.",
+          "examples": [
+            "Adwaita"
+          ],
           "default": ""
         },
         "group_bar_decorate_font_desc": {
@@ -6544,6 +6618,9 @@
           "type": "integer",
           "title": "Inner Gap Horizontal",
           "description": "Horizontal gap between tiled windows.",
+          "examples": [
+            5
+          ],
           "default": 5,
           "minimum": 0,
           "maximum": 1000
@@ -6707,6 +6784,9 @@
           "type": "string",
           "title": "Root Background",
           "description": "Desktop background behind all windows.",
+          "examples": [
+            "0x323232ff"
+          ],
           "default": "0x323232ff",
           "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
@@ -6926,6 +7006,9 @@
                 "type": "string",
                 "title": "Name",
                 "description": "Match by monitor name (supports regex).",
+                "examples": [
+                  "eDP-1"
+                ],
                 "pattern": "^[^,]*$"
               },
               "make": {
@@ -7007,6 +7090,9 @@
                 "type": "number",
                 "title": "Scale",
                 "description": "Monitor scale.",
+                "examples": [
+                  1.5
+                ],
                 "minimum": 0.001,
                 "maximum": 1000
               },
@@ -7078,6 +7164,9 @@
                 "type": "number",
                 "title": "HDR Max Luminance",
                 "description": "Mastering display peak luminance, also sent as max_cll, cd/m² (0 = unset).",
+                "examples": [
+                  600
+                ],
                 "minimum": 0,
                 "maximum": 10000
               },
@@ -7149,6 +7238,16 @@
             },
             "title": "Monitor Rules",
             "description": "Match outputs by name, make, model, or serial. Every set field must match. The first match applies.",
+            "examples": [
+              {
+                "name": "eDP-1",
+                "width": 1920,
+                "height": 1080,
+                "refresh": 60,
+                "x": 0,
+                "y": 0
+              }
+            ],
             "additionalProperties": false,
             "anyOf": [
               {
@@ -7252,7 +7351,10 @@
                   }
                 ],
                 "title": "Tag ID",
-                "description": "Tag id to match; 0 targets the special workspace (tag 0). Use * for all tags."
+                "description": "Tag id to match; 0 targets the special workspace (tag 0). Use * for all tags.",
+                "examples": [
+                  1
+                ]
               },
               "layout_name": {
                 "type": "string",
@@ -7345,7 +7447,10 @@
                   }
                 ],
                 "title": "Layout",
-                "description": "Layout to apply to this tag."
+                "description": "Layout to apply to this tag.",
+                "examples": [
+                  "tile"
+                ]
               },
               "monitor_name": {
                 "type": "string",
@@ -7421,6 +7526,9 @@
                 "type": "number",
                 "title": "Master Factor",
                 "description": "Master area share of the layout (0.1-0.9).",
+                "examples": [
+                  0.6
+                ],
                 "minimum": 0.1,
                 "maximum": 0.9
               },
@@ -7428,6 +7536,9 @@
                 "type": "number",
                 "title": "Scroller Proportion",
                 "description": "Default width proportion for new windows (0-1; 0 keeps the global value).",
+                "examples": [
+                  0.6
+                ],
                 "minimum": 0,
                 "maximum": 1
               },
@@ -7454,6 +7565,12 @@
             },
             "title": "Tag Rules",
             "description": "Per-tag layout and options. All matching rules apply in order. Later rules override earlier.",
+            "examples": [
+              {
+                "id": 1,
+                "layout_name": "tile"
+              }
+            ],
             "additionalProperties": false
           }
         },
@@ -7466,6 +7583,9 @@
                 "type": "string",
                 "title": "Layer Name",
                 "description": "Layer surface name. Supports regex.",
+                "examples": [
+                  "rofi"
+                ],
                 "pattern": "^[^,]*$"
               },
               "animation_type_open": {
@@ -7601,6 +7721,12 @@
             },
             "title": "Layer Rules",
             "description": "Configure layer-shell surfaces such as bars, launchers, and notifications.",
+            "examples": [
+              {
+                "layer_name": "rofi",
+                "animation_type_open": "zoom"
+              }
+            ],
             "additionalProperties": false
           }
         },
@@ -7626,12 +7752,18 @@
                 "type": "string",
                 "title": "Title",
                 "description": "Match by window title, supports regex.",
+                "examples": [
+                  "^Picture-in-Picture$"
+                ],
                 "pattern": "^[^,]*$"
               },
               "app_id": {
                 "type": "string",
                 "title": "App ID",
                 "description": "Match by application ID, supports regex.",
+                "examples": [
+                  "firefox"
+                ],
                 "pattern": "^[^,]*$"
               },
               "animation_type_open": {
@@ -7731,12 +7863,21 @@
                   }
                 ],
                 "title": "Tags",
-                "description": "Tags to assign as an array. Use [0] for the special workspace overlay."
+                "description": "Tags to assign as an array. Use [0] for the special workspace overlay.",
+                "examples": [
+                  [
+                    1,
+                    3
+                  ]
+                ]
               },
               "monitor": {
                 "type": "string",
                 "title": "Monitor",
                 "description": "Assign to monitor by monitor spec (name, make, model, or serial).",
+                "examples": [
+                  "make:BOE&&model:0x1234"
+                ],
                 "pattern": "^[^,]*$"
               },
               "offset_x": {
@@ -7804,12 +7945,18 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels."
+                "description": "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels.",
+                "examples": [
+                  800
+                ]
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels."
+                "description": "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels.",
+                "examples": [
+                  600
+                ]
               },
               "no_border": {
                 "anyOf": [
@@ -7939,6 +8086,9 @@
                 "type": "number",
                 "title": "Unfocused Opacity",
                 "description": "Opacity for inactive windows. 0 keeps the global opacity.",
+                "examples": [
+                  0.85
+                ],
                 "minimum": 0,
                 "maximum": 1
               },
@@ -7946,6 +8096,9 @@
                 "type": "number",
                 "title": "Focused Opacity",
                 "description": "Opacity for the active window. 0 keeps the global opacity.",
+                "examples": [
+                  0.9
+                ],
                 "minimum": 0,
                 "maximum": 1
               },
@@ -8201,6 +8354,9 @@
                 "type": "number",
                 "title": "Scroller Proportion",
                 "description": "Width proportion for this window in the scroller layout (0.1-1.0).",
+                "examples": [
+                  0.6
+                ],
                 "minimum": 0.1,
                 "maximum": 1
               },
@@ -8234,11 +8390,20 @@
                 "type": "string",
                 "title": "Global Key Binding",
                 "description": "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
+                "examples": [
+                  "ctrl+alt-o"
+                ],
                 "pattern": "^(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*\\+\\s*(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})))*\\s*-\\s*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
               }
             },
             "title": "Window Rules",
             "description": "Set window properties on open. app_id and title are regex. When both are set, both must match.",
+            "examples": [
+              {
+                "app_id": "firefox",
+                "is_floating": true
+              }
+            ],
             "additionalProperties": false
           }
         },
@@ -8369,7 +8534,13 @@
                   }
                 ],
                 "title": "Tags",
-                "description": "Tags to assign as an array. Use [0] for the special workspace overlay."
+                "description": "Tags to assign as an array. Use [0] for the special workspace overlay.",
+                "examples": [
+                  [
+                    1,
+                    3
+                  ]
+                ]
               },
               "monitor": {
                 "type": "string",
@@ -8442,12 +8613,18 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels."
+                "description": "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels.",
+                "examples": [
+                  800
+                ]
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels."
+                "description": "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels.",
+                "examples": [
+                  600
+                ]
               },
               "no_border": {
                 "anyOf": [
@@ -8577,6 +8754,9 @@
                 "type": "number",
                 "title": "Unfocused Opacity",
                 "description": "Opacity for inactive windows. 0 keeps the global opacity.",
+                "examples": [
+                  0.85
+                ],
                 "minimum": 0,
                 "maximum": 1
               },
@@ -8584,6 +8764,9 @@
                 "type": "number",
                 "title": "Focused Opacity",
                 "description": "Opacity for the active window. 0 keeps the global opacity.",
+                "examples": [
+                  0.9
+                ],
                 "minimum": 0,
                 "maximum": 1
               },
@@ -8877,6 +9060,12 @@
             },
             "title": "Window Rules (Once)",
             "description": "Set window properties only on first open. app_id and title are regex; both must match when set.",
+            "examples": [
+              {
+                "title": "Picture-in-Picture",
+                "is_floating": true
+              }
+            ],
             "additionalProperties": false
           }
         },
@@ -8889,6 +9078,9 @@
                 "type": "string",
                 "title": "Name",
                 "description": "Match by input device name or vendor:product:name.",
+                "examples": [
+                  "AT Translated Set 2 keyboard"
+                ],
                 "pattern": "^[^,]+$"
               },
               "type": {
@@ -8952,6 +9144,9 @@
                 "type": "integer",
                 "title": "Repeat Rate",
                 "description": "Key repeat rate per second.",
+                "examples": [
+                  40
+                ],
                 "minimum": 0,
                 "maximum": 1000
               },
@@ -8978,6 +9173,9 @@
                 "type": "string",
                 "title": "Keyboard Layout",
                 "description": "Keyboard layout code, e.g. us or ru.",
+                "examples": [
+                  "us"
+                ],
                 "pattern": "^[^,]*$"
               },
               "kb_variant": {
@@ -9036,6 +9234,9 @@
                 "type": "number",
                 "title": "Acceleration Speed",
                 "description": "Pointer speed from -1.0 to 1.0.",
+                "examples": [
+                  0.1
+                ],
                 "minimum": -1,
                 "maximum": 1
               },
@@ -9234,6 +9435,9 @@
                 "type": "string",
                 "title": "Monitor",
                 "description": "Pin touch or tablet input to one output. Unset touch follows focus. Unset tablet stays unmapped.",
+                "examples": [
+                  "HDMI-A-1"
+                ],
                 "pattern": "^[^,]*$"
               },
               "map_focus_monitor": {
@@ -9252,6 +9456,12 @@
             },
             "title": "Device Rules",
             "description": "Device overrides by name or type. kb_* and repeat_* give a keyboard its own keymap and repeat rate.",
+            "examples": [
+              {
+                "name": "AT Translated Set 2 keyboard",
+                "kb_layout": "us"
+              }
+            ],
             "additionalProperties": false
           }
         }
@@ -9262,6 +9472,24 @@
     }
   },
   "description": "Canonical mangowm configuration.",
+  "examples": [
+    {
+      "global": {
+        "animations": true,
+        "root_color": "0x323232ff"
+      },
+      "bind": {
+        "default": {
+          "SUPER+Return": [
+            {
+              "dispatcher": "spawn",
+              "args": "foot"
+            }
+          ]
+        }
+      }
+    }
+  ],
   "additionalProperties": false,
   "title": "mangowm configuration 0.18.4"
 }

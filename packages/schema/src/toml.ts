@@ -47,6 +47,7 @@ const TomlActionString = Type.Union(
   {
     title: "Action",
     description: "Dispatcher with arguments, or a variable reference.",
+    examples: ["spawn,foot", "focusdir,left", "$term"],
   },
 );
 
@@ -78,36 +79,38 @@ const TomlMultipleActions = Type.Unsafe<TSchema>({
 });
 
 function globalProperty(option: GlobalDef): TSchema {
+  const examples = option.tomlExamples ?? option.examples;
   const metadata = { title: option.label, description: option.description };
+  const withExamples = { ...metadata, ...(examples ? { examples } : {}) };
   switch (option.type) {
     case "bool":
       return Type.Union([Type.Boolean(), Type.Integer({ enum: [0, 1] })], {
-        ...metadata,
+        ...withExamples,
         default: option.default,
       });
     case "int":
       return Type.Integer({
-        ...metadata,
+        ...withExamples,
         default: option.default,
         ...(option.min === undefined ? {} : { minimum: option.min }),
         ...(option.max === undefined ? {} : { maximum: option.max }),
       });
     case "float":
       return Type.Number({
-        ...metadata,
+        ...withExamples,
         default: option.default,
         ...(option.min === undefined ? {} : { minimum: option.min }),
         ...(option.max === undefined ? {} : { maximum: option.max }),
       });
     case "string":
-      return Type.String({ ...metadata, default: option.default });
+      return Type.String({ ...withExamples, default: option.default });
     case "color":
       return Type.Union(
         [
           Type.String({ pattern: COLOR_PATTERN }),
           Type.Integer({ minimum: 0, maximum: 0xffffffff }),
         ],
-        { ...metadata, default: option.default },
+        { ...withExamples, default: option.default },
       );
     case "curve": {
       const array = Type.Array(Type.Number({ minimum: 0 }), {
@@ -116,10 +119,10 @@ function globalProperty(option: GlobalDef): TSchema {
         minItems: 4,
         maxItems: 4,
       });
-      return Type.Union([array, Type.String({ pattern: CURVE_STRING_PATTERN })], {
-        ...metadata,
-        default: option.default,
-      });
+      return Type.Union(
+        [array, Type.String({ pattern: CURVE_STRING_PATTERN, examples: examples as string[] })],
+        { ...withExamples, default: option.default },
+      );
     }
     case "preset": {
       const hasDefault = option.default.length > 0;
@@ -131,11 +134,11 @@ function globalProperty(option: GlobalDef): TSchema {
       return Type.Union(
         [
           array,
-          Type.String({ pattern: NUMBER_LIST_PATTERN }),
+          Type.String({ pattern: NUMBER_LIST_PATTERN, examples: examples as string[] }),
           Type.Number({ minimum: 0.1, maximum: 1 }),
         ],
         {
-          ...metadata,
+          ...withExamples,
           ...(hasDefault ? { default: option.default } : {}),
         },
       );
@@ -147,17 +150,20 @@ function globalProperty(option: GlobalDef): TSchema {
         ...(hasDefault ? { default: option.default } : {}),
         minItems: 1,
       });
-      return Type.Union([array, Type.String({ pattern: LAYOUT_LIST_PATTERN })], {
-        ...metadata,
-        ...(hasDefault ? { default: option.default } : {}),
-      });
+      return Type.Union(
+        [array, Type.String({ pattern: LAYOUT_LIST_PATTERN, examples: examples as string[] })],
+        {
+          ...withExamples,
+          ...(hasDefault ? { default: option.default } : {}),
+        },
+      );
     }
     case "enum": {
       const values = option.options;
       return enumSchema(
         values.map((value) => value.value),
         option.numeric === true,
-        metadata,
+        withExamples,
         option.default,
         values.map((value) => value.label),
       );
@@ -263,7 +269,12 @@ function tagMaskSchema(metadata: Record<string, unknown>): TSchema {
 }
 
 function ruleField(field: RuleFieldDef): TSchema {
-  const metadata = { title: field.label, description: field.description };
+  const examples = field.tomlExamples ?? field.examples;
+  const metadata = {
+    title: field.label,
+    description: field.description,
+    ...(examples ? { examples } : {}),
+  };
 
   switch (field.type) {
     case "bool":
@@ -320,9 +331,11 @@ function ruleSchema(rule: RuleDef): TSchema {
     rule.fields.map((field) => [field.key, Type.Optional(ruleField(field))]),
   );
 
+  const ruleExamples = rule.tomlExamples ?? rule.examples;
   const object = Type.Object(properties, {
     title: rule.label,
     description: rule.description,
+    ...(ruleExamples ? { examples: ruleExamples } : {}),
     additionalProperties: false,
   });
 
@@ -417,6 +430,14 @@ function rootSchema() {
     },
     {
       description: "TOML mangowm configuration.",
+      examples: [
+        {
+          global: { animations: 1, root_color: "0x323232ff" },
+          bind: {
+            default: { "SUPER+Return": "spawn,foot" },
+          },
+        },
+      ],
       additionalProperties: false,
     },
   );

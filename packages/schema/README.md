@@ -173,6 +173,10 @@ up to `1.2` because that is the upstream source default, while canonical uses
 the effective value `1`. A parser should report clamped values as warnings
 before normalization.
 
+## Examples
+
+Both schemas include a small set of `examples` for values whose format is not obvious: colors, curves, presets, layouts, monitor specs, keybindings, tags, rules, actions, and one root config. Examples use the canonical form in `schema.json` and the raw TOML form in `toml.schema.json`. They are annotations and do not affect validation.
+
 ## Runtime API
 
 `src/index.ts` exports the schema objects, the two builders, and compiled

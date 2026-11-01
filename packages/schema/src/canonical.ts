@@ -42,6 +42,11 @@ const CANONICAL_ACTION_VARIANTS = [
 const CanonicalAction: TSchema = Type.Unsafe<TSchema>({
   title: "Action",
   description: "Dispatcher call or variable reference.",
+  examples: [
+    { dispatcher: "spawn", args: "foot" },
+    { dispatcher: "focusdir", args: "left" },
+    { variable: "term", args: "--hold" },
+  ],
   type: "object",
   properties: {
     dispatcher: { type: "string", enum: DISPATCHERS, title: "Dispatcher" },
@@ -75,7 +80,11 @@ const CanonicalConflictActions = Type.Array(CanonicalAction, {
 });
 
 function globalProperty(option: GlobalDef): TSchema {
-  const metadata = { title: option.label, description: option.description };
+  const metadata = {
+    title: option.label,
+    description: option.description,
+    ...(option.examples ? { examples: option.examples } : {}),
+  };
   switch (option.type) {
     case "bool":
       return Type.Boolean({ ...metadata, default: option.default });
@@ -242,7 +251,11 @@ function tagArraySchema(metadata: Record<string, unknown>): TSchema {
 }
 
 function ruleField(field: RuleFieldDef): TSchema {
-  const metadata = { title: field.label, description: field.description };
+  const metadata = {
+    title: field.label,
+    description: field.description,
+    ...(field.examples ? { examples: field.examples } : {}),
+  };
 
   switch (field.type) {
     case "bool":
@@ -295,6 +308,7 @@ function ruleSchema(rule: RuleDef): TSchema {
   const object = Type.Object(properties, {
     title: rule.label,
     description: rule.description,
+    ...(rule.examples ? { examples: rule.examples } : {}),
     additionalProperties: false,
   });
 
@@ -379,6 +393,16 @@ function rootSchema(version: string) {
     },
     {
       description: "Canonical mangowm configuration.",
+      examples: [
+        {
+          global: { animations: true, root_color: "0x323232ff" },
+          bind: {
+            default: {
+              "SUPER+Return": [{ dispatcher: "spawn", args: "foot" }],
+            },
+          },
+        },
+      ],
       additionalProperties: false,
     },
   );
