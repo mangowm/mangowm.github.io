@@ -4492,7 +4492,7 @@
         "blur_params_saturation": {
           "type": "number",
           "title": "Blur Saturation",
-          "description": "Saturation multiplier for the blurred layer.",
+          "description": "Saturation multiplier for the blurred layer (0-1).",
           "default": 1,
           "minimum": 0,
           "maximum": 1

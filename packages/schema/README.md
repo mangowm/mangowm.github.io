@@ -166,7 +166,9 @@ equivalent.
 ## Validation policy
 
 Canonical values are normalized and must be in range. The TOML schema rejects
-values Mango would clamp. A parser should report clamped values as warnings
+values Mango would clamp, with one exception: `blur_params_saturation` accepts
+up to `1.2` because that is the upstream source default, while canonical uses
+the effective value `1`. A parser should report clamped values as warnings
 before normalization.
 
 ## Runtime API

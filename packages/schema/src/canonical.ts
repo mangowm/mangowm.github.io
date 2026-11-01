@@ -86,13 +86,18 @@ function globalProperty(option: GlobalDef): TSchema {
         ...(option.min === undefined ? {} : { minimum: option.min }),
         ...(option.max === undefined ? {} : { maximum: option.max }),
       });
-    case "float":
+    case "float": {
+      // Mango accepts 1.2 as the source default but clamps it to 1 at runtime.
+      const saturation = option.key === "blur_params_saturation";
       return Type.Number({
-        ...metadata,
-        default: option.default,
+        ...(saturation
+          ? { ...metadata, description: "Saturation multiplier for the blurred layer (0-1)." }
+          : metadata),
+        default: saturation ? 1 : option.default,
         ...(option.min === undefined ? {} : { minimum: option.min }),
-        ...(option.max === undefined ? {} : { maximum: option.max }),
+        ...(saturation ? { maximum: 1 } : option.max === undefined ? {} : { maximum: option.max }),
       });
+    }
     case "string":
       return Type.String({ ...metadata, default: option.default });
     case "color":

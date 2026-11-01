@@ -393,9 +393,8 @@ describe("canonical schema", () => {
 
   it("bounds saturation", () => {
     expect(Value.Check(schema, { global: { blur_params_saturation: 1 } })).toBe(true);
-    expect(Value.Check(tomlSchema, { global: { blur_params_saturation: 1 } })).toBe(true);
     expect(Value.Check(schema, { global: { blur_params_saturation: 1.2 } })).toBe(false);
-    expect(Value.Check(tomlSchema, { global: { blur_params_saturation: 1.2 } })).toBe(false);
+    expect(Value.Check(tomlSchema, { global: { blur_params_saturation: 1.2 } })).toBe(true);
   });
 
   it("accepts an empty animation type", () => {
