@@ -166,6 +166,24 @@ equivalent.
 ## Validation policy
 
 Canonical values are normalized and must be in range. The TOML schema rejects
-values Mango would clamp, except `blur_params_saturation`: the source default is
-`1.2` and the runtime clamps it to `1`, so canonical uses `1`. A parser should
-report clamped values as warnings before normalization.
+values Mango would clamp. A parser should report clamped values as warnings
+before normalization.
+
+## Runtime API
+
+`src/index.ts` exports the schema objects, the two builders, and compiled
+validators:
+
+```ts
+import {
+  buildCanonicalSchema,
+  buildTomlSchema,
+  schema,
+  tomlSchema,
+  validateCanonical,
+  validateToml,
+} from "@mangowm.github.io/schema";
+
+validateCanonical.Check(config);
+validateToml.Check(rawTomlObject);
+```
