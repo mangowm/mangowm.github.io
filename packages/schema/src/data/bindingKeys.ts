@@ -25,7 +25,7 @@ const MODIFIER = `(?:${[
   ci("hyper_l"),
   ci("hyper_r"),
   ci("none"),
-].join("|")}|code:[0-9]+|${VARIABLE})`;
+].join("|")}|code:(?:133|134|37|105|50|62|64|108)|${VARIABLE})`;
 const KEYSYM = `(?:[A-Za-z0-9_]+|code:[0-9]+|${VARIABLE})`;
 const DIRECTION = `(?:${[ci("left"), ci("right"), ci("up"), ci("down"), ci("alldir")].join("|")}|${VARIABLE})`;
 const MOUSE_BUTTON = `(?:${[
@@ -41,10 +41,10 @@ const MOUSE_BUTTON = `(?:${[
 const RESERVED = "(?!(?:sym|lock|release|pass|conflict)$)";
 
 export const BINDING_KEY_PATTERNS: Record<BindingKind, string> = {
-  key: `^${RESERVED}(?:${MODIFIER}\\+)*${KEYSYM}$`,
-  mouse: `^${RESERVED}(?:${MODIFIER}\\+)*${MOUSE_BUTTON}$`,
-  axis: `^${RESERVED}(?:${MODIFIER}\\+)*${DIRECTION}$`,
-  gesture: `^${RESERVED}${MODIFIER}\\+${DIRECTION}\\+(?:[0-9]+|${VARIABLE})$`,
+  key: `^${RESERVED}(?:${MODIFIER}\\s*\\+\\s*)*${KEYSYM}$`,
+  mouse: `^${RESERVED}(?:${MODIFIER}\\s*\\+\\s*)*${MOUSE_BUTTON}$`,
+  axis: `^${RESERVED}(?:${MODIFIER}\\s*\\+\\s*)*${DIRECTION}$`,
+  gesture: `^${RESERVED}${MODIFIER}\\s*\\+\\s*${DIRECTION}\\s*\\+\\s*(?:[0-9]+|${VARIABLE})$`,
   switch: `^${RESERVED}(?:${ci("fold")}|${ci("unfold")}|${VARIABLE})$`,
 };
 

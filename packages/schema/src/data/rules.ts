@@ -56,7 +56,7 @@ export const RULES: readonly RuleDef[] = [
           },
           {
             value: "4",
-            label: "Vertical flip",
+            label: "180° vertical flip",
           },
           {
             value: "5",
@@ -64,7 +64,7 @@ export const RULES: readonly RuleDef[] = [
           },
           {
             value: "6",
-            label: "Flip+180°",
+            label: "Flip + 180° CCW",
           },
           {
             value: "7",

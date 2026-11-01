@@ -45,12 +45,31 @@ const SWITCHER = "(?:next|prev|all_next|all_prev|all_tag_next|all_tag_prev)";
 const ON_OFF = "(?:on|off|toggle)";
 const PREV_NEXT = "(?:prev|next)";
 const TAG_NUMBER = "(?:-1|00|[0-9]|[12][0-9]|3[01])";
-const TAG_MASK = `${TAG_NUMBER}(?:\\|${TAG_NUMBER})*`;
+const TAG_MASK = `${TAG_NUMBER}(?:\\s*\\|\\s*${TAG_NUMBER})*`;
 const MONITOR_VALUE = "(?:(?!&&)[^,])+";
 const MONITOR_FIELD = `(?:name|make|model|serial):${MONITOR_VALUE}`;
 const MONITOR_SPEC = `(?:${MONITOR_FIELD}(?:&&${MONITOR_FIELD})*|[^,:&]+)`;
-const OPTION_NAME = `(?:${[...GLOBALS]
-  .map((option) => option.key)
+const CONFIG_KEYS = [
+  ...GLOBALS.map((option) => option.key),
+  "key_mode",
+  "env",
+  "var",
+  "exec",
+  "exec_once",
+  "source",
+  "source_optional",
+  "monitor_rule",
+  "tag_rule",
+  "layer_rule",
+  "window_rule",
+  "window_rule_once",
+  "device_rule",
+  "mousebind",
+  "axisbind",
+  "gesturebind",
+  "switchbind",
+];
+const OPTION_NAME = `(?:${[...CONFIG_KEYS, "bind(?:[slrpc]*)"]
   .sort((a, b) => b.length - a.length)
   .join("|")})`;
 
@@ -79,7 +98,7 @@ const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
 
 export const DISPATCHER_ARGS: Record<DispatcherName, readonly DispatcherArgKind[]> = {
   centerwin: [],
-  chvt: ["uint"],
+  chvt: ["int"],
   comboview: ["tag-mask"],
   create_virtual_output: ["string"],
   destroy_all_virtual_output: [],

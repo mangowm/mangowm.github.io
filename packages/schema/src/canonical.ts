@@ -254,7 +254,7 @@ function ruleField(field: RuleFieldDef): TSchema {
 
   switch (field.type) {
     case "bool":
-      return Type.Boolean(metadata);
+      return Type.Union([Type.Boolean(), Type.Integer({ const: -1 })], metadata);
     case "int":
       return Type.Integer({
         ...metadata,

@@ -89,6 +89,8 @@ it for editor validation:
 - binding triggers are checked per section: keyboard modifiers, `code:N`,
   mouse buttons, axis directions, gesture direction and finger count, and fold
   states; a `$variable` is accepted as a trigger or modifier
+- keysym names are shape-checked only; whether a keysym exists is resolved by
+  xkbcommon at runtime
 - monitor arguments accept a bare monitor name or a monitor spec such as
   `make:Chimei Innolux Corporation&&model:0x15F5`
 - `setoption` checks its first argument against the global option names
