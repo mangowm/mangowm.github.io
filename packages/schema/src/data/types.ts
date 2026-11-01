@@ -25,6 +25,8 @@ export type GlobalDef =
       default: number;
       min?: number;
       max?: number;
+      canonicalDefault?: number;
+      canonicalMax?: number;
     })
   | (GlobalBase & {
       type: "string";
