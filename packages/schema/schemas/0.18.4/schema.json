@@ -4454,21 +4454,19 @@
       "title": "Binding node after sym",
       "description": "Maps key combinations to actions. Flag sub-tables are optional.",
       "type": "object",
-      "properties": {
-        "lock": {
+      "patternProperties": {
+        "^lock$": {
           "$ref": "#/$defs/KeyLockBindingNode"
         },
-        "release": {
+        "^release$": {
           "$ref": "#/$defs/KeyReleaseBindingNode"
         },
-        "pass": {
+        "^pass$": {
           "$ref": "#/$defs/KeyPassBindingNode"
         },
-        "conflict": {
+        "^conflict$": {
           "$ref": "#/$defs/KeyConflictBindingNode"
-        }
-      },
-      "patternProperties": {
+        },
         "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
           "$ref": "#/$defs/CanonicalSingleAction"
         }
@@ -4479,18 +4477,16 @@
       "title": "Binding node after lock",
       "description": "Maps key combinations to actions. Flag sub-tables are optional.",
       "type": "object",
-      "properties": {
-        "release": {
+      "patternProperties": {
+        "^release$": {
           "$ref": "#/$defs/KeyReleaseBindingNode"
         },
-        "pass": {
+        "^pass$": {
           "$ref": "#/$defs/KeyPassBindingNode"
         },
-        "conflict": {
+        "^conflict$": {
           "$ref": "#/$defs/KeyConflictBindingNode"
-        }
-      },
-      "patternProperties": {
+        },
         "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
           "$ref": "#/$defs/CanonicalSingleAction"
         }
@@ -4501,15 +4497,13 @@
       "title": "Binding node after release",
       "description": "Maps key combinations to actions. Flag sub-tables are optional.",
       "type": "object",
-      "properties": {
-        "pass": {
+      "patternProperties": {
+        "^pass$": {
           "$ref": "#/$defs/KeyPassBindingNode"
         },
-        "conflict": {
+        "^conflict$": {
           "$ref": "#/$defs/KeyConflictBindingNode"
-        }
-      },
-      "patternProperties": {
+        },
         "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
           "$ref": "#/$defs/CanonicalSingleAction"
         }
@@ -4520,12 +4514,10 @@
       "title": "Binding node after pass",
       "description": "Maps key combinations to actions. Flag sub-tables are optional.",
       "type": "object",
-      "properties": {
-        "conflict": {
-          "$ref": "#/$defs/KeyConflictBindingNode"
-        }
-      },
       "patternProperties": {
+        "^conflict$": {
+          "$ref": "#/$defs/KeyConflictBindingNode"
+        },
         "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
           "$ref": "#/$defs/CanonicalSingleAction"
         }
@@ -4536,7 +4528,6 @@
       "title": "Binding node after conflict",
       "description": "Maps key combinations to actions. Flag sub-tables are optional.",
       "type": "object",
-      "properties": {},
       "patternProperties": {
         "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
           "$ref": "#/$defs/CanonicalConflictActions"

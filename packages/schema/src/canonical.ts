@@ -207,24 +207,28 @@ const KEY_FLAG_DEFS = [
 ] as const;
 
 function keyBindingNode(start: number): TSchema {
-  const properties = Object.fromEntries(
-    KEY_FLAGS.map((flag, index) => [flag, index] as const)
-      .filter(([, index]) => index >= start)
-      .map(([flag, index]) => [flag, { $ref: `#/$defs/${KEY_FLAG_DEFS[index + 1]}` }]),
+  const allowed = KEY_FLAGS.map((flag, index) => [flag, index] as const).filter(
+    ([, index]) => index >= start,
   );
+  const flagProperties = Object.fromEntries(
+    allowed.map(([flag, index]) => [flag, { $ref: `#/$defs/${KEY_FLAG_DEFS[index + 1]}` }]),
+  );
+  const flagPatterns = Object.fromEntries(
+    allowed.map(([flag, index]) => [`^${flag}$`, { $ref: `#/$defs/${KEY_FLAG_DEFS[index + 1]}` }]),
+  );
+  const action =
+    start === KEY_FLAGS.length
+      ? { $ref: "#/$defs/CanonicalConflictActions" }
+      : { $ref: "#/$defs/CanonicalSingleAction" };
 
   return Type.Unsafe<TSchema>({
     title: start === 0 ? "Binding node" : `Binding node after ${KEY_FLAGS[start - 1]}`,
     description: "Maps key combinations to actions. Flag sub-tables are optional.",
     type: "object",
-    properties,
+    ...(start === 0 ? { properties: flagProperties } : {}),
     patternProperties: {
-      [BINDING_KEY_PATTERNS.key]: {
-        $ref:
-          start === KEY_FLAGS.length
-            ? "#/$defs/CanonicalConflictActions"
-            : "#/$defs/CanonicalSingleAction",
-      },
+      ...(start === 0 ? {} : flagPatterns),
+      [BINDING_KEY_PATTERNS.key]: action,
     },
     additionalProperties: false,
   });

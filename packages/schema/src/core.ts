@@ -22,6 +22,14 @@ export const BINDING_DEFS: Record<BindingKind, string> = {
   switch: "SwitchBindingNode",
 };
 
+export const TRIGGER_DEFS: Record<BindingKind, string> = {
+  key: "KeyTrigger",
+  mouse: "MouseTrigger",
+  axis: "AxisTrigger",
+  gesture: "GestureTrigger",
+  switch: "SwitchTrigger",
+};
+
 export function enumSchema(
   values: readonly string[],
   numeric: boolean,
