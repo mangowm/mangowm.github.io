@@ -1045,10 +1045,10 @@
         "blur_params_saturation": {
           "type": "number",
           "title": "Blur Saturation",
-          "description": "Saturation multiplier for the blurred layer. Values above 1 are clamped to 1.",
-          "default": 1.2,
+          "description": "Saturation multiplier for the blurred layer.",
+          "default": 1,
           "minimum": 0,
-          "maximum": 1.2
+          "maximum": 1
         },
         "shadows": {
           "anyOf": [

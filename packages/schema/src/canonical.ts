@@ -86,20 +86,13 @@ function globalProperty(option: GlobalDef): TSchema {
         ...(option.min === undefined ? {} : { minimum: option.min }),
         ...(option.max === undefined ? {} : { maximum: option.max }),
       });
-    case "float": {
-      // The source default is 1.2, but the runtime clamps it to 1.
-      const saturation = option.key === "blur_params_saturation";
+    case "float":
       return Type.Number({
-        ...(saturation
-          ? { ...metadata, description: "Saturation multiplier for the blurred layer (0-1)." }
-          : metadata),
-        default: saturation ? 1 : option.default,
+        ...metadata,
+        default: option.default,
         ...(option.min === undefined ? {} : { minimum: option.min }),
-        ...((saturation ? 1 : option.max) === undefined
-          ? {}
-          : { maximum: saturation ? 1 : option.max }),
+        ...(option.max === undefined ? {} : { maximum: option.max }),
       });
-    }
     case "string":
       return Type.String({ ...metadata, default: option.default });
     case "color":
