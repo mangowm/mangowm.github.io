@@ -169,7 +169,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "float",
     default: 0.4,
     label: "Zoom Initial Ratio",
-    description: "Starting scale for zoom animations (0.1-1.0)",
+    description: "Initial scale for zoom animations (0.1-1.0).",
     min: 0.1,
     max: 1,
   },
@@ -178,7 +178,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "float",
     default: 0.8,
     label: "Zoom End Ratio",
-    description: "Ending scale for zoom animations (0.1-1.0)",
+    description: "Final scale for zoom animations (0.1-1.0).",
     min: 0.1,
     max: 1,
   },
@@ -187,7 +187,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "float",
     default: 0.5,
     label: "Fade In Start Opacity",
-    description: "Starting opacity for fade-in animations (0.0-1.0)",
+    description: "Initial opacity for fade-in animations (0.0-1.0).",
     min: 0,
     max: 1,
   },
@@ -196,7 +196,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "float",
     default: 0.5,
     label: "Fade Out Start Opacity",
-    description: "Starting opacity for fade-out animations (0.0-1.0)",
+    description: "Initial opacity for fade-out animations (0.0-1.0).",
     min: 0,
     max: 1,
   },
@@ -318,7 +318,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 1,
     label: "Single Window Proportion",
     description:
-      "Width proportion used when the tag has one window. Requires scroller_ignore_proportion_single=0.",
+      "Width proportion for a tag with one window. Requires scroller_ignore_proportion_single=0.",
     min: 0.1,
     max: 1,
   },
@@ -349,7 +349,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: true,
     label: "Prefer Overspread",
     description:
-      "Let the focused edge window expand into unused space. Takes priority over scroller_focus_center and scroller_prefer_center.",
+      "Focused edge window fills unused space. Overrides scroller_focus_center and scroller_prefer_center.",
   },
   {
     key: "edge_scroller_pointer_focus",
@@ -380,7 +380,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: true,
     label: "Focus Direction Zone Overlap",
     description:
-      "Directional focus only selects windows that overlap the current window on the perpendicular axis.",
+      "Directional focus only picks windows overlapping the current window on the perpendicular axis.",
   },
   {
     key: "exchange_cross_monitor",
@@ -408,7 +408,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "bool",
     default: false,
     label: "View Current to Back",
-    description: "Viewing current tag sends it to back and shows previous tag",
+    description: "The current tag moves to back and the previous tag appears.",
   },
   {
     key: "blur",
@@ -436,7 +436,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "int",
     default: 0,
     label: "Border Radius",
-    description: "Corner rounding in pixels",
+    description: "Corner radius in pixels.",
     min: 0,
     max: 100,
   },
@@ -507,7 +507,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     key: "shadow_only_floating",
     type: "bool",
     default: true,
-    label: "Shadows Floating Only",
+    label: "Floating Shadows Only",
     description: "Only draw shadows for floating windows",
   },
   {
@@ -593,8 +593,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "enum",
     default: 0,
     label: "Allow Tearing",
-    description:
-      "Tearing policy: 0 disabled, 1 enabled for any window, 2 enabled only for fullscreen windows.",
+    description: "Tearing policy: 0 off, 1 any window, 2 fullscreen only.",
     options: [
       {
         value: "0",
@@ -659,8 +658,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "bool",
     default: true,
     label: "Auto Reload Config",
-    description:
-      "Watch the main config file and every `source`/`source_optional` file, then reload immediately after any of them changes.",
+    description: "Watch the main config and all source files. Reload after any change.",
   },
   {
     key: "no_border_when_single",
@@ -702,8 +700,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "int",
     default: 30,
     label: "Snap Distance",
-    description:
-      "Maximum distance in pixels at which a floating window snaps to an edge or another visible floating window (0-99999).",
+    description: "Maximum snap distance in pixels for floating windows (0-99999).",
     min: 0,
     max: 99999,
   },
@@ -720,7 +717,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: false,
     label: "Raise Full Floating Windows",
     description:
-      "Keep fullscreen, floating, and layer-shell top windows in one layer. The most recently raised window is on top.",
+      "Stack fullscreen, floating, and top layer-shell windows together. The last raised window is on top.",
   },
   {
     key: "drag_tile_to_tile",
@@ -751,7 +748,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: true,
     label: "Live Gestures",
     description:
-      "Drive tag/focus/overview transitions while the fingers are still moving (`1`), instead of only after release (`0`).",
+      "Animate tag, focus, and overview changes while fingers move (`1`), not only after release (`0`).",
   },
   {
     key: "gesture_swipe_distance",
@@ -767,8 +764,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "float",
     default: 0.5,
     label: "Swipe Cancel Ratio",
-    description:
-      "Releasing after the last page was dragged past this fraction commits it; below it, the transition animates back.",
+    description: "Fraction of the last page to drag before release commits the swipe.",
     min: 0.05,
     max: 0.95,
   },
@@ -777,8 +773,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "float",
     default: 10,
     label: "Swipe Force Speed",
-    description:
-      "Average per-event speed (px) that forces a commit even below the cancel ratio (for quick flicks).",
+    description: "Average speed per event (px) that commits the swipe below the cancel ratio.",
     min: 0,
   },
   {
@@ -861,7 +856,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 0.55,
     label: "Master Area Factor",
     description:
-      "Fraction of the tag area used by the master area: width in horizontal layouts, height in vertical layouts (0.1-0.9).",
+      "Master area size: width in horizontal layouts, height in vertical layouts (0.1-0.9).",
     min: 0.1,
     max: 0.9,
   },
@@ -870,7 +865,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "int",
     default: 1,
     label: "Number of Masters",
-    description: "How many windows are kept in the master area",
+    description: "Number of windows in the master area.",
     min: 1,
     max: 1000,
   },
@@ -879,7 +874,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "int",
     default: 9,
     label: "Number of Tags",
-    description: "How many tags/workspaces are available (1-31)",
+    description: "Number of tags/workspaces (1-31).",
     min: 1,
     max: 31,
   },
@@ -979,8 +974,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "bool",
     default: true,
     label: "Dwindle Drop Simple Split",
-    description:
-      "Select the drag-to-tile preview style: 1 uses a 2-zone preview, 0 uses a 4-quadrant preview.",
+    description: "Drag-to-tile preview: 1 for 2 zones, 0 for 4 quadrants.",
   },
   {
     key: "dwindle_manual_split",
@@ -1013,7 +1007,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 2,
     label: "Hotarea Corner",
     description:
-      "Screen corner that triggers the overview: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right.",
+      "Screen corner for the overview hotarea: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right.",
     options: [
       {
         value: "0",
@@ -1071,8 +1065,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "float",
     default: 0.5,
     label: "Overcircle Center Ratio",
-    description:
-      "Width of the centered focused window as a fraction of the usable screen width. Range: 0.1-0.9.",
+    description: "Focused window width as a fraction of usable screen width (0.1-0.9).",
     min: 0.1,
     max: 0.9,
   },
@@ -1105,7 +1098,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 100,
     label: "Axis Bind Apply Timeout",
     description:
-      "Minimum time in milliseconds between axis binding invocations; scroll events closer together are ignored (0-1000).",
+      "Minimum milliseconds between axis binding calls (0-1000). Closer scroll events are ignored.",
     min: 0,
     max: 1000,
   },
@@ -1158,7 +1151,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 3,
     label: "Resize Corner",
     description:
-      "Resize corner for floating windows: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right, 4 nearest.",
+      "Floating window resize corner: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right, 4 nearest.",
     min: 0,
     max: 4,
   },
@@ -1175,7 +1168,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: true,
     label: "Enable Border Resize",
     description:
-      "Resize by dragging a window border with the left mouse button. Tiled windows only expose edges shared with a neighbor.",
+      "Drag a window border with the left mouse button to resize. Tiled windows show only shared edges.",
   },
   {
     key: "border_resize_size",
@@ -1972,7 +1965,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 0.8,
     label: "Scratchpad Width Ratio",
     description:
-      "Width of a scratchpad window relative to the monitor (0.1-1.0); used when the rule sets no width.",
+      "Scratchpad width as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
     min: 0.1,
     max: 1,
   },
@@ -1982,7 +1975,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 0.9,
     label: "Scratchpad Height Ratio",
     description:
-      "Height of a scratchpad window relative to the monitor (0.1-1.0); used when the rule sets no height.",
+      "Scratchpad height as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
     min: 0.1,
     max: 1,
   },

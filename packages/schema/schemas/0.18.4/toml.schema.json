@@ -103,21 +103,20 @@
             "zoom"
           ],
           "title": "Dispatcher",
-          "description": "A mangowm dispatcher name."
+          "description": "A mangowm dispatcher."
         },
         {
           "type": "string",
           "title": "Action",
-          "description": "A dispatcher name followed by optional comma-separated arguments.",
           "pattern": "^\\s*(?:centerwin(?:\\s*,\\s*(?:0)?)?|chvt(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?|comboview(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?)?|create_virtual_output(?:\\s*,\\s*(?:[^,]+)?)?|destroy_all_virtual_output(?:\\s*,\\s*(?:0)?)?|disable_monitor(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?|dwindle_split_horizontal(?:\\s*,\\s*(?:0)?)?|dwindle_split_vertical(?:\\s*,\\s*(?:0)?)?|dwindle_toggle_current_split(?:\\s*,\\s*(?:0)?)?|dwindle_toggle_split_direction(?:\\s*,\\s*(?:0)?)?|enable_monitor(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?|enteroverview(?:\\s*,\\s*(?:0)?)?|exchange_client(?:\\s*,\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?)?|exchange_stack_client(?:\\s*,\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?)?|focusdir(?:\\s*,\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?)?|focusid(?:\\s*,\\s*(?:0)?)?|focuslast(?:\\s*,\\s*(?:0)?)?|focusmon(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?|focusstack(?:\\s*,\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?)?|focus_window_or_workspace(?:\\s*,\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?)?|groupfocus(?:\\s*,\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?)?|groupjoin(?:\\s*,\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?)?|groupleave(?:\\s*,\\s*(?:0)?)?|incgaps(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?|incnmaster(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?|killclient(?:\\s*,\\s*(?:(?:[fF][oO][rR][cC][eE]|[uU][nN][fF][oO][rR][cC][eE]))?)?|leaveoverview(?:\\s*,\\s*(?:0)?)?|load_config_file(?:\\s*,\\s*(?:[^,]+)?)?|minimized(?:\\s*,\\s*(?:0)?)?|move_client(?:\\s*,\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?)?|moveresize(?:\\s*,\\s*(?:(?:[cC][uU][rR][mM][oO][vV][eE]|[cC][uU][rR][rR][eE][sS][iI][zZ][eE]|[cC][uU][rR][nN][oO][rR][mM][aA][lL]|[cC][uU][rR][pP][rR][eE][sS][sS][eE][dD]))?)?|movewin(?:\\s*,\\s*(?:[+-]?[0-9]+)?(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?)?|overcircle(?:\\s*,\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]|[cC][uU][rR][rR][eE][nN][tT]_[nN][eE][xX][tT]|[cC][uU][rR][rR][eE][nN][tT]_[pP][rR][eE][vV]))?)?|quit(?:\\s*,\\s*(?:0)?)?|reload_config(?:\\s*,\\s*(?:0)?)?|resizewin(?:\\s*,\\s*(?:[+-]?[0-9]+)?(?:\\s*,\\s*(?:[+-]?[0-9]+)?)?)?|restore_minimized(?:\\s*,\\s*(?:0)?)?|scroller_stack(?:\\s*,\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?)?|setkeymode(?:\\s*,\\s*(?:[^,]+)?)?|setlayout(?:\\s*,\\s*(?:(?:tile|scroller|grid|monocle|deck|center_tile|right_tile|vertical_scroller|vertical_tile|vertical_grid|vertical_deck|dwindle|fair|vertical_fair))?)?|setmfact(?:\\s*,\\s*(?:[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?)?)?|setoption(?:\\s*,\\s*(?:(?:title_message_bar_decorate_focus_fg_color|title_message_bar_decorate_focus_bg_color|title_message_bar_decorate_corner_radius|title_message_bar_decorate_border_color|title_message_bar_decorate_border_width|title_message_bar_decorate_font_desc|title_message_bar_decorate_padding_x|title_message_bar_decorate_padding_y|title_message_bar_decorate_fg_color|title_message_bar_decorate_bg_color|scroller_default_proportion_single|jump_label_decorate_focus_fg_color|jump_label_decorate_focus_bg_color|scroller_ignore_proportion_single|focus_direction_only_zone_overlap|group_bar_decorate_focus_fg_color|group_bar_decorate_focus_bg_color|jump_label_decorate_corner_radius|animation_curve_opacity_fade_out|gesture_swipe_min_speed_to_force|group_bar_decorate_corner_radius|jump_label_decorate_border_color|jump_label_decorate_border_width|trackpad_middle_button_emulation|animation_curve_opacity_fade_in|edge_scroller_focus_allow_speed|group_bar_decorate_border_color|group_bar_decorate_border_width|tab_bar_decorate_focus_fg_color|tab_bar_decorate_focus_bg_color|tab_bar_decorate_corner_radius|hotarea_disable_on_fullscreen|tab_bar_decorate_border_color|tab_bar_decorate_border_width|jump_label_decorate_font_desc|jump_label_decorate_padding_x|jump_label_decorate_padding_y|mouse_middle_button_emulation|trackpad_disable_while_typing|group_bar_close_button_enable|idle_inhibit_when_fullscreen|touch_enable_mouse_emulation|group_bar_decorate_font_desc|group_bar_decorate_padding_x|group_bar_decorate_padding_y|jump_label_decorate_fg_color|jump_label_decorate_bg_color|special_gap_inner_horizontal|special_gap_outer_horizontal|scroller_default_proportion|edge_scroller_pointer_focus|idle_inhibit_ignore_visible|group_bar_decorate_fg_color|group_bar_decorate_bg_color|layer_animation_type_close|scroller_prefer_overspread|gesture_swipe_cancel_ratio|scroller_proportion_preset|monocle_right_button_close|trackpad_natural_scrolling|tab_bar_decorate_font_desc|tab_bar_decorate_padding_x|tab_bar_decorate_padding_y|special_gap_inner_vertical|special_gap_outer_vertical|layer_animation_type_open|dwindle_drop_simple_split|tab_bar_decorate_fg_color|tab_bar_decorate_bg_color|trackpad_send_events_mode|animation_duration_close|animation_duration_focus|scratchpad_cross_monitor|center_master_overspread|center_when_single_stack|dwindle_horizontal_split|title_message_bar_height|tag_animation_direction|animation_duration_move|animation_duration_open|allow_shortcuts_inhibit|overcircle_center_ratio|cursor_hide_on_keypress|axis_bind_apply_timeout|mouse_natural_scrolling|scratchpad_height_ratio|group_bar_button_margin|fade_out_begin_opacity|animation_duration_tag|scroller_prefer_center|exchange_cross_monitor|blur_params_num_passes|blur_params_brightness|blur_params_saturation|allow_lock_transparent|gesture_swipe_distance|dwindle_vertical_split|dwindle_preserve_split|trackpad_accel_profile|mouse_send_events_mode|trackpad_scroll_method|trackpad_scroll_button|trackpad_scroll_factor|scratchpad_width_ratio|group_bar_button_color|maximized_screen_color|fade_in_begin_opacity|animation_curve_close|animation_curve_focus|scroller_focus_center|xwayland_ignore_scale|no_border_when_single|no_radius_when_single|default_master_factor|trackpad_click_method|title_message_bar_gap|always_show_group_bar|group_bar_button_size|animation_type_close|animation_curve_move|animation_curve_open|view_current_to_back|blur_params_contrast|shadow_only_floating|xwayland_persistence|disable_middle_paste|enable_floating_snap|default_master_count|dwindle_smart_resize|dwindle_manual_split|enable_border_resize|trackpad_accel_speed|trackpad_left_handed|gap_inner_horizontal|gap_outer_horizontal|animation_type_open|animation_curve_tag|focus_cross_monitor|swipe_min_threshold|dwindle_smart_split|dwindle_split_ratio|cursor_hide_timeout|mouse_accel_profile|mouse_scroll_method|mouse_scroll_button|dim_unfocused_color|animation_fade_out|zoom_initial_ratio|blur_params_radius|shadows_position_x|shadows_position_y|auto_reload_config|overview_gap_inner|overview_gap_outer|border_resize_size|mouse_click_method|axis_scroll_factor|gap_inner_vertical|gap_outer_vertical|animation_fade_in|blur_params_noise|single_scratchpad|monocle_no_border|monocle_no_radius|float_full_to_top|drag_tile_to_tile|unfocused_opacity|xkb_rules_variant|xkb_rules_options|focus_on_activate|mouse_accel_speed|mouse_left_handed|dim_focused_color|layer_animations|scroller_structs|xkb_rules_layout|drag_warp_cursor|monocle_tab_mode|disable_trackpad|send_events_mode|group_bar_height|scratchpad_color|window_rule_once|bind(?:[slrpc]*)|focus_cross_tag|sync_obj_enable|drag_tile_small|focused_opacity|xkb_rules_rules|xkb_rules_model|source_optional|zoom_end_ratio|blur_optimized|monocle_no_gap|hotarea_corner|enable_hotarea|tab_bar_height|border_radius|layer_shadows|allow_tearing|snap_distance|circle_layout|new_is_master|deck_tab_mode|shadows_color|overlay_color|shadows_size|shadows_blur|tag_carousel|gesture_live|hotarea_size|sloppy_focus|repeat_delay|touch_enable|tap_to_click|tap_and_drag|cursor_theme|border_color|urgent_color|global_color|monitor_rule|jump_labels|warp_cursor|drag_corner|repeat_rate|cursor_size|special_dim|split_color|focus_color|window_rule|device_rule|gesturebind|animations|blur_layer|tag_gather|numlock_on|smart_gaps|button_map|root_color|dim_enable|drop_color|layer_rule|switchbind|hdr_depth|drag_lock|border_px|exec_once|mousebind|key_mode|tag_rule|axisbind|shadows|tag_num|source|blur|exec|env|var))?(?:\\s*,\\s*(?:.*)?)?)?|set_proportion(?:\\s*,\\s*(?:[+]?(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?))?)?|sleep_monitor(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?|sleep_toggle_monitor(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?|smartkillclient(?:\\s*,\\s*(?:0)?)?|smartmovewin(?:\\s*,\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?)?|smartresizewin(?:\\s*,\\s*(?:(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]))?)?|spawn(?:\\s*,\\s*(?:.*)?)?|spawn_on_empty(?:\\s*,\\s*(?:[^,]+)?(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?)?)?|spawn_shell(?:\\s*,\\s*(?:.*)?)?|switcher(?:\\s*,\\s*(?:(?:next|prev|all_next|all_prev|all_tag_next|all_tag_prev))?)?|switch_keyboard_layout(?:\\s*,\\s*(?:[+]?(?:[0-9]|[1-9][0-9]|100))?)?|switch_layout(?:\\s*,\\s*(?:0)?)?|switch_proportion_preset(?:\\s*,\\s*(?:(?:[nN][eE][xX][tT]|[pP][rR][eE][vV]))?)?|tag(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?(?:\\s*,\\s*(?:[01])?)?)?|tagcrossmon(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?|tagmon(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?(?:\\s*,\\s*(?:[01])?)?)?|tagsilent(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?)?|tag_special_silent(?:\\s*,\\s*(?:0)?)?|tag_special_tag(?:\\s*,\\s*(?:0)?)?|tagtoleft(?:\\s*,\\s*(?:[01])?)?|tagtoright(?:\\s*,\\s*(?:[01])?)?|toggle_all_floating(?:\\s*,\\s*(?:0)?)?|togglefakefullscreen(?:\\s*,\\s*(?:0)?)?|togglefloating(?:\\s*,\\s*(?:0)?)?|togglefullscreen(?:\\s*,\\s*(?:0)?)?|togglegaps(?:\\s*,\\s*(?:0)?)?|toggleglobal(?:\\s*,\\s*(?:0)?)?|togglegroupbar(?:\\s*,\\s*(?:0)?)?|togglehdr(?:\\s*,\\s*(?:(?:on|off|toggle))?(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?|togglejump(?:\\s*,\\s*(?:0)?)?|togglemaximizescreen(?:\\s*,\\s*(?:0)?)?|toggle_monitor(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?|toggle_named_scratchpad(?:\\s*,\\s*(?:[^,]+)?(?:\\s*,\\s*(?:[^,]+)?(?:\\s*,\\s*(?:[^,]+)?)?)?)?|toggleoverlay(?:\\s*,\\s*(?:0)?)?|toggleoverview(?:\\s*,\\s*(?:[01])?)?|toggle_render_border(?:\\s*,\\s*(?:0)?)?|toggle_scratchpad(?:\\s*,\\s*(?:0)?)?|toggle_special_tag(?:\\s*,\\s*(?:0)?)?|toggletag(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?)?|toggle_trackpad_enable(?:\\s*,\\s*(?:0)?)?|toggleview(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?)?|view(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?(?:\\s*,\\s*(?:[01])?)?)?|viewcrossmon(?:\\s*,\\s*(?:(?:-1|00|[0-9]|[12][0-9]|3[01])(?:\\s*\\|\\s*(?:-1|00|[0-9]|[12][0-9]|3[01]))*)?(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?)?|view_insert(?:\\s*,\\s*(?:(?:prev|next))?)?|viewnext_have_client(?:\\s*,\\s*(?:[01])?)?|viewprev_have_client(?:\\s*,\\s*(?:[01])?)?|viewtoleft(?:\\s*,\\s*(?:[01])?)?|viewtoleft_have_client(?:\\s*,\\s*(?:[01])?)?|viewtoright(?:\\s*,\\s*(?:[01])?)?|viewtoright_have_client(?:\\s*,\\s*(?:[01])?)?|wakeup_monitor(?:\\s*,\\s*(?:(?:(?:name|make|model|serial):(?:(?!&&)[^,])+(?:&&(?:name|make|model|serial):(?:(?!&&)[^,])+)*|[^,:&]+))?)?|zoom(?:\\s*,\\s*(?:0)?)?|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})(?:\\s*,.*)?)\\s*$"
         }
       ],
       "title": "Action",
-      "description": "A dispatcher name with optional arguments, or a variable reference."
+      "description": "Dispatcher with arguments, or a variable reference."
     },
     "TomlSingleAction": {
       "title": "Action",
-      "description": "One action for the key combination.",
+      "description": "One action for this binding.",
       "anyOf": [
         {
           "$ref": "#/$defs/TomlActionString"
@@ -134,7 +133,7 @@
     },
     "TomlMultipleActions": {
       "title": "Actions",
-      "description": "One or more actions for the same key combination.",
+      "description": "Actions for the same binding.",
       "anyOf": [
         {
           "$ref": "#/$defs/TomlActionString"
@@ -150,7 +149,7 @@
     },
     "KeyBindingNode": {
       "title": "Binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -178,7 +177,7 @@
     },
     "KeyConflictBindingNode": {
       "title": "Conflict binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -206,7 +205,7 @@
     },
     "MouseBindingNode": {
       "title": "Binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -234,7 +233,7 @@
     },
     "AxisBindingNode": {
       "title": "Binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -262,7 +261,7 @@
     },
     "GestureBindingNode": {
       "title": "Binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -290,7 +289,7 @@
     },
     "SwitchBindingNode": {
       "title": "Binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -575,7 +574,7 @@
         "zoom_initial_ratio": {
           "type": "number",
           "title": "Zoom Initial Ratio",
-          "description": "Starting scale for zoom animations (0.1-1.0)",
+          "description": "Initial scale for zoom animations (0.1-1.0).",
           "default": 0.4,
           "minimum": 0.1,
           "maximum": 1
@@ -583,7 +582,7 @@
         "zoom_end_ratio": {
           "type": "number",
           "title": "Zoom End Ratio",
-          "description": "Ending scale for zoom animations (0.1-1.0)",
+          "description": "Final scale for zoom animations (0.1-1.0).",
           "default": 0.8,
           "minimum": 0.1,
           "maximum": 1
@@ -591,7 +590,7 @@
         "fade_in_begin_opacity": {
           "type": "number",
           "title": "Fade In Start Opacity",
-          "description": "Starting opacity for fade-in animations (0.0-1.0)",
+          "description": "Initial opacity for fade-in animations (0.0-1.0).",
           "default": 0.5,
           "minimum": 0,
           "maximum": 1
@@ -599,7 +598,7 @@
         "fade_out_begin_opacity": {
           "type": "number",
           "title": "Fade Out Start Opacity",
-          "description": "Starting opacity for fade-out animations (0.0-1.0)",
+          "description": "Initial opacity for fade-out animations (0.0-1.0).",
           "default": 0.5,
           "minimum": 0,
           "maximum": 1
@@ -894,7 +893,7 @@
         "scroller_default_proportion_single": {
           "type": "number",
           "title": "Single Window Proportion",
-          "description": "Width proportion used when the tag has one window. Requires scroller_ignore_proportion_single=0.",
+          "description": "Width proportion for a tag with one window. Requires scroller_ignore_proportion_single=0.",
           "default": 1,
           "minimum": 0.1,
           "maximum": 1
@@ -964,7 +963,7 @@
             }
           ],
           "title": "Prefer Overspread",
-          "description": "Let the focused edge window expand into unused space. Takes priority over scroller_focus_center and scroller_prefer_center.",
+          "description": "Focused edge window fills unused space. Overrides scroller_focus_center and scroller_prefer_center.",
           "default": true
         },
         "edge_scroller_pointer_focus": {
@@ -1023,7 +1022,7 @@
             }
           ],
           "title": "Focus Direction Zone Overlap",
-          "description": "Directional focus only selects windows that overlap the current window on the perpendicular axis.",
+          "description": "Directional focus only picks windows overlapping the current window on the perpendicular axis.",
           "default": true
         },
         "exchange_cross_monitor": {
@@ -1091,7 +1090,7 @@
             }
           ],
           "title": "View Current to Back",
-          "description": "Viewing current tag sends it to back and shows previous tag",
+          "description": "The current tag moves to back and the previous tag appears.",
           "default": false
         },
         "blur": {
@@ -1148,7 +1147,7 @@
         "border_radius": {
           "type": "integer",
           "title": "Border Radius",
-          "description": "Corner rounding in pixels",
+          "description": "Corner radius in pixels.",
           "default": 0,
           "minimum": 0,
           "maximum": 100
@@ -1231,7 +1230,7 @@
               ]
             }
           ],
-          "title": "Shadows Floating Only",
+          "title": "Floating Shadows Only",
           "description": "Only draw shadows for floating windows",
           "default": true
         },
@@ -1394,7 +1393,7 @@
             }
           ],
           "title": "Allow Tearing",
-          "description": "Tearing policy: 0 disabled, 1 enabled for any window, 2 enabled only for fullscreen windows.",
+          "description": "Tearing policy: 0 off, 1 any window, 2 fullscreen only.",
           "default": 0
         },
         "hdr_depth": {
@@ -1490,7 +1489,7 @@
             }
           ],
           "title": "Auto Reload Config",
-          "description": "Watch the main config file and every `source`/`source_optional` file, then reload immediately after any of them changes.",
+          "description": "Watch the main config and all source files. Reload after any change.",
           "default": true
         },
         "no_border_when_single": {
@@ -1581,7 +1580,7 @@
         "snap_distance": {
           "type": "integer",
           "title": "Snap Distance",
-          "description": "Maximum distance in pixels at which a floating window snaps to an edge or another visible floating window (0-99999).",
+          "description": "Maximum snap distance in pixels for floating windows (0-99999).",
           "default": 30,
           "minimum": 0,
           "maximum": 99999
@@ -1617,7 +1616,7 @@
             }
           ],
           "title": "Raise Full Floating Windows",
-          "description": "Keep fullscreen, floating, and layer-shell top windows in one layer. The most recently raised window is on top.",
+          "description": "Stack fullscreen, floating, and top layer-shell windows together. The last raised window is on top.",
           "default": false
         },
         "drag_tile_to_tile": {
@@ -1676,7 +1675,7 @@
             }
           ],
           "title": "Live Gestures",
-          "description": "Drive tag/focus/overview transitions while the fingers are still moving (`1`), instead of only after release (`0`).",
+          "description": "Animate tag, focus, and overview changes while fingers move (`1`), not only after release (`0`).",
           "default": true
         },
         "gesture_swipe_distance": {
@@ -1690,7 +1689,7 @@
         "gesture_swipe_cancel_ratio": {
           "type": "number",
           "title": "Swipe Cancel Ratio",
-          "description": "Releasing after the last page was dragged past this fraction commits it; below it, the transition animates back.",
+          "description": "Fraction of the last page to drag before release commits the swipe.",
           "default": 0.5,
           "minimum": 0.05,
           "maximum": 0.95
@@ -1698,7 +1697,7 @@
         "gesture_swipe_min_speed_to_force": {
           "type": "number",
           "title": "Swipe Force Speed",
-          "description": "Average per-event speed (px) that forces a commit even below the cancel ratio (for quick flicks).",
+          "description": "Average speed per event (px) that commits the swipe below the cancel ratio.",
           "default": 10,
           "minimum": 0
         },
@@ -1829,7 +1828,7 @@
         "default_master_factor": {
           "type": "number",
           "title": "Master Area Factor",
-          "description": "Fraction of the tag area used by the master area: width in horizontal layouts, height in vertical layouts (0.1-0.9).",
+          "description": "Master area size: width in horizontal layouts, height in vertical layouts (0.1-0.9).",
           "default": 0.55,
           "minimum": 0.1,
           "maximum": 0.9
@@ -1837,7 +1836,7 @@
         "default_master_count": {
           "type": "integer",
           "title": "Number of Masters",
-          "description": "How many windows are kept in the master area",
+          "description": "Number of windows in the master area.",
           "default": 1,
           "minimum": 1,
           "maximum": 1000
@@ -1845,7 +1844,7 @@
         "tag_num": {
           "type": "integer",
           "title": "Number of Tags",
-          "description": "How many tags/workspaces are available (1-31)",
+          "description": "Number of tags/workspaces (1-31).",
           "default": 9,
           "minimum": 1,
           "maximum": 31
@@ -2022,7 +2021,7 @@
             }
           ],
           "title": "Dwindle Drop Simple Split",
-          "description": "Select the drag-to-tile preview style: 1 uses a 2-zone preview, 0 uses a 4-quadrant preview.",
+          "description": "Drag-to-tile preview: 1 for 2 zones, 0 for 4 quadrants.",
           "default": true
         },
         "dwindle_manual_split": {
@@ -2089,7 +2088,7 @@
             }
           ],
           "title": "Hotarea Corner",
-          "description": "Screen corner that triggers the overview: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right.",
+          "description": "Screen corner for the overview hotarea: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right.",
           "default": 2
         },
         "enable_hotarea": {
@@ -2145,7 +2144,7 @@
         "overcircle_center_ratio": {
           "type": "number",
           "title": "Overcircle Center Ratio",
-          "description": "Width of the centered focused window as a fraction of the usable screen width. Range: 0.1-0.9.",
+          "description": "Focused window width as a fraction of usable screen width (0.1-0.9).",
           "default": 0.5,
           "minimum": 0.1,
           "maximum": 0.9
@@ -2184,7 +2183,7 @@
         "axis_bind_apply_timeout": {
           "type": "integer",
           "title": "Axis Bind Apply Timeout",
-          "description": "Minimum time in milliseconds between axis binding invocations; scroll events closer together are ignored (0-1000).",
+          "description": "Minimum milliseconds between axis binding calls (0-1000). Closer scroll events are ignored.",
           "default": 100,
           "minimum": 0,
           "maximum": 1000
@@ -2294,7 +2293,7 @@
         "drag_corner": {
           "type": "integer",
           "title": "Resize Corner",
-          "description": "Resize corner for floating windows: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right, 4 nearest.",
+          "description": "Floating window resize corner: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right, 4 nearest.",
           "default": 3,
           "minimum": 0,
           "maximum": 4
@@ -2330,7 +2329,7 @@
             }
           ],
           "title": "Enable Border Resize",
-          "description": "Resize by dragging a window border with the left mouse button. Tiled windows only expose edges shared with a neighbor.",
+          "description": "Drag a window border with the left mouse button to resize. Tiled windows show only shared edges.",
           "default": true
         },
         "border_resize_size": {
@@ -3501,7 +3500,7 @@
         "scratchpad_width_ratio": {
           "type": "number",
           "title": "Scratchpad Width Ratio",
-          "description": "Width of a scratchpad window relative to the monitor (0.1-1.0); used when the rule sets no width.",
+          "description": "Scratchpad width as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
           "default": 0.8,
           "minimum": 0.1,
           "maximum": 1
@@ -3509,7 +3508,7 @@
         "scratchpad_height_ratio": {
           "type": "number",
           "title": "Scratchpad Height Ratio",
-          "description": "Height of a scratchpad window relative to the monitor (0.1-1.0); used when the rule sets no height.",
+          "description": "Scratchpad height as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
           "default": 0.9,
           "minimum": 0.1,
           "maximum": 1
@@ -3899,8 +3898,8 @@
               }
             }
           ],
-          "title": "Run on Load/Reload",
-          "description": "Commands run at startup and every time the config is reloaded."
+          "title": "Run on load and reload",
+          "description": "Commands run at startup and on each reload."
         },
         "exec_once": {
           "anyOf": [
@@ -3934,7 +3933,7 @@
             }
           ],
           "title": "Includes",
-          "description": "Config files loaded as part of this config."
+          "description": "Loads other config files."
         },
         "source_optional": {
           "anyOf": [
@@ -3951,17 +3950,17 @@
             }
           ],
           "title": "Optional Includes",
-          "description": "Config files loaded if they exist; missing files are ignored."
+          "description": "Loads other config files when they exist."
         }
       },
       "title": "Global options",
-      "description": "Top-level mangowm options.",
+      "description": "Global compositor options.",
       "additionalProperties": false
     },
     "env": {
       "type": "object",
       "title": "Environment",
-      "description": "Environment variables exported before startup and re-applied on every config reload.",
+      "description": "Environment variables set at startup and after each config reload.",
       "additionalProperties": {
         "anyOf": [
           {
@@ -3983,7 +3982,7 @@
     "var": {
       "type": "object",
       "title": "Variables",
-      "description": "User-defined variables referenced as $name or ${name} in config values and binding keys; undefined names are left untouched.",
+      "description": "Variables used as $name or ${name} in values and binding keys. Unknown names stay as written.",
       "additionalProperties": {
         "anyOf": [
           {
@@ -4040,7 +4039,7 @@
         }
       },
       "title": "Gesture bindings",
-      "description": "Gesture bindings by key mode and gesture combination."
+      "description": "Gesture bindings by key mode, direction, and finger count."
     },
     "switchbind": {
       "type": "object",
@@ -4139,7 +4138,7 @@
                   }
                 ],
                 "title": "Transform",
-                "description": "Monitor transform. 0 normal, 1 90° CCW, 2 180°, 3 270° CCW, 4 vertical flip, 5 flip+90° CCW, 6 flip+180°, 7 flip+270° CCW."
+                "description": "Monitor transform at startup. Option labels list each value."
               },
               "scale": {
                 "type": "number",
@@ -4310,7 +4309,7 @@
               }
             },
             "title": "Monitor Rules",
-            "description": "Match outputs by name, make, model, or serial; every field set must match. The first matching rule is applied to each output.",
+            "description": "Match outputs by name, make, model, or serial. Every set field must match. The first match applies.",
             "additionalProperties": false,
             "anyOf": [
               {
@@ -4731,7 +4730,7 @@
               "scroller_default_proportion_single": {
                 "type": "number",
                 "title": "Scroller Proportion (Single)",
-                "description": "Scroller proportion for a single window. Only used when scroller_ignore_proportion_single is off.",
+                "description": "Scroller proportion for a single window. Used when scroller_ignore_proportion_single is off.",
                 "minimum": 0,
                 "maximum": 1
               },
@@ -5135,12 +5134,12 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "Values greater than 0 and up to 1 are a fraction of the screen width; values above 1 are pixels."
+                "description": "0 to 1 is a screen width fraction; above 1 is pixels."
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "Values greater than 0 and up to 1 are a fraction of the screen height; values above 1 are pixels."
+                "description": "0 to 1 is a screen height fraction; above 1 is pixels."
               },
               "no_border": {
                 "anyOf": [
@@ -5584,11 +5583,11 @@
                       }
                     ],
                     "title": "Force Tearing",
-                    "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing."
+                    "description": "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing."
                   }
                 ],
                 "title": "Force Tearing",
-                "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing."
+                "description": "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing."
               },
               "no_swallow": {
                 "anyOf": [
@@ -5690,7 +5689,7 @@
               }
             },
             "title": "Window Rules",
-            "description": "Apply properties whenever a window matching app_id or title opens; if both are set, both must match.",
+            "description": "Apply properties when a window matching app_id or title opens. Both must match when set.",
             "additionalProperties": false
           }
         },
@@ -5908,12 +5907,12 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "Values greater than 0 and up to 1 are a fraction of the screen width; values above 1 are pixels."
+                "description": "0 to 1 is a screen width fraction; above 1 is pixels."
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "Values greater than 0 and up to 1 are a fraction of the screen height; values above 1 are pixels."
+                "description": "0 to 1 is a screen height fraction; above 1 is pixels."
               },
               "no_border": {
                 "anyOf": [
@@ -6357,11 +6356,11 @@
                       }
                     ],
                     "title": "Force Tearing",
-                    "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing."
+                    "description": "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing."
                   }
                 ],
                 "title": "Force Tearing",
-                "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing."
+                "description": "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing."
               },
               "no_swallow": {
                 "anyOf": [
@@ -6538,14 +6537,14 @@
               "repeat_rate": {
                 "type": "integer",
                 "title": "Repeat Rate",
-                "description": "How many times a key repeats per second.",
+                "description": "Key repeat rate per second.",
                 "minimum": 0,
                 "maximum": 1000
               },
               "repeat_delay": {
                 "type": "integer",
                 "title": "Repeat Delay",
-                "description": "Delay (ms) before a held key starts repeating.",
+                "description": "Delay before a held key repeats (ms).",
                 "minimum": 0,
                 "maximum": 10000
               },
@@ -6848,7 +6847,7 @@
               "monitor": {
                 "type": "string",
                 "title": "Monitor",
-                "description": "Pin a touch or tablet device to one output. Unset touch devices follow the current screen; unset tablets stay unmapped.",
+                "description": "Pin touch or tablet input to one output. Unset touch follows the current screen; unset tablets stay unmapped.",
                 "pattern": "^[^,]*$"
               },
               "map_focus_monitor": {
@@ -6870,7 +6869,7 @@
               }
             },
             "title": "Device Rules",
-            "description": "Override settings for devices matched by exact name or type. A keyboard rule compiles its own keymap from only the kb_* fields it sets.",
+            "description": "Device overrides by name or type. Keyboard rules build a keymap from their kb_* fields.",
             "additionalProperties": false
           }
         }
@@ -6880,7 +6879,7 @@
       "additionalProperties": false
     }
   },
-  "description": "TOML representation of a mangowm configuration.",
+  "description": "TOML mangowm configuration.",
   "additionalProperties": false,
   "title": "mangowm TOML configuration 0.18.4"
 }

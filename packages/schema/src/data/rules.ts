@@ -5,7 +5,7 @@ export const RULES: readonly RuleDef[] = [
     key: "monitor_rule",
     label: "Monitor Rules",
     description:
-      "Match outputs by name, make, model, or serial; every field set must match. The first matching rule is applied to each output.",
+      "Match outputs by name, make, model, or serial. Every set field must match. The first match applies.",
     fields: [
       {
         key: "name",
@@ -35,8 +35,7 @@ export const RULES: readonly RuleDef[] = [
         key: "rr",
         type: "enum",
         label: "Transform",
-        description:
-          "Monitor transform. 0 normal, 1 90° CCW, 2 180°, 3 270° CCW, 4 vertical flip, 5 flip+90° CCW, 6 flip+180°, 7 flip+270° CCW.",
+        description: "Monitor transform at startup. Option labels list each value.",
         options: [
           {
             value: "0",
@@ -337,7 +336,7 @@ export const RULES: readonly RuleDef[] = [
         type: "float",
         label: "Scroller Proportion (Single)",
         description:
-          "Scroller proportion for a single window. Only used when scroller_ignore_proportion_single is off.",
+          "Scroller proportion for a single window. Used when scroller_ignore_proportion_single is off.",
         min: 0,
         max: 1,
       },
@@ -449,7 +448,7 @@ export const RULES: readonly RuleDef[] = [
     key: "window_rule",
     label: "Window Rules",
     description:
-      "Apply properties whenever a window matching app_id or title opens; if both are set, both must match.",
+      "Apply properties when a window matching app_id or title opens. Both must match when set.",
     fields: [
       {
         key: "is_floating",
@@ -580,15 +579,13 @@ export const RULES: readonly RuleDef[] = [
         key: "width",
         type: "float",
         label: "Width",
-        description:
-          "Values greater than 0 and up to 1 are a fraction of the screen width; values above 1 are pixels.",
+        description: "0 to 1 is a screen width fraction; above 1 is pixels.",
       },
       {
         key: "height",
         type: "float",
         label: "Height",
-        description:
-          "Values greater than 0 and up to 1 are a fraction of the screen height; values above 1 are pixels.",
+        description: "0 to 1 is a screen height fraction; above 1 is pixels.",
       },
       {
         key: "no_border",
@@ -760,7 +757,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Force Tearing",
         description:
-          "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing.",
+          "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing.",
         options: [
           {
             value: "0",
@@ -959,15 +956,13 @@ export const RULES: readonly RuleDef[] = [
         key: "width",
         type: "float",
         label: "Width",
-        description:
-          "Values greater than 0 and up to 1 are a fraction of the screen width; values above 1 are pixels.",
+        description: "0 to 1 is a screen width fraction; above 1 is pixels.",
       },
       {
         key: "height",
         type: "float",
         label: "Height",
-        description:
-          "Values greater than 0 and up to 1 are a fraction of the screen height; values above 1 are pixels.",
+        description: "0 to 1 is a screen height fraction; above 1 is pixels.",
       },
       {
         key: "no_border",
@@ -1139,7 +1134,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Force Tearing",
         description:
-          "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing.",
+          "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing.",
         options: [
           {
             value: "0",
@@ -1208,7 +1203,7 @@ export const RULES: readonly RuleDef[] = [
     key: "device_rule",
     label: "Device Rules",
     description:
-      "Override settings for devices matched by exact name or type. A keyboard rule compiles its own keymap from only the kb_* fields it sets.",
+      "Device overrides by name or type. Keyboard rules build a keymap from their kb_* fields.",
     fields: [
       {
         key: "name",
@@ -1260,7 +1255,7 @@ export const RULES: readonly RuleDef[] = [
         key: "repeat_rate",
         type: "int",
         label: "Repeat Rate",
-        description: "How many times a key repeats per second.",
+        description: "Key repeat rate per second.",
         min: 0,
         max: 1000,
       },
@@ -1268,7 +1263,7 @@ export const RULES: readonly RuleDef[] = [
         key: "repeat_delay",
         type: "int",
         label: "Repeat Delay",
-        description: "Delay (ms) before a held key starts repeating.",
+        description: "Delay before a held key repeats (ms).",
         min: 0,
         max: 10000,
       },
@@ -1468,7 +1463,7 @@ export const RULES: readonly RuleDef[] = [
         type: "string",
         label: "Monitor",
         description:
-          "Pin a touch or tablet device to one output. Unset touch devices follow the current screen; unset tablets stay unmapped.",
+          "Pin touch or tablet input to one output. Unset touch follows the current screen; unset tablets stay unmapped.",
       },
       {
         key: "map_focus_monitor",

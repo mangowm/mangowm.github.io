@@ -27,12 +27,12 @@ const CANONICAL_ACTION_VARIANTS = [
         type: "string",
         pattern: "^[A-Za-z_][A-Za-z0-9_]*$",
         title: "Variable",
-        description: "Name of a config variable.",
+        description: "Config variable name.",
       },
       args: {
         type: "string",
         title: "Arguments",
-        description: "Raw text after the first comma.",
+        description: "Text after the first comma.",
       },
     },
     required: ["variable"],
@@ -41,7 +41,7 @@ const CANONICAL_ACTION_VARIANTS = [
 
 const CanonicalAction: TSchema = Type.Unsafe<TSchema>({
   title: "Action",
-  description: "A dispatcher call or a variable reference.",
+  description: "Dispatcher call or variable reference.",
   type: "object",
   properties: {
     dispatcher: { type: "string", enum: DISPATCHERS, title: "Dispatcher" },
@@ -49,12 +49,12 @@ const CanonicalAction: TSchema = Type.Unsafe<TSchema>({
       type: "string",
       pattern: "^[A-Za-z_][A-Za-z0-9_]*$",
       title: "Variable",
-      description: "Name of a config variable.",
+      description: "Config variable name.",
     },
     args: {
       type: "string",
       title: "Arguments",
-      description: "Raw text after the first comma.",
+      description: "Text after the first comma.",
     },
   },
   additionalProperties: false,
@@ -63,14 +63,14 @@ const CanonicalAction: TSchema = Type.Unsafe<TSchema>({
 
 const CanonicalSingleAction = Type.Array(CanonicalAction, {
   title: "Action",
-  description: "The action for this key combination.",
+  description: "The action for this binding.",
   minItems: 1,
   maxItems: 1,
 });
 
 const CanonicalConflictActions = Type.Array(CanonicalAction, {
   title: "Actions",
-  description: "One or more actions for the same key combination.",
+  description: "Actions for the same binding.",
   minItems: 1,
 });
 
@@ -145,8 +145,7 @@ function envMap() {
   return Type.Unsafe<TSchema>({
     type: "object",
     title: "Environment",
-    description:
-      "Environment variables exported before startup and re-applied on every config reload.",
+    description: "Environment variables set at startup and after each config reload.",
     additionalProperties: Type.String({ minLength: 1 }),
     propertyNames: { minLength: 1 },
   });
@@ -157,7 +156,7 @@ function varMap() {
     type: "object",
     title: "Variables",
     description:
-      "User-defined variables referenced as $name or ${name} in config values and binding keys; undefined names are left untouched.",
+      "Variables used as $name or ${name} in values and binding keys. Unknown names stay as written.",
     additionalProperties: Type.String(),
     propertyNames: { pattern: "^[A-Za-z_][A-Za-z0-9_]*$" },
   });
@@ -172,31 +171,24 @@ function globalSchema() {
     {
       ...globalProperties(),
       exec: Type.Optional(
-        directive(
-          "Run on Load/Reload",
-          "Commands run at startup and every time the config is reloaded.",
-        ),
+        directive("Run on load and reload", "Commands run at startup and on each reload."),
       ),
       exec_once: Type.Optional(directive("Run Once", "Commands run once at startup.")),
-      source: Type.Optional(directive("Includes", "Config files loaded as part of this config.")),
+      source: Type.Optional(directive("Includes", "Loads other config files.")),
       source_optional: Type.Optional(
-        directive(
-          "Optional Includes",
-          "Config files loaded if they exist; missing files are ignored.",
-        ),
+        directive("Optional Includes", "Loads other config files when they exist."),
       ),
     },
     {
       title: "Global options",
-      description: "Top-level mangowm options.",
+      description: "Global compositor options.",
       additionalProperties: false,
     },
   );
 }
 
 function bindingNode(kind: BindingKind, conflict = false): TSchema {
-  const description =
-    "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.";
+  const description = "Maps input combinations to actions. Flag sub-tables are optional.";
 
   const nodeDef = kind === "key" && conflict ? CONFLICT_DEF : BINDING_DEFS[kind];
   const conflictDef = kind === "key" ? CONFLICT_DEF : BINDING_DEFS[kind];
@@ -278,8 +270,7 @@ function ruleField(field: RuleFieldDef): TSchema {
     case "tag-mask":
       return tagArraySchema({
         ...metadata,
-        description:
-          "Tags to assign as an array. Use [0] for the special workspace; tag 0 cannot be combined with other tags.",
+        description: "Tags to assign as an array. Use [0] for the special workspace overlay.",
       });
     case "string":
       return Type.String({ ...metadata, pattern: "^[^,]*$" });
@@ -359,7 +350,7 @@ function rootSchema(version: string) {
       $schema: Type.Optional(
         Type.Literal(`https://mangowm.github.io/schema/${version}/schema.json`, {
           title: "Schema",
-          description: "Canonical schema URL for editor tooling.",
+          description: "Schema URL for editor tooling.",
         }),
       ),
       global: Type.Optional(globalSchema()),
@@ -378,7 +369,7 @@ function rootSchema(version: string) {
         bindingMap(
           "gesture",
           "Gesture bindings",
-          "Gesture bindings by key mode and gesture combination.",
+          "Gesture bindings by key mode, direction, and finger count.",
         ),
       ),
       switchbind: Type.Optional(
@@ -387,7 +378,7 @@ function rootSchema(version: string) {
       rule: Type.Optional(rulesSchema()),
     },
     {
-      description: "Canonical JSON representation of a mangowm configuration.",
+      description: "Canonical mangowm configuration.",
       additionalProperties: false,
     },
   );

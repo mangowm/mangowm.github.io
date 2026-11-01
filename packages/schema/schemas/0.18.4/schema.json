@@ -4,7 +4,7 @@
   "$defs": {
     "CanonicalAction": {
       "title": "Action",
-      "description": "A dispatcher call or a variable reference.",
+      "description": "Dispatcher call or variable reference.",
       "type": "object",
       "properties": {
         "dispatcher": {
@@ -111,12 +111,12 @@
           "type": "string",
           "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
           "title": "Variable",
-          "description": "Name of a config variable."
+          "description": "Config variable name."
         },
         "args": {
           "type": "string",
           "title": "Arguments",
-          "description": "Raw text after the first comma."
+          "description": "Text after the first comma."
         }
       },
       "additionalProperties": false,
@@ -1443,12 +1443,12 @@
               "type": "string",
               "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
               "title": "Variable",
-              "description": "Name of a config variable."
+              "description": "Config variable name."
             },
             "args": {
               "type": "string",
               "title": "Arguments",
-              "description": "Raw text after the first comma."
+              "description": "Text after the first comma."
             }
           },
           "required": [
@@ -1461,7 +1461,7 @@
       "type": "array",
       "items": {
         "title": "Action",
-        "description": "A dispatcher call or a variable reference.",
+        "description": "Dispatcher call or variable reference.",
         "type": "object",
         "properties": {
           "dispatcher": {
@@ -1568,12 +1568,12 @@
             "type": "string",
             "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
             "title": "Variable",
-            "description": "Name of a config variable."
+            "description": "Config variable name."
           },
           "args": {
             "type": "string",
             "title": "Arguments",
-            "description": "Raw text after the first comma."
+            "description": "Text after the first comma."
           }
         },
         "additionalProperties": false,
@@ -2900,12 +2900,12 @@
                 "type": "string",
                 "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
                 "title": "Variable",
-                "description": "Name of a config variable."
+                "description": "Config variable name."
               },
               "args": {
                 "type": "string",
                 "title": "Arguments",
-                "description": "Raw text after the first comma."
+                "description": "Text after the first comma."
               }
             },
             "required": [
@@ -2915,7 +2915,7 @@
         ]
       },
       "title": "Action",
-      "description": "The action for this key combination.",
+      "description": "The action for this binding.",
       "minItems": 1,
       "maxItems": 1
     },
@@ -2923,7 +2923,7 @@
       "type": "array",
       "items": {
         "title": "Action",
-        "description": "A dispatcher call or a variable reference.",
+        "description": "Dispatcher call or variable reference.",
         "type": "object",
         "properties": {
           "dispatcher": {
@@ -3030,12 +3030,12 @@
             "type": "string",
             "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
             "title": "Variable",
-            "description": "Name of a config variable."
+            "description": "Config variable name."
           },
           "args": {
             "type": "string",
             "title": "Arguments",
-            "description": "Raw text after the first comma."
+            "description": "Text after the first comma."
           }
         },
         "additionalProperties": false,
@@ -4362,12 +4362,12 @@
                 "type": "string",
                 "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
                 "title": "Variable",
-                "description": "Name of a config variable."
+                "description": "Config variable name."
               },
               "args": {
                 "type": "string",
                 "title": "Arguments",
-                "description": "Raw text after the first comma."
+                "description": "Text after the first comma."
               }
             },
             "required": [
@@ -4377,12 +4377,12 @@
         ]
       },
       "title": "Actions",
-      "description": "One or more actions for the same key combination.",
+      "description": "Actions for the same binding.",
       "minItems": 1
     },
     "KeyBindingNode": {
       "title": "Binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -4410,7 +4410,7 @@
     },
     "KeyConflictBindingNode": {
       "title": "Conflict binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -4438,7 +4438,7 @@
     },
     "MouseBindingNode": {
       "title": "Binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -4466,7 +4466,7 @@
     },
     "AxisBindingNode": {
       "title": "Binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -4494,7 +4494,7 @@
     },
     "GestureBindingNode": {
       "title": "Binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -4522,7 +4522,7 @@
     },
     "SwitchBindingNode": {
       "title": "Binding node",
-      "description": "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.",
+      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
@@ -4555,7 +4555,7 @@
       "type": "string",
       "const": "https://mangowm.github.io/schema/0.18.4/schema.json",
       "title": "Schema",
-      "description": "Canonical schema URL for editor tooling."
+      "description": "Schema URL for editor tooling."
     },
     "global": {
       "type": "object",
@@ -4769,7 +4769,7 @@
         "zoom_initial_ratio": {
           "type": "number",
           "title": "Zoom Initial Ratio",
-          "description": "Starting scale for zoom animations (0.1-1.0)",
+          "description": "Initial scale for zoom animations (0.1-1.0).",
           "default": 0.4,
           "minimum": 0.1,
           "maximum": 1
@@ -4777,7 +4777,7 @@
         "zoom_end_ratio": {
           "type": "number",
           "title": "Zoom End Ratio",
-          "description": "Ending scale for zoom animations (0.1-1.0)",
+          "description": "Final scale for zoom animations (0.1-1.0).",
           "default": 0.8,
           "minimum": 0.1,
           "maximum": 1
@@ -4785,7 +4785,7 @@
         "fade_in_begin_opacity": {
           "type": "number",
           "title": "Fade In Start Opacity",
-          "description": "Starting opacity for fade-in animations (0.0-1.0)",
+          "description": "Initial opacity for fade-in animations (0.0-1.0).",
           "default": 0.5,
           "minimum": 0,
           "maximum": 1
@@ -4793,7 +4793,7 @@
         "fade_out_begin_opacity": {
           "type": "number",
           "title": "Fade Out Start Opacity",
-          "description": "Starting opacity for fade-out animations (0.0-1.0)",
+          "description": "Initial opacity for fade-out animations (0.0-1.0).",
           "default": 0.5,
           "minimum": 0,
           "maximum": 1
@@ -4976,7 +4976,7 @@
         "scroller_default_proportion_single": {
           "type": "number",
           "title": "Single Window Proportion",
-          "description": "Width proportion used when the tag has one window. Requires scroller_ignore_proportion_single=0.",
+          "description": "Width proportion for a tag with one window. Requires scroller_ignore_proportion_single=0.",
           "default": 1,
           "minimum": 0.1,
           "maximum": 1
@@ -5002,7 +5002,7 @@
         "scroller_prefer_overspread": {
           "type": "boolean",
           "title": "Prefer Overspread",
-          "description": "Let the focused edge window expand into unused space. Takes priority over scroller_focus_center and scroller_prefer_center.",
+          "description": "Focused edge window fills unused space. Overrides scroller_focus_center and scroller_prefer_center.",
           "default": true
         },
         "edge_scroller_pointer_focus": {
@@ -5028,7 +5028,7 @@
         "focus_direction_only_zone_overlap": {
           "type": "boolean",
           "title": "Focus Direction Zone Overlap",
-          "description": "Directional focus only selects windows that overlap the current window on the perpendicular axis.",
+          "description": "Directional focus only picks windows overlapping the current window on the perpendicular axis.",
           "default": true
         },
         "exchange_cross_monitor": {
@@ -5052,7 +5052,7 @@
         "view_current_to_back": {
           "type": "boolean",
           "title": "View Current to Back",
-          "description": "Viewing current tag sends it to back and shows previous tag",
+          "description": "The current tag moves to back and the previous tag appears.",
           "default": false
         },
         "blur": {
@@ -5076,7 +5076,7 @@
         "border_radius": {
           "type": "integer",
           "title": "Border Radius",
-          "description": "Corner rounding in pixels",
+          "description": "Corner radius in pixels.",
           "default": 0,
           "minimum": 0,
           "maximum": 100
@@ -5137,7 +5137,7 @@
         },
         "shadow_only_floating": {
           "type": "boolean",
-          "title": "Shadows Floating Only",
+          "title": "Floating Shadows Only",
           "description": "Only draw shadows for floating windows",
           "default": true
         },
@@ -5234,7 +5234,7 @@
             }
           ],
           "title": "Allow Tearing",
-          "description": "Tearing policy: 0 disabled, 1 enabled for any window, 2 enabled only for fullscreen windows.",
+          "description": "Tearing policy: 0 off, 1 any window, 2 fullscreen only.",
           "default": 0
         },
         "hdr_depth": {
@@ -5286,7 +5286,7 @@
         "auto_reload_config": {
           "type": "boolean",
           "title": "Auto Reload Config",
-          "description": "Watch the main config file and every `source`/`source_optional` file, then reload immediately after any of them changes.",
+          "description": "Watch the main config and all source files. Reload after any change.",
           "default": true
         },
         "no_border_when_single": {
@@ -5322,7 +5322,7 @@
         "snap_distance": {
           "type": "integer",
           "title": "Snap Distance",
-          "description": "Maximum distance in pixels at which a floating window snaps to an edge or another visible floating window (0-99999).",
+          "description": "Maximum snap distance in pixels for floating windows (0-99999).",
           "default": 30,
           "minimum": 0,
           "maximum": 99999
@@ -5336,7 +5336,7 @@
         "float_full_to_top": {
           "type": "boolean",
           "title": "Raise Full Floating Windows",
-          "description": "Keep fullscreen, floating, and layer-shell top windows in one layer. The most recently raised window is on top.",
+          "description": "Stack fullscreen, floating, and top layer-shell windows together. The last raised window is on top.",
           "default": false
         },
         "drag_tile_to_tile": {
@@ -5362,7 +5362,7 @@
         "gesture_live": {
           "type": "boolean",
           "title": "Live Gestures",
-          "description": "Drive tag/focus/overview transitions while the fingers are still moving (`1`), instead of only after release (`0`).",
+          "description": "Animate tag, focus, and overview changes while fingers move (`1`), not only after release (`0`).",
           "default": true
         },
         "gesture_swipe_distance": {
@@ -5376,7 +5376,7 @@
         "gesture_swipe_cancel_ratio": {
           "type": "number",
           "title": "Swipe Cancel Ratio",
-          "description": "Releasing after the last page was dragged past this fraction commits it; below it, the transition animates back.",
+          "description": "Fraction of the last page to drag before release commits the swipe.",
           "default": 0.5,
           "minimum": 0.05,
           "maximum": 0.95
@@ -5384,7 +5384,7 @@
         "gesture_swipe_min_speed_to_force": {
           "type": "number",
           "title": "Swipe Force Speed",
-          "description": "Average per-event speed (px) that forces a commit even below the cancel ratio (for quick flicks).",
+          "description": "Average speed per event (px) that commits the swipe below the cancel ratio.",
           "default": 10,
           "minimum": 0
         },
@@ -5479,7 +5479,7 @@
         "default_master_factor": {
           "type": "number",
           "title": "Master Area Factor",
-          "description": "Fraction of the tag area used by the master area: width in horizontal layouts, height in vertical layouts (0.1-0.9).",
+          "description": "Master area size: width in horizontal layouts, height in vertical layouts (0.1-0.9).",
           "default": 0.55,
           "minimum": 0.1,
           "maximum": 0.9
@@ -5487,7 +5487,7 @@
         "default_master_count": {
           "type": "integer",
           "title": "Number of Masters",
-          "description": "How many windows are kept in the master area",
+          "description": "Number of windows in the master area.",
           "default": 1,
           "minimum": 1,
           "maximum": 1000
@@ -5495,7 +5495,7 @@
         "tag_num": {
           "type": "integer",
           "title": "Number of Tags",
-          "description": "How many tags/workspaces are available (1-31)",
+          "description": "Number of tags/workspaces (1-31).",
           "default": 9,
           "minimum": 1,
           "maximum": 31
@@ -5595,7 +5595,7 @@
         "dwindle_drop_simple_split": {
           "type": "boolean",
           "title": "Dwindle Drop Simple Split",
-          "description": "Select the drag-to-tile preview style: 1 uses a 2-zone preview, 0 uses a 4-quadrant preview.",
+          "description": "Drag-to-tile preview: 1 for 2 zones, 0 for 4 quadrants.",
           "default": true
         },
         "dwindle_manual_split": {
@@ -5651,7 +5651,7 @@
             }
           ],
           "title": "Hotarea Corner",
-          "description": "Screen corner that triggers the overview: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right.",
+          "description": "Screen corner for the overview hotarea: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right.",
           "default": 2
         },
         "enable_hotarea": {
@@ -5685,7 +5685,7 @@
         "overcircle_center_ratio": {
           "type": "number",
           "title": "Overcircle Center Ratio",
-          "description": "Width of the centered focused window as a fraction of the usable screen width. Range: 0.1-0.9.",
+          "description": "Focused window width as a fraction of usable screen width (0.1-0.9).",
           "default": 0.5,
           "minimum": 0.1,
           "maximum": 0.9
@@ -5713,7 +5713,7 @@
         "axis_bind_apply_timeout": {
           "type": "integer",
           "title": "Axis Bind Apply Timeout",
-          "description": "Minimum time in milliseconds between axis binding invocations; scroll events closer together are ignored (0-1000).",
+          "description": "Minimum milliseconds between axis binding calls (0-1000). Closer scroll events are ignored.",
           "default": 100,
           "minimum": 0,
           "maximum": 1000
@@ -5757,7 +5757,7 @@
         "drag_corner": {
           "type": "integer",
           "title": "Resize Corner",
-          "description": "Resize corner for floating windows: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right, 4 nearest.",
+          "description": "Floating window resize corner: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right, 4 nearest.",
           "default": 3,
           "minimum": 0,
           "maximum": 4
@@ -5771,7 +5771,7 @@
         "enable_border_resize": {
           "type": "boolean",
           "title": "Enable Border Resize",
-          "description": "Resize by dragging a window border with the left mouse button. Tiled windows only expose edges shared with a neighbor.",
+          "description": "Drag a window border with the left mouse button to resize. Tiled windows show only shared edges.",
           "default": true
         },
         "border_resize_size": {
@@ -6575,7 +6575,7 @@
         "scratchpad_width_ratio": {
           "type": "number",
           "title": "Scratchpad Width Ratio",
-          "description": "Width of a scratchpad window relative to the monitor (0.1-1.0); used when the rule sets no width.",
+          "description": "Scratchpad width as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
           "default": 0.8,
           "minimum": 0.1,
           "maximum": 1
@@ -6583,7 +6583,7 @@
         "scratchpad_height_ratio": {
           "type": "number",
           "title": "Scratchpad Height Ratio",
-          "description": "Height of a scratchpad window relative to the monitor (0.1-1.0); used when the rule sets no height.",
+          "description": "Scratchpad height as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
           "default": 0.9,
           "minimum": 0.1,
           "maximum": 1
@@ -6806,8 +6806,8 @@
             "type": "string",
             "minLength": 1
           },
-          "title": "Run on Load/Reload",
-          "description": "Commands run at startup and every time the config is reloaded."
+          "title": "Run on load and reload",
+          "description": "Commands run at startup and on each reload."
         },
         "exec_once": {
           "type": "array",
@@ -6825,7 +6825,7 @@
             "minLength": 1
           },
           "title": "Includes",
-          "description": "Config files loaded as part of this config."
+          "description": "Loads other config files."
         },
         "source_optional": {
           "type": "array",
@@ -6834,17 +6834,17 @@
             "minLength": 1
           },
           "title": "Optional Includes",
-          "description": "Config files loaded if they exist; missing files are ignored."
+          "description": "Loads other config files when they exist."
         }
       },
       "title": "Global options",
-      "description": "Top-level mangowm options.",
+      "description": "Global compositor options.",
       "additionalProperties": false
     },
     "env": {
       "type": "object",
       "title": "Environment",
-      "description": "Environment variables exported before startup and re-applied on every config reload.",
+      "description": "Environment variables set at startup and after each config reload.",
       "additionalProperties": {
         "type": "string",
         "minLength": 1
@@ -6856,7 +6856,7 @@
     "var": {
       "type": "object",
       "title": "Variables",
-      "description": "User-defined variables referenced as $name or ${name} in config values and binding keys; undefined names are left untouched.",
+      "description": "Variables used as $name or ${name} in values and binding keys. Unknown names stay as written.",
       "additionalProperties": {
         "type": "string"
       },
@@ -6902,7 +6902,7 @@
         }
       },
       "title": "Gesture bindings",
-      "description": "Gesture bindings by key mode and gesture combination."
+      "description": "Gesture bindings by key mode, direction, and finger count."
     },
     "switchbind": {
       "type": "object",
@@ -7001,7 +7001,7 @@
                   }
                 ],
                 "title": "Transform",
-                "description": "Monitor transform. 0 normal, 1 90° CCW, 2 180°, 3 270° CCW, 4 vertical flip, 5 flip+90° CCW, 6 flip+180°, 7 flip+270° CCW."
+                "description": "Monitor transform at startup. Option labels list each value."
               },
               "scale": {
                 "type": "number",
@@ -7148,7 +7148,7 @@
               }
             },
             "title": "Monitor Rules",
-            "description": "Match outputs by name, make, model, or serial; every field set must match. The first matching rule is applied to each output.",
+            "description": "Match outputs by name, make, model, or serial. Every set field must match. The first match applies.",
             "additionalProperties": false,
             "anyOf": [
               {
@@ -7434,7 +7434,7 @@
               "scroller_default_proportion_single": {
                 "type": "number",
                 "title": "Scroller Proportion (Single)",
-                "description": "Scroller proportion for a single window. Only used when scroller_ignore_proportion_single is off.",
+                "description": "Scroller proportion for a single window. Used when scroller_ignore_proportion_single is off.",
                 "minimum": 0,
                 "maximum": 1
               },
@@ -7731,7 +7731,7 @@
                   }
                 ],
                 "title": "Tags",
-                "description": "Tags to assign as an array. Use [0] for the special workspace; tag 0 cannot be combined with other tags."
+                "description": "Tags to assign as an array. Use [0] for the special workspace overlay."
               },
               "monitor": {
                 "type": "string",
@@ -7804,12 +7804,12 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "Values greater than 0 and up to 1 are a fraction of the screen width; values above 1 are pixels."
+                "description": "0 to 1 is a screen width fraction; above 1 is pixels."
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "Values greater than 0 and up to 1 are a fraction of the screen height; values above 1 are pixels."
+                "description": "0 to 1 is a screen height fraction; above 1 is pixels."
               },
               "no_border": {
                 "anyOf": [
@@ -8156,7 +8156,7 @@
                   }
                 ],
                 "title": "Force Tearing",
-                "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing."
+                "description": "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing."
               },
               "no_swallow": {
                 "anyOf": [
@@ -8238,7 +8238,7 @@
               }
             },
             "title": "Window Rules",
-            "description": "Apply properties whenever a window matching app_id or title opens; if both are set, both must match.",
+            "description": "Apply properties when a window matching app_id or title opens. Both must match when set.",
             "additionalProperties": false
           }
         },
@@ -8369,7 +8369,7 @@
                   }
                 ],
                 "title": "Tags",
-                "description": "Tags to assign as an array. Use [0] for the special workspace; tag 0 cannot be combined with other tags."
+                "description": "Tags to assign as an array. Use [0] for the special workspace overlay."
               },
               "monitor": {
                 "type": "string",
@@ -8442,12 +8442,12 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "Values greater than 0 and up to 1 are a fraction of the screen width; values above 1 are pixels."
+                "description": "0 to 1 is a screen width fraction; above 1 is pixels."
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "Values greater than 0 and up to 1 are a fraction of the screen height; values above 1 are pixels."
+                "description": "0 to 1 is a screen height fraction; above 1 is pixels."
               },
               "no_border": {
                 "anyOf": [
@@ -8794,7 +8794,7 @@
                   }
                 ],
                 "title": "Force Tearing",
-                "description": "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing."
+                "description": "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing."
               },
               "no_swallow": {
                 "anyOf": [
@@ -8951,14 +8951,14 @@
               "repeat_rate": {
                 "type": "integer",
                 "title": "Repeat Rate",
-                "description": "How many times a key repeats per second.",
+                "description": "Key repeat rate per second.",
                 "minimum": 0,
                 "maximum": 1000
               },
               "repeat_delay": {
                 "type": "integer",
                 "title": "Repeat Delay",
-                "description": "Delay (ms) before a held key starts repeating.",
+                "description": "Delay before a held key repeats (ms).",
                 "minimum": 0,
                 "maximum": 10000
               },
@@ -9233,7 +9233,7 @@
               "monitor": {
                 "type": "string",
                 "title": "Monitor",
-                "description": "Pin a touch or tablet device to one output. Unset touch devices follow the current screen; unset tablets stay unmapped.",
+                "description": "Pin touch or tablet input to one output. Unset touch follows the current screen; unset tablets stay unmapped.",
                 "pattern": "^[^,]*$"
               },
               "map_focus_monitor": {
@@ -9251,7 +9251,7 @@
               }
             },
             "title": "Device Rules",
-            "description": "Override settings for devices matched by exact name or type. A keyboard rule compiles its own keymap from only the kb_* fields it sets.",
+            "description": "Device overrides by name or type. Keyboard rules build a keymap from their kb_* fields.",
             "additionalProperties": false
           }
         }
@@ -9261,7 +9261,7 @@
       "additionalProperties": false
     }
   },
-  "description": "Canonical JSON representation of a mangowm configuration.",
+  "description": "Canonical mangowm configuration.",
   "additionalProperties": false,
   "title": "mangowm configuration 0.18.4"
 }

@@ -33,7 +33,7 @@ const TomlActionName = Type.Unsafe<TSchema>({
   type: "string",
   enum: DISPATCHERS,
   title: "Dispatcher",
-  description: "A mangowm dispatcher name.",
+  description: "A mangowm dispatcher.",
 });
 
 const TomlActionString = Type.Union(
@@ -41,19 +41,18 @@ const TomlActionString = Type.Union(
     TomlActionName,
     Type.String({
       title: "Action",
-      description: "A dispatcher name followed by optional comma-separated arguments.",
       pattern: ACTION_PATTERN,
     }),
   ],
   {
     title: "Action",
-    description: "A dispatcher name with optional arguments, or a variable reference.",
+    description: "Dispatcher with arguments, or a variable reference.",
   },
 );
 
 const TomlSingleAction = Type.Unsafe<TSchema>({
   title: "Action",
-  description: "One action for the key combination.",
+  description: "One action for this binding.",
   anyOf: [
     { $ref: "#/$defs/TomlActionString" },
     {
@@ -67,7 +66,7 @@ const TomlSingleAction = Type.Unsafe<TSchema>({
 
 const TomlMultipleActions = Type.Unsafe<TSchema>({
   title: "Actions",
-  description: "One or more actions for the same key combination.",
+  description: "Actions for the same binding.",
   anyOf: [
     { $ref: "#/$defs/TomlActionString" },
     {
@@ -178,8 +177,7 @@ function envMap() {
   return Type.Unsafe<TSchema>({
     type: "object",
     title: "Environment",
-    description:
-      "Environment variables exported before startup and re-applied on every config reload.",
+    description: "Environment variables set at startup and after each config reload.",
     additionalProperties: EnvValue,
     propertyNames: { minLength: 1 },
   });
@@ -190,7 +188,7 @@ function varMap() {
     type: "object",
     title: "Variables",
     description:
-      "User-defined variables referenced as $name or ${name} in config values and binding keys; undefined names are left untouched.",
+      "Variables used as $name or ${name} in values and binding keys. Unknown names stay as written.",
     additionalProperties: EnvValue,
     propertyNames: { pattern: "^[A-Za-z_][A-Za-z0-9_]*$" },
   });
@@ -208,31 +206,24 @@ function globalSchema() {
     {
       ...globalProperties(),
       exec: Type.Optional(
-        directive(
-          "Run on Load/Reload",
-          "Commands run at startup and every time the config is reloaded.",
-        ),
+        directive("Run on load and reload", "Commands run at startup and on each reload."),
       ),
       exec_once: Type.Optional(directive("Run Once", "Commands run once at startup.")),
-      source: Type.Optional(directive("Includes", "Config files loaded as part of this config.")),
+      source: Type.Optional(directive("Includes", "Loads other config files.")),
       source_optional: Type.Optional(
-        directive(
-          "Optional Includes",
-          "Config files loaded if they exist; missing files are ignored.",
-        ),
+        directive("Optional Includes", "Loads other config files when they exist."),
       ),
     },
     {
       title: "Global options",
-      description: "Top-level mangowm options.",
+      description: "Global compositor options.",
       additionalProperties: false,
     },
   );
 }
 
 function bindingNode(kind: BindingKind, conflict = false): TSchema {
-  const description =
-    "A map from a key, button, axis, gesture, or fold state to actions, with optional flag sub-tables.";
+  const description = "Maps input combinations to actions. Flag sub-tables are optional.";
 
   const nodeDef = kind === "key" && conflict ? CONFLICT_DEF : BINDING_DEFS[kind];
   const conflictDef = kind === "key" ? CONFLICT_DEF : BINDING_DEFS[kind];
@@ -416,7 +407,7 @@ function rootSchema() {
         bindingMap(
           "gesture",
           "Gesture bindings",
-          "Gesture bindings by key mode and gesture combination.",
+          "Gesture bindings by key mode, direction, and finger count.",
         ),
       ),
       switchbind: Type.Optional(
@@ -425,7 +416,7 @@ function rootSchema() {
       rule: Type.Optional(rulesSchema()),
     },
     {
-      description: "TOML representation of a mangowm configuration.",
+      description: "TOML mangowm configuration.",
       additionalProperties: false,
     },
   );
