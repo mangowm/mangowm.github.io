@@ -99,6 +99,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Width",
         description: "Monitor width in pixels.",
         min: 1,
+        max: 2147483647,
       },
       {
         key: "height",
@@ -106,6 +107,7 @@ export const RULES: readonly RuleDef[] = [
         label: "Height",
         description: "Monitor height in pixels.",
         min: 1,
+        max: 2147483647,
       },
       {
         key: "refresh",
@@ -1351,7 +1353,7 @@ export const RULES: readonly RuleDef[] = [
         key: "scroll_method",
         type: "enum",
         label: "Scroll Method",
-        description: "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button, 8 circular.",
+        description: "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button.",
         options: [
           {
             value: "0",
@@ -1368,10 +1370,6 @@ export const RULES: readonly RuleDef[] = [
           {
             value: "4",
             label: "Button",
-          },
-          {
-            value: "8",
-            label: "Circular",
           },
         ],
         numeric: true,

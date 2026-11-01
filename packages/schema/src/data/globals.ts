@@ -492,6 +492,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     label: "Blur Saturation",
     description: "Saturation multiplier for the blurred layer. Values above 1 are clamped to 1.",
     min: 0,
+    max: 1.2,
   },
   {
     key: "shadows",
@@ -525,7 +526,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   },
   {
     key: "shadows_blur",
-    type: "float",
+    type: "int",
     default: 15,
     label: "Shadow Softness",
     description: "Gaussian blur sigma for softer shadows",

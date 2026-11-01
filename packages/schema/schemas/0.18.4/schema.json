@@ -4524,7 +4524,7 @@
           "maximum": 100
         },
         "shadows_blur": {
-          "type": "number",
+          "type": "integer",
           "title": "Shadow Softness",
           "description": "Gaussian blur sigma for softer shadows",
           "default": 15,
@@ -6321,13 +6321,15 @@
                 "type": "integer",
                 "title": "Width",
                 "description": "Monitor width in pixels.",
-                "minimum": 1
+                "minimum": 1,
+                "maximum": 2147483647
               },
               "height": {
                 "type": "integer",
                 "title": "Height",
                 "description": "Monitor height in pixels.",
-                "minimum": 1
+                "minimum": 1,
+                "maximum": 2147483647
               },
               "refresh": {
                 "type": "number",
@@ -7619,7 +7621,7 @@
               },
               "scroll_method": {
                 "type": "integer",
-                "enum": [0, 1, 2, 4, 8],
+                "enum": [0, 1, 2, 4],
                 "oneOf": [
                   {
                     "type": "integer",
@@ -7640,15 +7642,10 @@
                     "type": "integer",
                     "const": 4,
                     "title": "Button"
-                  },
-                  {
-                    "type": "integer",
-                    "const": 8,
-                    "title": "Circular"
                   }
                 ],
                 "title": "Scroll Method",
-                "description": "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button, 8 circular."
+                "description": "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button."
               },
               "scroll_button": {
                 "type": "integer",

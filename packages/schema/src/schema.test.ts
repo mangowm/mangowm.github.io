@@ -549,9 +549,10 @@ describe("canonical schema", () => {
   it("accepts device scroll options", () => {
     expect(
       Value.Check(schema, {
-        rule: { device_rule: [{ scroll_button: 0 }, { scroll_button: 300 }, { scroll_method: 8 }] },
+        rule: { device_rule: [{ scroll_button: 0 }, { scroll_button: 300 }, { scroll_method: 4 }] },
       }),
     ).toBe(true);
+    expect(Value.Check(schema, { rule: { device_rule: [{ scroll_method: 8 }] } })).toBe(false);
     expect(Value.Check(schema, { global: { mouse_scroll_method: 8 } })).toBe(false);
   });
 
