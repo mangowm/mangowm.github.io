@@ -11,25 +11,25 @@ export const RULES: readonly RuleDef[] = [
         key: "name",
         type: "string",
         label: "Name",
-        description: "Match by monitor name (supports regex)",
+        description: "Match by monitor name (supports regex).",
       },
       {
         key: "make",
         type: "string",
         label: "Make",
-        description: "Match by monitor manufacturer",
+        description: "Match by monitor manufacturer.",
       },
       {
         key: "model",
         type: "string",
         label: "Model",
-        description: "Match by monitor model",
+        description: "Match by monitor model.",
       },
       {
         key: "serial",
         type: "string",
         label: "Serial",
-        description: "Match by monitor serial number",
+        description: "Match by monitor serial number.",
       },
       {
         key: "rr",
@@ -59,15 +59,15 @@ export const RULES: readonly RuleDef[] = [
           },
           {
             value: "5",
-            label: "Flip+90° CCW",
+            label: "Flip + 90° CCW",
           },
           {
             value: "6",
-            label: "Flip + 180° CCW",
+            label: "Flip + 180°",
           },
           {
             value: "7",
-            label: "Flip+270° CCW",
+            label: "Flip + 270° CCW",
           },
         ],
         numeric: true,
@@ -76,7 +76,7 @@ export const RULES: readonly RuleDef[] = [
         key: "scale",
         type: "float",
         label: "Scale",
-        description: "Monitor scale",
+        description: "Monitor scale.",
         min: 0.001,
         max: 1000,
       },
@@ -84,13 +84,13 @@ export const RULES: readonly RuleDef[] = [
         key: "x",
         type: "int",
         label: "X",
-        description: "X position",
+        description: "X position.",
       },
       {
         key: "y",
         type: "int",
         label: "Y",
-        description: "Y position",
+        description: "Y position.",
       },
       {
         key: "width",
@@ -112,7 +112,7 @@ export const RULES: readonly RuleDef[] = [
         key: "refresh",
         type: "float",
         label: "Refresh Rate",
-        description: "Monitor refresh rate",
+        description: "Monitor refresh rate in Hz.",
         min: 0.001,
         max: 1000,
       },
@@ -127,7 +127,7 @@ export const RULES: readonly RuleDef[] = [
         type: "bool",
         label: "HDR",
         description:
-          "Turn on HDR for this output. Requires the wl-only Vulkan build; not supported with scenefx.",
+          "Enable HDR. Needs the Vulkan renderer (wl-only build). Not available on scenefx.",
       },
       {
         key: "hdr_min_lum",
@@ -142,7 +142,7 @@ export const RULES: readonly RuleDef[] = [
         key: "hdr_max_lum",
         type: "float",
         label: "HDR Max Luminance",
-        description: "Mastering display peak luminance, also sent as max_cll, cd/m² (0 = unset)",
+        description: "Mastering display peak luminance, also sent as max_cll, cd/m² (0 = unset).",
         min: 0,
         max: 10000,
       },
@@ -150,7 +150,7 @@ export const RULES: readonly RuleDef[] = [
         key: "hdr_max_avg_lum",
         type: "float",
         label: "HDR Max Average Luminance",
-        description: "Max frame-average light level (max_fall), cd/m² (0 = unset)",
+        description: "Max frame-average light level (max_fall), cd/m² (0 = unset).",
         min: 0,
         max: 10000,
       },
@@ -171,20 +171,20 @@ export const RULES: readonly RuleDef[] = [
         key: "disable",
         type: "bool",
         label: "Disable",
-        description: "Disable the monitor",
+        description: "Disable the monitor.",
       },
       {
         key: "primary",
         type: "bool",
         label: "Primary",
-        description: "Make this monitor the X11 (RandR) primary output for XWayland",
+        description: "Make this monitor the X11 (RandR) primary output for XWayland.",
       },
       {
         key: "custom",
         type: "bool",
         label: "Custom Mode",
         description:
-          "Use a custom display mode. Not supported by all displays; can cause a black screen.",
+          "Custom display mode. Also requires width, height, and refresh. May cause a black screen.",
       },
     ],
   },
@@ -192,7 +192,7 @@ export const RULES: readonly RuleDef[] = [
     key: "tag_rule",
     label: "Tag Rules",
     description:
-      "Set layout, master, and scroller options per tag; every monitor field set must match.",
+      "Per-tag layout and options. All matching rules apply in order. Later rules override earlier.",
     fields: [
       {
         key: "id",
@@ -269,25 +269,25 @@ export const RULES: readonly RuleDef[] = [
         key: "monitor_name",
         type: "string",
         label: "Monitor Name",
-        description: "Match by monitor name",
+        description: "Monitor name regex to match.",
       },
       {
         key: "monitor_make",
         type: "string",
         label: "Monitor Make",
-        description: "Match by monitor manufacturer",
+        description: "Match by monitor manufacturer.",
       },
       {
         key: "monitor_model",
         type: "string",
         label: "Monitor Model",
-        description: "Match by monitor model",
+        description: "Match by monitor model.",
       },
       {
         key: "monitor_serial",
         type: "string",
         label: "Monitor Serial",
-        description: "Match by monitor serial number",
+        description: "Match by monitor serial number.",
       },
       {
         key: "no_render_border",
@@ -304,14 +304,14 @@ export const RULES: readonly RuleDef[] = [
       {
         key: "no_hide",
         type: "bool",
-        label: "Persistent Tag",
+        label: "No Hide",
         description: "Keep the tag advertised to ext-workspace clients when it is empty.",
       },
       {
         key: "master_count",
         type: "int",
         label: "Master Count",
-        description: "Number of master windows",
+        description: "Number of master windows.",
         min: 1,
         max: 99,
       },
@@ -319,7 +319,7 @@ export const RULES: readonly RuleDef[] = [
         key: "master_factor",
         type: "float",
         label: "Master Factor",
-        description: "Fraction of the tag area used by the master area (0.1-0.9).",
+        description: "Master area share of the layout (0.1-0.9).",
         min: 0.1,
         max: 0.9,
       },
@@ -327,7 +327,7 @@ export const RULES: readonly RuleDef[] = [
         key: "scroller_default_proportion",
         type: "float",
         label: "Scroller Proportion",
-        description: "Default width proportion for new windows.",
+        description: "Default width proportion for new windows (0-1; 0 keeps the global value).",
         min: 0,
         max: 1,
       },
@@ -336,7 +336,7 @@ export const RULES: readonly RuleDef[] = [
         type: "float",
         label: "Scroller Proportion (Single)",
         description:
-          "Scroller proportion for a single window. Used when scroller_ignore_proportion_single is off.",
+          "Scroller proportion for a single window (0-1; 0 keeps the global value). Used when scroller_ignore_proportion_single is off.",
         min: 0,
         max: 1,
       },
@@ -344,7 +344,7 @@ export const RULES: readonly RuleDef[] = [
         key: "scroller_ignore_proportion_single",
         type: "bool",
         label: "Ignore Single Proportion",
-        description: "Ignore proportion adjustments for single windows.",
+        description: "Use the normal scroller proportion when only one window is open.",
       },
     ],
   },
@@ -357,14 +357,14 @@ export const RULES: readonly RuleDef[] = [
         key: "layer_name",
         type: "string",
         label: "Layer Name",
-        description: "Match name of layer, supports regex",
+        description: "Layer surface name. Supports regex.",
       },
       {
         key: "animation_type_open",
         type: "enum",
         label: "Open Animation",
         description:
-          "Layer surface open animation. Empty inherits the global setting; `none` disables it.",
+          "Layer surface open animation. Empty inherits the global setting. `none` disables it.",
         options: [
           {
             value: "",
@@ -393,7 +393,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Close Animation",
         description:
-          "Layer surface close animation. Empty inherits the global setting; `none` disables it.",
+          "Layer surface close animation. Empty inherits the global setting. `none` disables it.",
         options: [
           {
             value: "",
@@ -448,32 +448,32 @@ export const RULES: readonly RuleDef[] = [
     key: "window_rule",
     label: "Window Rules",
     description:
-      "Apply properties when a window matching app_id or title opens. Both must match when set.",
+      "Set window properties on open. app_id and title are regex. When both are set, both must match.",
     fields: [
       {
         key: "is_floating",
         type: "bool",
         label: "Floating",
-        description: "Force floating state",
+        description: "Force floating state.",
       },
       {
         key: "title",
         type: "string",
         label: "Title",
-        description: "Match by window title, supports regex",
+        description: "Match by window title, supports regex.",
       },
       {
         key: "app_id",
         type: "string",
         label: "App ID",
-        description: "Match by application ID, supports regex",
+        description: "Match by application ID, supports regex.",
       },
       {
         key: "animation_type_open",
         type: "enum",
         label: "Open Animation",
         description:
-          "Window open animation. Empty inherits the global setting; `none` disables it.",
+          "Window open animation. Empty inherits the global setting. `none` disables it.",
         options: [
           {
             value: "",
@@ -502,7 +502,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Close Animation",
         description:
-          "Window close animation. Empty inherits the global setting; `none` disables it.",
+          "Window close animation. Empty inherits the global setting. `none` disables it.",
         options: [
           {
             value: "",
@@ -537,19 +537,19 @@ export const RULES: readonly RuleDef[] = [
         key: "monitor",
         type: "string",
         label: "Monitor",
-        description: "Assign to monitor by monitor spec (name, make, model, or serial)",
+        description: "Assign to monitor by monitor spec (name, make, model, or serial).",
       },
       {
         key: "offset_x",
         type: "int",
         label: "X Offset",
-        description: "X offset from center (%), 100 is the edge of screen with outer gap",
+        description: "Horizontal offset from center in percent. 100 sits at the outer gap.",
       },
       {
         key: "offset_y",
         type: "int",
         label: "Y Offset",
-        description: "Y offset from center (%), 100 is the edge of screen with outer gap",
+        description: "Vertical offset from center in percent. 100 sits at the outer gap.",
       },
       {
         key: "no_focus",
@@ -561,13 +561,13 @@ export const RULES: readonly RuleDef[] = [
         key: "no_fade_in",
         type: "bool",
         label: "No Fade In",
-        description: "Window ignores fade-in animation",
+        description: "Window ignores fade-in animation.",
       },
       {
         key: "no_fade_out",
         type: "bool",
         label: "No Fade Out",
-        description: "Window ignores fade-out animation",
+        description: "Window ignores fade-out animation.",
       },
       {
         key: "no_force_center",
@@ -579,19 +579,21 @@ export const RULES: readonly RuleDef[] = [
         key: "width",
         type: "float",
         label: "Width",
-        description: "0 to 1 is a screen width fraction; above 1 is pixels.",
+        description:
+          "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels.",
       },
       {
         key: "height",
         type: "float",
         label: "Height",
-        description: "0 to 1 is a screen height fraction; above 1 is pixels.",
+        description:
+          "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels.",
       },
       {
         key: "no_border",
         type: "bool",
         label: "No Border",
-        description: "Remove window border",
+        description: "Remove window border.",
       },
       {
         key: "no_shadow",
@@ -614,13 +616,13 @@ export const RULES: readonly RuleDef[] = [
       {
         key: "is_open_silent",
         type: "bool",
-        label: "Open Silent",
-        description: "Open without focus",
+        label: "Open Unfocused",
+        description: "Open without focus.",
       },
       {
         key: "is_tag_silent",
         type: "bool",
-        label: "Tag Silent",
+        label: "No Focus on Hidden Tag",
         description:
           "Do not focus the window when it opens on a tag that is not currently visible.",
       },
@@ -634,13 +636,13 @@ export const RULES: readonly RuleDef[] = [
         key: "is_unmanaged_global",
         type: "bool",
         label: "Unmanaged Global",
-        description: "Open as unmanaged global window (for desktop pets or camera windows)",
+        description: "Open as unmanaged global window (for desktop pets or camera windows).",
       },
       {
         key: "is_global",
         type: "bool",
         label: "Global",
-        description: "Open as global window (sticky across tags)",
+        description: "Open as global window (sticky across tags).",
       },
       {
         key: "scroller_proportion_single",
@@ -654,7 +656,7 @@ export const RULES: readonly RuleDef[] = [
         key: "unfocused_opacity",
         type: "float",
         label: "Unfocused Opacity",
-        description: "Opacity for inactive windows (0.0 - 1.0).",
+        description: "Opacity for inactive windows. 0 keeps the global opacity.",
         min: 0,
         max: 1,
       },
@@ -662,7 +664,7 @@ export const RULES: readonly RuleDef[] = [
         key: "focused_opacity",
         type: "float",
         label: "Focused Opacity",
-        description: "Opacity for the active window (0.0 - 1.0).",
+        description: "Opacity for the active window. 0 keeps the global opacity.",
         min: 0,
         max: 1,
       },
@@ -706,7 +708,7 @@ export const RULES: readonly RuleDef[] = [
         key: "idle_inhibit_when_focus",
         type: "bool",
         label: "Inhibit Idle When Focused",
-        description: "Automatically keep idle inhibit active when this window is focused",
+        description: "Keep idle inhibit active while this window is focused.",
       },
       {
         key: "vrr_only_fullscreen",
@@ -719,7 +721,7 @@ export const RULES: readonly RuleDef[] = [
         key: "force_render",
         type: "bool",
         label: "Force Render",
-        description: "Force render frame even if the window is not visible",
+        description: "Keep sending frame callbacks while the window is hidden.",
       },
       {
         key: "activation_bypass",
@@ -750,7 +752,7 @@ export const RULES: readonly RuleDef[] = [
         key: "force_tiled_state",
         type: "bool",
         label: "Force Tiled State",
-        description: "Report the window as tiled even when it is floating.",
+        description: "Report floating windows as tiled (on by default).",
       },
       {
         key: "force_tearing",
@@ -805,52 +807,52 @@ export const RULES: readonly RuleDef[] = [
         key: "is_fullscreen",
         type: "bool",
         label: "Fullscreen",
-        description: "Force fullscreen state",
+        description: "Force fullscreen state.",
       },
       {
         key: "is_fake_fullscreen",
         type: "bool",
         label: "Fake Fullscreen",
-        description: "Report fullscreen state to the client without resizing the window.",
+        description: "Tell the client it is fullscreen while keeping its tiled size.",
       },
       {
         key: "global_key_binding",
         type: "key-binding",
         label: "Global Key Binding",
-        description:
-          "Global keybinding written as MOD-KEY, for example ctrl+alt-o (Wayland apps only).",
+        description: "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
       },
     ],
   },
   {
     key: "window_rule_once",
     label: "Window Rules (Once)",
-    description: "Apply properties only the first time a matching window opens.",
+    description:
+      "Set window properties only on first open. app_id and title are regex; both must match when set.",
     fields: [
       {
         key: "is_floating",
         type: "bool",
         label: "Floating",
-        description: "Force floating state",
+        description: "Force floating state.",
       },
       {
         key: "title",
         type: "string",
         label: "Title",
-        description: "Match by window title, supports regex",
+        description: "Match by window title, supports regex.",
       },
       {
         key: "app_id",
         type: "string",
         label: "App ID",
-        description: "Match by application ID, supports regex",
+        description: "Match by application ID, supports regex.",
       },
       {
         key: "animation_type_open",
         type: "enum",
         label: "Open Animation",
         description:
-          "Window open animation. Empty inherits the global setting; `none` disables it.",
+          "Window open animation. Empty inherits the global setting. `none` disables it.",
         options: [
           {
             value: "",
@@ -879,7 +881,7 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Close Animation",
         description:
-          "Window close animation. Empty inherits the global setting; `none` disables it.",
+          "Window close animation. Empty inherits the global setting. `none` disables it.",
         options: [
           {
             value: "",
@@ -914,19 +916,19 @@ export const RULES: readonly RuleDef[] = [
         key: "monitor",
         type: "string",
         label: "Monitor",
-        description: "Assign to monitor by monitor spec (name, make, model, or serial)",
+        description: "Assign to monitor by monitor spec (name, make, model, or serial).",
       },
       {
         key: "offset_x",
         type: "int",
         label: "X Offset",
-        description: "X offset from center (%), 100 is the edge of screen with outer gap",
+        description: "Horizontal offset from center in percent. 100 sits at the outer gap.",
       },
       {
         key: "offset_y",
         type: "int",
         label: "Y Offset",
-        description: "Y offset from center (%), 100 is the edge of screen with outer gap",
+        description: "Vertical offset from center in percent. 100 sits at the outer gap.",
       },
       {
         key: "no_focus",
@@ -938,13 +940,13 @@ export const RULES: readonly RuleDef[] = [
         key: "no_fade_in",
         type: "bool",
         label: "No Fade In",
-        description: "Window ignores fade-in animation",
+        description: "Window ignores fade-in animation.",
       },
       {
         key: "no_fade_out",
         type: "bool",
         label: "No Fade Out",
-        description: "Window ignores fade-out animation",
+        description: "Window ignores fade-out animation.",
       },
       {
         key: "no_force_center",
@@ -956,19 +958,21 @@ export const RULES: readonly RuleDef[] = [
         key: "width",
         type: "float",
         label: "Width",
-        description: "0 to 1 is a screen width fraction; above 1 is pixels.",
+        description:
+          "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels.",
       },
       {
         key: "height",
         type: "float",
         label: "Height",
-        description: "0 to 1 is a screen height fraction; above 1 is pixels.",
+        description:
+          "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels.",
       },
       {
         key: "no_border",
         type: "bool",
         label: "No Border",
-        description: "Remove window border",
+        description: "Remove window border.",
       },
       {
         key: "no_shadow",
@@ -991,13 +995,13 @@ export const RULES: readonly RuleDef[] = [
       {
         key: "is_open_silent",
         type: "bool",
-        label: "Open Silent",
-        description: "Open without focus",
+        label: "Open Unfocused",
+        description: "Open without focus.",
       },
       {
         key: "is_tag_silent",
         type: "bool",
-        label: "Tag Silent",
+        label: "No Focus on Hidden Tag",
         description:
           "Do not focus the window when it opens on a tag that is not currently visible.",
       },
@@ -1011,13 +1015,13 @@ export const RULES: readonly RuleDef[] = [
         key: "is_unmanaged_global",
         type: "bool",
         label: "Unmanaged Global",
-        description: "Open as unmanaged global window (for desktop pets or camera windows)",
+        description: "Open as unmanaged global window (for desktop pets or camera windows).",
       },
       {
         key: "is_global",
         type: "bool",
         label: "Global",
-        description: "Open as global window (sticky across tags)",
+        description: "Open as global window (sticky across tags).",
       },
       {
         key: "scroller_proportion_single",
@@ -1031,7 +1035,7 @@ export const RULES: readonly RuleDef[] = [
         key: "unfocused_opacity",
         type: "float",
         label: "Unfocused Opacity",
-        description: "Opacity for inactive windows (0.0 - 1.0).",
+        description: "Opacity for inactive windows. 0 keeps the global opacity.",
         min: 0,
         max: 1,
       },
@@ -1039,7 +1043,7 @@ export const RULES: readonly RuleDef[] = [
         key: "focused_opacity",
         type: "float",
         label: "Focused Opacity",
-        description: "Opacity for the active window (0.0 - 1.0).",
+        description: "Opacity for the active window. 0 keeps the global opacity.",
         min: 0,
         max: 1,
       },
@@ -1083,7 +1087,7 @@ export const RULES: readonly RuleDef[] = [
         key: "idle_inhibit_when_focus",
         type: "bool",
         label: "Inhibit Idle When Focused",
-        description: "Automatically keep idle inhibit active when this window is focused",
+        description: "Keep idle inhibit active while this window is focused.",
       },
       {
         key: "vrr_only_fullscreen",
@@ -1096,7 +1100,7 @@ export const RULES: readonly RuleDef[] = [
         key: "force_render",
         type: "bool",
         label: "Force Render",
-        description: "Force render frame even if the window is not visible",
+        description: "Keep sending frame callbacks while the window is hidden.",
       },
       {
         key: "activation_bypass",
@@ -1127,7 +1131,7 @@ export const RULES: readonly RuleDef[] = [
         key: "force_tiled_state",
         type: "bool",
         label: "Force Tiled State",
-        description: "Report the window as tiled even when it is floating.",
+        description: "Report floating windows as tiled (on by default).",
       },
       {
         key: "force_tearing",
@@ -1182,20 +1186,19 @@ export const RULES: readonly RuleDef[] = [
         key: "is_fullscreen",
         type: "bool",
         label: "Fullscreen",
-        description: "Force fullscreen state",
+        description: "Force fullscreen state.",
       },
       {
         key: "is_fake_fullscreen",
         type: "bool",
         label: "Fake Fullscreen",
-        description: "Report fullscreen state to the client without resizing the window.",
+        description: "Tell the client it is fullscreen while keeping its tiled size.",
       },
       {
         key: "global_key_binding",
         type: "key-binding",
         label: "Global Key Binding",
-        description:
-          "Global keybinding written as MOD-KEY, for example ctrl+alt-o (Wayland apps only).",
+        description: "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
       },
     ],
   },
@@ -1203,7 +1206,7 @@ export const RULES: readonly RuleDef[] = [
     key: "device_rule",
     label: "Device Rules",
     description:
-      "Device overrides by name or type. Keyboard rules build a keymap from their kb_* fields.",
+      "Device overrides by name or type. kb_* and repeat_* give a keyboard its own keymap and repeat rate.",
     fields: [
       {
         key: "name",
@@ -1373,7 +1376,7 @@ export const RULES: readonly RuleDef[] = [
         key: "scroll_button",
         type: "int",
         label: "Scroll Button",
-        description: "libinput button code used for button scrolling; 0 disables it.",
+        description: "Button code for button scrolling (272-279). 0 disables it.",
       },
       {
         key: "click_method",
@@ -1400,7 +1403,7 @@ export const RULES: readonly RuleDef[] = [
         key: "send_events_mode",
         type: "enum",
         label: "Send Events Mode",
-        description: "Send events: 0 on, 1 off, 2 off with an external pointer.",
+        description: "Send events: 0 on, 1 off, 2 off when an external pointer is present.",
         options: [
           {
             value: "0",
@@ -1412,7 +1415,7 @@ export const RULES: readonly RuleDef[] = [
           },
           {
             value: "2",
-            label: "Disabled with external pointer",
+            label: "Disabled when external pointer present",
           },
         ],
         numeric: true,
@@ -1439,7 +1442,7 @@ export const RULES: readonly RuleDef[] = [
         key: "button_map",
         type: "enum",
         label: "Button Map",
-        description: "`0` (Left/right/middle), `1` (Left/middle/right).",
+        description: "Tap mapping: 0 left/right/middle, 1 left/middle/right.",
         options: [
           {
             value: "0",
@@ -1463,7 +1466,7 @@ export const RULES: readonly RuleDef[] = [
         type: "string",
         label: "Monitor",
         description:
-          "Pin touch or tablet input to one output. Unset touch follows the current screen; unset tablets stay unmapped.",
+          "Pin touch or tablet input to one output. Unset touch follows focus. Unset tablet stays unmapped.",
       },
       {
         key: "map_focus_monitor",

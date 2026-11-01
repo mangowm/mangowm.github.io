@@ -4563,13 +4563,13 @@
         "animations": {
           "type": "boolean",
           "title": "Enable Animations",
-          "description": "Master toggle for normal window animations; gesture-driven transitions can still animate.",
+          "description": "Toggle window animations. Gesture transitions still animate when this is off.",
           "default": true
         },
         "layer_animations": {
           "type": "boolean",
           "title": "Layer Animations",
-          "description": "Animate layer-shell surfaces such as panels and notifications.",
+          "description": "Animate layer-shell surfaces such as panels and notifications. Requires animations.",
           "default": false
         },
         "animation_type_open": {
@@ -4609,7 +4609,7 @@
             }
           ],
           "title": "Open Animation Type",
-          "description": "Window open animation. Empty leaves it unset (slide); `none` disables it.",
+          "description": "Open animation for windows. Unset uses slide; none disables it.",
           "default": ""
         },
         "animation_type_close": {
@@ -4649,7 +4649,7 @@
             }
           ],
           "title": "Close Animation Type",
-          "description": "Window close animation. Empty leaves it unset (zoom); `none` disables it.",
+          "description": "Close animation for windows. Unset uses zoom; none disables it.",
           "default": ""
         },
         "layer_animation_type_open": {
@@ -4689,7 +4689,7 @@
             }
           ],
           "title": "Layer Open Animation Type",
-          "description": "Layer surface open animation. Empty leaves it unset; `none` disables it.",
+          "description": "Open animation for layer surfaces. Unset only fades; none disables it.",
           "default": ""
         },
         "layer_animation_type_close": {
@@ -4729,19 +4729,19 @@
             }
           ],
           "title": "Layer Close Animation Type",
-          "description": "Layer surface close animation. Empty leaves it unset; `none` disables it.",
+          "description": "Close animation for layer surfaces. Unset only fades; none disables it.",
           "default": ""
         },
         "animation_fade_in": {
           "type": "boolean",
           "title": "Fade In",
-          "description": "Fade windows in when they appear",
+          "description": "Fade windows in when they appear.",
           "default": true
         },
         "animation_fade_out": {
           "type": "boolean",
           "title": "Fade Out",
-          "description": "Fade windows out when they close",
+          "description": "Fade windows out when they close.",
           "default": true
         },
         "tag_animation_direction": {
@@ -4801,7 +4801,7 @@
         "animation_duration_move": {
           "type": "integer",
           "title": "Move Duration",
-          "description": "Duration of window move/resize animations in milliseconds (0-50000)",
+          "description": "Duration of window move/resize animations in milliseconds (0-50000).",
           "default": 500,
           "minimum": 0,
           "maximum": 50000
@@ -4809,7 +4809,7 @@
         "animation_duration_open": {
           "type": "integer",
           "title": "Open Duration",
-          "description": "Duration of window open animations in milliseconds (0-50000)",
+          "description": "Duration of window open animations in milliseconds (0-50000).",
           "default": 400,
           "minimum": 0,
           "maximum": 50000
@@ -4817,7 +4817,7 @@
         "animation_duration_tag": {
           "type": "integer",
           "title": "Tag Switch Duration",
-          "description": "Duration of tag-switch (workspace) animations in milliseconds (0-50000)",
+          "description": "Duration of tag-switch (workspace) animations in milliseconds (0-50000).",
           "default": 300,
           "minimum": 0,
           "maximum": 50000
@@ -4825,7 +4825,7 @@
         "animation_duration_close": {
           "type": "integer",
           "title": "Close Duration",
-          "description": "Duration of window close animations in milliseconds (0-50000)",
+          "description": "Duration of window close animations in milliseconds (0-50000).",
           "default": 300,
           "minimum": 0,
           "maximum": 50000
@@ -4833,7 +4833,7 @@
         "animation_duration_focus": {
           "type": "integer",
           "title": "Focus Duration",
-          "description": "Duration of focus-change animations in milliseconds (0-50000)",
+          "description": "Opacity transition duration when focus changes, in milliseconds (0-50000).",
           "default": 0,
           "minimum": 0,
           "maximum": 50000
@@ -4845,7 +4845,7 @@
             "minimum": 0
           },
           "title": "Move Curve",
-          "description": "Cubic bezier curve for move/resize animations (x1,y1,x2,y2)",
+          "description": "Cubic bezier curve for move/resize animations (x1,y1,x2,y2).",
           "default": [
             0.46,
             1,
@@ -4862,7 +4862,7 @@
             "minimum": 0
           },
           "title": "Open Curve",
-          "description": "Cubic bezier curve for window open animations (x1,y1,x2,y2)",
+          "description": "Cubic bezier curve for window open animations (x1,y1,x2,y2).",
           "default": [
             0.46,
             1,
@@ -4879,7 +4879,7 @@
             "minimum": 0
           },
           "title": "Tag Switch Curve",
-          "description": "Cubic bezier curve for tag-switch animations (x1,y1,x2,y2)",
+          "description": "Cubic bezier curve for tag-switch animations (x1,y1,x2,y2).",
           "default": [
             0.46,
             1,
@@ -4896,7 +4896,7 @@
             "minimum": 0
           },
           "title": "Close Curve",
-          "description": "Cubic bezier curve for window close animations (x1,y1,x2,y2)",
+          "description": "Cubic bezier curve for window close animations (x1,y1,x2,y2).",
           "default": [
             0.46,
             1,
@@ -4913,7 +4913,7 @@
             "minimum": 0
           },
           "title": "Focus Curve",
-          "description": "Cubic bezier curve for focus-change animations (x1,y1,x2,y2)",
+          "description": "Bezier curve for the focus opacity transition (x1,y1,x2,y2).",
           "default": [
             0.46,
             1,
@@ -4930,7 +4930,7 @@
             "minimum": 0
           },
           "title": "Fade In Curve",
-          "description": "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2)",
+          "description": "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2).",
           "default": [
             0.46,
             1,
@@ -4947,7 +4947,7 @@
             "minimum": 0
           },
           "title": "Fade Out Curve",
-          "description": "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2)",
+          "description": "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2).",
           "default": [
             0.5,
             0.5,
@@ -4959,8 +4959,8 @@
         },
         "scroller_structs": {
           "type": "integer",
-          "title": "Scroller Edge Inset",
-          "description": "Pixel inset at the edges of the scroller viewport (0-1000).",
+          "title": "Scroller Side Margin",
+          "description": "Pixels reserved on each side of the scroller area (0-1000).",
           "default": 20,
           "minimum": 0,
           "maximum": 1000
@@ -4983,7 +4983,7 @@
         },
         "scroller_ignore_proportion_single": {
           "type": "boolean",
-          "title": "Ignore Proportion When Solo",
+          "title": "Ignore Single-Window Proportion",
           "description": "Ignore scroller_default_proportion_single when the tag has one window.",
           "default": true
         },
@@ -5052,19 +5052,19 @@
         "view_current_to_back": {
           "type": "boolean",
           "title": "View Current to Back",
-          "description": "The current tag moves to back and the previous tag appears.",
+          "description": "Viewing the current tag switches to the previously viewed tag.",
           "default": false
         },
         "blur": {
           "type": "boolean",
           "title": "Enable Blur",
-          "description": "Toggle background blur behind windows",
+          "description": "Toggle background blur behind windows.",
           "default": false
         },
         "blur_layer": {
           "type": "boolean",
           "title": "Blur Layer Surfaces",
-          "description": "Apply blur to layer-shell surfaces (panels, notifications)",
+          "description": "Apply blur to layer-shell surfaces (panels, notifications). Requires blur.",
           "default": false
         },
         "blur_optimized": {
@@ -5084,7 +5084,7 @@
         "blur_params_num_passes": {
           "type": "integer",
           "title": "Blur Passes",
-          "description": "Number of blur iterations",
+          "description": "Number of blur iterations.",
           "default": 1,
           "minimum": 0,
           "maximum": 10
@@ -5092,7 +5092,7 @@
         "blur_params_radius": {
           "type": "integer",
           "title": "Blur Radius",
-          "description": "Pixel radius of the blur kernel",
+          "description": "Pixel radius of the blur kernel.",
           "default": 5,
           "minimum": 0,
           "maximum": 100
@@ -5108,7 +5108,7 @@
         "blur_params_brightness": {
           "type": "number",
           "title": "Blur Brightness",
-          "description": "Brightness multiplier for the blurred layer",
+          "description": "Brightness multiplier for the blurred layer.",
           "default": 0.9,
           "minimum": 0,
           "maximum": 1
@@ -5116,7 +5116,7 @@
         "blur_params_contrast": {
           "type": "number",
           "title": "Blur Contrast",
-          "description": "Contrast multiplier for the blurred layer",
+          "description": "Contrast multiplier for the blurred layer.",
           "default": 0.9,
           "minimum": 0,
           "maximum": 1
@@ -5132,25 +5132,25 @@
         "shadows": {
           "type": "boolean",
           "title": "Enable Shadows",
-          "description": "Render drop shadows behind windows",
+          "description": "Render drop shadows behind windows.",
           "default": false
         },
         "shadow_only_floating": {
           "type": "boolean",
           "title": "Floating Shadows Only",
-          "description": "Only draw shadows for floating windows",
+          "description": "Only draw shadows for floating windows.",
           "default": true
         },
         "layer_shadows": {
           "type": "boolean",
-          "title": "Layer Shadow Surfaces",
-          "description": "Draw shadows under layer-shell surfaces",
+          "title": "Layer Shadows",
+          "description": "Draw shadows under layer-shell surfaces. Requires shadows.",
           "default": false
         },
         "shadows_size": {
           "type": "integer",
           "title": "Shadow Size",
-          "description": "How far the shadow extends beyond window edges",
+          "description": "How far the shadow extends beyond window edges.",
           "default": 10,
           "minimum": 0,
           "maximum": 100
@@ -5158,7 +5158,7 @@
         "shadows_blur": {
           "type": "integer",
           "title": "Shadow Softness",
-          "description": "Gaussian blur sigma for softer shadows",
+          "description": "Gaussian blur sigma for softer shadows.",
           "default": 15,
           "minimum": 0,
           "maximum": 100
@@ -5166,7 +5166,7 @@
         "shadows_position_x": {
           "type": "integer",
           "title": "Shadow Offset X",
-          "description": "Horizontal shadow offset",
+          "description": "Horizontal shadow offset.",
           "default": 0,
           "minimum": -1000,
           "maximum": 1000
@@ -5174,7 +5174,7 @@
         "shadows_position_y": {
           "type": "integer",
           "title": "Shadow Offset Y",
-          "description": "Vertical shadow offset",
+          "description": "Vertical shadow offset.",
           "default": 0,
           "minimum": -1000,
           "maximum": 1000
@@ -5188,7 +5188,7 @@
         "xwayland_persistence": {
           "type": "boolean",
           "title": "XWayland Persistence",
-          "description": "Keep XWayland running even when no X11 clients are active",
+          "description": "Keep XWayland running even when no X11 clients are active.",
           "default": true
         },
         "xwayland_ignore_scale": {
@@ -5206,7 +5206,7 @@
         "tag_carousel": {
           "type": "boolean",
           "title": "Tag Carousel",
-          "description": "Tags wrap around in a carousel",
+          "description": "Tags wrap around in a carousel.",
           "default": false
         },
         "allow_tearing": {
@@ -5225,7 +5225,7 @@
             {
               "type": "integer",
               "const": 1,
-              "title": "Enabled"
+              "title": "Always"
             },
             {
               "type": "integer",
@@ -5248,27 +5248,27 @@
             {
               "type": "integer",
               "const": 0,
-              "title": "Default"
+              "title": "Auto"
             },
             {
               "type": "integer",
               "const": 1,
-              "title": "HDR8"
+              "title": "8-bit"
             },
             {
               "type": "integer",
               "const": 2,
-              "title": "HDR10"
+              "title": "10-bit"
             }
           ],
-          "title": "HDR Bit Depth",
-          "description": "Bit depth for HDR output: 0 default, 1 HDR8, 2 HDR10.",
+          "title": "HDR Render Depth",
+          "description": "HDR render depth: 0 auto, 1 force 8-bit, 2 force 10-bit.",
           "default": 2
         },
         "allow_shortcuts_inhibit": {
           "type": "boolean",
-          "title": "Allow Shortcuts Inhibit",
-          "description": "Let apps suspend compositor keybindings",
+          "title": "Allow Shortcut Inhibition",
+          "description": "Let apps suspend compositor keybindings.",
           "default": true
         },
         "disable_middle_paste": {
@@ -5280,25 +5280,25 @@
         "allow_lock_transparent": {
           "type": "boolean",
           "title": "Allow Lock Transparent",
-          "description": "Permit transparent/translucent lockscreens",
+          "description": "Permit transparent/translucent lockscreens.",
           "default": false
         },
         "auto_reload_config": {
           "type": "boolean",
           "title": "Auto Reload Config",
-          "description": "Watch the main config and all source files. Reload after any change.",
+          "description": "Reload when the main config or a sourced file changes.",
           "default": true
         },
         "no_border_when_single": {
           "type": "boolean",
-          "title": "Hide Border When Solo",
-          "description": "Remove borders when only one window is visible",
+          "title": "No Border When Single",
+          "description": "Remove borders when only one window is visible.",
           "default": false
         },
         "no_radius_when_single": {
           "type": "boolean",
-          "title": "Hide Radius When Solo",
-          "description": "Remove corner radius when only one window is visible",
+          "title": "No Corner Radius When Single",
+          "description": "Remove corner radius when only one window is visible.",
           "default": false
         },
         "monocle_no_border": {
@@ -5335,8 +5335,8 @@
         },
         "float_full_to_top": {
           "type": "boolean",
-          "title": "Raise Full Floating Windows",
-          "description": "Stack fullscreen, floating, and top layer-shell windows together. The last raised window is on top.",
+          "title": "Shared Top Layer",
+          "description": "One layer for fullscreen, floating, and layer-shell top windows. The last raised window is on top.",
           "default": false
         },
         "drag_tile_to_tile": {
@@ -5348,13 +5348,13 @@
         "drag_tile_small": {
           "type": "boolean",
           "title": "Small Tile Preview",
-          "description": "Shrink dragged tile to a small thumbnail",
+          "description": "Shrink dragged tile to a small thumbnail.",
           "default": true
         },
         "swipe_min_threshold": {
           "type": "integer",
           "title": "Swipe Minimum Threshold",
-          "description": "Minimum distance in pixels to trigger a swipe gesture (1-1000)",
+          "description": "Minimum distance in pixels to trigger a swipe gesture (1-1000).",
           "default": 1,
           "minimum": 1,
           "maximum": 1000
@@ -5362,7 +5362,7 @@
         "gesture_live": {
           "type": "boolean",
           "title": "Live Gestures",
-          "description": "Animate tag, focus, and overview changes while fingers move (`1`), not only after release (`0`).",
+          "description": "Update tag, focus, and overview transitions while fingers move, not only after release.",
           "default": true
         },
         "gesture_swipe_distance": {
@@ -5391,7 +5391,7 @@
         "focused_opacity": {
           "type": "number",
           "title": "Focused Opacity",
-          "description": "Opacity of the currently focused window",
+          "description": "Opacity of the currently focused window.",
           "default": 1,
           "minimum": 0,
           "maximum": 1
@@ -5399,7 +5399,7 @@
         "unfocused_opacity": {
           "type": "number",
           "title": "Unfocused Opacity",
-          "description": "Opacity of unfocused background windows",
+          "description": "Opacity of unfocused windows.",
           "default": 1,
           "minimum": 0,
           "maximum": 1
@@ -5407,13 +5407,13 @@
         "xkb_rules_rules": {
           "type": "string",
           "title": "XKB Rules",
-          "description": "XKB rules file",
+          "description": "XKB rules file.",
           "default": ""
         },
         "xkb_rules_model": {
           "type": "string",
           "title": "XKB Model",
-          "description": "Keyboard model for XKB",
+          "description": "Keyboard model for XKB.",
           "default": ""
         },
         "xkb_rules_layout": {
@@ -5425,7 +5425,7 @@
         "xkb_rules_variant": {
           "type": "string",
           "title": "XKB Variant",
-          "description": "Keyboard layout variant",
+          "description": "Keyboard layout variant.",
           "default": ""
         },
         "xkb_rules_options": {
@@ -5473,7 +5473,7 @@
         "new_is_master": {
           "type": "boolean",
           "title": "New Windows as Master",
-          "description": "New windows open in the master area instead of the stack",
+          "description": "New windows open in the master area instead of the stack.",
           "default": true
         },
         "default_master_factor": {
@@ -5503,7 +5503,7 @@
         "tag_gather": {
           "type": "boolean",
           "title": "Gather Tags",
-          "description": "Compact occupied tags to consecutive numbers starting at 1; the current view follows.",
+          "description": "Compact occupied tags to consecutive numbers starting at 1. The current view follows.",
           "default": false
         },
         "center_master_overspread": {
@@ -5595,7 +5595,7 @@
         "dwindle_drop_simple_split": {
           "type": "boolean",
           "title": "Dwindle Drop Simple Split",
-          "description": "Drag-to-tile preview: 1 for 2 zones, 0 for 4 quadrants.",
+          "description": "Use a 2-zone drop preview that follows dwindle_split_ratio instead of four quadrants.",
           "default": true
         },
         "dwindle_manual_split": {
@@ -5607,7 +5607,7 @@
         "dwindle_split_ratio": {
           "type": "number",
           "title": "Split Ratio",
-          "description": "Proportion of space for the first child when splitting",
+          "description": "Proportion of space for the first child when splitting.",
           "default": 0.5,
           "minimum": 0.05,
           "maximum": 0.95
@@ -5615,7 +5615,7 @@
         "hotarea_size": {
           "type": "integer",
           "title": "Hotarea Size",
-          "description": "Size of the corner activation zone in pixels (1-1000)",
+          "description": "Size of the corner activation zone in pixels (1-1000).",
           "default": 10,
           "minimum": 1,
           "maximum": 1000
@@ -5657,7 +5657,7 @@
         "enable_hotarea": {
           "type": "boolean",
           "title": "Enable Hotarea",
-          "description": "Activate overview by moving the cursor to a screen corner",
+          "description": "Activate overview by moving the cursor to a screen corner.",
           "default": false
         },
         "hotarea_disable_on_fullscreen": {
@@ -5693,13 +5693,13 @@
         "jump_labels": {
           "type": "string",
           "title": "Jump Label Characters",
-          "description": "Ordered characters used for quick window selection in jump label mode",
+          "description": "Characters used to label windows in jump label mode, in order.",
           "default": "HJKLASDFGQWERTYUIOPZXCVBNM"
         },
         "cursor_hide_timeout": {
           "type": "integer",
           "title": "Cursor Hide Timeout",
-          "description": "Seconds of inactivity before auto-hiding the cursor (0 = never)",
+          "description": "Seconds of inactivity before auto-hiding the cursor (0 = never).",
           "default": 0,
           "minimum": 0,
           "maximum": 36000
@@ -5707,7 +5707,7 @@
         "cursor_hide_on_keypress": {
           "type": "boolean",
           "title": "Hide Cursor on Keypress",
-          "description": "Auto-hide the cursor whenever any keyboard key is pressed",
+          "description": "Auto-hide the cursor whenever any keyboard key is pressed.",
           "default": false
         },
         "axis_bind_apply_timeout": {
@@ -5721,7 +5721,7 @@
         "focus_on_activate": {
           "type": "boolean",
           "title": "Focus on Activate",
-          "description": "Focus windows immediately when they request activation",
+          "description": "Focus windows immediately when they request activation.",
           "default": true
         },
         "numlock_on": {
@@ -5732,8 +5732,8 @@
         },
         "idle_inhibit_ignore_visible": {
           "type": "boolean",
-          "title": "Ignore Visible Windows for Idle",
-          "description": "Let invisible clients inhibit idle.",
+          "title": "Allow Hidden Clients to Inhibit Idle",
+          "description": "Let clients that are not visible inhibit idle.",
           "default": false
         },
         "idle_inhibit_when_fullscreen": {
@@ -5745,7 +5745,7 @@
         "sloppy_focus": {
           "type": "boolean",
           "title": "Sloppy Focus",
-          "description": "Focus follows the mouse pointer",
+          "description": "Focus follows the mouse pointer.",
           "default": true
         },
         "warp_cursor": {
@@ -5777,7 +5777,7 @@
         "border_resize_size": {
           "type": "integer",
           "title": "Border Resize Hitbox",
-          "description": "Width in pixels of the border resize grab strip. 0 uses the border width.",
+          "description": "Thickness in pixels of the resize grab strip. 0 uses the border width.",
           "default": 10,
           "minimum": 0,
           "maximum": 50
@@ -5785,7 +5785,7 @@
         "smart_gaps": {
           "type": "boolean",
           "title": "Smart Gaps",
-          "description": "Only show gaps with multiple windows on the same tag",
+          "description": "Disable gaps when only one tiling window is visible.",
           "default": false
         },
         "monocle_tab_mode": {
@@ -5817,7 +5817,7 @@
         "repeat_delay": {
           "type": "integer",
           "title": "Repeat Delay",
-          "description": "Delay before key repeat starts, in milliseconds",
+          "description": "Delay before key repeat starts, in milliseconds.",
           "default": 600,
           "minimum": 1,
           "maximum": 20000
@@ -5837,7 +5837,7 @@
         "touch_enable_mouse_emulation": {
           "type": "boolean",
           "title": "Touch Mouse Emulation",
-          "description": "Emulate a left-button click for touches on surfaces that do not accept touch.",
+          "description": "Emulate left-button clicks and drags on surfaces that do not accept touch.",
           "default": false
         },
         "tap_to_click": {
@@ -5873,7 +5873,7 @@
         "cursor_size": {
           "type": "integer",
           "title": "Cursor Size",
-          "description": "XCursor size in pixels",
+          "description": "XCursor size in pixels.",
           "default": 24,
           "minimum": 4,
           "maximum": 512
@@ -6257,7 +6257,7 @@
         "mouse_middle_button_emulation": {
           "type": "boolean",
           "title": "Mouse Middle Button Emulation",
-          "description": "Emulate middle-click on the mouse.",
+          "description": "Emit a middle click when both buttons are pressed together.",
           "default": false
         },
         "mouse_scroll_method": {
@@ -6351,11 +6351,11 @@
             {
               "type": "integer",
               "const": 2,
-              "title": "Disabled on external mouse"
+              "title": "Disabled with external pointer"
             }
           ],
           "title": "Mouse Send Events Mode",
-          "description": "Send events: 0 on, 1 off, 2 off with an external pointer.",
+          "description": "Send events: 0 enabled, 1 disabled, 2 disabled with an external pointer.",
           "default": 0
         },
         "trackpad_left_handed": {
@@ -6367,7 +6367,7 @@
         "trackpad_middle_button_emulation": {
           "type": "boolean",
           "title": "Trackpad Middle Button Emulation",
-          "description": "Emulate middle-click on the trackpad.",
+          "description": "Emit a middle click when both buttons are pressed together.",
           "default": false
         },
         "trackpad_disable_while_typing": {
@@ -6467,11 +6467,11 @@
             {
               "type": "integer",
               "const": 2,
-              "title": "Disabled on external mouse"
+              "title": "Disabled with external pointer"
             }
           ],
           "title": "Trackpad Send Events Mode",
-          "description": "Send events: 0 on, 1 off, 2 off with an external pointer.",
+          "description": "Send events: 0 enabled, 1 disabled, 2 disabled with an external pointer.",
           "default": 0
         },
         "send_events_mode": {
@@ -6495,11 +6495,11 @@
             {
               "type": "integer",
               "const": 2,
-              "title": "Disabled on external mouse"
+              "title": "Disabled with external pointer"
             }
           ],
           "title": "Send Events Mode",
-          "description": "Send events for touch and tablet devices: 0 on, 1 off, 2 off with an external pointer.",
+          "description": "Touch and tablet events: 0 enabled, 1 disabled, 2 disabled with an external pointer.",
           "default": 0
         },
         "button_map": {
@@ -6527,7 +6527,7 @@
         "axis_scroll_factor": {
           "type": "number",
           "title": "Axis Scroll Factor",
-          "description": "Multiplier for axis (wheel) scroll speed (0.1-10.0)",
+          "description": "Multiplier for axis (wheel) scroll speed (0.1-10.0).",
           "default": 1,
           "minimum": 0.1,
           "maximum": 10
@@ -6543,7 +6543,7 @@
         "gap_inner_horizontal": {
           "type": "integer",
           "title": "Inner Gap Horizontal",
-          "description": "Horizontal gap between tiled windows",
+          "description": "Horizontal gap between tiled windows.",
           "default": 5,
           "minimum": 0,
           "maximum": 1000
@@ -6551,7 +6551,7 @@
         "gap_inner_vertical": {
           "type": "integer",
           "title": "Inner Gap Vertical",
-          "description": "Vertical gap between tiled windows",
+          "description": "Vertical gap between tiled windows.",
           "default": 5,
           "minimum": 0,
           "maximum": 1000
@@ -6559,7 +6559,7 @@
         "gap_outer_horizontal": {
           "type": "integer",
           "title": "Outer Gap Horizontal",
-          "description": "Horizontal gap between windows and screen edges",
+          "description": "Horizontal gap between windows and screen edges.",
           "default": 10,
           "minimum": 0,
           "maximum": 1000
@@ -6567,7 +6567,7 @@
         "gap_outer_vertical": {
           "type": "integer",
           "title": "Outer Gap Vertical",
-          "description": "Vertical gap between windows and screen edges",
+          "description": "Vertical gap between windows and screen edges.",
           "default": 10,
           "minimum": 0,
           "maximum": 1000
@@ -6631,7 +6631,7 @@
         "border_px": {
           "type": "integer",
           "title": "Border Width",
-          "description": "Thickness of window borders in pixels",
+          "description": "Thickness of window borders in pixels.",
           "default": 4,
           "minimum": 0,
           "maximum": 200
@@ -6639,7 +6639,7 @@
         "group_bar_height": {
           "type": "integer",
           "title": "Group Bar Height",
-          "description": "Height of the per-window group bar in pixels",
+          "description": "Height of the per-window group bar in pixels.",
           "default": 33,
           "minimum": 0,
           "maximum": 500
@@ -6655,7 +6655,7 @@
         "title_message_bar_height": {
           "type": "integer",
           "title": "Title Message Bar Height",
-          "description": "Height of the focused window's title message bar. 0 disables it.",
+          "description": "Height of the title message bar in overcircle and the switcher. 0 hides it.",
           "default": 52,
           "minimum": 0,
           "maximum": 500
@@ -6676,8 +6676,8 @@
         },
         "group_bar_close_button_enable": {
           "type": "boolean",
-          "title": "Close Button",
-          "description": "Show the close button. Independent of `always_show_group_bar`.",
+          "title": "Group Bar Close Button",
+          "description": "Show a close button on the group bar.",
           "default": false
         },
         "group_bar_button_size": {
@@ -6699,28 +6699,28 @@
         "group_bar_button_color": {
           "type": "string",
           "title": "Close Button Color",
-          "description": "Close button colour.",
+          "description": "Close button color.",
           "default": "0xad401fff",
           "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "root_color": {
           "type": "string",
           "title": "Root Background",
-          "description": "Desktop background behind all windows",
+          "description": "Desktop background behind all windows.",
           "default": "0x323232ff",
           "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "shadows_color": {
           "type": "string",
           "title": "Shadow Color",
-          "description": "Drop shadow color for windows",
+          "description": "Drop shadow color for windows.",
           "default": "0x000000ff",
           "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "dim_enable": {
           "type": "boolean",
           "title": "Dim Enable",
-          "description": "Dim unfocused windows.",
+          "description": "Enable the dim overlay on windows.",
           "default": false
         },
         "dim_focused_color": {
@@ -6733,7 +6733,7 @@
         "dim_unfocused_color": {
           "type": "string",
           "title": "Dim Unfocused Color",
-          "description": "Dim color of the unfocused windows.",
+          "description": "Dim color for unfocused windows.",
           "default": "0x00000055",
           "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
@@ -6754,14 +6754,14 @@
         "split_color": {
           "type": "string",
           "title": "Split Indicator",
-          "description": "Dwindle manual-split guide line",
+          "description": "Color of the dwindle manual split guide line.",
           "default": "0xeb441eff",
           "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
         "focus_color": {
           "type": "string",
-          "title": "Active Border",
-          "description": "Focused window border on the selected monitor",
+          "title": "Active Border Color",
+          "description": "Border color of the focused window on the selected monitor.",
           "default": "0xc66b25ff",
           "pattern": "^0[xX][0-9a-fA-F]{8}$"
         },
@@ -6925,25 +6925,25 @@
               "name": {
                 "type": "string",
                 "title": "Name",
-                "description": "Match by monitor name (supports regex)",
+                "description": "Match by monitor name (supports regex).",
                 "pattern": "^[^,]*$"
               },
               "make": {
                 "type": "string",
                 "title": "Make",
-                "description": "Match by monitor manufacturer",
+                "description": "Match by monitor manufacturer.",
                 "pattern": "^[^,]*$"
               },
               "model": {
                 "type": "string",
                 "title": "Model",
-                "description": "Match by monitor model",
+                "description": "Match by monitor model.",
                 "pattern": "^[^,]*$"
               },
               "serial": {
                 "type": "string",
                 "title": "Serial",
-                "description": "Match by monitor serial number",
+                "description": "Match by monitor serial number.",
                 "pattern": "^[^,]*$"
               },
               "rr": {
@@ -6987,17 +6987,17 @@
                   {
                     "type": "integer",
                     "const": 5,
-                    "title": "Flip+90° CCW"
+                    "title": "Flip + 90° CCW"
                   },
                   {
                     "type": "integer",
                     "const": 6,
-                    "title": "Flip + 180° CCW"
+                    "title": "Flip + 180°"
                   },
                   {
                     "type": "integer",
                     "const": 7,
-                    "title": "Flip+270° CCW"
+                    "title": "Flip + 270° CCW"
                   }
                 ],
                 "title": "Transform",
@@ -7006,19 +7006,19 @@
               "scale": {
                 "type": "number",
                 "title": "Scale",
-                "description": "Monitor scale",
+                "description": "Monitor scale.",
                 "minimum": 0.001,
                 "maximum": 1000
               },
               "x": {
                 "type": "integer",
                 "title": "X",
-                "description": "X position"
+                "description": "X position."
               },
               "y": {
                 "type": "integer",
                 "title": "Y",
-                "description": "Y position"
+                "description": "Y position."
               },
               "width": {
                 "type": "integer",
@@ -7037,7 +7037,7 @@
               "refresh": {
                 "type": "number",
                 "title": "Refresh Rate",
-                "description": "Monitor refresh rate",
+                "description": "Monitor refresh rate in Hz.",
                 "minimum": 0.001,
                 "maximum": 1000
               },
@@ -7065,7 +7065,7 @@
                   }
                 ],
                 "title": "HDR",
-                "description": "Turn on HDR for this output. Requires the wl-only Vulkan build; not supported with scenefx."
+                "description": "Enable HDR. Needs the Vulkan renderer (wl-only build). Not available on scenefx."
               },
               "hdr_min_lum": {
                 "type": "number",
@@ -7077,14 +7077,14 @@
               "hdr_max_lum": {
                 "type": "number",
                 "title": "HDR Max Luminance",
-                "description": "Mastering display peak luminance, also sent as max_cll, cd/m² (0 = unset)",
+                "description": "Mastering display peak luminance, also sent as max_cll, cd/m² (0 = unset).",
                 "minimum": 0,
                 "maximum": 10000
               },
               "hdr_max_avg_lum": {
                 "type": "number",
                 "title": "HDR Max Average Luminance",
-                "description": "Max frame-average light level (max_fall), cd/m² (0 = unset)",
+                "description": "Max frame-average light level (max_fall), cd/m² (0 = unset).",
                 "minimum": 0,
                 "maximum": 10000
               },
@@ -7118,7 +7118,7 @@
                   }
                 ],
                 "title": "Disable",
-                "description": "Disable the monitor"
+                "description": "Disable the monitor."
               },
               "primary": {
                 "anyOf": [
@@ -7131,7 +7131,7 @@
                   }
                 ],
                 "title": "Primary",
-                "description": "Make this monitor the X11 (RandR) primary output for XWayland"
+                "description": "Make this monitor the X11 (RandR) primary output for XWayland."
               },
               "custom": {
                 "anyOf": [
@@ -7144,7 +7144,7 @@
                   }
                 ],
                 "title": "Custom Mode",
-                "description": "Use a custom display mode. Not supported by all displays; can cause a black screen."
+                "description": "Custom display mode. Also requires width, height, and refresh. May cause a black screen."
               }
             },
             "title": "Monitor Rules",
@@ -7350,25 +7350,25 @@
               "monitor_name": {
                 "type": "string",
                 "title": "Monitor Name",
-                "description": "Match by monitor name",
+                "description": "Monitor name regex to match.",
                 "pattern": "^[^,]*$"
               },
               "monitor_make": {
                 "type": "string",
                 "title": "Monitor Make",
-                "description": "Match by monitor manufacturer",
+                "description": "Match by monitor manufacturer.",
                 "pattern": "^[^,]*$"
               },
               "monitor_model": {
                 "type": "string",
                 "title": "Monitor Model",
-                "description": "Match by monitor model",
+                "description": "Match by monitor model.",
                 "pattern": "^[^,]*$"
               },
               "monitor_serial": {
                 "type": "string",
                 "title": "Monitor Serial",
-                "description": "Match by monitor serial number",
+                "description": "Match by monitor serial number.",
                 "pattern": "^[^,]*$"
               },
               "no_render_border": {
@@ -7407,34 +7407,34 @@
                     "const": -1
                   }
                 ],
-                "title": "Persistent Tag",
+                "title": "No Hide",
                 "description": "Keep the tag advertised to ext-workspace clients when it is empty."
               },
               "master_count": {
                 "type": "integer",
                 "title": "Master Count",
-                "description": "Number of master windows",
+                "description": "Number of master windows.",
                 "minimum": 1,
                 "maximum": 99
               },
               "master_factor": {
                 "type": "number",
                 "title": "Master Factor",
-                "description": "Fraction of the tag area used by the master area (0.1-0.9).",
+                "description": "Master area share of the layout (0.1-0.9).",
                 "minimum": 0.1,
                 "maximum": 0.9
               },
               "scroller_default_proportion": {
                 "type": "number",
                 "title": "Scroller Proportion",
-                "description": "Default width proportion for new windows.",
+                "description": "Default width proportion for new windows (0-1; 0 keeps the global value).",
                 "minimum": 0,
                 "maximum": 1
               },
               "scroller_default_proportion_single": {
                 "type": "number",
                 "title": "Scroller Proportion (Single)",
-                "description": "Scroller proportion for a single window. Used when scroller_ignore_proportion_single is off.",
+                "description": "Scroller proportion for a single window (0-1; 0 keeps the global value). Used when scroller_ignore_proportion_single is off.",
                 "minimum": 0,
                 "maximum": 1
               },
@@ -7449,11 +7449,11 @@
                   }
                 ],
                 "title": "Ignore Single Proportion",
-                "description": "Ignore proportion adjustments for single windows."
+                "description": "Use the normal scroller proportion when only one window is open."
               }
             },
             "title": "Tag Rules",
-            "description": "Set layout, master, and scroller options per tag; every monitor field set must match.",
+            "description": "Per-tag layout and options. All matching rules apply in order. Later rules override earlier.",
             "additionalProperties": false
           }
         },
@@ -7465,7 +7465,7 @@
               "layer_name": {
                 "type": "string",
                 "title": "Layer Name",
-                "description": "Match name of layer, supports regex",
+                "description": "Layer surface name. Supports regex.",
                 "pattern": "^[^,]*$"
               },
               "animation_type_open": {
@@ -7505,7 +7505,7 @@
                   }
                 ],
                 "title": "Open Animation",
-                "description": "Layer surface open animation. Empty inherits the global setting; `none` disables it."
+                "description": "Layer surface open animation. Empty inherits the global setting. `none` disables it."
               },
               "animation_type_close": {
                 "type": "string",
@@ -7544,7 +7544,7 @@
                   }
                 ],
                 "title": "Close Animation",
-                "description": "Layer surface close animation. Empty inherits the global setting; `none` disables it."
+                "description": "Layer surface close animation. Empty inherits the global setting. `none` disables it."
               },
               "shield_when_capture": {
                 "anyOf": [
@@ -7620,18 +7620,18 @@
                   }
                 ],
                 "title": "Floating",
-                "description": "Force floating state"
+                "description": "Force floating state."
               },
               "title": {
                 "type": "string",
                 "title": "Title",
-                "description": "Match by window title, supports regex",
+                "description": "Match by window title, supports regex.",
                 "pattern": "^[^,]*$"
               },
               "app_id": {
                 "type": "string",
                 "title": "App ID",
-                "description": "Match by application ID, supports regex",
+                "description": "Match by application ID, supports regex.",
                 "pattern": "^[^,]*$"
               },
               "animation_type_open": {
@@ -7671,7 +7671,7 @@
                   }
                 ],
                 "title": "Open Animation",
-                "description": "Window open animation. Empty inherits the global setting; `none` disables it."
+                "description": "Window open animation. Empty inherits the global setting. `none` disables it."
               },
               "animation_type_close": {
                 "type": "string",
@@ -7710,7 +7710,7 @@
                   }
                 ],
                 "title": "Close Animation",
-                "description": "Window close animation. Empty inherits the global setting; `none` disables it."
+                "description": "Window close animation. Empty inherits the global setting. `none` disables it."
               },
               "tags": {
                 "anyOf": [
@@ -7736,18 +7736,18 @@
               "monitor": {
                 "type": "string",
                 "title": "Monitor",
-                "description": "Assign to monitor by monitor spec (name, make, model, or serial)",
+                "description": "Assign to monitor by monitor spec (name, make, model, or serial).",
                 "pattern": "^[^,]*$"
               },
               "offset_x": {
                 "type": "integer",
                 "title": "X Offset",
-                "description": "X offset from center (%), 100 is the edge of screen with outer gap"
+                "description": "Horizontal offset from center in percent. 100 sits at the outer gap."
               },
               "offset_y": {
                 "type": "integer",
                 "title": "Y Offset",
-                "description": "Y offset from center (%), 100 is the edge of screen with outer gap"
+                "description": "Vertical offset from center in percent. 100 sits at the outer gap."
               },
               "no_focus": {
                 "anyOf": [
@@ -7773,7 +7773,7 @@
                   }
                 ],
                 "title": "No Fade In",
-                "description": "Window ignores fade-in animation"
+                "description": "Window ignores fade-in animation."
               },
               "no_fade_out": {
                 "anyOf": [
@@ -7786,7 +7786,7 @@
                   }
                 ],
                 "title": "No Fade Out",
-                "description": "Window ignores fade-out animation"
+                "description": "Window ignores fade-out animation."
               },
               "no_force_center": {
                 "anyOf": [
@@ -7804,12 +7804,12 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "0 to 1 is a screen width fraction; above 1 is pixels."
+                "description": "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels."
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "0 to 1 is a screen height fraction; above 1 is pixels."
+                "description": "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels."
               },
               "no_border": {
                 "anyOf": [
@@ -7822,7 +7822,7 @@
                   }
                 ],
                 "title": "No Border",
-                "description": "Remove window border"
+                "description": "Remove window border."
               },
               "no_shadow": {
                 "anyOf": [
@@ -7873,8 +7873,8 @@
                     "const": -1
                   }
                 ],
-                "title": "Open Silent",
-                "description": "Open without focus"
+                "title": "Open Unfocused",
+                "description": "Open without focus."
               },
               "is_tag_silent": {
                 "anyOf": [
@@ -7886,7 +7886,7 @@
                     "const": -1
                   }
                 ],
-                "title": "Tag Silent",
+                "title": "No Focus on Hidden Tag",
                 "description": "Do not focus the window when it opens on a tag that is not currently visible."
               },
               "is_named_scratchpad": {
@@ -7913,7 +7913,7 @@
                   }
                 ],
                 "title": "Unmanaged Global",
-                "description": "Open as unmanaged global window (for desktop pets or camera windows)"
+                "description": "Open as unmanaged global window (for desktop pets or camera windows)."
               },
               "is_global": {
                 "anyOf": [
@@ -7926,7 +7926,7 @@
                   }
                 ],
                 "title": "Global",
-                "description": "Open as global window (sticky across tags)"
+                "description": "Open as global window (sticky across tags)."
               },
               "scroller_proportion_single": {
                 "type": "number",
@@ -7938,14 +7938,14 @@
               "unfocused_opacity": {
                 "type": "number",
                 "title": "Unfocused Opacity",
-                "description": "Opacity for inactive windows (0.0 - 1.0).",
+                "description": "Opacity for inactive windows. 0 keeps the global opacity.",
                 "minimum": 0,
                 "maximum": 1
               },
               "focused_opacity": {
                 "type": "number",
                 "title": "Focused Opacity",
-                "description": "Opacity for the active window (0.0 - 1.0).",
+                "description": "Opacity for the active window. 0 keeps the global opacity.",
                 "minimum": 0,
                 "maximum": 1
               },
@@ -8038,7 +8038,7 @@
                   }
                 ],
                 "title": "Inhibit Idle When Focused",
-                "description": "Automatically keep idle inhibit active when this window is focused"
+                "description": "Keep idle inhibit active while this window is focused."
               },
               "vrr_only_fullscreen": {
                 "anyOf": [
@@ -8064,7 +8064,7 @@
                   }
                 ],
                 "title": "Force Render",
-                "description": "Force render frame even if the window is not visible"
+                "description": "Keep sending frame callbacks while the window is hidden."
               },
               "activation_bypass": {
                 "anyOf": [
@@ -8129,7 +8129,7 @@
                   }
                 ],
                 "title": "Force Tiled State",
-                "description": "Report the window as tiled even when it is floating."
+                "description": "Report floating windows as tiled (on by default)."
               },
               "force_tearing": {
                 "type": "integer",
@@ -8215,7 +8215,7 @@
                   }
                 ],
                 "title": "Fullscreen",
-                "description": "Force fullscreen state"
+                "description": "Force fullscreen state."
               },
               "is_fake_fullscreen": {
                 "anyOf": [
@@ -8228,17 +8228,17 @@
                   }
                 ],
                 "title": "Fake Fullscreen",
-                "description": "Report fullscreen state to the client without resizing the window."
+                "description": "Tell the client it is fullscreen while keeping its tiled size."
               },
               "global_key_binding": {
                 "type": "string",
                 "title": "Global Key Binding",
-                "description": "Global keybinding written as MOD-KEY, for example ctrl+alt-o (Wayland apps only).",
+                "description": "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
                 "pattern": "^(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*\\+\\s*(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})))*\\s*-\\s*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
               }
             },
             "title": "Window Rules",
-            "description": "Apply properties when a window matching app_id or title opens. Both must match when set.",
+            "description": "Set window properties on open. app_id and title are regex. When both are set, both must match.",
             "additionalProperties": false
           }
         },
@@ -8258,18 +8258,18 @@
                   }
                 ],
                 "title": "Floating",
-                "description": "Force floating state"
+                "description": "Force floating state."
               },
               "title": {
                 "type": "string",
                 "title": "Title",
-                "description": "Match by window title, supports regex",
+                "description": "Match by window title, supports regex.",
                 "pattern": "^[^,]*$"
               },
               "app_id": {
                 "type": "string",
                 "title": "App ID",
-                "description": "Match by application ID, supports regex",
+                "description": "Match by application ID, supports regex.",
                 "pattern": "^[^,]*$"
               },
               "animation_type_open": {
@@ -8309,7 +8309,7 @@
                   }
                 ],
                 "title": "Open Animation",
-                "description": "Window open animation. Empty inherits the global setting; `none` disables it."
+                "description": "Window open animation. Empty inherits the global setting. `none` disables it."
               },
               "animation_type_close": {
                 "type": "string",
@@ -8348,7 +8348,7 @@
                   }
                 ],
                 "title": "Close Animation",
-                "description": "Window close animation. Empty inherits the global setting; `none` disables it."
+                "description": "Window close animation. Empty inherits the global setting. `none` disables it."
               },
               "tags": {
                 "anyOf": [
@@ -8374,18 +8374,18 @@
               "monitor": {
                 "type": "string",
                 "title": "Monitor",
-                "description": "Assign to monitor by monitor spec (name, make, model, or serial)",
+                "description": "Assign to monitor by monitor spec (name, make, model, or serial).",
                 "pattern": "^[^,]*$"
               },
               "offset_x": {
                 "type": "integer",
                 "title": "X Offset",
-                "description": "X offset from center (%), 100 is the edge of screen with outer gap"
+                "description": "Horizontal offset from center in percent. 100 sits at the outer gap."
               },
               "offset_y": {
                 "type": "integer",
                 "title": "Y Offset",
-                "description": "Y offset from center (%), 100 is the edge of screen with outer gap"
+                "description": "Vertical offset from center in percent. 100 sits at the outer gap."
               },
               "no_focus": {
                 "anyOf": [
@@ -8411,7 +8411,7 @@
                   }
                 ],
                 "title": "No Fade In",
-                "description": "Window ignores fade-in animation"
+                "description": "Window ignores fade-in animation."
               },
               "no_fade_out": {
                 "anyOf": [
@@ -8424,7 +8424,7 @@
                   }
                 ],
                 "title": "No Fade Out",
-                "description": "Window ignores fade-out animation"
+                "description": "Window ignores fade-out animation."
               },
               "no_force_center": {
                 "anyOf": [
@@ -8442,12 +8442,12 @@
               "width": {
                 "type": "number",
                 "title": "Width",
-                "description": "0 to 1 is a screen width fraction; above 1 is pixels."
+                "description": "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels."
               },
               "height": {
                 "type": "number",
                 "title": "Height",
-                "description": "0 to 1 is a screen height fraction; above 1 is pixels."
+                "description": "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels."
               },
               "no_border": {
                 "anyOf": [
@@ -8460,7 +8460,7 @@
                   }
                 ],
                 "title": "No Border",
-                "description": "Remove window border"
+                "description": "Remove window border."
               },
               "no_shadow": {
                 "anyOf": [
@@ -8511,8 +8511,8 @@
                     "const": -1
                   }
                 ],
-                "title": "Open Silent",
-                "description": "Open without focus"
+                "title": "Open Unfocused",
+                "description": "Open without focus."
               },
               "is_tag_silent": {
                 "anyOf": [
@@ -8524,7 +8524,7 @@
                     "const": -1
                   }
                 ],
-                "title": "Tag Silent",
+                "title": "No Focus on Hidden Tag",
                 "description": "Do not focus the window when it opens on a tag that is not currently visible."
               },
               "is_named_scratchpad": {
@@ -8551,7 +8551,7 @@
                   }
                 ],
                 "title": "Unmanaged Global",
-                "description": "Open as unmanaged global window (for desktop pets or camera windows)"
+                "description": "Open as unmanaged global window (for desktop pets or camera windows)."
               },
               "is_global": {
                 "anyOf": [
@@ -8564,7 +8564,7 @@
                   }
                 ],
                 "title": "Global",
-                "description": "Open as global window (sticky across tags)"
+                "description": "Open as global window (sticky across tags)."
               },
               "scroller_proportion_single": {
                 "type": "number",
@@ -8576,14 +8576,14 @@
               "unfocused_opacity": {
                 "type": "number",
                 "title": "Unfocused Opacity",
-                "description": "Opacity for inactive windows (0.0 - 1.0).",
+                "description": "Opacity for inactive windows. 0 keeps the global opacity.",
                 "minimum": 0,
                 "maximum": 1
               },
               "focused_opacity": {
                 "type": "number",
                 "title": "Focused Opacity",
-                "description": "Opacity for the active window (0.0 - 1.0).",
+                "description": "Opacity for the active window. 0 keeps the global opacity.",
                 "minimum": 0,
                 "maximum": 1
               },
@@ -8676,7 +8676,7 @@
                   }
                 ],
                 "title": "Inhibit Idle When Focused",
-                "description": "Automatically keep idle inhibit active when this window is focused"
+                "description": "Keep idle inhibit active while this window is focused."
               },
               "vrr_only_fullscreen": {
                 "anyOf": [
@@ -8702,7 +8702,7 @@
                   }
                 ],
                 "title": "Force Render",
-                "description": "Force render frame even if the window is not visible"
+                "description": "Keep sending frame callbacks while the window is hidden."
               },
               "activation_bypass": {
                 "anyOf": [
@@ -8767,7 +8767,7 @@
                   }
                 ],
                 "title": "Force Tiled State",
-                "description": "Report the window as tiled even when it is floating."
+                "description": "Report floating windows as tiled (on by default)."
               },
               "force_tearing": {
                 "type": "integer",
@@ -8853,7 +8853,7 @@
                   }
                 ],
                 "title": "Fullscreen",
-                "description": "Force fullscreen state"
+                "description": "Force fullscreen state."
               },
               "is_fake_fullscreen": {
                 "anyOf": [
@@ -8866,17 +8866,17 @@
                   }
                 ],
                 "title": "Fake Fullscreen",
-                "description": "Report fullscreen state to the client without resizing the window."
+                "description": "Tell the client it is fullscreen while keeping its tiled size."
               },
               "global_key_binding": {
                 "type": "string",
                 "title": "Global Key Binding",
-                "description": "Global keybinding written as MOD-KEY, for example ctrl+alt-o (Wayland apps only).",
+                "description": "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
                 "pattern": "^(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*\\+\\s*(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})))*\\s*-\\s*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
               }
             },
             "title": "Window Rules (Once)",
-            "description": "Apply properties only the first time a matching window opens.",
+            "description": "Set window properties only on first open. app_id and title are regex; both must match when set.",
             "additionalProperties": false
           }
         },
@@ -9101,7 +9101,7 @@
               "scroll_button": {
                 "type": "integer",
                 "title": "Scroll Button",
-                "description": "libinput button code used for button scrolling; 0 disables it."
+                "description": "Button code for button scrolling (272-279). 0 disables it."
               },
               "click_method": {
                 "type": "integer",
@@ -9151,11 +9151,11 @@
                   {
                     "type": "integer",
                     "const": 2,
-                    "title": "Disabled with external pointer"
+                    "title": "Disabled when external pointer present"
                   }
                 ],
                 "title": "Send Events Mode",
-                "description": "Send events: 0 on, 1 off, 2 off with an external pointer."
+                "description": "Send events: 0 on, 1 off, 2 off when an external pointer is present."
               },
               "tap_to_click": {
                 "anyOf": [
@@ -9215,7 +9215,7 @@
                   }
                 ],
                 "title": "Button Map",
-                "description": "`0` (Left/right/middle), `1` (Left/middle/right)."
+                "description": "Tap mapping: 0 left/right/middle, 1 left/middle/right."
               },
               "disable_while_typing": {
                 "anyOf": [
@@ -9233,7 +9233,7 @@
               "monitor": {
                 "type": "string",
                 "title": "Monitor",
-                "description": "Pin touch or tablet input to one output. Unset touch follows the current screen; unset tablets stay unmapped.",
+                "description": "Pin touch or tablet input to one output. Unset touch follows focus. Unset tablet stays unmapped.",
                 "pattern": "^[^,]*$"
               },
               "map_focus_monitor": {
@@ -9251,7 +9251,7 @@
               }
             },
             "title": "Device Rules",
-            "description": "Device overrides by name or type. Keyboard rules build a keymap from their kb_* fields.",
+            "description": "Device overrides by name or type. kb_* and repeat_* give a keyboard its own keymap and repeat rate.",
             "additionalProperties": false
           }
         }
