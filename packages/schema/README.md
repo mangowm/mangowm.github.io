@@ -127,6 +127,9 @@ Arrays with more than one action require a `.conflict` node on a key binding.
 Mouse, axis, gesture, and switch bindings accept one action. Both schemas
 enforce these limits.
 
+Key flag sub-tables nest in the order `sym`, `lock`, `release`, `pass`,
+`conflict`. Only key bindings use flags.
+
 ## Normalization
 
 Normalize parsed configs to the canonical object:

@@ -154,21 +154,103 @@
     },
     "KeyBindingNode": {
       "title": "Binding node",
-      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
+      "description": "Maps key combinations to actions. Flag sub-tables are optional.",
       "type": "object",
       "properties": {
         "sym": {
-          "$ref": "#/$defs/KeyBindingNode"
+          "$ref": "#/$defs/KeySymBindingNode"
         },
         "lock": {
-          "$ref": "#/$defs/KeyBindingNode"
+          "$ref": "#/$defs/KeyLockBindingNode"
         },
         "release": {
-          "$ref": "#/$defs/KeyBindingNode"
+          "$ref": "#/$defs/KeyReleaseBindingNode"
         },
         "pass": {
-          "$ref": "#/$defs/KeyBindingNode"
+          "$ref": "#/$defs/KeyPassBindingNode"
         },
+        "conflict": {
+          "$ref": "#/$defs/KeyConflictBindingNode"
+        }
+      },
+      "patternProperties": {
+        "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
+          "$ref": "#/$defs/TomlSingleAction"
+        }
+      },
+      "additionalProperties": false
+    },
+    "KeySymBindingNode": {
+      "title": "Binding node after sym",
+      "description": "Maps key combinations to actions. Flag sub-tables are optional.",
+      "type": "object",
+      "properties": {
+        "lock": {
+          "$ref": "#/$defs/KeyLockBindingNode"
+        },
+        "release": {
+          "$ref": "#/$defs/KeyReleaseBindingNode"
+        },
+        "pass": {
+          "$ref": "#/$defs/KeyPassBindingNode"
+        },
+        "conflict": {
+          "$ref": "#/$defs/KeyConflictBindingNode"
+        }
+      },
+      "patternProperties": {
+        "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
+          "$ref": "#/$defs/TomlSingleAction"
+        }
+      },
+      "additionalProperties": false
+    },
+    "KeyLockBindingNode": {
+      "title": "Binding node after lock",
+      "description": "Maps key combinations to actions. Flag sub-tables are optional.",
+      "type": "object",
+      "properties": {
+        "release": {
+          "$ref": "#/$defs/KeyReleaseBindingNode"
+        },
+        "pass": {
+          "$ref": "#/$defs/KeyPassBindingNode"
+        },
+        "conflict": {
+          "$ref": "#/$defs/KeyConflictBindingNode"
+        }
+      },
+      "patternProperties": {
+        "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
+          "$ref": "#/$defs/TomlSingleAction"
+        }
+      },
+      "additionalProperties": false
+    },
+    "KeyReleaseBindingNode": {
+      "title": "Binding node after release",
+      "description": "Maps key combinations to actions. Flag sub-tables are optional.",
+      "type": "object",
+      "properties": {
+        "pass": {
+          "$ref": "#/$defs/KeyPassBindingNode"
+        },
+        "conflict": {
+          "$ref": "#/$defs/KeyConflictBindingNode"
+        }
+      },
+      "patternProperties": {
+        "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
+          "$ref": "#/$defs/TomlSingleAction"
+        }
+      },
+      "additionalProperties": false
+    },
+    "KeyPassBindingNode": {
+      "title": "Binding node after pass",
+      "description": "Maps key combinations to actions. Flag sub-tables are optional.",
+      "type": "object",
+      "properties": {
         "conflict": {
           "$ref": "#/$defs/KeyConflictBindingNode"
         }
@@ -181,26 +263,10 @@
       "additionalProperties": false
     },
     "KeyConflictBindingNode": {
-      "title": "Conflict binding node",
-      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
+      "title": "Binding node after conflict",
+      "description": "Maps key combinations to actions. Flag sub-tables are optional.",
       "type": "object",
-      "properties": {
-        "sym": {
-          "$ref": "#/$defs/KeyConflictBindingNode"
-        },
-        "lock": {
-          "$ref": "#/$defs/KeyConflictBindingNode"
-        },
-        "release": {
-          "$ref": "#/$defs/KeyConflictBindingNode"
-        },
-        "pass": {
-          "$ref": "#/$defs/KeyConflictBindingNode"
-        },
-        "conflict": {
-          "$ref": "#/$defs/KeyConflictBindingNode"
-        }
-      },
+      "properties": {},
       "patternProperties": {
         "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
           "$ref": "#/$defs/TomlMultipleActions"
@@ -210,25 +276,8 @@
     },
     "MouseBindingNode": {
       "title": "Binding node",
-      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
+      "description": "Maps input combinations to actions.",
       "type": "object",
-      "properties": {
-        "sym": {
-          "$ref": "#/$defs/MouseBindingNode"
-        },
-        "lock": {
-          "$ref": "#/$defs/MouseBindingNode"
-        },
-        "release": {
-          "$ref": "#/$defs/MouseBindingNode"
-        },
-        "pass": {
-          "$ref": "#/$defs/MouseBindingNode"
-        },
-        "conflict": {
-          "$ref": "#/$defs/MouseBindingNode"
-        }
-      },
       "patternProperties": {
         "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[bB][tT][nN]_[lL][eE][fF][tT]|[bB][tT][nN]_[rR][iI][gG][hH][tT]|[bB][tT][nN]_[mM][iI][dD][dD][lL][eE]|[bB][tT][nN]_[sS][iI][dD][eE]|[bB][tT][nN]_[eE][xX][tT][rR][aA]|[bB][tT][nN]_[fF][oO][rR][wW][aA][rR][dD]|[bB][tT][nN]_[bB][aA][cC][kK]|[bB][tT][nN]_[tT][aA][sS][kK]|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
           "$ref": "#/$defs/TomlSingleAction"
@@ -238,25 +287,8 @@
     },
     "AxisBindingNode": {
       "title": "Binding node",
-      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
+      "description": "Maps input combinations to actions.",
       "type": "object",
-      "properties": {
-        "sym": {
-          "$ref": "#/$defs/AxisBindingNode"
-        },
-        "lock": {
-          "$ref": "#/$defs/AxisBindingNode"
-        },
-        "release": {
-          "$ref": "#/$defs/AxisBindingNode"
-        },
-        "pass": {
-          "$ref": "#/$defs/AxisBindingNode"
-        },
-        "conflict": {
-          "$ref": "#/$defs/AxisBindingNode"
-        }
-      },
       "patternProperties": {
         "^(?!(?:sym|lock|release|pass|conflict)$)(?:(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*)*(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
           "$ref": "#/$defs/TomlSingleAction"
@@ -266,25 +298,8 @@
     },
     "GestureBindingNode": {
       "title": "Binding node",
-      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
+      "description": "Maps input combinations to actions.",
       "type": "object",
-      "properties": {
-        "sym": {
-          "$ref": "#/$defs/GestureBindingNode"
-        },
-        "lock": {
-          "$ref": "#/$defs/GestureBindingNode"
-        },
-        "release": {
-          "$ref": "#/$defs/GestureBindingNode"
-        },
-        "pass": {
-          "$ref": "#/$defs/GestureBindingNode"
-        },
-        "conflict": {
-          "$ref": "#/$defs/GestureBindingNode"
-        }
-      },
       "patternProperties": {
         "^(?!(?:sym|lock|release|pass|conflict)$)(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*(?:[lL][eE][fF][tT]|[rR][iI][gG][hH][tT]|[uU][pP]|[dD][oO][wW][nN]|[aA][lL][lL][dD][iI][rR]|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))\\s*\\+\\s*(?:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
           "$ref": "#/$defs/TomlSingleAction"
@@ -294,25 +309,8 @@
     },
     "SwitchBindingNode": {
       "title": "Binding node",
-      "description": "Maps input combinations to actions. Flag sub-tables are optional.",
+      "description": "Maps input combinations to actions.",
       "type": "object",
-      "properties": {
-        "sym": {
-          "$ref": "#/$defs/SwitchBindingNode"
-        },
-        "lock": {
-          "$ref": "#/$defs/SwitchBindingNode"
-        },
-        "release": {
-          "$ref": "#/$defs/SwitchBindingNode"
-        },
-        "pass": {
-          "$ref": "#/$defs/SwitchBindingNode"
-        },
-        "conflict": {
-          "$ref": "#/$defs/SwitchBindingNode"
-        }
-      },
       "patternProperties": {
         "^(?!(?:sym|lock|release|pass|conflict)$)(?:[fF][oO][lL][dD]|[uU][nN][fF][oO][lL][dD]|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$": {
           "$ref": "#/$defs/TomlSingleAction"

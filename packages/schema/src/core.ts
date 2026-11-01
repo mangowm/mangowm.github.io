@@ -22,8 +22,6 @@ export const BINDING_DEFS: Record<BindingKind, string> = {
   switch: "SwitchBindingNode",
 };
 
-export const CONFLICT_DEF = "KeyConflictBindingNode";
-
 export function enumSchema(
   values: readonly string[],
   numeric: boolean,

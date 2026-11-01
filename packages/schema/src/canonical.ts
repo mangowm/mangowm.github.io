@@ -11,7 +11,7 @@ import { GLOBALS } from "./data/globals";
 import { LAYOUTS } from "./data/layouts";
 import { RULES } from "./data/rules";
 import type { GlobalDef, RuleDef, RuleFieldDef } from "./data/types";
-import { BINDING_DEFS, COLOR_PATTERN, CONFLICT_DEF, bindingMap, enumSchema } from "./core";
+import { COLOR_PATTERN, bindingMap, enumSchema } from "./core";
 
 const CANONICAL_ACTION_VARIANTS = [
   ...DISPATCHERS.map((name) => ({
@@ -196,31 +196,48 @@ function globalSchema() {
   );
 }
 
-function bindingNode(kind: BindingKind, conflict = false): TSchema {
-  const description = "Maps input combinations to actions. Flag sub-tables are optional.";
+const KEY_FLAGS = ["sym", "lock", "release", "pass", "conflict"] as const;
+const KEY_FLAG_DEFS = [
+  "KeyBindingNode",
+  "KeySymBindingNode",
+  "KeyLockBindingNode",
+  "KeyReleaseBindingNode",
+  "KeyPassBindingNode",
+  "KeyConflictBindingNode",
+] as const;
 
-  const nodeDef = kind === "key" && conflict ? CONFLICT_DEF : BINDING_DEFS[kind];
-  const conflictDef = kind === "key" ? CONFLICT_DEF : BINDING_DEFS[kind];
-  const ref = `#/$defs/${nodeDef}`;
-  const valueSchema = {
-    $ref:
-      nodeDef === CONFLICT_DEF
-        ? "#/$defs/CanonicalConflictActions"
-        : "#/$defs/CanonicalSingleAction",
-  };
+function keyBindingNode(start: number): TSchema {
+  const properties = Object.fromEntries(
+    KEY_FLAGS.map((flag, index) => [flag, index] as const)
+      .filter(([, index]) => index >= start)
+      .map(([flag, index]) => [flag, { $ref: `#/$defs/${KEY_FLAG_DEFS[index + 1]}` }]),
+  );
 
   return Type.Unsafe<TSchema>({
-    title: conflict ? "Conflict binding node" : "Binding node",
-    description,
+    title: start === 0 ? "Binding node" : `Binding node after ${KEY_FLAGS[start - 1]}`,
+    description: "Maps key combinations to actions. Flag sub-tables are optional.",
     type: "object",
-    properties: {
-      sym: { $ref: ref },
-      lock: { $ref: ref },
-      release: { $ref: ref },
-      pass: { $ref: ref },
-      conflict: { $ref: `#/$defs/${conflictDef}` },
+    properties,
+    patternProperties: {
+      [BINDING_KEY_PATTERNS.key]: {
+        $ref:
+          start === KEY_FLAGS.length
+            ? "#/$defs/CanonicalConflictActions"
+            : "#/$defs/CanonicalSingleAction",
+      },
     },
-    patternProperties: { [BINDING_KEY_PATTERNS[kind]]: valueSchema },
+    additionalProperties: false,
+  });
+}
+
+function plainBindingNode(kind: BindingKind): TSchema {
+  return Type.Unsafe<TSchema>({
+    title: "Binding node",
+    description: "Maps input combinations to actions.",
+    type: "object",
+    patternProperties: {
+      [BINDING_KEY_PATTERNS[kind]]: { $ref: "#/$defs/CanonicalSingleAction" },
+    },
     additionalProperties: false,
   });
 }
@@ -416,12 +433,16 @@ export function buildCanonicalSchema(version: string) {
       CanonicalAction,
       CanonicalSingleAction,
       CanonicalConflictActions,
-      KeyBindingNode: bindingNode("key", false),
-      KeyConflictBindingNode: bindingNode("key", true),
-      MouseBindingNode: bindingNode("mouse", false),
-      AxisBindingNode: bindingNode("axis", false),
-      GestureBindingNode: bindingNode("gesture", false),
-      SwitchBindingNode: bindingNode("switch", false),
+      KeyBindingNode: keyBindingNode(0),
+      KeySymBindingNode: keyBindingNode(1),
+      KeyLockBindingNode: keyBindingNode(2),
+      KeyReleaseBindingNode: keyBindingNode(3),
+      KeyPassBindingNode: keyBindingNode(4),
+      KeyConflictBindingNode: keyBindingNode(5),
+      MouseBindingNode: plainBindingNode("mouse"),
+      AxisBindingNode: plainBindingNode("axis"),
+      GestureBindingNode: plainBindingNode("gesture"),
+      SwitchBindingNode: plainBindingNode("switch"),
     },
     ...rootSchema(version),
     title: `mangowm configuration ${version}`,

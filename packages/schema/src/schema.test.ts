@@ -380,7 +380,7 @@ describe("canonical schema", () => {
         bind: {
           default: {
             release: { conflict: { "SUPER+r": actions } },
-            conflict: { release: { "SUPER+r": actions } },
+            pass: { conflict: { "SUPER+r": actions } },
           },
         },
       }),
