@@ -9,8 +9,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "vpx scripts/build.ts",
-    "schema:build": "vpx scripts/build.ts"
+    "build": "vpx scripts/build.ts"
   },
   "dependencies": {
     "typebox": "^1.4.3"
