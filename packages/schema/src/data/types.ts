@@ -1,29 +1,59 @@
-export type GlobalType =
-  | "bool"
-  | "int"
-  | "float"
-  | "string"
-  | "enum"
-  | "color"
-  | "curve"
-  | "preset"
-  | "layout-array";
-
 export interface EnumOption {
   value: string;
   label: string;
 }
 
-export interface GlobalDef {
+interface GlobalBase {
   key: string;
-  type: GlobalType;
-  default: string;
   label: string;
   description: string;
-  min?: number;
-  max?: number;
-  options?: readonly EnumOption[];
 }
+
+export type GlobalDef =
+  | (GlobalBase & {
+      type: "bool";
+      default: boolean;
+    })
+  | (GlobalBase & {
+      type: "int";
+      default: number;
+      min?: number;
+      max?: number;
+    })
+  | (GlobalBase & {
+      type: "float";
+      default: number;
+      min?: number;
+      max?: number;
+    })
+  | (GlobalBase & {
+      type: "string";
+      default: string;
+    })
+  | (GlobalBase & {
+      type: "enum";
+      default: string | number;
+      options: readonly EnumOption[];
+      numeric?: boolean;
+    })
+  | (GlobalBase & {
+      type: "color";
+      default: string;
+    })
+  | (GlobalBase & {
+      type: "curve";
+      default: readonly number[];
+    })
+  | (GlobalBase & {
+      type: "preset";
+      default: readonly number[];
+    })
+  | (GlobalBase & {
+      type: "layout-array";
+      default: readonly string[];
+    });
+
+export type GlobalType = GlobalDef["type"];
 
 export type RuleKey =
   | "monitor_rule"
@@ -45,14 +75,50 @@ export type RuleFieldType =
   | "tag-id"
   | "tag-mask";
 
-export interface RuleFieldDef {
+interface RuleFieldBase {
   key: string;
-  type: RuleFieldType;
   label: string;
   description: string;
-  options?: readonly string[];
-  labels?: readonly string[];
 }
+
+export type RuleFieldDef =
+  | (RuleFieldBase & {
+      type: "bool";
+    })
+  | (RuleFieldBase & {
+      type: "int";
+      min?: number;
+      max?: number;
+    })
+  | (RuleFieldBase & {
+      type: "float";
+      min?: number;
+      max?: number;
+    })
+  | (RuleFieldBase & {
+      type: "string";
+    })
+  | (RuleFieldBase & {
+      type: "enum";
+      options: readonly EnumOption[];
+      numeric?: boolean;
+      tomlBoolean?: boolean;
+    })
+  | (RuleFieldBase & {
+      type: "color";
+    })
+  | (RuleFieldBase & {
+      type: "key-binding";
+    })
+  | (RuleFieldBase & {
+      type: "device-name";
+    })
+  | (RuleFieldBase & {
+      type: "tag-id";
+    })
+  | (RuleFieldBase & {
+      type: "tag-mask";
+    });
 
 export interface RuleDef {
   key: RuleKey;

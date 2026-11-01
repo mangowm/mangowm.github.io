@@ -4006,6 +4006,78 @@
                   "fair",
                   "vertical_fair"
                 ],
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "const": "tile",
+                    "title": "tile"
+                  },
+                  {
+                    "type": "string",
+                    "const": "scroller",
+                    "title": "scroller"
+                  },
+                  {
+                    "type": "string",
+                    "const": "grid",
+                    "title": "grid"
+                  },
+                  {
+                    "type": "string",
+                    "const": "monocle",
+                    "title": "monocle"
+                  },
+                  {
+                    "type": "string",
+                    "const": "deck",
+                    "title": "deck"
+                  },
+                  {
+                    "type": "string",
+                    "const": "center_tile",
+                    "title": "center_tile"
+                  },
+                  {
+                    "type": "string",
+                    "const": "right_tile",
+                    "title": "right_tile"
+                  },
+                  {
+                    "type": "string",
+                    "const": "vertical_scroller",
+                    "title": "vertical_scroller"
+                  },
+                  {
+                    "type": "string",
+                    "const": "vertical_tile",
+                    "title": "vertical_tile"
+                  },
+                  {
+                    "type": "string",
+                    "const": "vertical_grid",
+                    "title": "vertical_grid"
+                  },
+                  {
+                    "type": "string",
+                    "const": "vertical_deck",
+                    "title": "vertical_deck"
+                  },
+                  {
+                    "type": "string",
+                    "const": "dwindle",
+                    "title": "dwindle"
+                  },
+                  {
+                    "type": "string",
+                    "const": "fair",
+                    "title": "fair"
+                  },
+                  {
+                    "type": "string",
+                    "const": "vertical_fair",
+                    "title": "vertical_fair"
+                  }
+                ],
                 "title": "Layout",
                 "description": "Layout to apply to this tag."
               },

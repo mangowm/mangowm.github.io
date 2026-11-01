@@ -1,4 +1,3 @@
-import { LAYOUTS } from "./layouts";
 import type { RuleDef } from "./types";
 
 export const RULES: readonly RuleDef[] = [
@@ -38,23 +37,49 @@ export const RULES: readonly RuleDef[] = [
         label: "Transform",
         description:
           "Monitor transform. 0 normal, 1 90° CCW, 2 180°, 3 270° CCW, 4 vertical flip, 5 flip+90° CCW, 6 flip+180°, 7 flip+270° CCW.",
-        options: ["0", "1", "2", "3", "4", "5", "6", "7"],
-        labels: [
-          "Normal",
-          "90\u00b0 CCW",
-          "180\u00b0",
-          "270\u00b0 CCW",
-          "Vertical flip",
-          "Flip+90\u00b0 CCW",
-          "Flip+180\u00b0",
-          "Flip+270\u00b0 CCW",
+        options: [
+          {
+            value: "0",
+            label: "Normal",
+          },
+          {
+            value: "1",
+            label: "90° CCW",
+          },
+          {
+            value: "2",
+            label: "180°",
+          },
+          {
+            value: "3",
+            label: "270° CCW",
+          },
+          {
+            value: "4",
+            label: "Vertical flip",
+          },
+          {
+            value: "5",
+            label: "Flip+90° CCW",
+          },
+          {
+            value: "6",
+            label: "Flip+180°",
+          },
+          {
+            value: "7",
+            label: "Flip+270° CCW",
+          },
         ],
+        numeric: true,
       },
       {
         key: "scale",
         type: "float",
         label: "Scale",
         description: "Monitor scale",
+        min: 0.001,
+        max: 1000,
       },
       {
         key: "x",
@@ -73,18 +98,22 @@ export const RULES: readonly RuleDef[] = [
         type: "int",
         label: "Width",
         description: "Monitor width in pixels.",
+        min: 1,
       },
       {
         key: "height",
         type: "int",
         label: "Height",
         description: "Monitor height in pixels.",
+        min: 1,
       },
       {
         key: "refresh",
         type: "float",
         label: "Refresh Rate",
         description: "Monitor refresh rate",
+        min: 0.001,
+        max: 1000,
       },
       {
         key: "vrr",
@@ -105,18 +134,24 @@ export const RULES: readonly RuleDef[] = [
         label: "HDR Min Luminance",
         description:
           "Mastering display minimum luminance, cd/m² (0 = unset). No effect on wlroots 0.20.x.",
+        min: 0,
+        max: 10000,
       },
       {
         key: "hdr_max_lum",
         type: "float",
         label: "HDR Max Luminance",
         description: "Mastering display peak luminance, also sent as max_cll, cd/m² (0 = unset)",
+        min: 0,
+        max: 10000,
       },
       {
         key: "hdr_max_avg_lum",
         type: "float",
         label: "HDR Max Average Luminance",
         description: "Max frame-average light level (max_fall), cd/m² (0 = unset)",
+        min: 0,
+        max: 10000,
       },
       {
         key: "hdr_force",
@@ -170,7 +205,64 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Layout",
         description: "Layout to apply to this tag.",
-        options: LAYOUTS,
+        options: [
+          {
+            value: "tile",
+            label: "tile",
+          },
+          {
+            value: "scroller",
+            label: "scroller",
+          },
+          {
+            value: "grid",
+            label: "grid",
+          },
+          {
+            value: "monocle",
+            label: "monocle",
+          },
+          {
+            value: "deck",
+            label: "deck",
+          },
+          {
+            value: "center_tile",
+            label: "center_tile",
+          },
+          {
+            value: "right_tile",
+            label: "right_tile",
+          },
+          {
+            value: "vertical_scroller",
+            label: "vertical_scroller",
+          },
+          {
+            value: "vertical_tile",
+            label: "vertical_tile",
+          },
+          {
+            value: "vertical_grid",
+            label: "vertical_grid",
+          },
+          {
+            value: "vertical_deck",
+            label: "vertical_deck",
+          },
+          {
+            value: "dwindle",
+            label: "dwindle",
+          },
+          {
+            value: "fair",
+            label: "fair",
+          },
+          {
+            value: "vertical_fair",
+            label: "vertical_fair",
+          },
+        ],
       },
       {
         key: "monitor_name",
@@ -219,18 +311,24 @@ export const RULES: readonly RuleDef[] = [
         type: "int",
         label: "Master Count",
         description: "Number of master windows",
+        min: 1,
+        max: 99,
       },
       {
         key: "master_factor",
         type: "float",
         label: "Master Factor",
         description: "Fraction of the tag area used by the master area (0.1-0.9).",
+        min: 0.1,
+        max: 0.9,
       },
       {
         key: "scroller_default_proportion",
         type: "float",
         label: "Scroller Proportion",
         description: "Default width proportion for new windows.",
+        min: 0,
+        max: 1,
       },
       {
         key: "scroller_default_proportion_single",
@@ -238,6 +336,8 @@ export const RULES: readonly RuleDef[] = [
         label: "Scroller Proportion (Single)",
         description:
           "Scroller proportion for a single window. Only used when scroller_ignore_proportion_single is off.",
+        min: 0,
+        max: 1,
       },
       {
         key: "scroller_ignore_proportion_single",
@@ -264,8 +364,28 @@ export const RULES: readonly RuleDef[] = [
         label: "Open Animation",
         description:
           "Layer surface open animation. Empty inherits the global setting; `none` disables it.",
-        options: ["", "none", "fade", "slide", "zoom"],
-        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
+        options: [
+          {
+            value: "",
+            label: "Unset",
+          },
+          {
+            value: "none",
+            label: "None",
+          },
+          {
+            value: "fade",
+            label: "Fade",
+          },
+          {
+            value: "slide",
+            label: "Slide",
+          },
+          {
+            value: "zoom",
+            label: "Zoom",
+          },
+        ],
       },
       {
         key: "animation_type_close",
@@ -273,8 +393,28 @@ export const RULES: readonly RuleDef[] = [
         label: "Close Animation",
         description:
           "Layer surface close animation. Empty inherits the global setting; `none` disables it.",
-        options: ["", "none", "fade", "slide", "zoom"],
-        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
+        options: [
+          {
+            value: "",
+            label: "Unset",
+          },
+          {
+            value: "none",
+            label: "None",
+          },
+          {
+            value: "fade",
+            label: "Fade",
+          },
+          {
+            value: "slide",
+            label: "Slide",
+          },
+          {
+            value: "zoom",
+            label: "Zoom",
+          },
+        ],
       },
       {
         key: "shield_when_capture",
@@ -333,8 +473,28 @@ export const RULES: readonly RuleDef[] = [
         label: "Open Animation",
         description:
           "Window open animation. Empty inherits the global setting; `none` disables it.",
-        options: ["", "none", "fade", "slide", "zoom"],
-        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
+        options: [
+          {
+            value: "",
+            label: "Unset",
+          },
+          {
+            value: "none",
+            label: "None",
+          },
+          {
+            value: "fade",
+            label: "Fade",
+          },
+          {
+            value: "slide",
+            label: "Slide",
+          },
+          {
+            value: "zoom",
+            label: "Zoom",
+          },
+        ],
       },
       {
         key: "animation_type_close",
@@ -342,8 +502,28 @@ export const RULES: readonly RuleDef[] = [
         label: "Close Animation",
         description:
           "Window close animation. Empty inherits the global setting; `none` disables it.",
-        options: ["", "none", "fade", "slide", "zoom"],
-        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
+        options: [
+          {
+            value: "",
+            label: "Unset",
+          },
+          {
+            value: "none",
+            label: "None",
+          },
+          {
+            value: "fade",
+            label: "Fade",
+          },
+          {
+            value: "slide",
+            label: "Slide",
+          },
+          {
+            value: "zoom",
+            label: "Zoom",
+          },
+        ],
       },
       {
         key: "tags",
@@ -468,18 +648,24 @@ export const RULES: readonly RuleDef[] = [
         type: "float",
         label: "Scroller Proportion (Single)",
         description: "Width proportion used while this window is the only tiled window (0.1-1.0).",
+        min: 0.1,
+        max: 1,
       },
       {
         key: "unfocused_opacity",
         type: "float",
         label: "Unfocused Opacity",
         description: "Opacity for inactive windows (0.0 - 1.0).",
+        min: 0,
+        max: 1,
       },
       {
         key: "focused_opacity",
         type: "float",
         label: "Focused Opacity",
         description: "Opacity for the active window (0.0 - 1.0).",
+        min: 0,
+        max: 1,
       },
       {
         key: "is_overlay",
@@ -573,8 +759,22 @@ export const RULES: readonly RuleDef[] = [
         label: "Force Tearing",
         description:
           "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing.",
-        options: ["0", "1", "2"],
-        labels: ["Unspecified", "Enabled", "Disabled"],
+        options: [
+          {
+            value: "0",
+            label: "Unspecified",
+          },
+          {
+            value: "1",
+            label: "Enabled",
+          },
+          {
+            value: "2",
+            label: "Disabled",
+          },
+        ],
+        numeric: true,
+        tomlBoolean: true,
       },
       {
         key: "no_swallow",
@@ -599,6 +799,8 @@ export const RULES: readonly RuleDef[] = [
         type: "float",
         label: "Scroller Proportion",
         description: "Width proportion for this window in the scroller layout (0.1-1.0).",
+        min: 0.1,
+        max: 1,
       },
       {
         key: "is_fullscreen",
@@ -650,8 +852,28 @@ export const RULES: readonly RuleDef[] = [
         label: "Open Animation",
         description:
           "Window open animation. Empty inherits the global setting; `none` disables it.",
-        options: ["", "none", "fade", "slide", "zoom"],
-        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
+        options: [
+          {
+            value: "",
+            label: "Unset",
+          },
+          {
+            value: "none",
+            label: "None",
+          },
+          {
+            value: "fade",
+            label: "Fade",
+          },
+          {
+            value: "slide",
+            label: "Slide",
+          },
+          {
+            value: "zoom",
+            label: "Zoom",
+          },
+        ],
       },
       {
         key: "animation_type_close",
@@ -659,8 +881,28 @@ export const RULES: readonly RuleDef[] = [
         label: "Close Animation",
         description:
           "Window close animation. Empty inherits the global setting; `none` disables it.",
-        options: ["", "none", "fade", "slide", "zoom"],
-        labels: ["Unset", "None", "Fade", "Slide", "Zoom"],
+        options: [
+          {
+            value: "",
+            label: "Unset",
+          },
+          {
+            value: "none",
+            label: "None",
+          },
+          {
+            value: "fade",
+            label: "Fade",
+          },
+          {
+            value: "slide",
+            label: "Slide",
+          },
+          {
+            value: "zoom",
+            label: "Zoom",
+          },
+        ],
       },
       {
         key: "tags",
@@ -785,18 +1027,24 @@ export const RULES: readonly RuleDef[] = [
         type: "float",
         label: "Scroller Proportion (Single)",
         description: "Width proportion used while this window is the only tiled window (0.1-1.0).",
+        min: 0.1,
+        max: 1,
       },
       {
         key: "unfocused_opacity",
         type: "float",
         label: "Unfocused Opacity",
         description: "Opacity for inactive windows (0.0 - 1.0).",
+        min: 0,
+        max: 1,
       },
       {
         key: "focused_opacity",
         type: "float",
         label: "Focused Opacity",
         description: "Opacity for the active window (0.0 - 1.0).",
+        min: 0,
+        max: 1,
       },
       {
         key: "is_overlay",
@@ -890,8 +1138,22 @@ export const RULES: readonly RuleDef[] = [
         label: "Force Tearing",
         description:
           "Tearing override: 0 unspecified, 1 enabled, 2 disabled. Enabling still requires global allow_tearing.",
-        options: ["0", "1", "2"],
-        labels: ["Unspecified", "Enabled", "Disabled"],
+        options: [
+          {
+            value: "0",
+            label: "Unspecified",
+          },
+          {
+            value: "1",
+            label: "Enabled",
+          },
+          {
+            value: "2",
+            label: "Disabled",
+          },
+        ],
+        numeric: true,
+        tomlBoolean: true,
       },
       {
         key: "no_swallow",
@@ -916,6 +1178,8 @@ export const RULES: readonly RuleDef[] = [
         type: "float",
         label: "Scroller Proportion",
         description: "Width proportion for this window in the scroller layout (0.1-1.0).",
+        min: 0.1,
+        max: 1,
       },
       {
         key: "is_fullscreen",
@@ -956,28 +1220,55 @@ export const RULES: readonly RuleDef[] = [
         label: "Device Type",
         description: "Device type to match. touchpad is a deprecated alias for trackpad.",
         options: [
-          "keyboard",
-          "pointer",
-          "trackpad",
-          "touch",
-          "switch",
-          "tablet",
-          "pad",
-          "touchpad",
+          {
+            value: "keyboard",
+            label: "Keyboard",
+          },
+          {
+            value: "pointer",
+            label: "Pointer",
+          },
+          {
+            value: "trackpad",
+            label: "Trackpad",
+          },
+          {
+            value: "touch",
+            label: "Touch",
+          },
+          {
+            value: "switch",
+            label: "Switch",
+          },
+          {
+            value: "tablet",
+            label: "Tablet",
+          },
+          {
+            value: "pad",
+            label: "Pad",
+          },
+          {
+            value: "touchpad",
+            label: "Touchpad",
+          },
         ],
-        labels: ["Keyboard", "Pointer", "Trackpad", "Touch", "Switch", "Tablet", "Pad", "Touchpad"],
       },
       {
         key: "repeat_rate",
         type: "int",
         label: "Repeat Rate",
         description: "How many times a key repeats per second.",
+        min: 0,
+        max: 1000,
       },
       {
         key: "repeat_delay",
         type: "int",
         label: "Repeat Delay",
         description: "Delay (ms) before a held key starts repeating.",
+        min: 0,
+        max: 10000,
       },
       {
         key: "kb_rules",
@@ -1020,14 +1311,29 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Acceleration Profile",
         description: "Pointer acceleration profile: 0 none, 1 flat, 2 adaptive.",
-        options: ["0", "1", "2"],
-        labels: ["None", "Flat", "Adaptive"],
+        options: [
+          {
+            value: "0",
+            label: "None",
+          },
+          {
+            value: "1",
+            label: "Flat",
+          },
+          {
+            value: "2",
+            label: "Adaptive",
+          },
+        ],
+        numeric: true,
       },
       {
         key: "accel_speed",
         type: "float",
         label: "Acceleration Speed",
         description: "Pointer speed from -1.0 to 1.0.",
+        min: -1,
+        max: 1,
       },
       {
         key: "left_handed",
@@ -1046,8 +1352,29 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Scroll Method",
         description: "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button, 8 circular.",
-        options: ["0", "1", "2", "4", "8"],
-        labels: ["Disabled", "Two-finger", "Edge", "Button", "Circular"],
+        options: [
+          {
+            value: "0",
+            label: "Disabled",
+          },
+          {
+            value: "1",
+            label: "Two-finger",
+          },
+          {
+            value: "2",
+            label: "Edge",
+          },
+          {
+            value: "4",
+            label: "Button",
+          },
+          {
+            value: "8",
+            label: "Circular",
+          },
+        ],
+        numeric: true,
       },
       {
         key: "scroll_button",
@@ -1060,16 +1387,42 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Click Method",
         description: "Click method: 0 no emulation, 1 button areas, 2 clickfinger.",
-        options: ["0", "1", "2"],
-        labels: ["No emulation", "Button areas", "Clickfinger"],
+        options: [
+          {
+            value: "0",
+            label: "No emulation",
+          },
+          {
+            value: "1",
+            label: "Button areas",
+          },
+          {
+            value: "2",
+            label: "Clickfinger",
+          },
+        ],
+        numeric: true,
       },
       {
         key: "send_events_mode",
         type: "enum",
         label: "Send Events Mode",
         description: "Send events: 0 on, 1 off, 2 off with an external pointer.",
-        options: ["0", "1", "2"],
-        labels: ["Enabled", "Disabled", "Disabled with external pointer"],
+        options: [
+          {
+            value: "0",
+            label: "Enabled",
+          },
+          {
+            value: "1",
+            label: "Disabled",
+          },
+          {
+            value: "2",
+            label: "Disabled with external pointer",
+          },
+        ],
+        numeric: true,
       },
       {
         key: "tap_to_click",
@@ -1094,8 +1447,17 @@ export const RULES: readonly RuleDef[] = [
         type: "enum",
         label: "Button Map",
         description: "`0` (Left/right/middle), `1` (Left/middle/right).",
-        options: ["0", "1"],
-        labels: ["Left/right/middle", "Left/middle/right"],
+        options: [
+          {
+            value: "0",
+            label: "Left/right/middle",
+          },
+          {
+            value: "1",
+            label: "Left/middle/right",
+          },
+        ],
+        numeric: true,
       },
       {
         key: "disable_while_typing",

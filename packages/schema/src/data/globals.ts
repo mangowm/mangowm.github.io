@@ -4,7 +4,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "animations",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Enable Animations",
     description:
       "Master toggle for normal window animations; gesture-driven transitions can still animate.",
@@ -12,7 +12,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "layer_animations",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Layer Animations",
     description: "Animate layer-shell surfaces such as panels and notifications.",
   },
@@ -23,11 +23,26 @@ export const GLOBALS: readonly GlobalDef[] = [
     label: "Open Animation Type",
     description: "Window open animation. Empty leaves it unset (slide); `none` disables it.",
     options: [
-      { value: "", label: "Unset" },
-      { value: "none", label: "None" },
-      { value: "fade", label: "Fade" },
-      { value: "slide", label: "Slide" },
-      { value: "zoom", label: "Zoom" },
+      {
+        value: "",
+        label: "Unset",
+      },
+      {
+        value: "none",
+        label: "None",
+      },
+      {
+        value: "fade",
+        label: "Fade",
+      },
+      {
+        value: "slide",
+        label: "Slide",
+      },
+      {
+        value: "zoom",
+        label: "Zoom",
+      },
     ],
   },
   {
@@ -37,11 +52,26 @@ export const GLOBALS: readonly GlobalDef[] = [
     label: "Close Animation Type",
     description: "Window close animation. Empty leaves it unset (zoom); `none` disables it.",
     options: [
-      { value: "", label: "Unset" },
-      { value: "none", label: "None" },
-      { value: "fade", label: "Fade" },
-      { value: "slide", label: "Slide" },
-      { value: "zoom", label: "Zoom" },
+      {
+        value: "",
+        label: "Unset",
+      },
+      {
+        value: "none",
+        label: "None",
+      },
+      {
+        value: "fade",
+        label: "Fade",
+      },
+      {
+        value: "slide",
+        label: "Slide",
+      },
+      {
+        value: "zoom",
+        label: "Zoom",
+      },
     ],
   },
   {
@@ -51,11 +81,26 @@ export const GLOBALS: readonly GlobalDef[] = [
     label: "Layer Open Animation Type",
     description: "Layer surface open animation. Empty leaves it unset; `none` disables it.",
     options: [
-      { value: "", label: "Unset" },
-      { value: "none", label: "None" },
-      { value: "fade", label: "Fade" },
-      { value: "slide", label: "Slide" },
-      { value: "zoom", label: "Zoom" },
+      {
+        value: "",
+        label: "Unset",
+      },
+      {
+        value: "none",
+        label: "None",
+      },
+      {
+        value: "fade",
+        label: "Fade",
+      },
+      {
+        value: "slide",
+        label: "Slide",
+      },
+      {
+        value: "zoom",
+        label: "Zoom",
+      },
     ],
   },
   {
@@ -65,42 +110,64 @@ export const GLOBALS: readonly GlobalDef[] = [
     label: "Layer Close Animation Type",
     description: "Layer surface close animation. Empty leaves it unset; `none` disables it.",
     options: [
-      { value: "", label: "Unset" },
-      { value: "none", label: "None" },
-      { value: "fade", label: "Fade" },
-      { value: "slide", label: "Slide" },
-      { value: "zoom", label: "Zoom" },
+      {
+        value: "",
+        label: "Unset",
+      },
+      {
+        value: "none",
+        label: "None",
+      },
+      {
+        value: "fade",
+        label: "Fade",
+      },
+      {
+        value: "slide",
+        label: "Slide",
+      },
+      {
+        value: "zoom",
+        label: "Zoom",
+      },
     ],
   },
   {
     key: "animation_fade_in",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Fade In",
     description: "Fade windows in when they appear",
   },
   {
     key: "animation_fade_out",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Fade Out",
     description: "Fade windows out when they close",
   },
   {
     key: "tag_animation_direction",
     type: "enum",
-    default: "1",
+    default: 1,
     label: "Tag Animation Direction",
     description: "Tag-switch animation direction: 1 horizontal, 0 vertical.",
     options: [
-      { value: "1", label: "Horizontal" },
-      { value: "0", label: "Vertical" },
+      {
+        value: "1",
+        label: "Horizontal",
+      },
+      {
+        value: "0",
+        label: "Vertical",
+      },
     ],
+    numeric: true,
   },
   {
     key: "zoom_initial_ratio",
     type: "float",
-    default: "0.4",
+    default: 0.4,
     label: "Zoom Initial Ratio",
     description: "Starting scale for zoom animations (0.1-1.0)",
     min: 0.1,
@@ -109,7 +176,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "zoom_end_ratio",
     type: "float",
-    default: "0.8",
+    default: 0.8,
     label: "Zoom End Ratio",
     description: "Ending scale for zoom animations (0.1-1.0)",
     min: 0.1,
@@ -118,7 +185,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "fade_in_begin_opacity",
     type: "float",
-    default: "0.5",
+    default: 0.5,
     label: "Fade In Start Opacity",
     description: "Starting opacity for fade-in animations (0.0-1.0)",
     min: 0,
@@ -127,7 +194,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "fade_out_begin_opacity",
     type: "float",
-    default: "0.5",
+    default: 0.5,
     label: "Fade Out Start Opacity",
     description: "Starting opacity for fade-out animations (0.0-1.0)",
     min: 0,
@@ -136,7 +203,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "animation_duration_move",
     type: "int",
-    default: "500",
+    default: 500,
     label: "Move Duration",
     description: "Duration of window move/resize animations in milliseconds (0-50000)",
     min: 0,
@@ -145,7 +212,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "animation_duration_open",
     type: "int",
-    default: "400",
+    default: 400,
     label: "Open Duration",
     description: "Duration of window open animations in milliseconds (0-50000)",
     min: 0,
@@ -154,7 +221,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "animation_duration_tag",
     type: "int",
-    default: "300",
+    default: 300,
     label: "Tag Switch Duration",
     description: "Duration of tag-switch (workspace) animations in milliseconds (0-50000)",
     min: 0,
@@ -163,7 +230,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "animation_duration_close",
     type: "int",
-    default: "300",
+    default: 300,
     label: "Close Duration",
     description: "Duration of window close animations in milliseconds (0-50000)",
     min: 0,
@@ -172,7 +239,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "animation_duration_focus",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Focus Duration",
     description: "Duration of focus-change animations in milliseconds (0-50000)",
     min: 0,
@@ -181,56 +248,56 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "animation_curve_move",
     type: "curve",
-    default: "0.46,1,0.29,0.99",
+    default: [0.46, 1, 0.29, 0.99],
     label: "Move Curve",
     description: "Cubic bezier curve for move/resize animations (x1,y1,x2,y2)",
   },
   {
     key: "animation_curve_open",
     type: "curve",
-    default: "0.46,1,0.29,0.99",
+    default: [0.46, 1, 0.29, 0.99],
     label: "Open Curve",
     description: "Cubic bezier curve for window open animations (x1,y1,x2,y2)",
   },
   {
     key: "animation_curve_tag",
     type: "curve",
-    default: "0.46,1,0.29,0.99",
+    default: [0.46, 1, 0.29, 0.99],
     label: "Tag Switch Curve",
     description: "Cubic bezier curve for tag-switch animations (x1,y1,x2,y2)",
   },
   {
     key: "animation_curve_close",
     type: "curve",
-    default: "0.46,1,0.29,0.99",
+    default: [0.46, 1, 0.29, 0.99],
     label: "Close Curve",
     description: "Cubic bezier curve for window close animations (x1,y1,x2,y2)",
   },
   {
     key: "animation_curve_focus",
     type: "curve",
-    default: "0.46,1,0.29,0.99",
+    default: [0.46, 1, 0.29, 0.99],
     label: "Focus Curve",
     description: "Cubic bezier curve for focus-change animations (x1,y1,x2,y2)",
   },
   {
     key: "animation_curve_opacity_fade_in",
     type: "curve",
-    default: "0.46,1,0.29,0.99",
+    default: [0.46, 1, 0.29, 0.99],
     label: "Fade In Curve",
     description: "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2)",
   },
   {
     key: "animation_curve_opacity_fade_out",
     type: "curve",
-    default: "0.5,0.5,0.5,0.5",
+    default: [0.5, 0.5, 0.5, 0.5],
     label: "Fade Out Curve",
     description: "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2)",
   },
   {
     key: "scroller_structs",
     type: "int",
-    default: "20",
+    default: 20,
     label: "Scroller Edge Inset",
     description: "Pixel inset at the edges of the scroller viewport (0-1000).",
     min: 0,
@@ -239,7 +306,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "scroller_default_proportion",
     type: "float",
-    default: "0.9",
+    default: 0.9,
     label: "Default Proportion",
     description: "Default width proportion for new windows in the scroller layout.",
     min: 0.1,
@@ -248,7 +315,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "scroller_default_proportion_single",
     type: "float",
-    default: "1.0",
+    default: 1,
     label: "Single Window Proportion",
     description:
       "Width proportion used when the tag has one window. Requires scroller_ignore_proportion_single=0.",
@@ -258,28 +325,28 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "scroller_ignore_proportion_single",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Ignore Proportion When Solo",
     description: "Ignore scroller_default_proportion_single when the tag has one window.",
   },
   {
     key: "scroller_focus_center",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Scroller Focus Center",
     description: "Always center the focused window in the scroller viewport.",
   },
   {
     key: "scroller_prefer_center",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Scroller Prefer Center",
     description: "Center the focused window only when it was outside the viewport.",
   },
   {
     key: "scroller_prefer_overspread",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Prefer Overspread",
     description:
       "Let the focused edge window expand into unused space. Takes priority over scroller_focus_center and scroller_prefer_center.",
@@ -287,14 +354,14 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "edge_scroller_pointer_focus",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Edge Pointer Focus",
     description: "Focus scroller windows that are partly off-screen.",
   },
   {
     key: "edge_scroller_focus_allow_speed",
     type: "float",
-    default: "0.0",
+    default: 0,
     label: "Edge Focus Speed",
     description: "Minimum pointer speed required before edge focus triggers (0-1000).",
     min: 0,
@@ -303,14 +370,14 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "focus_cross_monitor",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Cross-Monitor Focus",
     description: "Let directional focus cross monitor boundaries.",
   },
   {
     key: "focus_direction_only_zone_overlap",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Focus Direction Zone Overlap",
     description:
       "Directional focus only selects windows that overlap the current window on the perpendicular axis.",
@@ -318,56 +385,56 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "exchange_cross_monitor",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Cross-Monitor Exchange",
     description: "Let exchange_client and move_client cross monitor boundaries.",
   },
   {
     key: "scratchpad_cross_monitor",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Scratchpad Cross Monitor",
     description: "Share the scratchpad pool across all monitors.",
   },
   {
     key: "focus_cross_tag",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Cross-Tag Focus",
     description: "Let directional focus cross tag boundaries.",
   },
   {
     key: "view_current_to_back",
     type: "bool",
-    default: "0",
+    default: false,
     label: "View Current to Back",
     description: "Viewing current tag sends it to back and shows previous tag",
   },
   {
     key: "blur",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Enable Blur",
     description: "Toggle background blur behind windows",
   },
   {
     key: "blur_layer",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Blur Layer Surfaces",
     description: "Apply blur to layer-shell surfaces (panels, notifications)",
   },
   {
     key: "blur_optimized",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Optimized Blur",
     description: "Cache the wallpaper and background for faster blur.",
   },
   {
     key: "border_radius",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Border Radius",
     description: "Corner rounding in pixels",
     min: 0,
@@ -376,7 +443,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "blur_params_num_passes",
     type: "int",
-    default: "1",
+    default: 1,
     label: "Blur Passes",
     description: "Number of blur iterations",
     min: 0,
@@ -385,7 +452,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "blur_params_radius",
     type: "int",
-    default: "5",
+    default: 5,
     label: "Blur Radius",
     description: "Pixel radius of the blur kernel",
     min: 0,
@@ -394,7 +461,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "blur_params_noise",
     type: "float",
-    default: "0.02",
+    default: 0.02,
     label: "Blur Noise",
     description: "Noise level added to the blur.",
     min: 0,
@@ -403,7 +470,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "blur_params_brightness",
     type: "float",
-    default: "0.9",
+    default: 0.9,
     label: "Blur Brightness",
     description: "Brightness multiplier for the blurred layer",
     min: 0,
@@ -412,7 +479,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "blur_params_contrast",
     type: "float",
-    default: "0.9",
+    default: 0.9,
     label: "Blur Contrast",
     description: "Contrast multiplier for the blurred layer",
     min: 0,
@@ -421,7 +488,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "blur_params_saturation",
     type: "float",
-    default: "1.2",
+    default: 1.2,
     label: "Blur Saturation",
     description: "Saturation multiplier for the blurred layer. Values above 1 are clamped to 1.",
     min: 0,
@@ -429,28 +496,28 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "shadows",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Enable Shadows",
     description: "Render drop shadows behind windows",
   },
   {
     key: "shadow_only_floating",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Shadows Floating Only",
     description: "Only draw shadows for floating windows",
   },
   {
     key: "layer_shadows",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Layer Shadow Surfaces",
     description: "Draw shadows under layer-shell surfaces",
   },
   {
     key: "shadows_size",
     type: "int",
-    default: "10",
+    default: 10,
     label: "Shadow Size",
     description: "How far the shadow extends beyond window edges",
     min: 0,
@@ -459,7 +526,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "shadows_blur",
     type: "float",
-    default: "15.0",
+    default: 15,
     label: "Shadow Softness",
     description: "Gaussian blur sigma for softer shadows",
     min: 0,
@@ -468,7 +535,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "shadows_position_x",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Shadow Offset X",
     description: "Horizontal shadow offset",
     min: -1000,
@@ -477,7 +544,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "shadows_position_y",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Shadow Offset Y",
     description: "Vertical shadow offset",
     min: -1000,
@@ -486,88 +553,108 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "single_scratchpad",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Single Scratchpad",
     description: "Show only one scratchpad window (named or standard) at a time.",
   },
   {
     key: "xwayland_persistence",
     type: "bool",
-    default: "1",
+    default: true,
     label: "XWayland Persistence",
     description: "Keep XWayland running even when no X11 clients are active",
   },
   {
     key: "xwayland_ignore_scale",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Ignore XWayland Scale",
     description: "Make XWayland use physical pixels instead of the output scale.",
   },
   {
     key: "sync_obj_enable",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Sync Objects",
     description: "Use DRM sync object timelines. Requires a restart.",
   },
   {
     key: "tag_carousel",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Tag Carousel",
     description: "Tags wrap around in a carousel",
   },
   {
     key: "allow_tearing",
     type: "enum",
-    default: "0",
+    default: 0,
     label: "Allow Tearing",
     description:
       "Tearing policy: 0 disabled, 1 enabled for any window, 2 enabled only for fullscreen windows.",
     options: [
-      { value: "0", label: "Disabled" },
-      { value: "1", label: "Enabled" },
-      { value: "2", label: "Fullscreen only" },
+      {
+        value: "0",
+        label: "Disabled",
+      },
+      {
+        value: "1",
+        label: "Enabled",
+      },
+      {
+        value: "2",
+        label: "Fullscreen only",
+      },
     ],
+    numeric: true,
   },
   {
     key: "hdr_depth",
     type: "enum",
-    default: "2",
+    default: 2,
     label: "HDR Bit Depth",
     description: "Bit depth for HDR output: 0 default, 1 HDR8, 2 HDR10.",
     options: [
-      { value: "0", label: "Default" },
-      { value: "1", label: "HDR8" },
-      { value: "2", label: "HDR10" },
+      {
+        value: "0",
+        label: "Default",
+      },
+      {
+        value: "1",
+        label: "HDR8",
+      },
+      {
+        value: "2",
+        label: "HDR10",
+      },
     ],
+    numeric: true,
   },
   {
     key: "allow_shortcuts_inhibit",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Allow Shortcuts Inhibit",
     description: "Let apps suspend compositor keybindings",
   },
   {
     key: "disable_middle_paste",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Disable Middle Paste",
     description: "Disable middle-click paste by turning off primary selection for Wayland apps.",
   },
   {
     key: "allow_lock_transparent",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Allow Lock Transparent",
     description: "Permit transparent/translucent lockscreens",
   },
   {
     key: "auto_reload_config",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Auto Reload Config",
     description:
       "Watch the main config file and every `source`/`source_optional` file, then reload immediately after any of them changes.",
@@ -575,42 +662,42 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "no_border_when_single",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Hide Border When Solo",
     description: "Remove borders when only one window is visible",
   },
   {
     key: "no_radius_when_single",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Hide Radius When Solo",
     description: "Remove corner radius when only one window is visible",
   },
   {
     key: "monocle_no_border",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Monocle No Border",
     description: "Remove borders in monocle layout.",
   },
   {
     key: "monocle_no_gap",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Monocle No Gap",
     description: "Remove gaps in monocle layout.",
   },
   {
     key: "monocle_no_radius",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Monocle No Radius",
     description: "Remove corner radius in monocle layout.",
   },
   {
     key: "snap_distance",
     type: "int",
-    default: "30",
+    default: 30,
     label: "Snap Distance",
     description:
       "Maximum distance in pixels at which a floating window snaps to an edge or another visible floating window (0-99999).",
@@ -620,14 +707,14 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "enable_floating_snap",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Floating Snap",
     description: "Snap floating windows to screen edges and other visible floating windows.",
   },
   {
     key: "float_full_to_top",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Raise Full Floating Windows",
     description:
       "Keep fullscreen, floating, and layer-shell top windows in one layer. The most recently raised window is on top.",
@@ -635,21 +722,21 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "drag_tile_to_tile",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Tile-to-Tile Drag",
     description: "Reorder tiled windows by dragging.",
   },
   {
     key: "drag_tile_small",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Small Tile Preview",
     description: "Shrink dragged tile to a small thumbnail",
   },
   {
     key: "swipe_min_threshold",
     type: "int",
-    default: "1",
+    default: 1,
     label: "Swipe Minimum Threshold",
     description: "Minimum distance in pixels to trigger a swipe gesture (1-1000)",
     min: 1,
@@ -658,7 +745,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "gesture_live",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Live Gestures",
     description:
       "Drive tag/focus/overview transitions while the fingers are still moving (`1`), instead of only after release (`0`).",
@@ -666,7 +753,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "gesture_swipe_distance",
     type: "int",
-    default: "300",
+    default: 300,
     label: "Swipe Distance",
     description: "Finger travel (px) that corresponds to one full page transition.",
     min: 32,
@@ -675,7 +762,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "gesture_swipe_cancel_ratio",
     type: "float",
-    default: "0.5",
+    default: 0.5,
     label: "Swipe Cancel Ratio",
     description:
       "Releasing after the last page was dragged past this fraction commits it; below it, the transition animates back.",
@@ -685,7 +772,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "gesture_swipe_min_speed_to_force",
     type: "float",
-    default: "10",
+    default: 10,
     label: "Swipe Force Speed",
     description:
       "Average per-event speed (px) that forces a commit even below the cancel ratio (for quick flicks).",
@@ -694,7 +781,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "focused_opacity",
     type: "float",
-    default: "1.0",
+    default: 1,
     label: "Focused Opacity",
     description: "Opacity of the currently focused window",
     min: 0,
@@ -703,7 +790,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "unfocused_opacity",
     type: "float",
-    default: "1.0",
+    default: 1,
     label: "Unfocused Opacity",
     description: "Opacity of unfocused background windows",
     min: 0,
@@ -747,28 +834,28 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "scroller_proportion_preset",
     type: "preset",
-    default: "",
+    default: [],
     label: "Proportion Presets",
     description: "Preset width proportions (0.1-1.0) cycled by switch_proportion_preset.",
   },
   {
     key: "circle_layout",
     type: "layout-array",
-    default: "",
+    default: [],
     label: "Circle Layout",
     description: "Ordered layouts cycled by switch_layout.",
   },
   {
     key: "new_is_master",
     type: "bool",
-    default: "1",
+    default: true,
     label: "New Windows as Master",
     description: "New windows open in the master area instead of the stack",
   },
   {
     key: "default_master_factor",
     type: "float",
-    default: "0.55",
+    default: 0.55,
     label: "Master Area Factor",
     description:
       "Fraction of the tag area used by the master area: width in horizontal layouts, height in vertical layouts (0.1-0.9).",
@@ -778,7 +865,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "default_master_count",
     type: "int",
-    default: "1",
+    default: 1,
     label: "Number of Masters",
     description: "How many windows are kept in the master area",
     min: 1,
@@ -787,7 +874,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "tag_num",
     type: "int",
-    default: "9",
+    default: 9,
     label: "Number of Tags",
     description: "How many tags/workspaces are available (1-31)",
     min: 1,
@@ -796,7 +883,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "tag_gather",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Gather Tags",
     description:
       "Compact occupied tags to consecutive numbers starting at 1; the current view follows.",
@@ -804,7 +891,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "center_master_overspread",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Center Master Overspread",
     description:
       "In center_tile, let the master area fill the screen when there are no stack windows.",
@@ -812,54 +899,74 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "center_when_single_stack",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Center Master With One Stack Window",
     description: "Center the master when the stack has only one window.",
   },
   {
     key: "dwindle_vertical_split",
     type: "enum",
-    default: "1",
+    default: 1,
     label: "Vertical Split",
     description:
       "Where a new window goes in a vertical split: 0 follows the cursor, 1 below, 2 above.",
     options: [
-      { value: "0", label: "Follow cursor" },
-      { value: "1", label: "Below" },
-      { value: "2", label: "Above" },
+      {
+        value: "0",
+        label: "Follow cursor",
+      },
+      {
+        value: "1",
+        label: "Below",
+      },
+      {
+        value: "2",
+        label: "Above",
+      },
     ],
+    numeric: true,
   },
   {
     key: "dwindle_horizontal_split",
     type: "enum",
-    default: "1",
+    default: 1,
     label: "Horizontal Split",
     description:
       "Where a new window goes in a horizontal split: 0 follows the cursor, 1 right, 2 left.",
     options: [
-      { value: "0", label: "Follow cursor" },
-      { value: "1", label: "Right" },
-      { value: "2", label: "Left" },
+      {
+        value: "0",
+        label: "Follow cursor",
+      },
+      {
+        value: "1",
+        label: "Right",
+      },
+      {
+        value: "2",
+        label: "Left",
+      },
     ],
+    numeric: true,
   },
   {
     key: "dwindle_preserve_split",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Dwindle Preserve Split",
     description: "Keep the sibling split geometry when a window closes.",
   },
   {
     key: "dwindle_smart_split",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Dwindle Smart Split",
     description: "Choose the split direction from the cursor position inside the focused window.",
   },
   {
     key: "dwindle_smart_resize",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Smart Resize",
     description:
       "When dragging a split, move it toward the cursor regardless of which side was grabbed.",
@@ -867,7 +974,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "dwindle_drop_simple_split",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Dwindle Drop Simple Split",
     description:
       "Select the drag-to-tile preview style: 1 uses a 2-zone preview, 0 uses a 4-quadrant preview.",
@@ -875,14 +982,14 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "dwindle_manual_split",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Manual Split",
     description: "Use the direction set by dwindle_toggle_split_direction for new splits.",
   },
   {
     key: "dwindle_split_ratio",
     type: "float",
-    default: "0.5",
+    default: 0.5,
     label: "Split Ratio",
     description: "Proportion of space for the first child when splitting",
     min: 0.05,
@@ -891,7 +998,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "hotarea_size",
     type: "int",
-    default: "10",
+    default: 10,
     label: "Hotarea Size",
     description: "Size of the corner activation zone in pixels (1-1000)",
     min: 1,
@@ -900,35 +1007,48 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "hotarea_corner",
     type: "enum",
-    default: "2",
+    default: 2,
     label: "Hotarea Corner",
     description:
       "Screen corner that triggers the overview: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right.",
     options: [
-      { value: "0", label: "Top Left" },
-      { value: "1", label: "Top Right" },
-      { value: "2", label: "Bottom Left" },
-      { value: "3", label: "Bottom Right" },
+      {
+        value: "0",
+        label: "Top Left",
+      },
+      {
+        value: "1",
+        label: "Top Right",
+      },
+      {
+        value: "2",
+        label: "Bottom Left",
+      },
+      {
+        value: "3",
+        label: "Bottom Right",
+      },
     ],
+    numeric: true,
   },
   {
     key: "enable_hotarea",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Enable Hotarea",
     description: "Activate overview by moving the cursor to a screen corner",
   },
   {
     key: "hotarea_disable_on_fullscreen",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Hotarea Disable On Fullscreen",
     description: "Do not trigger the hot area while a fullscreen window is focused.",
   },
   {
     key: "overview_gap_inner",
     type: "int",
-    default: "5",
+    default: 5,
     label: "Overview Inner Gap",
     description: "Gap between overview cards (0-1000).",
     min: 0,
@@ -937,7 +1057,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "overview_gap_outer",
     type: "int",
-    default: "30",
+    default: 30,
     label: "Overview Outer Gap",
     description: "Gap around the overview layout (0-1000).",
     min: 0,
@@ -946,7 +1066,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "overcircle_center_ratio",
     type: "float",
-    default: "0.5",
+    default: 0.5,
     label: "Overcircle Center Ratio",
     description:
       "Width of the centered focused window as a fraction of the usable screen width. Range: 0.1-0.9.",
@@ -963,7 +1083,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "cursor_hide_timeout",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Cursor Hide Timeout",
     description: "Seconds of inactivity before auto-hiding the cursor (0 = never)",
     min: 0,
@@ -972,14 +1092,14 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "cursor_hide_on_keypress",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Hide Cursor on Keypress",
     description: "Auto-hide the cursor whenever any keyboard key is pressed",
   },
   {
     key: "axis_bind_apply_timeout",
     type: "int",
-    default: "100",
+    default: 100,
     label: "Axis Bind Apply Timeout",
     description:
       "Minimum time in milliseconds between axis binding invocations; scroll events closer together are ignored (0-1000).",
@@ -989,42 +1109,42 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "focus_on_activate",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Focus on Activate",
     description: "Focus windows immediately when they request activation",
   },
   {
     key: "numlock_on",
     type: "bool",
-    default: "0",
+    default: false,
     label: "NumLock on Startup",
     description: "Turn on NumLock at startup.",
   },
   {
     key: "idle_inhibit_ignore_visible",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Ignore Visible Windows for Idle",
     description: "Let invisible clients inhibit idle.",
   },
   {
     key: "idle_inhibit_when_fullscreen",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Inhibit Idle When Fullscreen",
     description: "Keep idle inhibited while a fullscreen window is focused.",
   },
   {
     key: "sloppy_focus",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Sloppy Focus",
     description: "Focus follows the mouse pointer",
   },
   {
     key: "warp_cursor",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Warp Cursor",
     description:
       "Warp the pointer to the center of the focused window when focus changes by keybinding.",
@@ -1032,7 +1152,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "drag_corner",
     type: "int",
-    default: "3",
+    default: 3,
     label: "Resize Corner",
     description:
       "Resize corner for floating windows: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right, 4 nearest.",
@@ -1042,14 +1162,14 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "drag_warp_cursor",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Warp Cursor on Drag Resize",
     description: "Warp the pointer to the chosen corner when a resize starts from the window body.",
   },
   {
     key: "enable_border_resize",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Enable Border Resize",
     description:
       "Resize by dragging a window border with the left mouse button. Tiled windows only expose edges shared with a neighbor.",
@@ -1057,7 +1177,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "border_resize_size",
     type: "int",
-    default: "10",
+    default: 10,
     label: "Border Resize Hitbox",
     description: "Width in pixels of the border resize grab strip. 0 uses the border width.",
     min: 0,
@@ -1066,35 +1186,35 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "smart_gaps",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Smart Gaps",
     description: "Only show gaps with multiple windows on the same tag",
   },
   {
     key: "monocle_tab_mode",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Monocle Tab Mode",
     description: "Merge stacked windows into tabs in monocle layout.",
   },
   {
     key: "monocle_right_button_close",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Right Click to Close",
     description: "Right click on the tab bar closes that window.",
   },
   {
     key: "deck_tab_mode",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Deck Tab Mode",
     description: "Merge the deck layout's stack windows into a tab.",
   },
   {
     key: "repeat_rate",
     type: "int",
-    default: "25",
+    default: 25,
     label: "Repeat Rate",
     description: "Keyboard repeat rate in key presses per second.",
     min: 1,
@@ -1103,7 +1223,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "repeat_delay",
     type: "int",
-    default: "600",
+    default: 600,
     label: "Repeat Delay",
     description: "Delay before key repeat starts, in milliseconds",
     min: 1,
@@ -1112,63 +1232,63 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "disable_trackpad",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Disable Trackpad",
     description: "Disable all trackpad devices.",
   },
   {
     key: "touch_enable",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Enable Touch",
     description: "Turn on touchscreen input.",
   },
   {
     key: "touch_enable_mouse_emulation",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Touch Mouse Emulation",
     description: "Emulate a left-button click for touches on surfaces that do not accept touch.",
   },
   {
     key: "tap_to_click",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Tap to Click",
     description: "Tap the trackpad to click.",
   },
   {
     key: "tap_and_drag",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Tap and Drag",
     description: "Tap and hold to drag items.",
   },
   {
     key: "drag_lock",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Drag Lock",
     description: "Keep dragging after lifting the finger.",
   },
   {
     key: "mouse_natural_scrolling",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Mouse Natural Scrolling",
     description: "Invert mouse scroll direction.",
   },
   {
     key: "trackpad_natural_scrolling",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Trackpad Natural Scrolling",
     description: "Invert trackpad scroll direction.",
   },
   {
     key: "cursor_size",
     type: "int",
-    default: "24",
+    default: 24,
     label: "Cursor Size",
     description: "XCursor size in pixels",
     min: 4,
@@ -1226,7 +1346,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "group_bar_decorate_border_width",
     type: "int",
-    default: "4",
+    default: 4,
     label: "Group Bar Border Width",
     description: "Border width of the group bar in pixels.",
     min: 0,
@@ -1235,7 +1355,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "group_bar_decorate_corner_radius",
     type: "int",
-    default: "5",
+    default: 5,
     label: "Group Bar Corner Radius",
     description: "Corner radius of the group bar in pixels.",
     min: 0,
@@ -1244,7 +1364,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "group_bar_decorate_padding_x",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Group Bar Horizontal Padding",
     description: "Horizontal padding inside the group bar in pixels.",
     min: 0,
@@ -1253,7 +1373,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "group_bar_decorate_padding_y",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Group Bar Vertical Padding",
     description: "Vertical padding inside the group bar in pixels.",
     min: 0,
@@ -1304,7 +1424,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "title_message_bar_decorate_border_width",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Title Bar Border Width",
     description: "Border width of the title message bar in pixels.",
     min: 0,
@@ -1313,7 +1433,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "title_message_bar_decorate_corner_radius",
     type: "int",
-    default: "15",
+    default: 15,
     label: "Title Bar Corner Radius",
     description: "Corner radius of the title message bar in pixels.",
     min: 0,
@@ -1322,7 +1442,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "title_message_bar_decorate_padding_x",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Title Bar Horizontal Padding",
     description: "Horizontal padding inside the title message bar in pixels.",
     min: 0,
@@ -1331,7 +1451,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "title_message_bar_decorate_padding_y",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Title Bar Vertical Padding",
     description: "Vertical padding inside the title message bar in pixels.",
     min: 0,
@@ -1382,7 +1502,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "tab_bar_decorate_border_width",
     type: "int",
-    default: "4",
+    default: 4,
     label: "Tab Bar Border Width",
     description: "Border width of the tab bar in pixels.",
     min: 0,
@@ -1391,7 +1511,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "tab_bar_decorate_corner_radius",
     type: "int",
-    default: "5",
+    default: 5,
     label: "Tab Bar Corner Radius",
     description: "Corner radius of the tab bar in pixels.",
     min: 0,
@@ -1400,7 +1520,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "tab_bar_decorate_padding_x",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Tab Bar Horizontal Padding",
     description: "Horizontal padding inside the tab bar in pixels.",
     min: 0,
@@ -1409,7 +1529,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "tab_bar_decorate_padding_y",
     type: "int",
-    default: "0",
+    default: 0,
     label: "Tab Bar Vertical Padding",
     description: "Vertical padding inside the tab bar in pixels.",
     min: 0,
@@ -1460,7 +1580,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "jump_label_decorate_border_width",
     type: "int",
-    default: "4",
+    default: 4,
     label: "Jump Label Border Width",
     description: "Border width of the jump label in pixels.",
     min: 0,
@@ -1469,7 +1589,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "jump_label_decorate_corner_radius",
     type: "int",
-    default: "5",
+    default: 5,
     label: "Jump Label Corner Radius",
     description: "Corner radius of the jump label in pixels.",
     min: 0,
@@ -1478,7 +1598,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "jump_label_decorate_padding_x",
     type: "int",
-    default: "10",
+    default: 10,
     label: "Jump Label Horizontal Padding",
     description: "Horizontal padding inside the jump label in pixels.",
     min: 0,
@@ -1487,7 +1607,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "jump_label_decorate_padding_y",
     type: "int",
-    default: "10",
+    default: 10,
     label: "Jump Label Vertical Padding",
     description: "Vertical padding inside the jump label in pixels.",
     min: 0,
@@ -1496,19 +1616,29 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "mouse_accel_profile",
     type: "enum",
-    default: "2",
+    default: 2,
     label: "Mouse Acceleration Profile",
     description: "Mouse acceleration profile: 0 none, 1 flat, 2 adaptive.",
     options: [
-      { value: "0", label: "None" },
-      { value: "1", label: "Flat" },
-      { value: "2", label: "Adaptive" },
+      {
+        value: "0",
+        label: "None",
+      },
+      {
+        value: "1",
+        label: "Flat",
+      },
+      {
+        value: "2",
+        label: "Adaptive",
+      },
     ],
+    numeric: true,
   },
   {
     key: "mouse_accel_speed",
     type: "float",
-    default: "0.0",
+    default: 0,
     label: "Mouse Acceleration Speed",
     description: "Mouse acceleration speed from -1.0 to 1.0.",
     min: -1,
@@ -1517,19 +1647,29 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "trackpad_accel_profile",
     type: "enum",
-    default: "2",
+    default: 2,
     label: "Trackpad Acceleration Profile",
     description: "Trackpad acceleration profile: 0 none, 1 flat, 2 adaptive.",
     options: [
-      { value: "0", label: "None" },
-      { value: "1", label: "Flat" },
-      { value: "2", label: "Adaptive" },
+      {
+        value: "0",
+        label: "None",
+      },
+      {
+        value: "1",
+        label: "Flat",
+      },
+      {
+        value: "2",
+        label: "Adaptive",
+      },
     ],
+    numeric: true,
   },
   {
     key: "trackpad_accel_speed",
     type: "float",
-    default: "0.0",
+    default: 0,
     label: "Trackpad Acceleration Speed",
     description: "Trackpad acceleration speed from -1.0 to 1.0.",
     min: -1,
@@ -1538,34 +1678,47 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "mouse_left_handed",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Mouse Left Handed",
     description: "Swap left and right mouse buttons.",
   },
   {
     key: "mouse_middle_button_emulation",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Mouse Middle Button Emulation",
     description: "Emulate middle-click on the mouse.",
   },
   {
     key: "mouse_scroll_method",
     type: "enum",
-    default: "1",
+    default: 1,
     label: "Mouse Scroll Method",
     description: "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button.",
     options: [
-      { value: "0", label: "Disabled" },
-      { value: "1", label: "Two-finger" },
-      { value: "2", label: "Edge" },
-      { value: "4", label: "Button" },
+      {
+        value: "0",
+        label: "Disabled",
+      },
+      {
+        value: "1",
+        label: "Two-finger",
+      },
+      {
+        value: "2",
+        label: "Edge",
+      },
+      {
+        value: "4",
+        label: "Button",
+      },
     ],
+    numeric: true,
   },
   {
     key: "mouse_scroll_button",
     type: "int",
-    default: "274",
+    default: 274,
     label: "Mouse Scroll Button",
     description: "Button used for button scrolling on the mouse (272-279).",
     min: 272,
@@ -1574,65 +1727,98 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "mouse_click_method",
     type: "enum",
-    default: "1",
+    default: 1,
     label: "Mouse Click Method",
     description: "Click method: 0 no emulation, 1 button areas, 2 clickfinger.",
     options: [
-      { value: "0", label: "No emulation" },
-      { value: "1", label: "Button areas" },
-      { value: "2", label: "Clickfinger" },
+      {
+        value: "0",
+        label: "No emulation",
+      },
+      {
+        value: "1",
+        label: "Button areas",
+      },
+      {
+        value: "2",
+        label: "Clickfinger",
+      },
     ],
+    numeric: true,
   },
   {
     key: "mouse_send_events_mode",
     type: "enum",
-    default: "0",
+    default: 0,
     label: "Mouse Send Events Mode",
     description: "Send events: 0 on, 1 off, 2 off with an external pointer.",
     options: [
-      { value: "0", label: "Enabled" },
-      { value: "1", label: "Disabled" },
-      { value: "2", label: "Disabled on external mouse" },
+      {
+        value: "0",
+        label: "Enabled",
+      },
+      {
+        value: "1",
+        label: "Disabled",
+      },
+      {
+        value: "2",
+        label: "Disabled on external mouse",
+      },
     ],
+    numeric: true,
   },
   {
     key: "trackpad_left_handed",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Trackpad Left Handed",
     description: "Swap left and right trackpad buttons.",
   },
   {
     key: "trackpad_middle_button_emulation",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Trackpad Middle Button Emulation",
     description: "Emulate middle-click on the trackpad.",
   },
   {
     key: "trackpad_disable_while_typing",
     type: "bool",
-    default: "1",
+    default: true,
     label: "Disable While Typing",
     description: "Temporarily disable the trackpad while typing.",
   },
   {
     key: "trackpad_scroll_method",
     type: "enum",
-    default: "1",
+    default: 1,
     label: "Trackpad Scroll Method",
     description: "Scroll method: 0 disabled, 1 two-finger, 2 edge, 4 button.",
     options: [
-      { value: "0", label: "Disabled" },
-      { value: "1", label: "Two-finger" },
-      { value: "2", label: "Edge" },
-      { value: "4", label: "Button" },
+      {
+        value: "0",
+        label: "Disabled",
+      },
+      {
+        value: "1",
+        label: "Two-finger",
+      },
+      {
+        value: "2",
+        label: "Edge",
+      },
+      {
+        value: "4",
+        label: "Button",
+      },
     ],
+    numeric: true,
   },
   {
     key: "trackpad_scroll_button",
     type: "int",
-    default: "274",
+    default: 274,
     label: "Trackpad Scroll Button",
     description: "Button used for button scrolling on the trackpad (272-279).",
     min: 272,
@@ -1641,55 +1827,92 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "trackpad_click_method",
     type: "enum",
-    default: "1",
+    default: 1,
     label: "Trackpad Click Method",
     description: "Click method: 0 no emulation, 1 button areas, 2 clickfinger.",
     options: [
-      { value: "0", label: "No emulation" },
-      { value: "1", label: "Button areas" },
-      { value: "2", label: "Clickfinger" },
+      {
+        value: "0",
+        label: "No emulation",
+      },
+      {
+        value: "1",
+        label: "Button areas",
+      },
+      {
+        value: "2",
+        label: "Clickfinger",
+      },
     ],
+    numeric: true,
   },
   {
     key: "trackpad_send_events_mode",
     type: "enum",
-    default: "0",
+    default: 0,
     label: "Trackpad Send Events Mode",
     description: "Send events: 0 on, 1 off, 2 off with an external pointer.",
     options: [
-      { value: "0", label: "Enabled" },
-      { value: "1", label: "Disabled" },
-      { value: "2", label: "Disabled on external mouse" },
+      {
+        value: "0",
+        label: "Enabled",
+      },
+      {
+        value: "1",
+        label: "Disabled",
+      },
+      {
+        value: "2",
+        label: "Disabled on external mouse",
+      },
     ],
+    numeric: true,
   },
   {
     key: "send_events_mode",
     type: "enum",
-    default: "0",
+    default: 0,
     label: "Send Events Mode",
     description:
       "Send events for touch and tablet devices: 0 on, 1 off, 2 off with an external pointer.",
     options: [
-      { value: "0", label: "Enabled" },
-      { value: "1", label: "Disabled" },
-      { value: "2", label: "Disabled on external mouse" },
+      {
+        value: "0",
+        label: "Enabled",
+      },
+      {
+        value: "1",
+        label: "Disabled",
+      },
+      {
+        value: "2",
+        label: "Disabled on external mouse",
+      },
     ],
+    numeric: true,
   },
   {
     key: "button_map",
     type: "enum",
-    default: "0",
+    default: 0,
     label: "Button Map",
     description: "Trackpad tap-to-button mapping: 0 left/right/middle, 1 left/middle/right.",
     options: [
-      { value: "0", label: "Left / right / middle" },
-      { value: "1", label: "Left / middle / right" },
+      {
+        value: "0",
+        label: "Left / right / middle",
+      },
+      {
+        value: "1",
+        label: "Left / middle / right",
+      },
     ],
+    numeric: true,
   },
   {
     key: "axis_scroll_factor",
     type: "float",
-    default: "1.0",
+    default: 1,
     label: "Axis Scroll Factor",
     description: "Multiplier for axis (wheel) scroll speed (0.1-10.0)",
     min: 0.1,
@@ -1698,7 +1921,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "trackpad_scroll_factor",
     type: "float",
-    default: "1.0",
+    default: 1,
     label: "Trackpad Scroll Factor",
     description: "Multiplier for trackpad scroll speed (0.1-10.0).",
     min: 0.1,
@@ -1707,7 +1930,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "gap_inner_horizontal",
     type: "int",
-    default: "5",
+    default: 5,
     label: "Inner Gap Horizontal",
     description: "Horizontal gap between tiled windows",
     min: 0,
@@ -1716,7 +1939,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "gap_inner_vertical",
     type: "int",
-    default: "5",
+    default: 5,
     label: "Inner Gap Vertical",
     description: "Vertical gap between tiled windows",
     min: 0,
@@ -1725,7 +1948,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "gap_outer_horizontal",
     type: "int",
-    default: "10",
+    default: 10,
     label: "Outer Gap Horizontal",
     description: "Horizontal gap between windows and screen edges",
     min: 0,
@@ -1734,7 +1957,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "gap_outer_vertical",
     type: "int",
-    default: "10",
+    default: 10,
     label: "Outer Gap Vertical",
     description: "Vertical gap between windows and screen edges",
     min: 0,
@@ -1743,7 +1966,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "scratchpad_width_ratio",
     type: "float",
-    default: "0.8",
+    default: 0.8,
     label: "Scratchpad Width Ratio",
     description:
       "Width of a scratchpad window relative to the monitor (0.1-1.0); used when the rule sets no width.",
@@ -1753,7 +1976,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "scratchpad_height_ratio",
     type: "float",
-    default: "0.9",
+    default: 0.9,
     label: "Scratchpad Height Ratio",
     description:
       "Height of a scratchpad window relative to the monitor (0.1-1.0); used when the rule sets no height.",
@@ -1763,7 +1986,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "special_dim",
     type: "float",
-    default: "0.5",
+    default: 0.5,
     label: "Special Workspace Dim",
     description: "Background dim level while the special workspace is active.",
     min: 0,
@@ -1772,7 +1995,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "special_gap_inner_horizontal",
     type: "int",
-    default: "10",
+    default: 10,
     label: "Special Inner Gap Horizontal",
     description: "Horizontal inner gap for windows on the special workspace.",
     min: 0,
@@ -1781,7 +2004,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "special_gap_inner_vertical",
     type: "int",
-    default: "10",
+    default: 10,
     label: "Special Inner Gap Vertical",
     description: "Vertical inner gap for windows on the special workspace.",
     min: 0,
@@ -1790,7 +2013,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "special_gap_outer_horizontal",
     type: "int",
-    default: "20",
+    default: 20,
     label: "Special Outer Gap Horizontal",
     description: "Horizontal outer gap for windows on the special workspace.",
     min: 0,
@@ -1799,7 +2022,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "special_gap_outer_vertical",
     type: "int",
-    default: "20",
+    default: 20,
     label: "Special Outer Gap Vertical",
     description: "Vertical outer gap for windows on the special workspace.",
     min: 0,
@@ -1808,7 +2031,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "border_px",
     type: "int",
-    default: "4",
+    default: 4,
     label: "Border Width",
     description: "Thickness of window borders in pixels",
     min: 0,
@@ -1817,7 +2040,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "group_bar_height",
     type: "int",
-    default: "33",
+    default: 33,
     label: "Group Bar Height",
     description: "Height of the per-window group bar in pixels",
     min: 0,
@@ -1826,7 +2049,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "tab_bar_height",
     type: "int",
-    default: "33",
+    default: 33,
     label: "Tab Bar Height",
     description: "Height of the tab bar in pixels.",
     min: 0,
@@ -1835,7 +2058,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "title_message_bar_height",
     type: "int",
-    default: "52",
+    default: 52,
     label: "Title Message Bar Height",
     description: "Height of the focused window's title message bar. 0 disables it.",
     min: 0,
@@ -1844,7 +2067,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "title_message_bar_gap",
     type: "int",
-    default: "20",
+    default: 20,
     label: "Title Message Bar Gap",
     description:
       "Gap between the title message bar and the focused overview card or switcher panel.",
@@ -1854,21 +2077,21 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "always_show_group_bar",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Always Show Group Bar",
     description: "Show the group bar on every window.",
   },
   {
     key: "group_bar_close_button_enable",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Close Button",
     description: "Show the close button. Independent of `always_show_group_bar`.",
   },
   {
     key: "group_bar_button_size",
     type: "int",
-    default: "16",
+    default: 16,
     label: "Close Button Size",
     description: "Close button size in px.",
     min: 4,
@@ -1877,7 +2100,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "group_bar_button_margin",
     type: "int",
-    default: "4",
+    default: 4,
     label: "Close Button Margin",
     description: "Close button inset from the right edge in px.",
     min: 0,
@@ -1907,7 +2130,7 @@ export const GLOBALS: readonly GlobalDef[] = [
   {
     key: "dim_enable",
     type: "bool",
-    default: "0",
+    default: false,
     label: "Dim Enable",
     description: "Dim unfocused windows.",
   },
