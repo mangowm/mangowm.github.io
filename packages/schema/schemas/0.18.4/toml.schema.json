@@ -3903,35 +3903,109 @@
                 "required": ["serial"]
               }
             ],
-            "dependentRequired": {
-              "width": ["height", "refresh"],
-              "height": ["width", "refresh"],
-              "refresh": ["width", "height"],
-              "x": ["y"],
-              "y": ["x"]
-            },
-            "dependentSchemas": {
-              "custom": {
-                "anyOf": [
-                  {
-                    "properties": {
-                      "custom": {
-                        "enum": [false, 0]
-                      }
-                    },
-                    "required": ["custom"]
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "width": {}
                   },
-                  {
-                    "properties": {
-                      "width": {},
-                      "height": {},
-                      "refresh": {}
+                  "required": ["width"]
+                },
+                "then": {
+                  "properties": {
+                    "height": {},
+                    "refresh": {}
+                  },
+                  "required": ["height", "refresh"]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "height": {}
+                  },
+                  "required": ["height"]
+                },
+                "then": {
+                  "properties": {
+                    "width": {},
+                    "refresh": {}
+                  },
+                  "required": ["width", "refresh"]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "refresh": {}
+                  },
+                  "required": ["refresh"]
+                },
+                "then": {
+                  "properties": {
+                    "width": {},
+                    "height": {}
+                  },
+                  "required": ["width", "height"]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "x": {}
+                  },
+                  "required": ["x"]
+                },
+                "then": {
+                  "properties": {
+                    "y": {}
+                  },
+                  "required": ["y"]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "y": {}
+                  },
+                  "required": ["y"]
+                },
+                "then": {
+                  "properties": {
+                    "x": {}
+                  },
+                  "required": ["x"]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "custom": {}
+                  },
+                  "required": ["custom"]
+                },
+                "then": {
+                  "anyOf": [
+                    {
+                      "properties": {
+                        "custom": {
+                          "enum": [false, 0]
+                        }
+                      },
+                      "required": ["custom"]
                     },
-                    "required": ["width", "height", "refresh"]
-                  }
-                ]
+                    {
+                      "properties": {
+                        "width": {},
+                        "height": {},
+                        "refresh": {}
+                      },
+                      "required": ["width", "height", "refresh"]
+                    }
+                  ]
+                }
               }
-            }
+            ]
           }
         },
         "tag_rule": {
