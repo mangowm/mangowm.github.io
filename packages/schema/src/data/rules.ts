@@ -1,4 +1,386 @@
-import type { RuleDef } from "./types";
+import type { RuleDef, RuleFieldDef } from "./types";
+
+const WINDOW_RULE_FIELDS: readonly RuleFieldDef[] = [
+  {
+    key: "is_floating",
+    type: "bool",
+    label: "Floating",
+    description: "Force floating state.",
+  },
+  {
+    key: "title",
+    type: "string",
+    label: "Title",
+    description: "Match by window title, supports regex.",
+    examples: ["^Picture-in-Picture$"],
+  },
+  {
+    key: "app_id",
+    type: "string",
+    label: "App ID",
+    description: "Match by application ID, supports regex.",
+    examples: ["firefox"],
+  },
+  {
+    key: "animation_type_open",
+    type: "enum",
+    label: "Open Animation",
+    description: "Window open animation. Empty inherits the global setting. `none` disables it.",
+    options: [
+      {
+        value: "",
+        label: "Unset",
+      },
+      {
+        value: "none",
+        label: "None",
+      },
+      {
+        value: "fade",
+        label: "Fade",
+      },
+      {
+        value: "slide",
+        label: "Slide",
+      },
+      {
+        value: "zoom",
+        label: "Zoom",
+      },
+    ],
+  },
+  {
+    key: "animation_type_close",
+    type: "enum",
+    label: "Close Animation",
+    description: "Window close animation. Empty inherits the global setting. `none` disables it.",
+    options: [
+      {
+        value: "",
+        label: "Unset",
+      },
+      {
+        value: "none",
+        label: "None",
+      },
+      {
+        value: "fade",
+        label: "Fade",
+      },
+      {
+        value: "slide",
+        label: "Slide",
+      },
+      {
+        value: "zoom",
+        label: "Zoom",
+      },
+    ],
+  },
+  {
+    key: "tags",
+    type: "tag-mask",
+    label: "Tags",
+    description: "Assign to one tag, several tags separated by |, or the special workspace with 0.",
+    examples: [[1, 3]],
+    tomlExamples: ["1|3"],
+  },
+  {
+    key: "monitor",
+    type: "string",
+    label: "Monitor",
+    description: "Assign to monitor by monitor spec (name, make, model, or serial).",
+    examples: ["make:BOE&&model:0x1234"],
+  },
+  {
+    key: "offset_x",
+    type: "int",
+    label: "X Offset",
+    description: "Horizontal offset from center in percent. 100 sits at the outer gap.",
+  },
+  {
+    key: "offset_y",
+    type: "int",
+    label: "Y Offset",
+    description: "Vertical offset from center in percent. 100 sits at the outer gap.",
+  },
+  {
+    key: "no_focus",
+    type: "bool",
+    label: "No Focus",
+    description: "Never give this window keyboard focus.",
+  },
+  {
+    key: "no_fade_in",
+    type: "bool",
+    label: "No Fade In",
+    description: "Window ignores fade-in animation.",
+  },
+  {
+    key: "no_fade_out",
+    type: "bool",
+    label: "No Fade Out",
+    description: "Window ignores fade-out animation.",
+  },
+  {
+    key: "no_force_center",
+    type: "bool",
+    label: "No Force Center",
+    description: "Do not center the window automatically.",
+  },
+  {
+    key: "width",
+    type: "float",
+    label: "Width",
+    description:
+      "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels.",
+    examples: [800],
+  },
+  {
+    key: "height",
+    type: "float",
+    label: "Height",
+    description:
+      "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels.",
+    examples: [600],
+  },
+  {
+    key: "no_border",
+    type: "bool",
+    label: "No Border",
+    description: "Remove window border.",
+  },
+  {
+    key: "no_shadow",
+    type: "bool",
+    label: "No Shadow",
+    description: "Disable the window shadow.",
+  },
+  {
+    key: "no_radius",
+    type: "bool",
+    label: "No Radius",
+    description: "Disable corner radius.",
+  },
+  {
+    key: "no_animation",
+    type: "bool",
+    label: "No Animation",
+    description: "Disable window animations.",
+  },
+  {
+    key: "is_open_silent",
+    type: "bool",
+    label: "Open Unfocused",
+    description: "Open without focus.",
+  },
+  {
+    key: "is_tag_silent",
+    type: "bool",
+    label: "No Focus on Hidden Tag",
+    description: "Do not focus the window when it opens on a tag that is not currently visible.",
+  },
+  {
+    key: "is_named_scratchpad",
+    type: "bool",
+    label: "Named Scratchpad",
+    description: "Mark the window as a named scratchpad toggled by toggle_named_scratchpad.",
+  },
+  {
+    key: "is_unmanaged_global",
+    type: "bool",
+    label: "Unmanaged Global",
+    description: "Open as unmanaged global window (for desktop pets or camera windows).",
+  },
+  {
+    key: "is_global",
+    type: "bool",
+    label: "Global",
+    description: "Open as global window (sticky across tags).",
+  },
+  {
+    key: "scroller_proportion_single",
+    type: "float",
+    label: "Scroller Proportion (Single)",
+    description:
+      "Width proportion used while this window is the only tiled window (0-1; 0 keeps the global value).",
+    min: 0,
+    max: 1,
+  },
+  {
+    key: "unfocused_opacity",
+    type: "float",
+    label: "Unfocused Opacity",
+    description: "Opacity for inactive windows. 0 keeps the global opacity.",
+    min: 0,
+    max: 1,
+    examples: [0.85],
+  },
+  {
+    key: "focused_opacity",
+    type: "float",
+    label: "Focused Opacity",
+    description: "Opacity for the active window. 0 keeps the global opacity.",
+    min: 0,
+    max: 1,
+    examples: [0.9],
+  },
+  {
+    key: "is_overlay",
+    type: "bool",
+    label: "Overlay",
+    description: "Keep the window in the top layer.",
+  },
+  {
+    key: "shield_when_capture",
+    type: "bool",
+    label: "Shield When Captured",
+    description: "Fill the window with black while a screen capture is active.",
+  },
+  {
+    key: "allow_shortcuts_inhibit",
+    type: "bool",
+    label: "Allow Shortcuts Inhibit",
+    description: "Let this window's client inhibit compositor shortcuts.",
+  },
+  {
+    key: "ignore_maximize",
+    type: "bool",
+    label: "Ignore Maximize",
+    description: "Ignore maximize requests from the client.",
+  },
+  {
+    key: "ignore_minimize",
+    type: "bool",
+    label: "Ignore Minimize",
+    description: "Ignore minimize requests from the client.",
+  },
+  {
+    key: "no_size_hint",
+    type: "bool",
+    label: "No Size Hint",
+    description: "Ignore the client's minimum and maximum size hints when resizing.",
+  },
+  {
+    key: "idle_inhibit_when_focus",
+    type: "bool",
+    label: "Inhibit Idle When Focused",
+    description: "Keep idle inhibit active while this window is focused.",
+  },
+  {
+    key: "vrr_only_fullscreen",
+    type: "bool",
+    label: "VRR Only Fullscreen",
+    description:
+      "Turn on VRR only while this window is fullscreen. Requires vrr off in its monitor rule.",
+  },
+  {
+    key: "force_render",
+    type: "bool",
+    label: "Force Render",
+    description: "Keep sending frame callbacks while the window is hidden.",
+  },
+  {
+    key: "activation_bypass",
+    type: "bool",
+    label: "Activation Bypass",
+    description: "Treat activation requests for this window as authenticated.",
+  },
+  {
+    key: "is_term",
+    type: "bool",
+    label: "Terminal",
+    description: "Mark the window as a terminal that a newly opened window replaces.",
+  },
+  {
+    key: "allow_csd",
+    type: "bool",
+    label: "Allow CSD",
+    description: "Let clients draw their own window decorations.",
+  },
+  {
+    key: "force_fake_maximize",
+    type: "bool",
+    label: "Force Fake Maximize",
+    description: "Report the window as maximized to the client while keeping the tiled geometry.",
+  },
+  {
+    key: "force_tiled_state",
+    type: "bool",
+    label: "Force Tiled State",
+    description: "Report floating windows as tiled (on by default).",
+  },
+  {
+    key: "force_tearing",
+    type: "enum",
+    label: "Force Tearing",
+    description:
+      "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing.",
+    options: [
+      {
+        value: "0",
+        label: "Unspecified",
+      },
+      {
+        value: "1",
+        label: "Enabled",
+      },
+      {
+        value: "2",
+        label: "Disabled",
+      },
+    ],
+    numeric: true,
+    tomlBoolean: true,
+  },
+  {
+    key: "no_swallow",
+    type: "bool",
+    label: "No Swallow",
+    description: "Do not let this window replace an is_term window.",
+  },
+  {
+    key: "confine_pointer",
+    type: "bool",
+    label: "Confine Pointer",
+    description: "Keep the pointer inside this window while it is focused and visible.",
+  },
+  {
+    key: "no_blur",
+    type: "bool",
+    label: "No Blur",
+    description: "Disable blur for this window.",
+  },
+  {
+    key: "scroller_proportion",
+    type: "float",
+    label: "Scroller Proportion",
+    description:
+      "Width proportion for this window in the scroller layout (0-1; 0 keeps the global value).",
+    min: 0,
+    max: 1,
+    examples: [0.6],
+  },
+  {
+    key: "is_fullscreen",
+    type: "bool",
+    label: "Fullscreen",
+    description: "Force fullscreen state.",
+  },
+  {
+    key: "is_fake_fullscreen",
+    type: "bool",
+    label: "Fake Fullscreen",
+    description: "Tell the client it is fullscreen while keeping its tiled size.",
+  },
+  {
+    key: "global_key_binding",
+    type: "key-binding",
+    label: "Global Key Binding",
+    description: "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
+    examples: ["ctrl+alt-o"],
+  },
+];
 
 export const RULES: readonly RuleDef[] = [
   {
@@ -479,390 +861,7 @@ export const RULES: readonly RuleDef[] = [
     label: "Window Rules",
     description:
       "Set window properties on open. app_id and title are regex. When both are set, both must match.",
-    fields: [
-      {
-        key: "is_floating",
-        type: "bool",
-        label: "Floating",
-        description: "Force floating state.",
-      },
-      {
-        key: "title",
-        type: "string",
-        label: "Title",
-        description: "Match by window title, supports regex.",
-        examples: ["^Picture-in-Picture$"],
-      },
-      {
-        key: "app_id",
-        type: "string",
-        label: "App ID",
-        description: "Match by application ID, supports regex.",
-        examples: ["firefox"],
-      },
-      {
-        key: "animation_type_open",
-        type: "enum",
-        label: "Open Animation",
-        description:
-          "Window open animation. Empty inherits the global setting. `none` disables it.",
-        options: [
-          {
-            value: "",
-            label: "Unset",
-          },
-          {
-            value: "none",
-            label: "None",
-          },
-          {
-            value: "fade",
-            label: "Fade",
-          },
-          {
-            value: "slide",
-            label: "Slide",
-          },
-          {
-            value: "zoom",
-            label: "Zoom",
-          },
-        ],
-      },
-      {
-        key: "animation_type_close",
-        type: "enum",
-        label: "Close Animation",
-        description:
-          "Window close animation. Empty inherits the global setting. `none` disables it.",
-        options: [
-          {
-            value: "",
-            label: "Unset",
-          },
-          {
-            value: "none",
-            label: "None",
-          },
-          {
-            value: "fade",
-            label: "Fade",
-          },
-          {
-            value: "slide",
-            label: "Slide",
-          },
-          {
-            value: "zoom",
-            label: "Zoom",
-          },
-        ],
-      },
-      {
-        key: "tags",
-        type: "tag-mask",
-        label: "Tags",
-        description:
-          "Assign to one tag, several tags separated by |, or the special workspace with 0.",
-        examples: [[1, 3]],
-        tomlExamples: ["1|3"],
-      },
-      {
-        key: "monitor",
-        type: "string",
-        label: "Monitor",
-        description: "Assign to monitor by monitor spec (name, make, model, or serial).",
-        examples: ["make:BOE&&model:0x1234"],
-      },
-      {
-        key: "offset_x",
-        type: "int",
-        label: "X Offset",
-        description: "Horizontal offset from center in percent. 100 sits at the outer gap.",
-      },
-      {
-        key: "offset_y",
-        type: "int",
-        label: "Y Offset",
-        description: "Vertical offset from center in percent. 100 sits at the outer gap.",
-      },
-      {
-        key: "no_focus",
-        type: "bool",
-        label: "No Focus",
-        description: "Never give this window keyboard focus.",
-      },
-      {
-        key: "no_fade_in",
-        type: "bool",
-        label: "No Fade In",
-        description: "Window ignores fade-in animation.",
-      },
-      {
-        key: "no_fade_out",
-        type: "bool",
-        label: "No Fade Out",
-        description: "Window ignores fade-out animation.",
-      },
-      {
-        key: "no_force_center",
-        type: "bool",
-        label: "No Force Center",
-        description: "Do not center the window automatically.",
-      },
-      {
-        key: "width",
-        type: "float",
-        label: "Width",
-        description:
-          "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels.",
-        examples: [800],
-      },
-      {
-        key: "height",
-        type: "float",
-        label: "Height",
-        description:
-          "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels.",
-        examples: [600],
-      },
-      {
-        key: "no_border",
-        type: "bool",
-        label: "No Border",
-        description: "Remove window border.",
-      },
-      {
-        key: "no_shadow",
-        type: "bool",
-        label: "No Shadow",
-        description: "Disable the window shadow.",
-      },
-      {
-        key: "no_radius",
-        type: "bool",
-        label: "No Radius",
-        description: "Disable corner radius.",
-      },
-      {
-        key: "no_animation",
-        type: "bool",
-        label: "No Animation",
-        description: "Disable window animations.",
-      },
-      {
-        key: "is_open_silent",
-        type: "bool",
-        label: "Open Unfocused",
-        description: "Open without focus.",
-      },
-      {
-        key: "is_tag_silent",
-        type: "bool",
-        label: "No Focus on Hidden Tag",
-        description:
-          "Do not focus the window when it opens on a tag that is not currently visible.",
-      },
-      {
-        key: "is_named_scratchpad",
-        type: "bool",
-        label: "Named Scratchpad",
-        description: "Mark the window as a named scratchpad toggled by toggle_named_scratchpad.",
-      },
-      {
-        key: "is_unmanaged_global",
-        type: "bool",
-        label: "Unmanaged Global",
-        description: "Open as unmanaged global window (for desktop pets or camera windows).",
-      },
-      {
-        key: "is_global",
-        type: "bool",
-        label: "Global",
-        description: "Open as global window (sticky across tags).",
-      },
-      {
-        key: "scroller_proportion_single",
-        type: "float",
-        label: "Scroller Proportion (Single)",
-        description: "Width proportion used while this window is the only tiled window (0.1-1.0).",
-        min: 0.1,
-        max: 1,
-      },
-      {
-        key: "unfocused_opacity",
-        type: "float",
-        label: "Unfocused Opacity",
-        description: "Opacity for inactive windows. 0 keeps the global opacity.",
-        min: 0,
-        max: 1,
-        examples: [0.85],
-      },
-      {
-        key: "focused_opacity",
-        type: "float",
-        label: "Focused Opacity",
-        description: "Opacity for the active window. 0 keeps the global opacity.",
-        min: 0,
-        max: 1,
-        examples: [0.9],
-      },
-      {
-        key: "is_overlay",
-        type: "bool",
-        label: "Overlay",
-        description: "Keep the window in the top layer.",
-      },
-      {
-        key: "shield_when_capture",
-        type: "bool",
-        label: "Shield When Captured",
-        description: "Fill the window with black while a screen capture is active.",
-      },
-      {
-        key: "allow_shortcuts_inhibit",
-        type: "bool",
-        label: "Allow Shortcuts Inhibit",
-        description: "Let this window's client inhibit compositor shortcuts.",
-      },
-      {
-        key: "ignore_maximize",
-        type: "bool",
-        label: "Ignore Maximize",
-        description: "Ignore maximize requests from the client.",
-      },
-      {
-        key: "ignore_minimize",
-        type: "bool",
-        label: "Ignore Minimize",
-        description: "Ignore minimize requests from the client.",
-      },
-      {
-        key: "no_size_hint",
-        type: "bool",
-        label: "No Size Hint",
-        description: "Ignore the client's minimum and maximum size hints when resizing.",
-      },
-      {
-        key: "idle_inhibit_when_focus",
-        type: "bool",
-        label: "Inhibit Idle When Focused",
-        description: "Keep idle inhibit active while this window is focused.",
-      },
-      {
-        key: "vrr_only_fullscreen",
-        type: "bool",
-        label: "VRR Only Fullscreen",
-        description:
-          "Turn on VRR only while this window is fullscreen. Requires vrr off in its monitor rule.",
-      },
-      {
-        key: "force_render",
-        type: "bool",
-        label: "Force Render",
-        description: "Keep sending frame callbacks while the window is hidden.",
-      },
-      {
-        key: "activation_bypass",
-        type: "bool",
-        label: "Activation Bypass",
-        description: "Treat activation requests for this window as authenticated.",
-      },
-      {
-        key: "is_term",
-        type: "bool",
-        label: "Terminal",
-        description: "Mark the window as a terminal that a newly opened window replaces.",
-      },
-      {
-        key: "allow_csd",
-        type: "bool",
-        label: "Allow CSD",
-        description: "Let clients draw their own window decorations.",
-      },
-      {
-        key: "force_fake_maximize",
-        type: "bool",
-        label: "Force Fake Maximize",
-        description:
-          "Report the window as maximized to the client while keeping the tiled geometry.",
-      },
-      {
-        key: "force_tiled_state",
-        type: "bool",
-        label: "Force Tiled State",
-        description: "Report floating windows as tiled (on by default).",
-      },
-      {
-        key: "force_tearing",
-        type: "enum",
-        label: "Force Tearing",
-        description:
-          "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing.",
-        options: [
-          {
-            value: "0",
-            label: "Unspecified",
-          },
-          {
-            value: "1",
-            label: "Enabled",
-          },
-          {
-            value: "2",
-            label: "Disabled",
-          },
-        ],
-        numeric: true,
-        tomlBoolean: true,
-      },
-      {
-        key: "no_swallow",
-        type: "bool",
-        label: "No Swallow",
-        description: "Do not let this window replace an is_term window.",
-      },
-      {
-        key: "confine_pointer",
-        type: "bool",
-        label: "Confine Pointer",
-        description: "Keep the pointer inside this window while it is focused and visible.",
-      },
-      {
-        key: "no_blur",
-        type: "bool",
-        label: "No Blur",
-        description: "Disable blur for this window.",
-      },
-      {
-        key: "scroller_proportion",
-        type: "float",
-        label: "Scroller Proportion",
-        description: "Width proportion for this window in the scroller layout (0.1-1.0).",
-        min: 0.1,
-        max: 1,
-        examples: [0.6],
-      },
-      {
-        key: "is_fullscreen",
-        type: "bool",
-        label: "Fullscreen",
-        description: "Force fullscreen state.",
-      },
-      {
-        key: "is_fake_fullscreen",
-        type: "bool",
-        label: "Fake Fullscreen",
-        description: "Tell the client it is fullscreen while keeping its tiled size.",
-      },
-      {
-        key: "global_key_binding",
-        type: "key-binding",
-        label: "Global Key Binding",
-        description: "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
-        examples: ["ctrl+alt-o"],
-      },
-    ],
+    fields: WINDOW_RULE_FIELDS,
     examples: [
       {
         app_id: "firefox",
@@ -881,385 +880,7 @@ export const RULES: readonly RuleDef[] = [
     label: "Window Rules (Once)",
     description:
       "Set window properties only on first open. app_id and title are regex; both must match when set.",
-    fields: [
-      {
-        key: "is_floating",
-        type: "bool",
-        label: "Floating",
-        description: "Force floating state.",
-      },
-      {
-        key: "title",
-        type: "string",
-        label: "Title",
-        description: "Match by window title, supports regex.",
-      },
-      {
-        key: "app_id",
-        type: "string",
-        label: "App ID",
-        description: "Match by application ID, supports regex.",
-      },
-      {
-        key: "animation_type_open",
-        type: "enum",
-        label: "Open Animation",
-        description:
-          "Window open animation. Empty inherits the global setting. `none` disables it.",
-        options: [
-          {
-            value: "",
-            label: "Unset",
-          },
-          {
-            value: "none",
-            label: "None",
-          },
-          {
-            value: "fade",
-            label: "Fade",
-          },
-          {
-            value: "slide",
-            label: "Slide",
-          },
-          {
-            value: "zoom",
-            label: "Zoom",
-          },
-        ],
-      },
-      {
-        key: "animation_type_close",
-        type: "enum",
-        label: "Close Animation",
-        description:
-          "Window close animation. Empty inherits the global setting. `none` disables it.",
-        options: [
-          {
-            value: "",
-            label: "Unset",
-          },
-          {
-            value: "none",
-            label: "None",
-          },
-          {
-            value: "fade",
-            label: "Fade",
-          },
-          {
-            value: "slide",
-            label: "Slide",
-          },
-          {
-            value: "zoom",
-            label: "Zoom",
-          },
-        ],
-      },
-      {
-        key: "tags",
-        type: "tag-mask",
-        label: "Tags",
-        description:
-          "Assign to one tag, several tags separated by |, or the special workspace with 0.",
-        examples: [[1, 3]],
-        tomlExamples: ["1|3"],
-      },
-      {
-        key: "monitor",
-        type: "string",
-        label: "Monitor",
-        description: "Assign to monitor by monitor spec (name, make, model, or serial).",
-      },
-      {
-        key: "offset_x",
-        type: "int",
-        label: "X Offset",
-        description: "Horizontal offset from center in percent. 100 sits at the outer gap.",
-      },
-      {
-        key: "offset_y",
-        type: "int",
-        label: "Y Offset",
-        description: "Vertical offset from center in percent. 100 sits at the outer gap.",
-      },
-      {
-        key: "no_focus",
-        type: "bool",
-        label: "No Focus",
-        description: "Never give this window keyboard focus.",
-      },
-      {
-        key: "no_fade_in",
-        type: "bool",
-        label: "No Fade In",
-        description: "Window ignores fade-in animation.",
-      },
-      {
-        key: "no_fade_out",
-        type: "bool",
-        label: "No Fade Out",
-        description: "Window ignores fade-out animation.",
-      },
-      {
-        key: "no_force_center",
-        type: "bool",
-        label: "No Force Center",
-        description: "Do not center the window automatically.",
-      },
-      {
-        key: "width",
-        type: "float",
-        label: "Width",
-        description:
-          "Floating width: 0 to 1 is a fraction of the usable screen width. Above 1 is pixels.",
-        examples: [800],
-      },
-      {
-        key: "height",
-        type: "float",
-        label: "Height",
-        description:
-          "Floating height: 0 to 1 is a fraction of the usable screen height. Above 1 is pixels.",
-        examples: [600],
-      },
-      {
-        key: "no_border",
-        type: "bool",
-        label: "No Border",
-        description: "Remove window border.",
-      },
-      {
-        key: "no_shadow",
-        type: "bool",
-        label: "No Shadow",
-        description: "Disable the window shadow.",
-      },
-      {
-        key: "no_radius",
-        type: "bool",
-        label: "No Radius",
-        description: "Disable corner radius.",
-      },
-      {
-        key: "no_animation",
-        type: "bool",
-        label: "No Animation",
-        description: "Disable window animations.",
-      },
-      {
-        key: "is_open_silent",
-        type: "bool",
-        label: "Open Unfocused",
-        description: "Open without focus.",
-      },
-      {
-        key: "is_tag_silent",
-        type: "bool",
-        label: "No Focus on Hidden Tag",
-        description:
-          "Do not focus the window when it opens on a tag that is not currently visible.",
-      },
-      {
-        key: "is_named_scratchpad",
-        type: "bool",
-        label: "Named Scratchpad",
-        description: "Mark the window as a named scratchpad toggled by toggle_named_scratchpad.",
-      },
-      {
-        key: "is_unmanaged_global",
-        type: "bool",
-        label: "Unmanaged Global",
-        description: "Open as unmanaged global window (for desktop pets or camera windows).",
-      },
-      {
-        key: "is_global",
-        type: "bool",
-        label: "Global",
-        description: "Open as global window (sticky across tags).",
-      },
-      {
-        key: "scroller_proportion_single",
-        type: "float",
-        label: "Scroller Proportion (Single)",
-        description: "Width proportion used while this window is the only tiled window (0.1-1.0).",
-        min: 0.1,
-        max: 1,
-      },
-      {
-        key: "unfocused_opacity",
-        type: "float",
-        label: "Unfocused Opacity",
-        description: "Opacity for inactive windows. 0 keeps the global opacity.",
-        min: 0,
-        max: 1,
-        examples: [0.85],
-      },
-      {
-        key: "focused_opacity",
-        type: "float",
-        label: "Focused Opacity",
-        description: "Opacity for the active window. 0 keeps the global opacity.",
-        min: 0,
-        max: 1,
-        examples: [0.9],
-      },
-      {
-        key: "is_overlay",
-        type: "bool",
-        label: "Overlay",
-        description: "Keep the window in the top layer.",
-      },
-      {
-        key: "shield_when_capture",
-        type: "bool",
-        label: "Shield When Captured",
-        description: "Fill the window with black while a screen capture is active.",
-      },
-      {
-        key: "allow_shortcuts_inhibit",
-        type: "bool",
-        label: "Allow Shortcuts Inhibit",
-        description: "Let this window's client inhibit compositor shortcuts.",
-      },
-      {
-        key: "ignore_maximize",
-        type: "bool",
-        label: "Ignore Maximize",
-        description: "Ignore maximize requests from the client.",
-      },
-      {
-        key: "ignore_minimize",
-        type: "bool",
-        label: "Ignore Minimize",
-        description: "Ignore minimize requests from the client.",
-      },
-      {
-        key: "no_size_hint",
-        type: "bool",
-        label: "No Size Hint",
-        description: "Ignore the client's minimum and maximum size hints when resizing.",
-      },
-      {
-        key: "idle_inhibit_when_focus",
-        type: "bool",
-        label: "Inhibit Idle When Focused",
-        description: "Keep idle inhibit active while this window is focused.",
-      },
-      {
-        key: "vrr_only_fullscreen",
-        type: "bool",
-        label: "VRR Only Fullscreen",
-        description:
-          "Turn on VRR only while this window is fullscreen. Requires vrr off in its monitor rule.",
-      },
-      {
-        key: "force_render",
-        type: "bool",
-        label: "Force Render",
-        description: "Keep sending frame callbacks while the window is hidden.",
-      },
-      {
-        key: "activation_bypass",
-        type: "bool",
-        label: "Activation Bypass",
-        description: "Treat activation requests for this window as authenticated.",
-      },
-      {
-        key: "is_term",
-        type: "bool",
-        label: "Terminal",
-        description: "Mark the window as a terminal that a newly opened window replaces.",
-      },
-      {
-        key: "allow_csd",
-        type: "bool",
-        label: "Allow CSD",
-        description: "Let clients draw their own window decorations.",
-      },
-      {
-        key: "force_fake_maximize",
-        type: "bool",
-        label: "Force Fake Maximize",
-        description:
-          "Report the window as maximized to the client while keeping the tiled geometry.",
-      },
-      {
-        key: "force_tiled_state",
-        type: "bool",
-        label: "Force Tiled State",
-        description: "Report floating windows as tiled (on by default).",
-      },
-      {
-        key: "force_tearing",
-        type: "enum",
-        label: "Force Tearing",
-        description:
-          "Tearing override: 0 unset, 1 enabled, 2 disabled. Enabled still requires global allow_tearing.",
-        options: [
-          {
-            value: "0",
-            label: "Unspecified",
-          },
-          {
-            value: "1",
-            label: "Enabled",
-          },
-          {
-            value: "2",
-            label: "Disabled",
-          },
-        ],
-        numeric: true,
-        tomlBoolean: true,
-      },
-      {
-        key: "no_swallow",
-        type: "bool",
-        label: "No Swallow",
-        description: "Do not let this window replace an is_term window.",
-      },
-      {
-        key: "confine_pointer",
-        type: "bool",
-        label: "Confine Pointer",
-        description: "Keep the pointer inside this window while it is focused and visible.",
-      },
-      {
-        key: "no_blur",
-        type: "bool",
-        label: "No Blur",
-        description: "Disable blur for this window.",
-      },
-      {
-        key: "scroller_proportion",
-        type: "float",
-        label: "Scroller Proportion",
-        description: "Width proportion for this window in the scroller layout (0.1-1.0).",
-        min: 0.1,
-        max: 1,
-      },
-      {
-        key: "is_fullscreen",
-        type: "bool",
-        label: "Fullscreen",
-        description: "Force fullscreen state.",
-      },
-      {
-        key: "is_fake_fullscreen",
-        type: "bool",
-        label: "Fake Fullscreen",
-        description: "Tell the client it is fullscreen while keeping its tiled size.",
-      },
-      {
-        key: "global_key_binding",
-        type: "key-binding",
-        label: "Global Key Binding",
-        description: "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
-      },
-    ],
+    fields: WINDOW_RULE_FIELDS,
     examples: [
       {
         title: "Picture-in-Picture",
@@ -1451,7 +1072,7 @@ export const RULES: readonly RuleDef[] = [
         key: "scroll_button",
         type: "int",
         label: "Scroll Button",
-        description: "Button code for button scrolling (272-279). 0 disables it.",
+        description: "Button code for button scrolling. 0 disables it.",
       },
       {
         key: "click_method",

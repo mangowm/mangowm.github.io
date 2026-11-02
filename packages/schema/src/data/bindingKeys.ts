@@ -26,7 +26,15 @@ const MODIFIER = `(?:${[
   ci("hyper_r"),
   ci("none"),
 ].join("|")}|code:(?:133|134|37|105|50|62|64|108)|${VARIABLE})`;
-const KEYSYM = `(?:[A-Za-z0-9_]+|code:[0-9]+|${VARIABLE})`;
+const BARE_MODIFIER = `(?:${[
+  ci("super"),
+  ci("ctrl"),
+  ci("shift"),
+  ci("alt"),
+  ci("hyper"),
+  ci("none"),
+].join("|")})`;
+const KEYSYM = `(?!${BARE_MODIFIER}\\s*$)(?:[A-Za-z0-9_]+|code:[0-9]+|${VARIABLE})`;
 const DIRECTION = `(?:${[ci("left"), ci("right"), ci("up"), ci("down"), ci("alldir")].join("|")}|${VARIABLE})`;
 const MOUSE_BUTTON = `(?:${[
   ci("btn_left"),

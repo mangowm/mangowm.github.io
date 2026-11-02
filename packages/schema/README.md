@@ -15,13 +15,15 @@ Mango expands `$var` and `${var}` at parse time, while canonical keeps the
 reference. It does not merge `source` files. An optional root `$schema` key may
 hold this URL for editor tooling. Values are normalized:
 
-- booleans are `true` or `false`
+- booleans are `true` or `false`; rule overrides use `true` / `false`, and an
+  unset override is omitted
 - colors are `"0xRRGGBBAA"` strings
 - `[env]` and `[var]` values are strings
 - `exec`, `exec_once`, `source`, and `source_optional` are string arrays under
   `global`
 - bindings hold one action object, or several under a `conflict` sub-table
-- window tags are arrays of integers
+- window tags are arrays of integers; `-1` normalizes to `[1..31]`
+- `$var` and `${var}` stay as references in every value position
 
 Example:
 
@@ -62,7 +64,8 @@ circle directions, layouts, tag masks, monitor strings, numbers, booleans, and
 free-form commands. Arguments stay optional where Mango applies defaults, and a
 trailing empty argument is accepted.
 
-Tags use `[1, 2]` for normal tags and `[0]` for the special workspace.
+Tags use `[1, 2]` for normal tags and `[0]` for the special workspace. The TOML
+shorthand `-1` (all tags) normalizes to `[1, 2, ..., 31]`.
 
 The canonical model is semantic, not a document model. It does not preserve
 comments, blank lines, ordering, or duplicate keys. Use a document model for
@@ -78,7 +81,8 @@ The same configuration sections, with the value forms a TOML parser produces.
 Bindings and tags use their TOML forms, not the canonical structured forms. Use
 it for editor validation:
 
-- booleans can be `true` / `false` or `0` / `1`
+- booleans can be `true` / `false` or `0` / `1`; rule booleans also accept `-1`
+  for an unset override
 - colors can be `"0xRRGGBBAA"` or a 32-bit integer
 - `[env]` and `[var]` values can be strings, numbers, or booleans
 - `source`, `exec`, `exec_once`, and `source_optional` can be a string or an
@@ -88,7 +92,7 @@ it for editor validation:
   argument shapes are checked when arguments are present
 - binding triggers are checked per section: keyboard modifiers, `code:N`,
   mouse buttons, axis directions, gesture direction and finger count, and fold
-  states; a `$variable` is accepted as a trigger or modifier
+  states; a `$variable` is accepted as a trigger, modifier, or argument
 - keysym names are shape-checked only; whether a keysym exists is resolved by
   xkbcommon at runtime
 - monitor arguments accept a bare monitor name or a monitor spec such as
@@ -96,8 +100,8 @@ it for editor validation:
 - `setoption` checks its first argument against the global option names
 - `global_key_binding` is checked as `MOD-KEY`, for example `ctrl+alt-o`
 - device rule names must be non-empty and cannot contain commas
-- `window_rule.tags` can be a tag number (`0` for the special workspace) or a
-  string such as `"1|2"` for several tags
+- `window_rule.tags` can be a tag number (`0` for the special workspace, `-1`
+  for all tags) or a string such as `"1|2"` for several tags
 - `window_rule.force_tearing` accepts `true` / `false` as aliases for `1` / `0`,
   or the explicit values `0` / `1` / `2`
 
@@ -114,9 +118,9 @@ decimal integer or an integer with underscores is misread or rejected.
 
 Mango's TOML reader is a line-oriented subset, not full TOML. Use decimal
 integers and floats and single-line strings for option values. The schema
-covers the documented `[global]`, `[bind.*]`, and `[[rule.*]]` forms. Mango also
-accepts top-level globals, `[keybind.*]`, `[[window_rule]]`, and single rule
-tables; those forms are not modeled.
+covers the documented forms and the parser's compatibility forms: top-level
+globals, flag-suffixed binding options, `[keybind.*]`, `[[window_rule]]`,
+single rule tables, and root-level rule strings.
 
 `[env]` values containing `~/` are HOME-expanded at parse. Mango skips empty
 `[env]` values and empty `exec` or `source` array elements; the schema rejects
@@ -127,8 +131,9 @@ Arrays with more than one action require a `.conflict` node on a key binding.
 Mouse, axis, gesture, and switch bindings accept one action. Both schemas
 enforce these limits.
 
-Key flag sub-tables nest in the order `sym`, `lock`, `release`, `pass`,
-`conflict`. Only key bindings use flags.
+Key flag sub-tables can appear in any order and can repeat in TOML. Canonical
+normalizes them to `sym`, `lock`, `release`, `pass`, `conflict` order. Only key
+bindings use flags.
 
 ## Normalization
 
@@ -139,11 +144,12 @@ Normalize parsed configs to the canonical object:
   become one-element arrays (`5` becomes `[5]`); `|` strings become arrays
   (`"1|3"` becomes `[1,3]`); flat keys move under `global`; `[env]` and `[var]`
   values stay strings.
-- TOML: boolean fields can be `true` / `false` or `0` / `1` and become
-  booleans; numeric enums stay integers; `0x...` integers become
+- TOML: boolean fields can be `true` / `false`, `0` / `1`, or `-1` for rule
+  overrides; `-1` rule overrides are omitted from canonical, and other values
+  become booleans. Numeric enums stay integers; `0x...` integers become
   `"0xRRGGBBAA"` strings; scalar `[env]` and `[var]` values become strings;
   action strings become action objects; tag numbers and `|` strings become tag
-  arrays.
+  arrays; `-1` tags become `[1..31]`.
 
 Additional `.conf` rules:
 
@@ -170,11 +176,11 @@ equivalent.
 
 ## Validation policy
 
-Canonical values are normalized and must be in range. The TOML schema rejects
-values Mango would clamp, with one exception: `blur_params_saturation` accepts
-up to `1.2` because that is the upstream source default, while canonical uses
-the effective value `1`. A parser should report clamped values as warnings
-before normalization.
+Canonical values are normalized and must be in range. The TOML schema follows
+the parser's accepted value forms and rejects values Mango would clamp, except
+`shadows_blur`, which accepts fractions and truncates them. `blur_params_saturation`
+uses the effective range `0..1`; Mango's upstream default `1.2` is clamped to
+`1`. A parser should report clamped values as warnings before normalization.
 
 ## Examples
 

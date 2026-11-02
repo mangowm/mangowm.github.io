@@ -1,4 +1,5 @@
 // Derived from src/config/binding_parse.c parse_func_name and docs/bindings/keys.md.
+import { VARIABLE_PATTERN } from "../core";
 import type { DispatcherName } from "./dispatchers";
 import { GLOBALS } from "./globals";
 import { LAYOUTS } from "./layouts";
@@ -8,7 +9,6 @@ export type DispatcherArgKind =
   | "circle"
   | "overcircle"
   | "int"
-  | "uint"
   | "float"
   | "bool"
   | "tag-mask"
@@ -48,7 +48,7 @@ const TAG_NUMBER = "(?:-1|00|[0-9]|[12][0-9]|3[01])";
 const TAG_MASK = `${TAG_NUMBER}(?:\\s*\\|\\s*${TAG_NUMBER})*`;
 const MONITOR_VALUE = "(?:(?!&&)[^,])+";
 const MONITOR_FIELD = `(?:name|make|model|serial):${MONITOR_VALUE}`;
-const MONITOR_SPEC = `(?:${MONITOR_FIELD}(?:&&${MONITOR_FIELD})*|[^,:&]+)`;
+const MONITOR_SPEC = `(?:${MONITOR_FIELD}(?:&&${MONITOR_FIELD})*|${VARIABLE_PATTERN}(?:&&${MONITOR_FIELD})*|[^,:&]+)`;
 const CONFIG_KEYS = [
   ...GLOBALS.map((option) => option.key),
   "key_mode",
@@ -73,27 +73,30 @@ const OPTION_NAME = `(?:${[...CONFIG_KEYS, "bind(?:[slrpc]*)"]
   .sort((a, b) => b.length - a.length)
   .join("|")})`;
 
+function withVariable(pattern: string): string {
+  return `(?:${pattern}|${VARIABLE_PATTERN})`;
+}
+
 const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
-  direction: DIRECTION,
-  circle: CIRCLE,
-  overcircle: OVERCIRCLE,
-  int: "[+-]?[0-9]+",
-  uint: "[+]?[0-9]+",
-  float: "[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?",
-  bool: "[01]",
-  "tag-mask": TAG_MASK,
-  layout: `(?:${LAYOUTS.join("|")})`,
+  direction: withVariable(DIRECTION),
+  circle: withVariable(CIRCLE),
+  overcircle: withVariable(OVERCIRCLE),
+  int: withVariable("[+-]?[0-9]+"),
+  float: withVariable("[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?"),
+  bool: withVariable("[01]"),
+  "tag-mask": withVariable(TAG_MASK),
+  layout: withVariable(`(?:${LAYOUTS.join("|")})`),
   monitor: MONITOR_SPEC,
-  option: OPTION_NAME,
+  option: withVariable(OPTION_NAME),
   string: "[^,]+",
   free: ".*",
-  "mouse-action": MOUSE_ACTION,
-  force: FORCE,
-  switcher: SWITCHER,
-  "on-off": ON_OFF,
-  "prev-next": PREV_NEXT,
-  index100: "[+]?(?:[0-9]|[1-9][0-9]|100)",
-  "unit-float": "[+]?(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?)",
+  "mouse-action": withVariable(MOUSE_ACTION),
+  force: withVariable(FORCE),
+  switcher: withVariable(SWITCHER),
+  "on-off": withVariable(ON_OFF),
+  "prev-next": withVariable(PREV_NEXT),
+  index100: withVariable("[+]?(?:[0-9]|[1-9][0-9]|100)"),
+  "unit-float": withVariable("[+]?(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?)"),
 };
 
 export const DISPATCHER_ARGS: Record<DispatcherName, readonly DispatcherArgKind[]> = {

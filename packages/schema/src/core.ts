@@ -7,7 +7,7 @@ export const COLOR_PATTERN = "^0[xX][0-9a-fA-F]{8}$";
 
 export const VARIABLE_PATTERN = "\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})";
 export const TAG_NUMBER_PATTERN = "(?:[0-9]|[12][0-9]|3[01])";
-export const TAG_MASK_PATTERN = `^\\s*${TAG_NUMBER_PATTERN}\\s*(?:\\|\\s*${TAG_NUMBER_PATTERN}\\s*)*$`;
+export const TAG_MASK_PATTERN = `^\\s*(?:-1|${TAG_NUMBER_PATTERN}(?:\\s*\\|\\s*${TAG_NUMBER_PATTERN})*)\\s*$`;
 export const TAG_ID_STRINGS = ["*", ...Array.from({ length: 32 }, (_, index) => String(index))];
 export const NUMBER_PATTERN = "[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?";
 export const CURVE_STRING_PATTERN = `^\\s*${NUMBER_PATTERN}(?:\\s*,\\s*${NUMBER_PATTERN}){3}\\s*$`;
@@ -22,19 +22,17 @@ export const BINDING_DEFS: Record<BindingKind, string> = {
   switch: "SwitchBindingNode",
 };
 
-export const TRIGGER_DEFS: Record<BindingKind, string> = {
-  key: "KeyTrigger",
-  mouse: "MouseTrigger",
-  axis: "AxisTrigger",
-  gesture: "GestureTrigger",
-  switch: "SwitchTrigger",
-};
+export const VariableString = Type.String({
+  pattern: `^(?:${VARIABLE_PATTERN})$`,
+});
+
+export function withVariable(schema: TSchema, metadata: Record<string, unknown> = {}): TSchema {
+  return Type.Union([schema, VariableString], metadata);
+}
 
 export function enumSchema(
   values: readonly string[],
   numeric: boolean,
-  metadata: Record<string, unknown>,
-  defaultValue?: unknown,
   labels?: readonly string[],
 ): TSchema {
   const hasLabels = labels?.some((label) => Boolean(label)) ?? false;
@@ -48,14 +46,11 @@ export function enumSchema(
     type: numeric ? "integer" : "string",
     enum: numeric ? values.map(Number) : [...values],
     ...(hasLabels ? { oneOf: branches } : {}),
-    ...metadata,
-    ...(defaultValue === undefined ? {} : { default: defaultValue }),
   });
 }
 
 export function bindingMap(kind: BindingKind, title: string, description: string): TSchema {
-  const ref = `#/$defs/${BINDING_DEFS[kind]}`;
-  return Type.Record(Type.String(), Type.Unsafe<TSchema>({ $ref: ref }), {
+  return Type.Record(Type.String(), Type.Ref(`#/$defs/${BINDING_DEFS[kind]}`), {
     title,
     description,
   });

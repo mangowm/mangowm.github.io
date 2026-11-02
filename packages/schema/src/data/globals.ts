@@ -489,15 +489,15 @@ export const GLOBALS: readonly GlobalDef[] = [
     max: 1,
   },
   {
+    // Mango assigns 1.2, then clamps the effective value to 1.
     key: "blur_params_saturation",
     type: "float",
-    default: 1.2,
+    default: 1,
     label: "Blur Saturation",
-    description: "Saturation multiplier for the blurred layer. Values above 1 are clamped to 1.",
+    description:
+      "Saturation multiplier for the blurred layer. Mango clamps the effective value to 0-1.",
     min: 0,
-    max: 1.2,
-    canonicalDefault: 1,
-    canonicalMax: 1,
+    max: 1,
   },
   {
     key: "shadows",
@@ -535,8 +535,10 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 15,
     label: "Shadow Softness",
     description: "Gaussian blur sigma for softer shadows.",
+    tomlDescription: "Gaussian blur sigma for softer shadows. TOML fractions are truncated.",
     min: 0,
     max: 100,
+    tomlNumber: true,
   },
   {
     key: "shadows_position_x",

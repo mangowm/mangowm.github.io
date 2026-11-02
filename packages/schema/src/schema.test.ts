@@ -4,6 +4,8 @@ import Value from "typebox/value";
 
 import { DISPATCHER_ARGS, type DispatcherArgKind } from "./data/dispatcherArgs";
 import { DISPATCHERS } from "./data/dispatchers";
+import { GLOBALS } from "./data/globals";
+import { RULES } from "./data/rules";
 import { schema, tomlSchema } from "./schema";
 import { MANGO_VERSION } from "./version";
 
@@ -60,21 +62,20 @@ describe("canonical schema", () => {
   });
 
   it("has six rule types and 165 fields", () => {
-    const rules = schema.properties.rule.properties;
+    const rules = (schema.properties.rule as { properties: Record<string, any> }).properties;
     expect(Object.keys(rules)).toHaveLength(6);
-    const fields = Object.values(rules).reduce(
-      (count, rule: any) => count + Object.keys(rule.items.properties).length,
-      0,
-    );
-    expect(fields).toBe(165);
+    expect(RULES.reduce((count, rule) => count + rule.fields.length, 0)).toBe(165);
   });
 
   it("validates every global default", () => {
-    const global = schema.properties.global.properties as Record<string, any>;
     const defaults = Object.fromEntries(
-      Object.entries(global)
-        .filter(([, value]) => value.default !== undefined)
-        .map(([key, value]) => [key, value.default]),
+      GLOBALS.filter(
+        (option) =>
+          !(
+            (option.type === "preset" || option.type === "layout-array") &&
+            option.default.length === 0
+          ),
+      ).map((option) => [option.key, option.default]),
     );
     expect(Value.Check(schema, { global: defaults })).toBe(true);
     expect(Value.Check(tomlSchema, { global: defaults })).toBe(true);
@@ -275,6 +276,105 @@ describe("canonical schema", () => {
     ).toBe(true);
   });
 
+  it("accepts variable references in typed values", () => {
+    const vars = {
+      var: {
+        n: "1",
+        f: "0.5",
+        b: "1",
+        color: "0x112233ff",
+        anim: "slide",
+        curve: "0.46,1,0.29,1",
+        layout: "tile",
+        mask: "1|2",
+        dir: "left",
+        opt: "blur",
+        mon: "eDP-1",
+      },
+    };
+
+    expect(
+      Value.Check(schema, {
+        ...vars,
+        global: {
+          border_radius: "$n",
+          zoom_initial_ratio: "$f",
+          animations: "$b",
+          root_color: "$color",
+          animation_type_open: "$anim",
+          animation_curve_open: "$curve",
+          circle_layout: "$layout",
+        },
+        rule: {
+          monitor_rule: [
+            {
+              name: "eDP-1",
+              scale: "$f",
+              width: "$n",
+              height: "$n",
+              refresh: "$f",
+              custom: "$b",
+            },
+          ],
+          tag_rule: [{ id: "$n", master_count: "$n", layout_name: "$layout" }],
+          window_rule: [
+            { width: "$f", is_floating: "$b", animation_type_open: "$anim", tags: "$mask" },
+          ],
+        },
+        bind: {
+          default: {
+            "SUPER+r": [{ dispatcher: "focusdir", args: "$dir" }],
+            "SUPER+s": [{ dispatcher: "setoption", args: "$opt,1" }],
+            "SUPER+t": [{ dispatcher: "setlayout", args: "$layout" }],
+            "SUPER+u": [{ dispatcher: "movewin", args: "$n,$n" }],
+            "SUPER+v": [{ dispatcher: "view", args: "$mask" }],
+            "SUPER+w": [{ dispatcher: "focusmon", args: "$mon&&make:BOE" }],
+          },
+        },
+      }),
+    ).toBe(true);
+
+    expect(
+      Value.Check(tomlSchema, {
+        ...vars,
+        global: {
+          border_radius: "$n",
+          animations: "$b",
+          root_color: "$color",
+          animation_curve_open: "$curve",
+          circle_layout: "$layout",
+        },
+        rule: {
+          monitor_rule: [
+            {
+              name: "eDP-1",
+              scale: "$f",
+              width: "$n",
+              height: "$n",
+              refresh: "$f",
+              custom: "$b",
+            },
+          ],
+          tag_rule: [{ id: "$n", master_count: "$n", layout_name: "$layout" }],
+          window_rule: [{ width: "$f", is_floating: "$b", tags: "$mask" }],
+        },
+        bind: {
+          default: {
+            "SUPER+r": "focusdir,$dir",
+            "SUPER+s": "setoption,$opt,1",
+            "SUPER+t": "setlayout,$layout",
+            "SUPER+u": "movewin,$n,$n",
+            "SUPER+v": "view,$mask",
+            "SUPER+w": "focusmon,$mon&&make:BOE",
+          },
+        },
+      }),
+    ).toBe(true);
+
+    expect(Value.Check(schema, { global: { border_radius: "$1bad" } })).toBe(false);
+    expect(Value.Check(tomlSchema, { global: { border_radius: "$1bad" } })).toBe(false);
+  });
+
   it("rejects extra arguments on no-argument dispatchers", () => {
     expect(Value.Check(tomlSchema, { bind: { default: { "SUPER+r": "reload_config,foo" } } })).toBe(
       false,
@@ -299,7 +399,6 @@ describe("canonical schema", () => {
       circle: "next",
       overcircle: "current_next",
       int: "+1",
-      uint: "1",
       float: "+0.5",
       bool: "1",
       "tag-mask": "1|3",
@@ -394,7 +493,7 @@ describe("canonical schema", () => {
   it("bounds saturation", () => {
     expect(Value.Check(schema, { global: { blur_params_saturation: 1 } })).toBe(true);
     expect(Value.Check(schema, { global: { blur_params_saturation: 1.2 } })).toBe(false);
-    expect(Value.Check(tomlSchema, { global: { blur_params_saturation: 1.2 } })).toBe(true);
+    expect(Value.Check(tomlSchema, { global: { blur_params_saturation: 1.2 } })).toBe(false);
   });
 
   it("accepts an empty animation type", () => {
@@ -432,6 +531,31 @@ describe("canonical schema", () => {
     expect(Value.Check(schema, { rule: { window_rule: [{ tags: [] }] } })).toBe(false);
     expect(Value.Check(schema, { rule: { window_rule: [{ tags: [1, 1] }] } })).toBe(false);
     expect(Value.Check(schema, { rule: { window_rule: [{ tags: [1, 32] }] } })).toBe(false);
+  });
+
+  it("normalizes canonical rule booleans and tag masks", () => {
+    for (const value of [true, false]) {
+      expect(Value.Check(schema, { rule: { window_rule: [{ is_floating: value }] } })).toBe(true);
+    }
+    for (const value of [0, 1, -1]) {
+      expect(Value.Check(schema, { rule: { window_rule: [{ is_floating: value }] } })).toBe(false);
+    }
+    for (const value of [true, false, 0, 1, -1]) {
+      expect(Value.Check(tomlSchema, { rule: { window_rule: [{ is_floating: value }] } })).toBe(
+        true,
+      );
+    }
+
+    expect(Value.Check(tomlSchema, { rule: { window_rule: [{ tags: -1 }] } })).toBe(true);
+    expect(Value.Check(tomlSchema, { rule: { window_rule: [{ tags: "-1" }] } })).toBe(true);
+    expect(Value.Check(schema, { rule: { window_rule: [{ tags: -1 }] } })).toBe(false);
+    expect(
+      Value.Check(schema, {
+        rule: {
+          window_rule: [{ tags: Array.from({ length: 31 }, (_, index) => index + 1) }],
+        },
+      }),
+    ).toBe(true);
   });
 
   it("tightens array bounds", () => {
@@ -546,6 +670,12 @@ describe("canonical schema", () => {
     expect(Value.Check(tomlSchema, { global: { exec: "waybar" }, env: { DPI: 140 } })).toBe(true);
   });
 
+  it("accepts TOML shadow blur fractions", () => {
+    expect(Value.Check(tomlSchema, { global: { shadows_blur: 12.5 } })).toBe(true);
+    expect(Value.Check(schema, { global: { shadows_blur: 12 } })).toBe(true);
+    expect(Value.Check(schema, { global: { shadows_blur: 12.5 } })).toBe(false);
+  });
+
   it("accepts device scroll options", () => {
     expect(
       Value.Check(schema, {
@@ -559,8 +689,12 @@ describe("canonical schema", () => {
   it("bounds window opacity and scroller proportions", () => {
     expect(Value.Check(schema, { rule: { window_rule: [{ focused_opacity: 1.5 }] } })).toBe(false);
     expect(Value.Check(schema, { rule: { window_rule: [{ focused_opacity: 0.5 }] } })).toBe(true);
-    expect(Value.Check(schema, { rule: { window_rule: [{ scroller_proportion: 0.05 }] } })).toBe(
+    expect(Value.Check(schema, { rule: { window_rule: [{ scroller_proportion: -0.1 }] } })).toBe(
       false,
+    );
+    expect(Value.Check(schema, { rule: { window_rule: [{ scroller_proportion: 0 }] } })).toBe(true);
+    expect(Value.Check(schema, { rule: { window_rule: [{ scroller_proportion: 0.05 }] } })).toBe(
+      true,
     );
     expect(
       Value.Check(schema, { rule: { window_rule: [{ scroller_proportion_single: 0.5 }] } }),
@@ -635,6 +769,73 @@ describe("TOML schema", () => {
     ).toBe(true);
   });
 
+  it("matches lenient TOML parser forms", () => {
+    expect(
+      Value.Check(tomlSchema, {
+        bind: {
+          default: {
+            lock: { sym: { "SUPER+r": "reload_config" } },
+            pass: { pass: { "SUPER+t": "reload_config" } },
+          },
+        },
+      }),
+    ).toBe(true);
+
+    expect(
+      Value.Check(tomlSchema, {
+        bind: {
+          default: {
+            conflict: { lock: { "SUPER+r": ["spawn,a", "reload_config"] } },
+          },
+        },
+      }),
+    ).toBe(true);
+
+    expect(
+      Value.Check(tomlSchema, {
+        keybind: { default: { "SUPER+r": "reload_config" } },
+      }),
+    ).toBe(true);
+
+    expect(
+      Value.Check(tomlSchema, {
+        rule: {
+          monitor_rule: { name: "eDP-1" },
+          window_rule: { app_id: "foot" },
+        },
+      }),
+    ).toBe(true);
+
+    expect(
+      Value.Check(tomlSchema, {
+        animations: 1,
+        border_radius: 5,
+        root_color: "0x323232ff",
+        exec: "waybar",
+        key_mode: "resize",
+        env: "QT_IM_MODULE,fcitx",
+        var: "term,foot",
+        bind: "SUPER,r,reload_config",
+        monitor_rule: "name:eDP-1",
+      }),
+    ).toBe(true);
+
+    expect(Value.Check(tomlSchema, { monitor_rule: { name: "eDP-1" } })).toBe(true);
+    expect(Value.Check(tomlSchema, { monitor_rule: [{ name: "eDP-1" }] })).toBe(true);
+    expect(
+      Value.Check(tomlSchema, {
+        binds: "SUPER,r,reload_config",
+        bindl: "SUPER,r,reload_config",
+        mousebindc: "SUPER,btn_left,moveresize,curmove",
+      }),
+    ).toBe(true);
+    expect(
+      Value.Check(tomlSchema, {
+        global: { binds: "SUPER,r,reload_config" },
+      }),
+    ).toBe(true);
+  });
+
   it("validates binding trigger keys per section", () => {
     const tomlBinding = (section: string, key: string) =>
       Value.Check(tomlSchema, { [section]: { default: { [key]: "reload_config" } } });
@@ -671,6 +872,31 @@ describe("TOML schema", () => {
       ["switchbind", "fold+unfold"],
     ];
     for (const [section, key] of invalid) expect(tomlBinding(section, key)).toBe(false);
+  });
+
+  it("rejects bare modifier names as keys", () => {
+    for (const key of ["super", "ctrl", "shift", "alt", "hyper", "none", "SUPER"]) {
+      expect(
+        Value.Check(schema, { bind: { default: { [key]: [{ dispatcher: "reload_config" }] } } }),
+      ).toBe(false);
+      expect(Value.Check(tomlSchema, { bind: { default: { [key]: "reload_config" } } })).toBe(
+        false,
+      );
+    }
+
+    expect(
+      Value.Check(schema, { bind: { default: { super_l: [{ dispatcher: "reload_config" }] } } }),
+    ).toBe(true);
+    expect(
+      Value.Check(schema, {
+        bind: { default: { "SUPER+super_l": [{ dispatcher: "reload_config" }] } },
+      }),
+    ).toBe(true);
+    expect(
+      Value.Check(schema, {
+        bind: { default: { "SUPER+super": [{ dispatcher: "reload_config" }] } },
+      }),
+    ).toBe(false);
   });
 
   it("accepts toml tag zero forms", () => {

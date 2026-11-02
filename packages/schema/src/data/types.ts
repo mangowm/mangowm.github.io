@@ -7,6 +7,7 @@ interface GlobalBase {
   key: string;
   label: string;
   description: string;
+  tomlDescription?: string;
   examples?: readonly unknown[];
   tomlExamples?: readonly unknown[];
 }
@@ -21,14 +22,13 @@ export type GlobalDef =
       default: number;
       min?: number;
       max?: number;
+      tomlNumber?: boolean;
     })
   | (GlobalBase & {
       type: "float";
       default: number;
       min?: number;
       max?: number;
-      canonicalDefault?: number;
-      canonicalMax?: number;
     })
   | (GlobalBase & {
       type: "string";
@@ -56,8 +56,6 @@ export type GlobalDef =
       type: "layout-array";
       default: readonly string[];
     });
-
-export type GlobalType = GlobalDef["type"];
 
 export type RuleKey =
   | "monitor_rule"
