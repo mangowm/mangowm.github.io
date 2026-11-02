@@ -1,6 +1,5 @@
 // Derived from src/config/binding_parse.c parse_func_name and docs/bindings/keys.md.
 import { VARIABLE_PATTERN } from "../core";
-import type { DispatcherName } from "./dispatchers";
 import { GLOBALS } from "./globals";
 import { LAYOUTS } from "./layouts";
 
@@ -73,33 +72,33 @@ const OPTION_NAME = `(?:${[...CONFIG_KEYS, "bind(?:[slrpc]*)"]
   .sort((a, b) => b.length - a.length)
   .join("|")})`;
 
-function withVariable(pattern: string): string {
+function withVariablePattern(pattern: string): string {
   return `(?:${pattern}|${VARIABLE_PATTERN})`;
 }
 
 const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
-  direction: withVariable(DIRECTION),
-  circle: withVariable(CIRCLE),
-  overcircle: withVariable(OVERCIRCLE),
-  int: withVariable("[+-]?[0-9]+"),
-  float: withVariable("[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?"),
-  bool: withVariable("[01]"),
-  "tag-mask": withVariable(TAG_MASK),
-  layout: withVariable(`(?:${LAYOUTS.join("|")})`),
+  direction: withVariablePattern(DIRECTION),
+  circle: withVariablePattern(CIRCLE),
+  overcircle: withVariablePattern(OVERCIRCLE),
+  int: withVariablePattern("[+-]?[0-9]+"),
+  float: withVariablePattern("[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?"),
+  bool: withVariablePattern("[01]"),
+  "tag-mask": withVariablePattern(TAG_MASK),
+  layout: withVariablePattern(`(?:${LAYOUTS.join("|")})`),
   monitor: MONITOR_SPEC,
-  option: withVariable(OPTION_NAME),
+  option: withVariablePattern(OPTION_NAME),
   string: "[^,]+",
   free: ".*",
-  "mouse-action": withVariable(MOUSE_ACTION),
-  force: withVariable(FORCE),
-  switcher: withVariable(SWITCHER),
-  "on-off": withVariable(ON_OFF),
-  "prev-next": withVariable(PREV_NEXT),
-  index100: withVariable("[+]?(?:[0-9]|[1-9][0-9]|100)"),
-  "unit-float": withVariable("[+]?(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?)"),
+  "mouse-action": withVariablePattern(MOUSE_ACTION),
+  force: withVariablePattern(FORCE),
+  switcher: withVariablePattern(SWITCHER),
+  "on-off": withVariablePattern(ON_OFF),
+  "prev-next": withVariablePattern(PREV_NEXT),
+  index100: withVariablePattern("[+]?(?:[0-9]|[1-9][0-9]|100)"),
+  "unit-float": withVariablePattern("[+]?(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?)"),
 };
 
-export const DISPATCHER_ARGS: Record<DispatcherName, readonly DispatcherArgKind[]> = {
+export const DISPATCHER_ARGS = {
   centerwin: [],
   chvt: ["int"],
   comboview: ["tag-mask"],
@@ -194,13 +193,16 @@ export const DISPATCHER_ARGS: Record<DispatcherName, readonly DispatcherArgKind[
   viewtoright_have_client: ["bool"],
   wakeup_monitor: ["monitor"],
   zoom: [],
-};
+} as const satisfies Record<string, readonly DispatcherArgKind[]>;
 
-export function argSequencePattern(args: readonly DispatcherArgKind[], optional: boolean): string {
+export type DispatcherName = keyof typeof DISPATCHER_ARGS;
+export const DISPATCHERS = Object.keys(DISPATCHER_ARGS) as DispatcherName[];
+
+export function argSequencePattern(args: readonly DispatcherArgKind[]): string {
   let tail = "";
   for (let index = args.length - 1; index >= 0; index -= 1) {
     const pattern = ARG_PATTERNS[args[index]];
-    tail = `(?:\\s*,\\s*(?:${pattern})?${tail})${optional ? "?" : ""}`;
+    tail = `(?:\\s*,\\s*(?:${pattern})?${tail})?`;
   }
   return tail;
 }
@@ -208,5 +210,5 @@ export function argSequencePattern(args: readonly DispatcherArgKind[], optional:
 export function argsPattern(name: DispatcherName): string {
   const args = DISPATCHER_ARGS[name];
   if (args.length === 0) return "^\\s*(?:0)?\\s*$";
-  return `^\\s*(?:${ARG_PATTERNS[args[0]]}${argSequencePattern(args.slice(1), true)})?\\s*$`;
+  return `^\\s*(?:${ARG_PATTERNS[args[0]]}${argSequencePattern(args.slice(1))})?\\s*$`;
 }

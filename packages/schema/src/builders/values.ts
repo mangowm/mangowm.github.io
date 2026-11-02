@@ -1,12 +1,13 @@
 // oxlint-disable unicorn/no-thenable
 import Type, { type TSchema } from "typebox";
 
-import { COLOR_PATTERN, VariableString, bindingMap, enumSchema, withVariable } from "../core";
+import { COLOR_PATTERN, VariableString, enumSchema, withVariable } from "../core";
 import { GLOBAL_KEY_BINDING_PATTERN } from "../data/bindingKeys";
 import { GLOBALS } from "../data/globals";
 import { LAYOUTS } from "../data/layouts";
 import { RULES } from "../data/rules";
 import type { GlobalDef, RuleDef, RuleFieldDef } from "../data/types";
+import { bindingMap } from "./bindings";
 
 type Metadata = Record<string, unknown>;
 
@@ -96,21 +97,6 @@ function globalProperty(option: GlobalDef): TSchema {
   }
 }
 
-export function globalDefs(): Record<string, TSchema> {
-  return Object.fromEntries(
-    GLOBALS.map((option) => [`GlobalOption.${option.key}`, globalProperty(option)]),
-  );
-}
-
-function globalProperties(): Record<string, TSchema> {
-  return Object.fromEntries(
-    GLOBALS.map((option) => [
-      option.key,
-      Type.Optional(Type.Ref(`#/$defs/GlobalOption.${option.key}`)),
-    ]),
-  );
-}
-
 function directive(title: string, description: string): TSchema {
   return Type.Array(Type.String({ minLength: 1 }), { title, description });
 }
@@ -149,19 +135,22 @@ function varMap(): TSchema {
   });
 }
 
-function flatGlobalProperties(): Record<string, TSchema> {
-  return {
-    ...globalProperties(),
-    ...directiveProperties(),
-  };
-}
-
 function globalSchema(): TSchema {
-  return Type.Object(flatGlobalProperties(), {
-    title: "Global options",
-    description: "Global compositor options.",
-    additionalProperties: false,
-  });
+  const globalOptions = Object.fromEntries(
+    GLOBALS.map((option) => [option.key, Type.Optional(globalProperty(option))]),
+  );
+
+  return Type.Object(
+    {
+      ...globalOptions,
+      ...directiveProperties(),
+    },
+    {
+      title: "Global options",
+      description: "Global compositor options.",
+      additionalProperties: false,
+    },
+  );
 }
 
 function tagIdSchema(metadata: Metadata): TSchema {
@@ -283,16 +272,10 @@ function ruleSchema(rule: RuleDef): TSchema {
   });
 }
 
-export function ruleDefs(): Record<string, TSchema> {
-  return Object.fromEntries(RULES.map((rule) => [`Rule.${rule.key}`, ruleSchema(rule)]));
-}
-
-function ruleEntry(rule: RuleDef): TSchema {
-  return Type.Array(Type.Ref(`#/$defs/Rule.${rule.key}`));
-}
-
 function rulesSchema(): TSchema {
-  const rules = Object.fromEntries(RULES.map((rule) => [rule.key, Type.Optional(ruleEntry(rule))]));
+  const rules = Object.fromEntries(
+    RULES.map((rule) => [rule.key, Type.Optional(Type.Array(ruleSchema(rule)))]),
+  );
 
   return Type.Object(rules, {
     title: "Rules",
@@ -301,9 +284,7 @@ function rulesSchema(): TSchema {
   });
 }
 
-export type RootSchema = TSchema & { properties: Record<string, TSchema> };
-
-export function rootSchema(version: string): RootSchema {
+export function rootSchema(version: string) {
   return Type.Object(
     {
       $schema: Type.Optional(
@@ -350,5 +331,5 @@ export function rootSchema(version: string): RootSchema {
       ],
       additionalProperties: false,
     },
-  ) as RootSchema;
+  );
 }

@@ -1,7 +1,7 @@
 import Type, { type TSchema } from "typebox";
 
 import { argsPattern } from "../data/dispatcherArgs";
-import { DISPATCHERS } from "../data/dispatchers";
+import { DISPATCHERS } from "../data/dispatcherArgs";
 
 const CANONICAL_ACTION_VARIANTS = [
   ...DISPATCHERS.map((name) => ({

@@ -2,8 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vite-plus/test";
 import Value from "typebox/value";
 
-import { DISPATCHER_ARGS, type DispatcherArgKind } from "./data/dispatcherArgs";
-import { DISPATCHERS } from "./data/dispatchers";
+import { DISPATCHER_ARGS, DISPATCHERS, type DispatcherArgKind } from "./data/dispatcherArgs";
 import { GLOBALS } from "./data/globals";
 import { RULES } from "./data/rules";
 import { schema } from "./schema";

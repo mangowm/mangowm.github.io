@@ -1,8 +1,17 @@
+import type { TSchema } from "typebox";
+
 import { actionDefs } from "./builders/actions";
 import { bindingDefs } from "./builders/bindings";
-import type { SchemaDocument } from "./builders/document";
-import { globalDefs, rootSchema, ruleDefs } from "./builders/values";
+import { rootSchema } from "./builders/values";
 import { MANGO_VERSION } from "./version";
+
+export interface SchemaDocument {
+  $schema: string;
+  $id: string;
+  $defs: Record<string, TSchema>;
+  properties: Record<string, unknown>;
+  [key: string]: unknown;
+}
 
 export function buildSchema(version: string): SchemaDocument {
   return {
@@ -11,8 +20,6 @@ export function buildSchema(version: string): SchemaDocument {
     $defs: {
       ...actionDefs(),
       ...bindingDefs(),
-      ...globalDefs(),
-      ...ruleDefs(),
     },
     ...rootSchema(version),
     title: `mangowm configuration ${version}`,
