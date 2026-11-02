@@ -1,18 +1,10 @@
 import Type, { type TSchema } from "typebox";
 
 import { type BindingKind } from "./data/bindingKeys";
-import { LAYOUTS } from "./data/layouts";
 
 export const COLOR_PATTERN = "^0[xX][0-9a-fA-F]{8}$";
 
 export const VARIABLE_PATTERN = "\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})";
-export const TAG_NUMBER_PATTERN = "(?:[0-9]|[12][0-9]|3[01])";
-export const TAG_MASK_PATTERN = `^\\s*(?:-1|${TAG_NUMBER_PATTERN}(?:\\s*\\|\\s*${TAG_NUMBER_PATTERN})*)\\s*$`;
-export const TAG_ID_STRINGS = ["*", ...Array.from({ length: 32 }, (_, index) => String(index))];
-export const NUMBER_PATTERN = "[+]?[0-9]+(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?";
-export const CURVE_STRING_PATTERN = `^\\s*${NUMBER_PATTERN}(?:\\s*,\\s*${NUMBER_PATTERN}){3}\\s*$`;
-export const NUMBER_LIST_PATTERN = `^\\s*${NUMBER_PATTERN}(?:\\s*,\\s*${NUMBER_PATTERN})*\\s*$`;
-export const LAYOUT_LIST_PATTERN = `^\\s*(?:${LAYOUTS.join("|")})(?:\\s*,\\s*(?:${LAYOUTS.join("|")}))*\\s*$`;
 
 export const BINDING_DEFS: Record<BindingKind, string> = {
   key: "KeyBindingNode",

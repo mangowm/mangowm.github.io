@@ -260,7 +260,6 @@ export const GLOBALS: readonly GlobalDef[] = [
     label: "Open Curve",
     description: "Cubic bezier curve for window open animations (x1,y1,x2,y2).",
     examples: [[0.46, 1, 0.29, 1]],
-    tomlExamples: ["0.46,1,0.29,1"],
   },
   {
     key: "animation_curve_tag",
@@ -535,10 +534,8 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 15,
     label: "Shadow Softness",
     description: "Gaussian blur sigma for softer shadows.",
-    tomlDescription: "Gaussian blur sigma for softer shadows. TOML fractions are truncated.",
     min: 0,
     max: 100,
-    tomlNumber: true,
   },
   {
     key: "shadows_position_x",
@@ -843,7 +840,6 @@ export const GLOBALS: readonly GlobalDef[] = [
     label: "Proportion Presets",
     description: "Preset width proportions (0.1-1.0) cycled by switch_proportion_preset.",
     examples: [[0.5, 0.9]],
-    tomlExamples: ["0.5,0.9"],
   },
   {
     key: "circle_layout",
@@ -852,7 +848,6 @@ export const GLOBALS: readonly GlobalDef[] = [
     label: "Circle Layout",
     description: "Ordered layouts cycled by switch_layout.",
     examples: [["tile", "scroller"]],
-    tomlExamples: ["tile,scroller"],
   },
   {
     key: "new_is_master",

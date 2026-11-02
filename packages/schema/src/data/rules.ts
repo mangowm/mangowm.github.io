@@ -83,7 +83,6 @@ const WINDOW_RULE_FIELDS: readonly RuleFieldDef[] = [
     label: "Tags",
     description: "Assign to one tag, several tags separated by |, or the special workspace with 0.",
     examples: [[1, 3]],
-    tomlExamples: ["1|3"],
   },
   {
     key: "monitor",
@@ -331,7 +330,6 @@ const WINDOW_RULE_FIELDS: readonly RuleFieldDef[] = [
       },
     ],
     numeric: true,
-    tomlBoolean: true,
   },
   {
     key: "no_swallow",
@@ -868,12 +866,6 @@ export const RULES: readonly RuleDef[] = [
         is_floating: true,
       },
     ],
-    tomlExamples: [
-      {
-        app_id: "firefox",
-        is_floating: 1,
-      },
-    ],
   },
   {
     key: "window_rule_once",
@@ -885,12 +877,6 @@ export const RULES: readonly RuleDef[] = [
       {
         title: "Picture-in-Picture",
         is_floating: true,
-      },
-    ],
-    tomlExamples: [
-      {
-        title: "Picture-in-Picture",
-        is_floating: 1,
       },
     ],
   },

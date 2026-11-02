@@ -205,13 +205,7 @@ export function argSequencePattern(args: readonly DispatcherArgKind[], optional:
   return tail;
 }
 
-export function tomlActionPattern(name: DispatcherName): string {
-  const args = DISPATCHER_ARGS[name];
-  if (args.length === 0) return `${name}(?:\\s*,\\s*(?:0)?)?`;
-  return `${name}${argSequencePattern(args, true)}`;
-}
-
-export function canonicalArgsPattern(name: DispatcherName): string {
+export function argsPattern(name: DispatcherName): string {
   const args = DISPATCHER_ARGS[name];
   if (args.length === 0) return "^\\s*(?:0)?\\s*$";
   return `^\\s*(?:${ARG_PATTERNS[args[0]]}${argSequencePattern(args.slice(1), true)})?\\s*$`;

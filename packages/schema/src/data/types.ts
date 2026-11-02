@@ -7,9 +7,7 @@ interface GlobalBase {
   key: string;
   label: string;
   description: string;
-  tomlDescription?: string;
   examples?: readonly unknown[];
-  tomlExamples?: readonly unknown[];
 }
 
 export type GlobalDef =
@@ -22,7 +20,6 @@ export type GlobalDef =
       default: number;
       min?: number;
       max?: number;
-      tomlNumber?: boolean;
     })
   | (GlobalBase & {
       type: "float";
@@ -82,7 +79,6 @@ interface RuleFieldBase {
   label: string;
   description: string;
   examples?: readonly unknown[];
-  tomlExamples?: readonly unknown[];
 }
 
 export type RuleFieldDef =
@@ -106,7 +102,6 @@ export type RuleFieldDef =
       type: "enum";
       options: readonly EnumOption[];
       numeric?: boolean;
-      tomlBoolean?: boolean;
     })
   | (RuleFieldBase & {
       type: "color";
@@ -129,6 +124,5 @@ export interface RuleDef {
   label: string;
   description: string;
   examples?: readonly Record<string, unknown>[];
-  tomlExamples?: readonly Record<string, unknown>[];
   fields: readonly RuleFieldDef[];
 }

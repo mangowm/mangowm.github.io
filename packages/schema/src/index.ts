@@ -1,9 +1,8 @@
 import Schema from "typebox/schema";
 
-import { schema, tomlSchema } from "./schema";
+import { schema } from "./schema";
 
-export { buildCanonicalSchema, buildTomlSchema, schema, tomlSchema } from "./schema";
+export { buildSchema, schema } from "./schema";
 export { MANGO_VERSION } from "./version";
 
-export const validateCanonical = Schema.Compile(schema);
-export const validateToml = Schema.Compile(tomlSchema);
+export const validate = Schema.Compile(schema);

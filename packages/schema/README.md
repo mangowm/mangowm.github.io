@@ -1,19 +1,21 @@
 # mango config schema
 
-Two JSON Schema 2020-12 files generated from the TypeBox definitions in `src/`.
-They describe a parsed configuration object. Neither validates `.conf` or TOML
-syntax.
-
-## Canonical schema
+One JSON Schema 2020-12 file generated from the TypeBox definitions in `src/`.
+It describes the canonical parsed configuration object. It does not validate
+`.conf` or TOML syntax.
 
 ```text
 https://mangowm.github.io/schema/<version>/schema.json
 ```
 
-The semantic contract for one configuration file. It is a pre-expansion model:
-Mango expands `$var` and `${var}` at parse time, while canonical keeps the
-reference. It does not merge `source` files. An optional root `$schema` key may
-hold this URL for editor tooling. Values are normalized:
+## Canonical model
+
+The schema is the semantic contract for one configuration file. Mango expands
+`$var` and `${var}` at parse time, while canonical keeps the reference. It does
+not merge `source` files. An optional root `$schema` key may hold this URL for
+editor tooling.
+
+Values are normalized:
 
 - booleans are `true` or `false`; rule overrides use `true` / `false`, and an
   unset override is omitted
@@ -22,7 +24,7 @@ hold this URL for editor tooling. Values are normalized:
 - `exec`, `exec_once`, `source`, and `source_optional` are string arrays under
   `global`
 - bindings hold one action object, or several under a `conflict` sub-table
-- window tags are arrays of integers; `-1` normalizes to `[1..31]`
+- window tags are integers in an array; `0` is the special workspace
 - `$var` and `${var}` stay as references in every value position
 
 Example:
@@ -64,92 +66,23 @@ circle directions, layouts, tag masks, monitor strings, numbers, booleans, and
 free-form commands. Arguments stay optional where Mango applies defaults, and a
 trailing empty argument is accepted.
 
-Tags use `[1, 2]` for normal tags and `[0]` for the special workspace. The TOML
-shorthand `-1` (all tags) normalizes to `[1, 2, ..., 31]`.
-
-The canonical model is semantic, not a document model. It does not preserve
-comments, blank lines, ordering, or duplicate keys. Use a document model for
-editing.
-
-## TOML schema
-
-```text
-https://mangowm.github.io/schema/<version>/toml.schema.json
-```
-
-The same configuration sections, with the value forms a TOML parser produces.
-Bindings and tags use their TOML forms, not the canonical structured forms. Use
-it for editor validation:
-
-- booleans can be `true` / `false` or `0` / `1`; rule booleans also accept `-1`
-  for an unset override
-- colors can be `"0xRRGGBBAA"` or a 32-bit integer
-- `[env]` and `[var]` values can be strings, numbers, or booleans
-- `source`, `exec`, `exec_once`, and `source_optional` can be a string or an
-  array of strings
-- binding actions are strings such as `"spawn,foot"` or arrays of strings;
-  dispatcher names are exposed as an enum so editors can suggest them, and
-  argument shapes are checked when arguments are present
-- binding triggers are checked per section: keyboard modifiers, `code:N`,
-  mouse buttons, axis directions, gesture direction and finger count, and fold
-  states; a `$variable` is accepted as a trigger, modifier, or argument
-- keysym names are shape-checked only; whether a keysym exists is resolved by
-  xkbcommon at runtime
-- monitor arguments accept a bare monitor name or a monitor spec such as
-  `make:Chimei Innolux Corporation&&model:0x15F5`
-- `setoption` checks its first argument against the global option names
-- `global_key_binding` is checked as `MOD-KEY`, for example `ctrl+alt-o`
-- device rule names must be non-empty and cannot contain commas
-- `window_rule.tags` can be a tag number (`0` for the special workspace, `-1`
-  for all tags) or a string such as `"1|2"` for several tags
-- `window_rule.force_tearing` accepts `true` / `false` as aliases for `1` / `0`,
-  or the explicit values `0` / `1` / `2`
-
-Use with Taplo:
-
-```toml
-#:schema https://mangowm.github.io/schema/0.18.4/toml.schema.json
-```
-
-Write colors as `0xRRGGBBAA` in TOML. A TOML parser exposes that token as an
-integer, which is why the TOML schema accepts the integer form. Only use
-integers that came from a `0x` literal. Mango reads the raw token as hex, so a
-decimal integer or an integer with underscores is misread or rejected.
-
-Mango's TOML reader is a line-oriented subset, not full TOML. Use decimal
-integers and floats and single-line strings for option values. The schema
-covers the documented forms and the parser's compatibility forms: top-level
-globals, flag-suffixed binding options, `[keybind.*]`, `[[window_rule]]`,
-single rule tables, and root-level rule strings.
-
-`[env]` values containing `~/` are HOME-expanded at parse. Mango skips empty
-`[env]` values and empty `exec` or `source` array elements; the schema rejects
-them because they have no effect. Rule strings are split on commas by Mango, so
-the schema rejects commas in every rule string field.
-
-Arrays with more than one action require a `.conflict` node on a key binding.
-Mouse, axis, gesture, and switch bindings accept one action. Both schemas
-enforce these limits.
-
-Key flag sub-tables can appear in any order and can repeat in TOML. Canonical
-normalizes them to `sym`, `lock`, `release`, `pass`, `conflict` order. Only key
-bindings use flags.
+The model is semantic, not a document model. It does not preserve comments,
+blank lines, ordering, or duplicate keys. Use a document model for editing.
 
 ## Normalization
 
 Normalize parsed configs to the canonical object:
 
-- `.conf`: boolean fields use `0` / `1`; colors stay `0xRRGGBBAA` strings;
-  comma lists become arrays; action strings become action objects; tag numbers
-  become one-element arrays (`5` becomes `[5]`); `|` strings become arrays
-  (`"1|3"` becomes `[1,3]`); flat keys move under `global`; `[env]` and `[var]`
-  values stay strings.
-- TOML: boolean fields can be `true` / `false`, `0` / `1`, or `-1` for rule
-  overrides; `-1` rule overrides are omitted from canonical, and other values
-  become booleans. Numeric enums stay integers; `0x...` integers become
-  `"0xRRGGBBAA"` strings; scalar `[env]` and `[var]` values become strings;
-  action strings become action objects; tag numbers and `|` strings become tag
-  arrays; `-1` tags become `[1..31]`.
+- boolean fields use `true` / `false`
+- `0x...` colors become `"0xRRGGBBAA"` strings
+- comma lists become arrays
+- action strings become action objects
+- tag numbers become one-element arrays (`5` becomes `[5]`)
+- `|` strings become arrays (`"1|3"` becomes `[1,3]`)
+- flat keys move under `global`
+- `[env]` and `[var]` values become strings
+- `-1` rule overrides are omitted
+- `-1` tags become `[1..31]`
 
 Additional `.conf` rules:
 
@@ -176,31 +109,23 @@ equivalent.
 
 ## Validation policy
 
-Canonical values are normalized and must be in range. The TOML schema follows
-the parser's accepted value forms and rejects values Mango would clamp, except
-`shadows_blur`, which accepts fractions and truncates them. `blur_params_saturation`
+Canonical values are normalized and must be in range. `blur_params_saturation`
 uses the effective range `0..1`; Mango's upstream default `1.2` is clamped to
 `1`. A parser should report clamped values as warnings before normalization.
 
 ## Examples
 
-Both schemas include a small set of `examples` for values whose format is not obvious: colors, curves, presets, layouts, monitor specs, keybindings, tags, rules, actions, and one root config. Examples use the canonical form in `schema.json` and the raw TOML form in `toml.schema.json`. They are annotations and do not affect validation.
+The schema includes a small set of `examples` for values whose format is not
+obvious: colors, curves, presets, layouts, monitor specs, keybindings, tags,
+rules, actions, and one root config. They are annotations and do not affect
+validation.
 
 ## Runtime API
 
-`src/index.ts` exports the schema objects, the two builders, and compiled
-validators:
+`src/index.ts` exports the schema, the builder, and a compiled validator:
 
 ```ts
-import {
-  buildCanonicalSchema,
-  buildTomlSchema,
-  schema,
-  tomlSchema,
-  validateCanonical,
-  validateToml,
-} from "@mangowm.github.io/schema";
+import { buildSchema, schema, validate } from "@mangowm.github.io/schema";
 
-validateCanonical.Check(config);
-validateToml.Check(rawTomlObject);
+validate.Check(config);
 ```
