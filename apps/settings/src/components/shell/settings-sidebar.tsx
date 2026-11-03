@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@mangowm/ui/components/sidebar";
-import { ROOT_SECTIONS, getChildren } from "@/lib/sections";
+import { ROOT_SECTIONS, getChildren } from "@/lib/presentation/sections";
 import { MANGO_VERSION } from "@mangowm.github.io/schema";
 
 const NAV_ITEMS = ROOT_SECTIONS.map((s) => {

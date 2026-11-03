@@ -1,5 +1,5 @@
 import { MousePointerIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { CursorPanel } from "./CursorPanel";
 
 export const cursorMeta: SectionMeta = {

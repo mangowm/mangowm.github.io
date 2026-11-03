@@ -1,5 +1,5 @@
 import { MoveIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { DragPanel } from "./DragPanel";
 
 export const dragMeta: SectionMeta = {

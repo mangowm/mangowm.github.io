@@ -1,5 +1,5 @@
 import { RocketIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { AutostartPanel } from "./AutostartPanel";
 
 export const autostartMeta: SectionMeta = {

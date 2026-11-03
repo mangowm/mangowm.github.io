@@ -1,5 +1,5 @@
 import { OrbitIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 
 export const animationsMeta: SectionMeta = {
   id: "animations",

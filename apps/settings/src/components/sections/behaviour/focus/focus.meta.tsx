@@ -1,5 +1,5 @@
 import { FocusIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { FocusPanel } from "./FocusPanel";
 
 export const focusMeta: SectionMeta = {

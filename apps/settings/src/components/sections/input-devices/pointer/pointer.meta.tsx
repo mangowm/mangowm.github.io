@@ -1,6 +1,6 @@
 import { MousePointer2Icon } from "lucide-react";
 
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { PointerPanel } from "./PointerPanel";
 
 const mouseFields = [

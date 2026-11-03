@@ -1,4 +1,4 @@
-import type { PanelProps } from "@/lib/section-types";
+import type { PanelProps } from "@/lib/presentation/section-types";
 import { PanelShell, PanelHeader } from "@/components/primitives/section-ui";
 import { RuleList } from "./RuleList";
 

@@ -1,5 +1,5 @@
 import { PaletteIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { ColorsPanel } from "./ColorsPanel";
 
 export const colorsMeta: SectionMeta = {

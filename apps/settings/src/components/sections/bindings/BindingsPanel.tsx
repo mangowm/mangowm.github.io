@@ -6,7 +6,7 @@ import { useConfigStore } from "@/lib/config/store";
 import { parseModifiers, serializeModifiers, bindingsConflict } from "@/lib/keybind-parse";
 import { DISPATCHER_MAP } from "@/lib/dispatchers";
 import type { Keybinding } from "@/lib/keybind-types";
-import type { PanelProps } from "@/lib/section-types";
+import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import { useBindingEntries } from "./hooks/useBindingEntries";
 import { useFilterBindings } from "./hooks/useFilterBindings";

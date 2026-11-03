@@ -1,5 +1,5 @@
 import { ClockIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { TimingPanel } from "./TimingPanel";
 
 export const timingMeta: SectionMeta = {

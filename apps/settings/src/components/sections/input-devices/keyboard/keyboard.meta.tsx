@@ -1,5 +1,5 @@
 import { KeyboardIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { KeyboardPanel } from "./KeyboardPanel";
 
 export const keyboardMeta: SectionMeta = {

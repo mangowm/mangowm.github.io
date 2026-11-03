@@ -1,5 +1,5 @@
 import { LayersIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { ScratchpadPanel } from "./ScratchpadPanel";
 
 export const scratchpadMeta: SectionMeta = {

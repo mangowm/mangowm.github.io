@@ -1,5 +1,5 @@
 import { Blend } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { WindowEffectsPanel } from "./WindowEffectsPanel";
 
 export const windowEffectsMeta: SectionMeta = {

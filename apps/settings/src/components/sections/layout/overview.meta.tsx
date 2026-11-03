@@ -1,5 +1,5 @@
 import { Grid3x3Icon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { OverviewPanel } from "./OverviewPanel";
 
 export const overviewMeta: SectionMeta = {

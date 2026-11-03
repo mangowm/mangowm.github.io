@@ -1,5 +1,5 @@
 import { ShieldCheckIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { SecurityPanel } from "./SecurityPanel";
 
 export const securityMeta: SectionMeta = {

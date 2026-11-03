@@ -1,5 +1,5 @@
 import { FileCode2 } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 
 export const rulesMeta: SectionMeta = {
   id: "rules",

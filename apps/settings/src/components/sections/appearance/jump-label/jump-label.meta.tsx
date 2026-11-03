@@ -1,5 +1,5 @@
 import { ScanSearch } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { JumpLabelPanel } from "./JumpLabelPanel";
 
 export const jumpLabelMeta: SectionMeta = {

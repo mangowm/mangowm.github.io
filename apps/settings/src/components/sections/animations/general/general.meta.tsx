@@ -1,5 +1,5 @@
 import { ListIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { GeneralPanel } from "./GeneralPanel";
 
 export const generalMeta: SectionMeta = {

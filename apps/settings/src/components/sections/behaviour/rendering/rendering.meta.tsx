@@ -1,5 +1,5 @@
 import { MonitorIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { RenderingPanel } from "./RenderingPanel";
 
 export const renderingMeta: SectionMeta = {

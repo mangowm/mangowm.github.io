@@ -1,5 +1,5 @@
 import { HandIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { TrackpadPanel } from "./TrackpadPanel";
 
 export const trackpadMeta: SectionMeta = {

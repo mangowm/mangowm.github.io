@@ -1,5 +1,5 @@
 import { Tags } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { TagRulesPanel } from "./TagRulesPanel";
 
 export const tagRulesMeta: SectionMeta = {

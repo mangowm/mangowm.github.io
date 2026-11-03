@@ -1,5 +1,5 @@
 import { Workflow } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { BindingsPanel } from "./BindingsPanel";
 
 export const bindingsMeta: SectionMeta = {

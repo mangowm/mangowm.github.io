@@ -1,5 +1,5 @@
 import { FileJsonIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 
 export const environmentMeta: SectionMeta = {

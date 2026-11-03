@@ -1,5 +1,5 @@
 import { InfinityIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { CurvesPanel } from "./CurvesPanel";
 
 export const curvesMeta: SectionMeta = {

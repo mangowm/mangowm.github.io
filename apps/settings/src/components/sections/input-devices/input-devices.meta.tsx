@@ -1,5 +1,5 @@
 import { Gamepad2Icon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 
 export const inputDevicesMeta: SectionMeta = {
   id: "input-devices",

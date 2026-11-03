@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import type { ConfigData } from "./config/types";
+import type { ConfigData } from "../config/types";
 
 export interface FieldDef {
   /** Config file key, e.g. "blur_radius" */

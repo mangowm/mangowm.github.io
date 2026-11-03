@@ -1,6 +1,6 @@
 import { Grid3x3 } from "lucide-react";
 
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { GapsBordersPanel } from "./GapsBordersPanel";
 
 export const gapsBordersMeta: SectionMeta = {

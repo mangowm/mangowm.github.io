@@ -1,5 +1,5 @@
 import { Monitor } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { MonitorRulesPanel } from "./MonitorRulesPanel";
 
 export const monitorRulesMeta: SectionMeta = {

@@ -1,5 +1,5 @@
 import { PuzzleIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { XWaylandPanel } from "./XWaylandPanel";
 
 export const xwaylandMeta: SectionMeta = {

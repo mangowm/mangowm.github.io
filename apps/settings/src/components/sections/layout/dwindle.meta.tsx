@@ -1,5 +1,5 @@
 import { SplitSquareHorizontalIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { DwindlePanel } from "./DwindlePanel";
 
 export const dwindleMeta: SectionMeta = {

@@ -1,5 +1,5 @@
 import { PowerIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { IdlePanel } from "./IdlePanel";
 
 export const idleMeta: SectionMeta = {

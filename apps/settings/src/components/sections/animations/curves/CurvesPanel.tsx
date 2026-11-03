@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useConfigStore, useConfigStr } from "@/lib/config/store";
-import type { PanelProps } from "@/lib/section-types";
+import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import { PanelShell, PanelHeader, SectionCard } from "@/components/primitives/section-ui";
 import { parseCurve, serializeCurve } from "@/lib/curve";

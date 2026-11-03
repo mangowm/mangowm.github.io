@@ -1,5 +1,5 @@
 import { TouchpadIcon } from "lucide-react";
-import type { SectionMeta } from "@/lib/section-types";
+import type { SectionMeta } from "@/lib/presentation/section-types";
 import { TouchPanel } from "./TouchPanel";
 
 export const touchMeta: SectionMeta = {
