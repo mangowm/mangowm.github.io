@@ -1,3 +1,5 @@
+import { LAYOUTS } from "@mangowm.github.io/schema";
+
 export type ArgType =
   | "none"
   | "direction"
@@ -29,17 +31,8 @@ export interface DispatcherArg {
 
 export const DIRECTION_OPTS = ["left", "right", "up", "down"] as const;
 export const CIRCLE_DIR_OPTS = ["next", "prev"] as const;
-export const LAYOUT_NAMES = [
-  "tile",
-  "scroller",
-  "grid",
-  "deck",
-  "monocle",
-  "center_tile",
-  "vertical_tile",
-  "vertical_scroller",
-] as const;
-export const MOUSE_ACTION_OPTS = ["curmove", "curresize"] as const;
+export const LAYOUT_NAMES = LAYOUTS;
+export const MOUSE_ACTION_OPTS = ["curmove", "curresize", "curnormal", "curpressed"] as const;
 export const TAG_COUNT_MAX = 31;
 export const TAG_NUMBERS: readonly string[] = Array.from({ length: TAG_COUNT_MAX }, (_, i) =>
   String(i + 1),
