@@ -3,7 +3,8 @@ import Value from "typebox/value";
 import { describe, expect, it } from "vite-plus/test";
 
 import { normalize, normalizeToml } from "./normalize";
-import { formatToml, parseToml } from "./toml";
+import { formatToml, parseToml, serializeToml } from "./toml";
+import type { CanonicalConfig } from "./types";
 
 describe("parseToml", () => {
   it("round-trips text", () => {
@@ -136,5 +137,61 @@ describe("normalizeToml", () => {
 
   it("dispatches on the document format", () => {
     expect(normalize(parseToml("[global]\nblur = 1\n")).config).toEqual({ global: { blur: true } });
+  });
+});
+
+describe("serializeToml", () => {
+  const config: CanonicalConfig = {
+    global: {
+      blur: true,
+      border_radius: 8,
+      root_color: "0x201b14ff",
+      animation_curve_open: [0.46, 1, 0.29, 1],
+      exec_once: ["waybar"],
+    },
+    env: { QT_IM_MODULE: "fcitx" },
+    var: { term: "foot" },
+    bind: {
+      default: {
+        "Alt+Return": [{ dispatcher: "spawn", args: "foot" }],
+        conflict: {
+          "SUPER+r": [
+            { dispatcher: "spawn_shell", args: "config-check.sh" },
+            { dispatcher: "reload_config" },
+          ],
+        },
+      },
+    },
+    rule: { window_rule: [{ is_floating: true, width: 800, app_id: "mpv" }] },
+  };
+
+  it("writes tables, arrays, and rules", () => {
+    const text = serializeToml(config);
+
+    expect(text).toContain("[global]");
+    expect(text).toContain("blur = true");
+    expect(text).toContain("animation_curve_open = [0.46, 1, 0.29, 1]");
+    expect(text).toContain('exec_once = ["waybar"]');
+    expect(text).toContain("[env]");
+    expect(text).toContain('"QT_IM_MODULE" = "fcitx"');
+    expect(text).toContain("[var]");
+    expect(text).toContain('term = "foot"');
+    expect(text).toContain("[bind.default]");
+    expect(text).toContain('"Alt+Return" = "spawn,foot"');
+    expect(text).toContain("[bind.default.conflict]");
+    expect(text).toContain('"SUPER+r" = [');
+    expect(text).toContain("[[rule.window_rule]]");
+    expect(text).toContain("is_floating = true");
+  });
+
+  it("round-trips the canonical config", () => {
+    const { config: parsed, warnings } = normalizeToml(parseToml(serializeToml(config)));
+
+    expect(warnings).toEqual([]);
+    expect(parsed).toEqual(config);
+  });
+
+  it("writes nothing for an empty config", () => {
+    expect(serializeToml({})).toBe("");
   });
 });

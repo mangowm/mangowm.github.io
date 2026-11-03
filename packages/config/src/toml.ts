@@ -1,5 +1,17 @@
+import { GLOBALS, RULES } from "@mangowm.github.io/schema";
+
+import { type BindingKind } from "./binding";
+import { formatAction } from "./dispatch";
 import type { ConfigDocument, DocumentNode } from "./document";
-import type { SourceLocation } from "./types";
+import { formatTagMask } from "./tag";
+import type {
+  Action,
+  BindingMap,
+  BindingNode,
+  CanonicalConfig,
+  OptionValue,
+  SourceLocation,
+} from "./types";
 
 /** Remove a `#` comment, respecting quotes. */
 export function stripTomlComment(text: string): string {
@@ -209,4 +221,138 @@ export function parseToml(text: string, file = ""): ConfigDocument {
 /** Write a TOML document back to text, preserving untouched statements. */
 export function formatToml(document: ConfigDocument): string {
   return document.nodes.map((node) => node.raw).join(document.newline);
+}
+
+const FLAGS = ["sym", "lock", "release", "pass", "conflict"] as const;
+const DIRECTIVES = ["exec", "exec_once", "source", "source_optional"] as const;
+const KINDS: readonly [BindingKind, string][] = [
+  ["key", "bind"],
+  ["mouse", "mousebind"],
+  ["axis", "axisbind"],
+  ["gesture", "gesturebind"],
+  ["switch", "switchbind"],
+];
+const COLOR = /^0x[0-9a-fA-F]{8}$/;
+
+function quote(text: string): string {
+  return `"${text.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
+}
+
+function tomlKey(name: string, force = false): string {
+  return force || !/^[A-Za-z0-9_-]+$/.test(name) ? quote(name) : name;
+}
+
+function tomlValue(value: OptionValue): string {
+  if (typeof value === "boolean") return value ? "true" : "false";
+  if (typeof value === "number") return String(value);
+  if (Array.isArray(value)) {
+    return `[${value
+      .map((item) => (typeof item === "number" ? String(item) : quote(item)))
+      .join(", ")}]`;
+  }
+  if (COLOR.test(value)) return value;
+  return quote(value);
+}
+
+function tomlRuleValue(type: string, value: boolean | number | string | number[]): string {
+  if (typeof value === "boolean") return value ? "true" : "false";
+  if (typeof value === "number") return String(value);
+  if (Array.isArray(value)) return quote(formatTagMask(value));
+  if (type === "color" && COLOR.test(value)) return value;
+  return quote(value);
+}
+
+function bindingMap(config: CanonicalConfig, kind: BindingKind): BindingMap | undefined {
+  switch (kind) {
+    case "key":
+      return config.bind;
+    case "mouse":
+      return config.mousebind;
+    case "axis":
+      return config.axisbind;
+    case "gesture":
+      return config.gesturebind;
+    case "switch":
+      return config.switchbind;
+  }
+}
+
+function emitTomlBindings(node: BindingNode, path: string[], lines: string[]): void {
+  const triggers = Object.entries(node).filter(
+    ([name, value]) => !(FLAGS as readonly string[]).includes(name) && Array.isArray(value),
+  );
+  const conflict = path[path.length - 1] === "conflict";
+
+  if (triggers.length > 0) {
+    lines.push(`[${path.join(".")}]`);
+    for (const [trigger, actions] of triggers) {
+      const values = (actions as Action[]).map(formatAction);
+      if (conflict) {
+        lines.push(`${quote(trigger)} = [`);
+        for (const value of values) lines.push(`  ${quote(value)},`);
+        lines.push("]");
+      } else {
+        lines.push(`${quote(trigger)} = ${quote(values[0] ?? "")}`);
+      }
+    }
+    lines.push("");
+  }
+
+  for (const flag of FLAGS) {
+    const child = node[flag];
+    if (child !== undefined && !Array.isArray(child)) {
+      emitTomlBindings(child, [...path, flag], lines);
+    }
+  }
+}
+
+/** Serialize the canonical config to mango's TOML subset. */
+export function serializeToml(config: CanonicalConfig): string {
+  const lines: string[] = [];
+  const global = config.global ?? {};
+
+  const options: string[] = [];
+  for (const def of GLOBALS) {
+    const value = global[def.key];
+    if (value !== undefined) options.push(`${def.key} = ${tomlValue(value)}`);
+  }
+  for (const directive of DIRECTIVES) {
+    const value = global[directive];
+    if (Array.isArray(value)) options.push(`${directive} = ${tomlValue(value as string[])}`);
+  }
+  if (options.length > 0) lines.push("[global]", ...options, "");
+
+  const env = Object.entries(config.env ?? {});
+  if (env.length > 0) {
+    lines.push("[env]");
+    for (const [name, value] of env) lines.push(`${tomlKey(name, true)} = ${quote(value)}`);
+    lines.push("");
+  }
+
+  const vars = Object.entries(config.var ?? {});
+  if (vars.length > 0) {
+    lines.push("[var]");
+    for (const [name, value] of vars) lines.push(`${tomlKey(name)} = ${quote(value)}`);
+    lines.push("");
+  }
+
+  for (const rule of RULES) {
+    for (const record of config.rule?.[rule.key] ?? []) {
+      lines.push(`[[rule.${rule.key}]]`);
+      for (const field of rule.fields) {
+        const value = record[field.key];
+        if (value === undefined) continue;
+        lines.push(`${field.key} = ${tomlRuleValue(field.type, value)}`);
+      }
+      lines.push("");
+    }
+  }
+
+  for (const [kind, section] of KINDS) {
+    for (const [mode, node] of Object.entries(bindingMap(config, kind) ?? {})) {
+      emitTomlBindings(node, [section, mode], lines);
+    }
+  }
+
+  return lines.length === 0 ? "" : `${lines.join("\n").trimEnd()}\n`;
 }
