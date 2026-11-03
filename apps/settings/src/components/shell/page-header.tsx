@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   AlertCircle,
   Download,
@@ -19,6 +20,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@mangowm/ui/components/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@mangowm/ui/components/dialog";
 import { useConfigStore, undo, redo } from "@/lib/config/store";
 import { getHost } from "@/lib/platform";
 import { serializeConfig } from "@/lib/config/parse";
@@ -187,37 +196,63 @@ function SetupMenu() {
   const openConfigFolder = useConfigStore((state) => state.openConfigFolder);
   const isTauri = useConfigStore((state) => state.isTauri);
   const hasFiles = useConfigStore((state) => state.files.length > 0);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" title="Setup" />}>
-        <Wrench className="size-4" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-44">
-        <DropdownMenuItem onClick={() => void importConfig()}>Import config</DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => {
-            const message = isTauri
-              ? "Replace the current config with the default? A backup will be created first."
-              : "Replace the current config with the default? This cannot be undone.";
-            if (hasFiles && !window.confirm(message)) return;
-            void createDefault();
-          }}
-        >
-          Create default config
-        </DropdownMenuItem>
-        {isTauri && (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem disabled={!hasFiles} onClick={() => void backup()}>
-              Back up config
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => void openConfigFolder()}>
-              Open config folder
-            </DropdownMenuItem>
-          </>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" title="Setup" />}>
+          <Wrench className="size-4" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="min-w-44">
+          <DropdownMenuItem onClick={() => void importConfig()}>Import config</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              if (hasFiles) setConfirmOpen(true);
+              else void createDefault();
+            }}
+          >
+            Create default config
+          </DropdownMenuItem>
+          {isTauri && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem disabled={!hasFiles} onClick={() => void backup()}>
+                Back up config
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => void openConfigFolder()}>
+                Open config folder
+              </DropdownMenuItem>
+            </>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Replace configuration?</DialogTitle>
+            <DialogDescription>
+              {isTauri
+                ? "The current configuration will be backed up, then replaced with the default."
+                : "The current configuration will be replaced with the default. This cannot be undone."}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setConfirmOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                setConfirmOpen(false);
+                void createDefault();
+              }}
+            >
+              Replace
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
