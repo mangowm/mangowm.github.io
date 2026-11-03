@@ -29,6 +29,7 @@ catalog:
   cmdk: ^1.1.1
   takumi-js: ^2.14.0
   yaml: ^2.9.1
+  "@pierre/diffs": ^1.6.2
 overrides:
   vite@*: "catalog:"
 publicHoistPattern:

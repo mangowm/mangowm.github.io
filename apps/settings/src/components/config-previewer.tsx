@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy } from "lucide-react";
 import { useConfigStore } from "@/lib/config-store";
-import type { SourceFile, ConfigLine } from "@/lib/config-types";
+import type { SourceFile } from "@/lib/config-types";
+import { ConfigView } from "@/components/preview/ConfigView";
 import { serializeConfig } from "@/lib/config-parse";
 import { commonAncestorDir } from "@/lib/platform/paths";
 import { cn } from "cn";
@@ -126,38 +127,6 @@ function FileTreeNode({
   );
 }
 
-function ConfigLineRow({ line, index }: { line: ConfigLine; index: number }) {
-  const gutter = (
-    <span className="min-w-[4ch] shrink-0 pr-4 text-right text-muted-foreground/20 tabular-nums select-none">
-      {index + 1}
-    </span>
-  );
-
-  if (line.type === "blank") {
-    return <div className="flex px-4 leading-6 hover:bg-accent/30">{gutter}</div>;
-  }
-
-  if (line.type === "comment") {
-    return (
-      <div className="flex px-4 leading-6 hover:bg-accent/30">
-        {gutter}
-        <span className="text-green-600/70 dark:text-green-400/70">{line.raw}</span>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex px-4 leading-6 hover:bg-accent/30">
-      {gutter}
-      <span>
-        <span className="text-blue-600 dark:text-blue-400">{line.key}</span>
-        <span className="text-muted-foreground/50"> = </span>
-        <span>{line.value}</span>
-      </span>
-    </div>
-  );
-}
-
 export function ConfigPreviewer() {
   const files = useConfigStore((s) => s.files);
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
@@ -244,13 +213,12 @@ export function ConfigPreviewer() {
             </span>
           </span>
         </div>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-hidden">
           {selectedFile ? (
-            <pre className="min-w-min py-2 font-mono text-sm leading-6">
-              {selectedFile.lines.map((line, i) => (
-                <ConfigLineRow key={i} line={line} index={i} />
-              ))}
-            </pre>
+            <ConfigView
+              name={displayPath ?? selectedFile.refPath}
+              contents={serializeConfig(selectedFile.lines)}
+            />
           ) : (
             <div className="flex h-full items-center justify-center text-sm text-muted-foreground/40">
               Select a file to view

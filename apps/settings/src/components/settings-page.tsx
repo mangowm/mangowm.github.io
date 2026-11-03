@@ -1,8 +1,12 @@
-import { useEffect, useState, useTransition } from "react";
+import { lazy, Suspense, useEffect, useState, useTransition } from "react";
 
 import { SettingsSidebar } from "@/components/settings-sidebar";
 import { PageHeader } from "@/components/page-header";
-import { ConfigPreviewer } from "@/components/config-previewer";
+const ConfigPreviewer = lazy(() =>
+  import("@/components/config-previewer").then((module) => ({
+    default: module.ConfigPreviewer,
+  })),
+);
 import { SidebarInset, SidebarProvider } from "@mangowm/ui/components/sidebar";
 import { Skeleton } from "@mangowm/ui/components/skeleton";
 import { useConfigStore } from "@/lib/config-store";
@@ -73,7 +77,9 @@ export function SettingsPage() {
         {showConfig ? (
           <div className="flex-1 overflow-hidden p-5">
             <div className="flex h-full flex-col rounded-xl bg-card p-6 ring-1 ring-foreground/10">
-              <ConfigPreviewer />
+              <Suspense fallback={<Skeleton className="h-96 w-full rounded-xl" />}>
+                <ConfigPreviewer />
+              </Suspense>
             </div>
           </div>
         ) : (
