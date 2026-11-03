@@ -1,5 +1,6 @@
-import { openUrl } from "@tauri-apps/plugin-opener";
 import { homeDir } from "@tauri-apps/api/path";
+import { open } from "@tauri-apps/plugin-dialog";
+import { openPath, openUrl } from "@tauri-apps/plugin-opener";
 import {
   BaseDirectory,
   copyFile,
@@ -47,6 +48,32 @@ async function resolveSourcePath(source: string, directory: string): Promise<str
   }
   if (value.startsWith("/")) return value;
   return resolvePath(directory, value);
+}
+
+async function readTree(
+  rootPath: string,
+  refPath: string,
+  rootText: string,
+): Promise<RawConfigFile[]> {
+  const seen = new Set<string>();
+  const result: RawConfigFile[] = [];
+
+  async function readOne(absPath: string, ref: string, text: string): Promise<void> {
+    if (seen.has(absPath)) return;
+    seen.add(absPath);
+
+    const directory = absPath.slice(0, absPath.lastIndexOf("/"));
+    result.push({ absPath, refPath: ref, text });
+
+    for (const source of sourcePaths(text)) {
+      const childPath = await resolveSourcePath(source, directory);
+      const childText = await read(childPath);
+      if (childText !== null) await readOne(childPath, source, childText);
+    }
+  }
+
+  await readOne(rootPath, refPath, rootText);
+  return result;
 }
 
 async function readPreferences(): Promise<Preferences> {
@@ -121,31 +148,43 @@ export function createTauriHost(defaultConfig: string): ConfigHost {
       if (rootText !== null) actualRootPath = fallbackPath;
     }
 
-    if (rootText === null) {
-      rootText = (await write(rootPath, defaultConfig)) ? defaultConfig : null;
-    }
-
     if (rootText === null) return [];
+    return readTree(actualRootPath, "config.conf", rootText);
+  }
 
-    const seen = new Set<string>();
-    const result: RawConfigFile[] = [];
+  async function createDefault(): Promise<RawConfigFile[]> {
+    const home = await homeDir();
+    const rootPath = `${home}/${CONFIG_DIR}/config.conf`;
+    const written = await write(rootPath, defaultConfig);
+    if (!written) throw new Error("Failed to write the default configuration");
+    return readTree(rootPath, "config.conf", defaultConfig);
+  }
 
-    async function readOne(absPath: string, refPath: string, text: string): Promise<void> {
-      if (seen.has(absPath)) return;
-      seen.add(absPath);
+  async function importConfig(): Promise<RawConfigFile[] | null> {
+    const selected = await open({
+      directory: true,
+      multiple: false,
+      title: "Import mango configuration",
+    });
 
-      const directory = absPath.slice(0, absPath.lastIndexOf("/"));
-      result.push({ absPath, refPath, text });
+    if (typeof selected !== "string") return null;
 
-      for (const source of sourcePaths(text)) {
-        const childPath = await resolveSourcePath(source, directory);
-        const childText = await read(childPath);
-        if (childText !== null) await readOne(childPath, source, childText);
-      }
-    }
+    const directory = selected.replace(/\/$/, "");
+    const entries = await readDir(directory);
+    const candidates = entries.filter(
+      (entry) => !entry.isDirectory && /\.(conf|toml)$/.test(entry.name),
+    );
+    const root =
+      candidates.find((entry) => entry.name === "config.conf") ??
+      candidates.find((entry) => entry.name === "mango.conf") ??
+      candidates[0];
 
-    await readOne(actualRootPath, "config.conf", rootText);
-    return result;
+    if (!root) return [];
+
+    const rootPath = `${directory}/${root.name}`;
+    const text = await read(rootPath);
+    if (text === null) return [];
+    return readTree(rootPath, root.name, text);
   }
 
   async function save(files: PendingFile[]): Promise<void> {
@@ -168,10 +207,16 @@ export function createTauriHost(defaultConfig: string): ConfigHost {
     kind: "tauri",
     hasConfig: () => exists(CONFIG_DIR, { baseDir: BaseDirectory.Home }),
     load,
+    createDefault,
+    importConfig,
     save,
     reload,
     download: downloadFiles,
     openExternal: openUrl,
+    openConfigFolder: async () => {
+      const home = await homeDir();
+      await openPath(`${home}/${CONFIG_DIR}`);
+    },
     backup: async () => {
       const destination = `${CONFIG_DIR}/backups/${timestamp()}`;
       await mkdir(destination, { baseDir: BaseDirectory.Home, recursive: true });

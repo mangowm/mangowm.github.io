@@ -24,6 +24,7 @@
     "@rolldown/plugin-babel": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@tauri-apps/api": "^2.12.1",
+    "@tauri-apps/plugin-dialog": "catalog:",
     "@tauri-apps/plugin-fs": "^2.6.0",
     "@tauri-apps/plugin-opener": "^2.7.0",
     "@tauri-apps/plugin-shell": "^2.4.0",

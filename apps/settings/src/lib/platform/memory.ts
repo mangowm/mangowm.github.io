@@ -7,7 +7,7 @@ export interface MemoryHost extends ConfigHost {
   readonly files: RawConfigFile[];
 }
 
-export function createMemoryHost(files: RawConfigFile[] = []): MemoryHost {
+export function createMemoryHost(files: RawConfigFile[] = [], defaultConfig = ""): MemoryHost {
   let preferences: Preferences = { version: CURRENT_SETTINGS_VERSION };
   const saved: PendingFile[] = [];
   const current = [...files];
@@ -18,6 +18,12 @@ export function createMemoryHost(files: RawConfigFile[] = []): MemoryHost {
     files: current,
     hasConfig: async () => current.length > 0,
     load: async () => current,
+    createDefault: async () => {
+      const file = { absPath: "config.conf", refPath: "config.conf", text: defaultConfig };
+      current.splice(0, current.length, file);
+      return current;
+    },
+    importConfig: async () => current,
     save: async (pending: PendingFile[]) => {
       saved.splice(0, saved.length, ...pending);
       for (const file of pending) {

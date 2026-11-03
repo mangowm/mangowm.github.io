@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState, useTransition } from "react";
 
 import { SettingsSidebar } from "@/components/shell/settings-sidebar";
 import { PageHeader } from "@/components/shell/page-header";
+import { EmptyConfig } from "@/components/shell/empty-config";
 const ConfigPreviewer = lazy(() =>
   import("@/components/preview/config-previewer").then((module) => ({
     default: module.ConfigPreviewer,
@@ -91,6 +92,8 @@ export function SettingsPage() {
                   <div className="flex-1">
                     <Skeleton className="h-96 w-full rounded-xl" />
                   </div>
+                ) : !hasFiles ? (
+                  <EmptyConfig />
                 ) : (
                   Panel && <Panel focusKey={focusKey} />
                 )}

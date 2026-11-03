@@ -17,4 +17,5 @@ tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2.7.0"
 tauri-plugin-fs = "2.6.0"
 tauri-plugin-shell = "2.4.0"
+tauri-plugin-dialog = "2.8.4"
 

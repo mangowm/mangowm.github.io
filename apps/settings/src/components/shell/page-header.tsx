@@ -1,9 +1,24 @@
-import { Undo2, Redo2, AlertCircle, SearchIcon, FileCode2Icon, Download } from "lucide-react";
+import {
+  AlertCircle,
+  Download,
+  FileCode2Icon,
+  Redo2,
+  SearchIcon,
+  Undo2,
+  Wrench,
+} from "lucide-react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { Separator } from "@mangowm/ui/components/separator";
 import { SidebarTrigger } from "@mangowm/ui/components/sidebar";
 import { Button } from "@mangowm/ui/components/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@mangowm/ui/components/dropdown-menu";
 import { useConfigStore, undo, redo } from "@/lib/config/store";
 import { getHost } from "@/lib/platform";
 import { serializeConfig } from "@/lib/config/parse";
@@ -68,6 +83,7 @@ export function PageHeader({
               <FileCode2Icon className="size-4" />
             </Button>
           )}
+          <SetupMenu />
           <HistoryButtons />
           {isTauri && <ApplyButton />}
           <DownloadButton />
@@ -161,5 +177,51 @@ function DownloadButton() {
     >
       <Download className="size-4" />
     </Button>
+  );
+}
+
+function SetupMenu() {
+  const createDefault = useConfigStore((state) => state.createDefault);
+  const importConfig = useConfigStore((state) => state.importConfig);
+  const backup = useConfigStore((state) => state.backup);
+  const openConfigFolder = useConfigStore((state) => state.openConfigFolder);
+  const isTauri = useConfigStore((state) => state.isTauri);
+  const hasFiles = useConfigStore((state) => state.files.length > 0);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" title="Setup" />}>
+        <Wrench className="size-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-44">
+        <DropdownMenuItem onClick={() => void importConfig()}>Import config</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            if (
+              hasFiles &&
+              !window.confirm(
+                "Replace the current config with the default? A backup will be created first.",
+              )
+            ) {
+              return;
+            }
+            void createDefault();
+          }}
+        >
+          Create default config
+        </DropdownMenuItem>
+        {isTauri && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled={!hasFiles} onClick={() => void backup()}>
+              Back up config
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => void openConfigFolder()}>
+              Open config folder
+            </DropdownMenuItem>
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

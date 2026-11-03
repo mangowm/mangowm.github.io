@@ -9,7 +9,9 @@ export function isTauri(): boolean {
 }
 
 export function configureHost(options: { defaultConfig: string }): ConfigHost {
-  host = isTauri() ? createTauriHost(options.defaultConfig) : createBrowserHost();
+  host = isTauri()
+    ? createTauriHost(options.defaultConfig)
+    : createBrowserHost(options.defaultConfig);
   return host;
 }
 

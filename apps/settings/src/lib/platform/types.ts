@@ -11,7 +11,6 @@ export interface PendingFile {
 
 export interface Preferences {
   version?: string;
-  onboardingCompleted?: boolean;
   backup?: { createdAt: string; path: string };
   [key: string]: unknown;
 }
@@ -20,10 +19,13 @@ export interface ConfigHost {
   readonly kind: "tauri" | "browser";
   hasConfig(): Promise<boolean>;
   load(): Promise<RawConfigFile[]>;
+  createDefault(): Promise<RawConfigFile[]>;
+  importConfig(): Promise<RawConfigFile[] | null>;
   save(files: PendingFile[]): Promise<void>;
   reload(): Promise<void>;
   download(files: RawConfigFile[]): void;
   backup?(): Promise<string>;
+  openConfigFolder?(): Promise<void>;
   openExternal(url: string): Promise<void>;
   preferences: {
     read(): Promise<Preferences>;

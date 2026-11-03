@@ -32,6 +32,7 @@ catalog:
   "@pierre/diffs": ^1.6.2
   "@mangowm.github.io/config": workspace:*
   "@mangowm.github.io/schema": workspace:*
+  "@tauri-apps/plugin-dialog": ^2.8.4
 overrides:
   vite@*: "catalog:"
 publicHoistPattern:

@@ -14,7 +14,6 @@ import { type ConfigData, type SourceFile, countLines } from "./types";
 import { makeEntryLine, parseConfig, serializeConfig } from "./parse";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./helpers";
 import { DEFAULTS } from "./defaults";
-import DEFAULT_CONFIG from "./default-config";
 
 const EMPTY_VALUES: readonly string[] = Object.freeze([]);
 const GLOBAL_BY_KEY = new Map(GLOBALS.map((option) => [option.key, option]));
@@ -115,6 +114,10 @@ interface ConfigStore {
 
   load: () => Promise<void>;
   apply: () => Promise<void>;
+  createDefault: () => Promise<void>;
+  importConfig: () => Promise<void>;
+  backup: () => Promise<string | null>;
+  openConfigFolder: () => Promise<void>;
 
   // Scalar upsert: sets exactly one value for a key.
   // Use for singletons (blur_radius, borderpx, …).
@@ -156,16 +159,62 @@ export const useConfigStore = create<ConfigStore>()(
         set({ loading: true, error: null });
         try {
           const loaded = await getHost().load();
-          const files = (
-            loaded.length > 0
-              ? loaded
-              : [{ absPath: "config.conf", refPath: "config.conf", text: DEFAULT_CONFIG }]
-          ).map(toSourceFile);
+          const files = loaded.map(toSourceFile);
           set({ files, data: mergeFileData(files, {}), loading: false, dirty: false });
           useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
           set({ error: String(e instanceof Error ? e.message : e), loading: false });
         }
+      },
+
+      createDefault: async () => {
+        set({ loading: true, error: null });
+        try {
+          const host = getHost();
+          if (await host.hasConfig()) {
+            const path = await host.backup?.();
+            if (path) {
+              await host.preferences.write({
+                backup: { createdAt: new Date().toISOString(), path },
+              });
+            }
+          }
+          const files = (await host.createDefault()).map(toSourceFile);
+          set({ files, data: mergeFileData(files, {}), loading: false, dirty: false });
+          useConfigStore.temporal.getState().clear();
+        } catch (e: unknown) {
+          set({ error: String(e instanceof Error ? e.message : e), loading: false });
+        }
+      },
+
+      importConfig: async () => {
+        set({ loading: true, error: null });
+        try {
+          const loaded = await getHost().importConfig();
+          if (loaded === null) {
+            set({ loading: false });
+            return;
+          }
+          const files = loaded.map(toSourceFile);
+          set({ files, data: mergeFileData(files, {}), loading: false, dirty: false });
+          useConfigStore.temporal.getState().clear();
+        } catch (e: unknown) {
+          set({ error: String(e instanceof Error ? e.message : e), loading: false });
+        }
+      },
+
+      backup: async () => {
+        const host = getHost();
+        const path = await host.backup?.();
+        if (!path) return null;
+        await host.preferences.write({
+          backup: { createdAt: new Date().toISOString(), path },
+        });
+        return path;
+      },
+
+      openConfigFolder: async () => {
+        await getHost().openConfigFolder?.();
       },
 
       apply: async () => {
