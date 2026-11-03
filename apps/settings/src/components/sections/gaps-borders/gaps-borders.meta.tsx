@@ -1,4 +1,5 @@
 import { Grid3x3 } from "lucide-react";
+
 import type { SectionMeta } from "@/lib/section-types";
 import { GapsBordersPanel } from "./GapsBordersPanel";
 
@@ -8,35 +9,35 @@ export const gapsBordersMeta: SectionMeta = {
   icon: <Grid3x3 />,
   panel: GapsBordersPanel,
   parentId: "appearance",
-  keywords: ["spacing", "padding", "margin", "inner", "outer"],
+  keywords: ["spacing", "padding", "margin", "inner", "outer", "border"],
   fields: [
     {
-      configKey: "smartgaps",
+      configKey: "smart_gaps",
       label: "Smart Gaps",
       description: "Only show gaps with multiple windows on the same tag",
     },
     {
-      configKey: "gappih",
+      configKey: "gap_inner_horizontal",
       label: "Inner Gap Horizontal",
       description: "Horizontal gap between tiled windows",
     },
     {
-      configKey: "gappiv",
+      configKey: "gap_inner_vertical",
       label: "Inner Gap Vertical",
       description: "Vertical gap between tiled windows",
     },
     {
-      configKey: "gappoh",
+      configKey: "gap_outer_horizontal",
       label: "Outer Gap Horizontal",
       description: "Horizontal gap between windows and screen edges",
     },
     {
-      configKey: "gappov",
+      configKey: "gap_outer_vertical",
       label: "Outer Gap Vertical",
       description: "Vertical gap between windows and screen edges",
     },
     {
-      configKey: "borderpx",
+      configKey: "border_px",
       label: "Border Width",
       description: "Thickness of window borders in pixels",
     },

@@ -10,17 +10,17 @@ import { PanelShell, PanelHeader, SectionCard } from "@/components/sections/sect
 import { cn } from "cn";
 
 interface ColorsConfig {
-  rootcolor: string;
-  bordercolor: string;
-  dropcolor: string;
-  splitcolor: string;
-  focuscolor: string;
-  maximizescreencolor: string;
-  urgentcolor: string;
-  scratchpadcolor: string;
-  globalcolor: string;
-  overlaycolor: string;
-  shadowscolor: string;
+  root_color: string;
+  border_color: string;
+  drop_color: string;
+  split_color: string;
+  focus_color: string;
+  maximized_screen_color: string;
+  urgent_color: string;
+  scratchpad_color: string;
+  global_color: string;
+  overlay_color: string;
+  shadows_color: string;
   group_bar_decorate_fg_color: string;
   group_bar_decorate_bg_color: string;
   group_bar_decorate_focus_fg_color: string;
@@ -39,48 +39,52 @@ const COLORS_FIELDS: Array<{
   description: string;
 }> = [
   {
-    key: "rootcolor",
+    key: "root_color",
     label: "Root Background",
     description: "Desktop background behind all windows",
   },
   {
-    key: "bordercolor",
+    key: "border_color",
     label: "Inactive Border",
     description: "Unfocused window border (non-selected monitor)",
   },
   {
-    key: "focuscolor",
+    key: "focus_color",
     label: "Active Border",
     description: "Focused window border on the selected monitor",
   },
   {
-    key: "maximizescreencolor",
+    key: "maximized_screen_color",
     label: "Maximize Screen",
     description: "Border when window is focused + maximized",
   },
   {
-    key: "urgentcolor",
+    key: "urgent_color",
     label: "Urgent",
     description: "Urgent window border — overrides all other colors",
   },
   {
-    key: "scratchpadcolor",
+    key: "scratchpad_color",
     label: "Scratchpad",
     description: "Border when focused + scratchpad window",
   },
-  { key: "globalcolor", label: "Global", description: "Border when focused + toggleglobal window" },
   {
-    key: "overlaycolor",
+    key: "global_color",
+    label: "Global",
+    description: "Border when focused + toggleglobal window",
+  },
+  {
+    key: "overlay_color",
     label: "Overlay",
     description: "Border when focused + toggleoverlay window",
   },
   {
-    key: "dropcolor",
+    key: "drop_color",
     label: "Drop Shadow",
     description: "Drop-shadow rectangle when dragging floating windows",
   },
-  { key: "splitcolor", label: "Split Indicator", description: "Dwindle manual-split guide line" },
-  { key: "shadowscolor", label: "Shadow", description: "Drop shadow color for windows" },
+  { key: "split_color", label: "Split Indicator", description: "Dwindle manual-split guide line" },
+  { key: "shadows_color", label: "Shadow", description: "Drop shadow color for windows" },
   {
     key: "group_bar_decorate_fg_color",
     label: "Text",
@@ -349,17 +353,17 @@ const PaletteCard = memo(function PaletteCard({ palette, isActive, onSelect }: P
 });
 
 function useColorConfigValues() {
-  const rootcolor = useConfigStr("rootcolor");
-  const bordercolor = useConfigStr("bordercolor");
-  const dropcolor = useConfigStr("dropcolor");
-  const splitcolor = useConfigStr("splitcolor");
-  const focuscolor = useConfigStr("focuscolor");
-  const maximizescreencolor = useConfigStr("maximizescreencolor");
-  const urgentcolor = useConfigStr("urgentcolor");
-  const scratchpadcolor = useConfigStr("scratchpadcolor");
-  const globalcolor = useConfigStr("globalcolor");
-  const overlaycolor = useConfigStr("overlaycolor");
-  const shadowscolor = useConfigStr("shadowscolor");
+  const root_color = useConfigStr("root_color");
+  const border_color = useConfigStr("border_color");
+  const drop_color = useConfigStr("drop_color");
+  const split_color = useConfigStr("split_color");
+  const focus_color = useConfigStr("focus_color");
+  const maximized_screen_color = useConfigStr("maximized_screen_color");
+  const urgent_color = useConfigStr("urgent_color");
+  const scratchpad_color = useConfigStr("scratchpad_color");
+  const global_color = useConfigStr("global_color");
+  const overlay_color = useConfigStr("overlay_color");
+  const shadows_color = useConfigStr("shadows_color");
   const gbFg = useConfigStr("group_bar_decorate_fg_color");
   const gbBg = useConfigStr("group_bar_decorate_bg_color");
   const gbFocusFg = useConfigStr("group_bar_decorate_focus_fg_color");
@@ -373,17 +377,17 @@ function useColorConfigValues() {
 
   return useMemo<ColorsConfig>(
     () => ({
-      rootcolor,
-      bordercolor,
-      dropcolor,
-      splitcolor,
-      focuscolor,
-      maximizescreencolor,
-      urgentcolor,
-      scratchpadcolor,
-      globalcolor,
-      overlaycolor,
-      shadowscolor,
+      root_color,
+      border_color,
+      drop_color,
+      split_color,
+      focus_color,
+      maximized_screen_color,
+      urgent_color,
+      scratchpad_color,
+      global_color,
+      overlay_color,
+      shadows_color,
       group_bar_decorate_fg_color: gbFg,
       group_bar_decorate_bg_color: gbBg,
       group_bar_decorate_focus_fg_color: gbFocusFg,
@@ -396,17 +400,17 @@ function useColorConfigValues() {
       jump_label_decorate_border_color: jlBorder,
     }),
     [
-      rootcolor,
-      bordercolor,
-      dropcolor,
-      splitcolor,
-      focuscolor,
-      maximizescreencolor,
-      urgentcolor,
-      scratchpadcolor,
-      globalcolor,
-      overlaycolor,
-      shadowscolor,
+      root_color,
+      border_color,
+      drop_color,
+      split_color,
+      focus_color,
+      maximized_screen_color,
+      urgent_color,
+      scratchpad_color,
+      global_color,
+      overlay_color,
+      shadows_color,
       gbFg,
       gbBg,
       gbFocusFg,

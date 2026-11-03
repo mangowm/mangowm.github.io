@@ -42,9 +42,9 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
   const zoomEnd = useConfigFloat("zoom_end_ratio", undefined, 0.1, 1.0);
   const fadeIn = useConfigFloat("fadein_begin_opacity", undefined, 0.0, 1.0);
   const fadeOut = useConfigFloat("fadeout_begin_opacity", undefined, 0.0, 1.0);
-  const rootColor = useConfigStr("rootcolor");
-  const focusColor = useConfigStr("focuscolor");
-  const borderColor = useConfigStr("bordercolor");
+  const rootColor = useConfigStr("root_color");
+  const focusColor = useConfigStr("focus_color");
+  const borderColor = useConfigStr("border_color");
 
   const durMove = useConfigInt("animation_duration_move", undefined, 1, 50000);
   const durOpen = useConfigInt("animation_duration_open", undefined, 1, 50000);
