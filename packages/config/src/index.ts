@@ -8,3 +8,4 @@ export * from "./tag";
 export * from "./rule";
 export * from "./normalize";
 export * from "./serialize";
+export * from "./toml";

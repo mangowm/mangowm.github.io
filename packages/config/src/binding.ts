@@ -122,6 +122,25 @@ export function bindingTrigger(binding: ParsedBinding): string {
   return `${head}${binding.trigger}`;
 }
 
+/** Split a canonical trigger back into modifiers, key, and finger count. */
+export function splitTrigger(
+  kind: BindingKind,
+  trigger: string,
+): { mods: string; key: string; fingers: string } {
+  if (kind === "switch") return { mods: "", key: trigger, fingers: "" };
+
+  const parts = trigger.split("+");
+
+  if (kind === "gesture") {
+    const fingers = parts.pop() ?? "";
+    const motion = parts.pop() ?? "";
+    return { mods: parts.join("+"), key: motion, fingers };
+  }
+
+  const key = parts.pop() ?? "";
+  return { mods: parts.join("+"), key, fingers: "" };
+}
+
 /** The config keyword for a parsed binding, including key flags. */
 export function bindKeyword(binding: ParsedBinding): string {
   if (binding.kind !== "key") return KEYWORD_BY_KIND[binding.kind];

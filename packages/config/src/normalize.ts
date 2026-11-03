@@ -1,13 +1,23 @@
 import { GLOBALS, RULES, type GlobalDef, type RuleDef } from "@mangowm.github.io/schema";
 
-import { bindingTrigger, parseBinding, type BindingKind, type ParsedBinding } from "./binding";
+import {
+  bindingTrigger,
+  parseBinding,
+  type BindingFlags,
+  type BindingKind,
+  type ParsedBinding,
+} from "./binding";
+import { parseAction } from "./dispatch";
 import type { ConfigDocument } from "./document";
-import { parseRule } from "./rule";
+import { parseRule, parseRuleField } from "./rule";
 import type {
+  Action,
   BindingMap,
   BindingNode,
   CanonicalConfig,
   OptionValue,
+  RuleKey,
+  RuleRecord,
   SourceLocation,
 } from "./types";
 import { parseOption } from "./value";
@@ -30,6 +40,14 @@ const DIRECTIVES = new Set(["exec", "exec_once", "source", "source_optional"]);
 const BIND_KEY = /^bind[slrpc]*$/;
 const PLAIN_BINDINGS = new Set(["mousebind", "axisbind", "gesturebind", "switchbind"]);
 const VARIABLE_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
+
+const KIND_BY_SECTION: Record<string, BindingKind> = {
+  bind: "key",
+  mousebind: "mouse",
+  axisbind: "axis",
+  gesturebind: "gesture",
+  switchbind: "switch",
+};
 
 const RULE_BY_KEY: ReadonlyMap<string, RuleDef> = new Map(RULES.map((rule) => [rule.key, rule]));
 const GLOBAL_BY_KEY: ReadonlyMap<string, GlobalDef> = new Map(
@@ -55,31 +73,33 @@ function bindingsFor(config: CanonicalConfig, kind: BindingKind): BindingMap {
   }
 }
 
-function placeBinding(
+function placeAction(
   config: CanonicalConfig,
+  kind: BindingKind,
   mode: string,
-  binding: ParsedBinding,
+  flags: BindingFlags,
+  trigger: string,
+  action: Action,
   warn: (message: string, at: SourceLocation) => void,
   at: SourceLocation,
 ): void {
-  if (RESERVED_TRIGGERS.has(binding.trigger)) {
-    warn(`"${binding.trigger}" is a reserved binding name`, at);
+  if (RESERVED_TRIGGERS.has(trigger)) {
+    warn(`"${trigger}" is a reserved binding name`, at);
     return;
   }
 
-  const bindings = bindingsFor(config, binding.kind);
+  const bindings = bindingsFor(config, kind);
   let node: BindingNode = (bindings[mode] ??= {});
-  const trigger = bindingTrigger(binding);
 
   for (const flag of FLAGS) {
-    if (!binding.flags[flag]) continue;
+    if (!flags[flag]) continue;
     const child = node[flag];
     node = child !== undefined && !Array.isArray(child) ? child : (node[flag] = {});
   }
 
   const existing = node[trigger];
-  if (binding.flags.conflict && Array.isArray(existing)) {
-    existing.push(binding.action);
+  if (flags.conflict && Array.isArray(existing)) {
+    existing.push(action);
     return;
   }
 
@@ -87,7 +107,26 @@ function placeBinding(
     warn(`duplicate binding "${trigger}"`, at);
   }
 
-  node[trigger] = [binding.action];
+  node[trigger] = [action];
+}
+
+function placeBinding(
+  config: CanonicalConfig,
+  mode: string,
+  binding: ParsedBinding,
+  warn: (message: string, at: SourceLocation) => void,
+  at: SourceLocation,
+): void {
+  placeAction(
+    config,
+    binding.kind,
+    mode,
+    binding.flags,
+    bindingTrigger(binding),
+    binding.action,
+    warn,
+    at,
+  );
 }
 
 function addDirective(config: CanonicalConfig, key: string, value: string): void {
@@ -125,6 +164,35 @@ function clampOption(value: OptionValue, def: GlobalDef): [OptionValue, boolean]
   return [value, false];
 }
 
+function applyGlobal(
+  config: CanonicalConfig,
+  key: string,
+  value: string,
+  at: SourceLocation,
+  warn: (message: string, at: SourceLocation) => void,
+): void {
+  if (DIRECTIVES.has(key)) {
+    addDirective(config, key, value);
+    return;
+  }
+
+  const def = GLOBAL_BY_KEY.get(key);
+  if (!def) {
+    warn(`unknown option "${key}"`, at);
+    return;
+  }
+
+  try {
+    const [parsed, clamped] = clampOption(parseOption(value, def), def);
+    (config.global ??= {})[key] = parsed;
+    if (clamped) {
+      warn(`${key} clamped to ${JSON.stringify(parsed)}`, at);
+    }
+  } catch (error) {
+    warn(error instanceof Error ? error.message : String(error), at);
+  }
+}
+
 /** Normalize a `.conf` document to the canonical config. */
 export function normalizeConf(document: ConfigDocument): NormalizedConfig {
   const config: CanonicalConfig = {};
@@ -160,11 +228,6 @@ export function normalizeConf(document: ConfigDocument): NormalizedConfig {
       continue;
     }
 
-    if (DIRECTIVES.has(key)) {
-      addDirective(config, key, node.value);
-      continue;
-    }
-
     const rule = RULE_BY_KEY.get(key);
     if (rule) {
       const parsed = parseRule(rule, node.value);
@@ -185,22 +248,120 @@ export function normalizeConf(document: ConfigDocument): NormalizedConfig {
       continue;
     }
 
-    const def = GLOBAL_BY_KEY.get(key);
-    if (def) {
+    applyGlobal(config, key, node.value, node.at, warn);
+  }
+
+  return { config, warnings };
+}
+
+/** Normalize a TOML document to the canonical config. */
+export function normalizeToml(document: ConfigDocument): NormalizedConfig {
+  const config: CanonicalConfig = {};
+  const warnings: Warning[] = [];
+  const warn = (message: string, at: SourceLocation) => warnings.push({ message, at });
+  let rule: { key: RuleKey; record: RuleRecord } | null = null;
+
+  const flushRule = () => {
+    if (rule && Object.keys(rule.record).length > 0) {
+      const rules = (config.rule ??= {});
+      (rules[rule.key] ??= []).push(rule.record);
+    }
+    rule = null;
+  };
+
+  for (const node of document.nodes) {
+    if (node.kind === "section") {
+      flushRule();
+      const [head, name] = node.path;
+      if (head === "rule" && name && RULE_BY_KEY.has(name)) {
+        rule = { key: name as RuleKey, record: {} };
+      }
+      continue;
+    }
+
+    if (node.kind !== "entry") continue;
+
+    const head = node.path[0] ?? "";
+    const second = node.path[1] ?? "";
+
+    if (head === "global") {
+      applyGlobal(config, second, node.value, node.at, warn);
+      continue;
+    }
+
+    if (head === "env" || head === "var") {
+      if (head === "var" && !VARIABLE_NAME.test(second)) {
+        warn(`invalid variable name "${second}"`, node.at);
+        continue;
+      }
+      if (head === "env") {
+        (config.env ??= {})[second] = node.value;
+      } else {
+        (config.var ??= {})[second] = node.value;
+      }
+      continue;
+    }
+
+    if (head === "rule") {
+      const definition = RULE_BY_KEY.get(second);
+      const fieldKey = node.path[2] ?? "";
+      const field = definition?.fields.find((candidate) => candidate.key === fieldKey);
+
+      if (!definition || !field) {
+        warn(`unknown rule field "${fieldKey}"`, node.at);
+        continue;
+      }
+
+      if (!rule || rule.key !== second) {
+        flushRule();
+        rule = { key: second as RuleKey, record: {} };
+      }
+
       try {
-        const [value, clamped] = clampOption(parseOption(node.value, def), def);
-        (config.global ??= {})[key] = value;
-        if (clamped) {
-          warn(`${key} clamped to ${JSON.stringify(value)}`, node.at);
-        }
+        rule.record[fieldKey] = parseRuleField(node.value, field);
       } catch (error) {
         warn(error instanceof Error ? error.message : String(error), node.at);
       }
       continue;
     }
 
-    warn(`unknown option "${key}"`, node.at);
+    const kind = KIND_BY_SECTION[head];
+    if (!kind) {
+      warn(`unknown section "${head}"`, node.at);
+      continue;
+    }
+
+    const mode = second || "default";
+    const trigger = node.path[node.path.length - 1] ?? "";
+    const flags: BindingFlags = {
+      sym: false,
+      lock: false,
+      release: false,
+      pass: false,
+      conflict: false,
+    };
+
+    for (const segment of node.path.slice(2, -1)) {
+      if (segment in flags) {
+        flags[segment as keyof BindingFlags] = true;
+      } else {
+        warn(`unknown binding flag "${segment}"`, node.at);
+      }
+    }
+
+    try {
+      placeAction(config, kind, mode, flags, trigger, parseAction(node.value), warn, node.at);
+    } catch (error) {
+      warn(error instanceof Error ? error.message : String(error), node.at);
+    }
   }
 
+  flushRule();
+
   return { config, warnings };
+}
+
+/** Normalize either supported format. */
+export function normalize(document: ConfigDocument): NormalizedConfig {
+  return document.format === "toml" ? normalizeToml(document) : normalizeConf(document);
 }

@@ -3,6 +3,7 @@ import { GLOBALS, RULES, type RuleDef } from "@mangowm.github.io/schema";
 import {
   bindKeyword,
   formatBinding,
+  splitTrigger,
   type BindingFlags,
   type BindingKind,
   type ParsedBinding,
@@ -29,24 +30,6 @@ function formatRuleValue(rule: RuleDef, key: string, value: RuleRecord[string]):
       : (value as (string | number)[]).join(",");
   }
   return String(value);
-}
-
-function splitTrigger(
-  kind: BindingKind,
-  trigger: string,
-): { mods: string; key: string; fingers: string } {
-  if (kind === "switch") return { mods: "", key: trigger, fingers: "" };
-
-  const parts = trigger.split("+");
-
-  if (kind === "gesture") {
-    const fingers = parts.pop() ?? "";
-    const motion = parts.pop() ?? "";
-    return { mods: parts.join("+"), key: motion, fingers };
-  }
-
-  const key = parts.pop() ?? "";
-  return { mods: parts.join("+"), key, fingers: "" };
 }
 
 function bindingMap(config: CanonicalConfig, kind: BindingKind): BindingMap | undefined {

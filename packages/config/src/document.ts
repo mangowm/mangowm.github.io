@@ -14,6 +14,15 @@ export interface CommentNode {
   at: SourceLocation;
 }
 
+/** A table header. `array` is true for `[[name]]`. */
+export interface SectionNode {
+  kind: "section";
+  path: readonly string[];
+  array: boolean;
+  raw: string;
+  at: SourceLocation;
+}
+
 /** A `key = value` line. `path` is the full key path. */
 export interface EntryNode {
   kind: "entry";
@@ -30,7 +39,7 @@ export interface RawNode {
   at: SourceLocation;
 }
 
-export type DocumentNode = BlankNode | CommentNode | EntryNode | RawNode;
+export type DocumentNode = BlankNode | CommentNode | SectionNode | EntryNode | RawNode;
 
 /** Lossless text model: comments, blank lines, ordering, and duplicates survive. */
 export interface ConfigDocument {
