@@ -3,6 +3,7 @@ import Type, { type TSchema } from "typebox";
 
 import { COLOR_PATTERN, VariableString, enumSchema, withVariable } from "../core";
 import { GLOBAL_KEY_BINDING_PATTERN } from "../data/bindingKeys";
+import { DIRECTIVES } from "../data/directives";
 import { GLOBALS } from "../data/globals";
 import { LAYOUTS } from "../data/layouts";
 import { RULES } from "../data/rules";
@@ -97,21 +98,17 @@ function globalProperty(option: GlobalDef): TSchema {
   }
 }
 
-function directive(title: string, description: string): TSchema {
+function directiveSchema(title: string, description: string): TSchema {
   return Type.Array(Type.String({ minLength: 1 }), { title, description });
 }
 
 function directiveProperties(): Record<string, TSchema> {
-  return {
-    exec: Type.Optional(
-      directive("Run on load and reload", "Commands run at startup and on each reload."),
-    ),
-    exec_once: Type.Optional(directive("Run Once", "Commands run once at startup.")),
-    source: Type.Optional(directive("Includes", "Loads other config files.")),
-    source_optional: Type.Optional(
-      directive("Optional Includes", "Loads other config files when they exist."),
-    ),
-  };
+  return Object.fromEntries(
+    DIRECTIVES.map((directive) => [
+      directive.key,
+      Type.Optional(directiveSchema(directive.label, directive.description)),
+    ]),
+  );
 }
 
 function envMap(): TSchema {

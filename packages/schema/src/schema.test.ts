@@ -4,7 +4,12 @@ import Value from "typebox/value";
 
 import { DISPATCHER_ARGS, DISPATCHERS, type DispatcherArgKind } from "./data/dispatcherArgs";
 import { GLOBALS } from "./data/globals";
-import { GLOBALS as exportedGlobals, schema as packageSchema } from "./index";
+import {
+  DIRECTIVES as exportedDirectives,
+  GLOBALS as exportedGlobals,
+  MANGO_VERSION as exportedVersion,
+  schema as packageSchema,
+} from "./index";
 import { RULES } from "./data/rules";
 import { schema } from "./schema";
 import { MANGO_VERSION } from "./version";
@@ -45,6 +50,13 @@ describe("schema", () => {
   it("exports the schema and source data", () => {
     expect(packageSchema).toBe(schema);
     expect(exportedGlobals).toBe(GLOBALS);
+    expect(exportedVersion).toBe(MANGO_VERSION);
+    expect(exportedDirectives.map((directive) => directive.key)).toEqual([
+      "exec",
+      "exec_once",
+      "source",
+      "source_optional",
+    ]);
   });
 
   it("matches the published snapshot", () => {

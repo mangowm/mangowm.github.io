@@ -5,7 +5,9 @@ export {
   type DispatcherArgKind,
   type DispatcherName,
 } from "./data/dispatcherArgs";
+export { DIRECTIVES, type DirectiveDef, type DirectiveKey } from "./data/directives";
 export { GLOBALS } from "./data/globals";
 export { LAYOUTS } from "./data/layouts";
 export { RULES } from "./data/rules";
 export type { GlobalDef, RuleDef, RuleFieldDef } from "./data/types";
+export { MANGO_VERSION } from "./version";
