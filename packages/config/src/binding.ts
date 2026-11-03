@@ -111,6 +111,17 @@ export function parseBinding(keyword: string, value: string): ParsedBinding {
   return { kind, flags, mods, trigger, fingers: "", action: parseAction(rest.join(",")) };
 }
 
+/** The canonical trigger key: modifiers, key, and gesture finger count joined by `+`. */
+export function bindingTrigger(binding: ParsedBinding): string {
+  if (binding.kind === "switch") return binding.trigger;
+
+  const head = binding.mods ? `${binding.mods}+` : "";
+  if (binding.kind === "gesture") {
+    return `${head}${binding.trigger}+${binding.fingers}`;
+  }
+  return `${head}${binding.trigger}`;
+}
+
 /** The config keyword for a parsed binding, including key flags. */
 export function bindKeyword(binding: ParsedBinding): string {
   if (binding.kind !== "key") return KEYWORD_BY_KIND[binding.kind];

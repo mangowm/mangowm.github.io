@@ -6,3 +6,4 @@ export * from "./dispatch";
 export * from "./binding";
 export * from "./tag";
 export * from "./rule";
+export * from "./normalize";

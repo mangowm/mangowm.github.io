@@ -17,6 +17,7 @@
   "devDependencies": {
     "@mangowm.github.io/tsconfig": "workspace:*",
     "@types/node": "catalog:",
+    "typebox": "^1.4.3",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   }

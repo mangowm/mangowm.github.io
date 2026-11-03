@@ -505,6 +505,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 26.6.5
+      typebox:
+        specifier: ^1.4.3
+        version: 1.4.3
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
