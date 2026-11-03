@@ -96,6 +96,9 @@ interface ConfigStore {
   ) => void;
   updateEntry: (key: string, index: number, value: string) => void;
   removeEntry: (key: string, index: number) => void;
+
+  /** Replace a whole file from text edited outside the form. */
+  setFileText: (absPath: string, text: string) => void;
 }
 
 export const useConfigStore = create<ConfigStore>()(
@@ -233,6 +236,14 @@ export const useConfigStore = create<ConfigStore>()(
             });
             return { ...f, lines: newLines };
           });
+          return { files, data: mergeFileData(files, state.data), dirty: true };
+        }),
+
+      setFileText: (absPath, text) =>
+        set((state) => {
+          const files = state.files.map((file) =>
+            file.absPath === absPath ? { ...file, lines: parseConfig(text).lines } : file,
+          );
           return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
     }),

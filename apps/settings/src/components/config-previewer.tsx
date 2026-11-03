@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy } from "lucide-react";
 import { useConfigStore } from "@/lib/config-store";
 import type { SourceFile } from "@/lib/config-types";
-import { ConfigView } from "@/components/preview/ConfigView";
+import { ConfigFile } from "@/components/preview/ConfigFile";
 import { serializeConfig } from "@/lib/config-parse";
 import { commonAncestorDir } from "@/lib/platform/paths";
 import { cn } from "cn";
@@ -129,7 +129,9 @@ function FileTreeNode({
 
 export function ConfigPreviewer() {
   const files = useConfigStore((s) => s.files);
+  const setFileText = useConfigStore((s) => s.setFileText);
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const rootDir = commonAncestorDir(files.map((f) => f.absPath));
@@ -184,7 +186,10 @@ export function ConfigPreviewer() {
               key={node.path}
               node={node}
               selectedPath={displayPath}
-              onSelect={(file) => setSelectedPath(file.absPath)}
+              onSelect={(file) => {
+                setSelectedPath(file.absPath);
+                setEditing(false);
+              }}
             />
           ))}
         </div>
@@ -195,6 +200,13 @@ export function ConfigPreviewer() {
           <FileIcon className="size-3.5" />
           <span className="font-mono">{displayPath}</span>
           <span className="ml-auto flex items-center gap-1">
+            <button
+              onClick={() => setEditing((value) => !value)}
+              disabled={!selectedFile}
+              className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
+            >
+              {editing ? "Done" : "Edit"}
+            </button>
             <button
               onClick={handleCopy}
               disabled={!selectedFile || copied}
@@ -215,9 +227,11 @@ export function ConfigPreviewer() {
         </div>
         <div className="flex-1 overflow-hidden">
           {selectedFile ? (
-            <ConfigView
+            <ConfigFile
               name={displayPath ?? selectedFile.refPath}
               contents={serializeConfig(selectedFile.lines)}
+              editing={editing}
+              onCommit={(text) => setFileText(selectedFile.absPath, text)}
             />
           ) : (
             <div className="flex h-full items-center justify-center text-sm text-muted-foreground/40">
