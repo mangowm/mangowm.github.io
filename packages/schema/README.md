@@ -82,7 +82,7 @@ Normalize parsed configs to the canonical object:
 - `|` strings become arrays (`"1|3"` becomes `[1,3]`)
 - flat keys move under `global`
 - `[env]` and `[var]` values become strings
-- `-1` rule overrides are omitted
+- `-1` boolean rule overrides are omitted; `-1` stays a value for numeric fields such as `device_rule.accel_speed`
 - `-1` tags become `[1..31]`
 
 Additional `.conf` rules:
