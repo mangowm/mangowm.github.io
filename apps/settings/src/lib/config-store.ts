@@ -5,6 +5,7 @@ import {
   formatConf,
   parseConf as parseDocument,
   parseOption,
+  type Change,
 } from "@mangowm.github.io/config";
 import { GLOBALS } from "@mangowm.github.io/schema";
 import { getHost, isTauri } from "./platform";
@@ -22,6 +23,12 @@ function toSourceFile(file: RawConfigFile): SourceFile {
   return { absPath: file.absPath, refPath: file.refPath, lines: parseConfig(file.text).lines };
 }
 
+function updateDocument(file: SourceFile, change: Change): SourceFile {
+  const document = parseDocument(serializeConfig(file.lines));
+  const next = applyChange(document, change);
+  return { ...file, lines: parseConfig(formatConf(next)).lines };
+}
+
 function updateScalar(file: SourceFile, key: string, value: string): SourceFile {
   const definition = GLOBAL_BY_KEY.get(key);
 
@@ -33,14 +40,11 @@ function updateScalar(file: SourceFile, key: string, value: string): SourceFile 
     return { ...file, lines };
   }
 
-  const document = parseDocument(serializeConfig(file.lines));
-  const next = applyChange(document, {
+  return updateDocument(file, {
     kind: "option",
     key,
     value: parseOption(value, definition),
   });
-
-  return { ...file, lines: parseConfig(formatConf(next)).lines };
 }
 
 function mergeFileData(files: SourceFile[], prevData: ConfigData = {}): ConfigData {
@@ -114,9 +118,11 @@ interface ConfigStore {
   setValues: (entries: Record<string, string>) => void;
 
   // Multi-value list ops: use for keys where every line is a distinct entry
-  // (bind=, exec-once=, env=, …).  All mutations operate on `file.lines`
+  // (bind=, exec_once=, env=, …).  All mutations operate on `file.lines`
   // only — `data` is re-derived from lines automatically.
   addEntry: (key: string, value: string) => void;
+  setDirective: (key: string, values: string[]) => void;
+  setPair: (table: "env" | "var", name: string, value?: string) => void;
   /** Insert a new entry at a specific line position in a specific file. */
   insertEntry: (
     key: string,
@@ -192,6 +198,24 @@ export const useConfigStore = create<ConfigStore>()(
               index === fileIdx ? updateScalar(file, key, value) : file,
             );
           }
+          return { files, data: mergeFileData(files, state.data), dirty: true };
+        }),
+
+      setDirective: (key, values) =>
+        set((state) => {
+          const fileIdx = fileIndexForKey(state.files, key);
+          const files = state.files.map((file, index) =>
+            index === fileIdx ? updateDocument(file, { kind: "directive", key, values }) : file,
+          );
+          return { files, data: mergeFileData(files, state.data), dirty: true };
+        }),
+
+      setPair: (table, name, value) =>
+        set((state) => {
+          const fileIdx = fileIndexForKey(state.files, table);
+          const files = state.files.map((file, index) =>
+            index === fileIdx ? updateDocument(file, { kind: "pair", table, name, value }) : file,
+          );
           return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 

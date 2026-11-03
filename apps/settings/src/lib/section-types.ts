@@ -17,7 +17,7 @@ export interface SectionMeta {
   parentId?: string;
   /** Section-level keywords inherited by all fields */
   keywords?: string[];
-  /** Static field defs. Leave empty for user-managed list keys (exec-once, env). */
+  /** Static field defs. Leave empty for user-managed list keys (exec_once, env). */
   fields?: FieldDef[];
   /** React panel component. Omitted for parent/grouping sections. */
   panel?: ComponentType<PanelProps>;

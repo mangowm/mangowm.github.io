@@ -87,16 +87,16 @@ ms.addAll(staticDocs);
 
 const DYNAMIC_SOURCES: DynamicIndexSource[] = [
   {
-    sourceId: "exec-once",
-    watchKeys: ["exec-once"],
+    sourceId: "exec_once",
+    watchKeys: ["exec_once"],
     buildItems: (data) =>
-      (data["exec-once"] ?? []).map((cmd, i) => ({
-        id: `exec-once:${i}`,
+      (data["exec_once"] ?? []).map((cmd, i) => ({
+        id: `exec_once:${i}`,
         label: cmd,
         description: "Runs once on compositor launch",
         sectionLabel: "Autostart",
         sectionId: "autostart",
-        configKey: "exec-once",
+        configKey: "exec_once",
       })),
   },
   {

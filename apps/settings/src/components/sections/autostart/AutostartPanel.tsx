@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
-import { useConfigStore, useConfigValues } from "@/lib/config-store";
+import { useRef, useState } from "react";
+import { Plus, TerminalSquare, Trash2 } from "lucide-react";
+
 import { Button } from "@mangowm/ui/components/button";
-import { Trash2, Plus, TerminalSquare } from "lucide-react";
-import type { PanelProps } from "@/lib/section-types";
+import { useConfigStore, useConfigValues } from "@/lib/config-store";
 import { useFocusField } from "@/lib/use-focus-field";
-import { PanelShell, PanelHeader, SectionCard } from "@/components/sections/section-ui";
+import type { PanelProps } from "@/lib/section-types";
+import { PanelHeader, PanelShell, SectionCard } from "@/components/sections/section-ui";
 
 function CommandSection({
   title,
@@ -16,19 +17,31 @@ function CommandSection({
   placeholder: string;
 }) {
   const commands = useConfigValues(configKey);
-  const addEntry = useConfigStore((state) => state.addEntry);
-  const updateEntry = useConfigStore((state) => state.updateEntry);
-  const removeEntry = useConfigStore((state) => state.removeEntry);
+  const setDirective = useConfigStore((state) => state.setDirective);
 
-  const [newCmd, setNewCmd] = useState("");
-  const newCmdInputRef = useRef<HTMLInputElement>(null);
+  const [newCommand, setNewCommand] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleAdd = () => {
-    if (newCmd.trim()) {
-      addEntry(configKey, newCmd.trim());
-      setNewCmd("");
-      newCmdInputRef.current?.focus();
-    }
+  const add = () => {
+    const command = newCommand.trim();
+    if (command === "") return;
+    setDirective(configKey, [...commands, command]);
+    setNewCommand("");
+    inputRef.current?.focus();
+  };
+
+  const update = (index: number, value: string) => {
+    setDirective(
+      configKey,
+      commands.map((command, current) => (current === index ? value : command)),
+    );
+  };
+
+  const remove = (index: number) => {
+    setDirective(
+      configKey,
+      commands.filter((_, current) => current !== index),
+    );
   };
 
   return (
@@ -41,22 +54,22 @@ function CommandSection({
           </div>
         )}
 
-        {commands.map((cmd, index) => (
+        {commands.map((command, index) => (
           <div
             key={index}
             className="group flex items-center gap-3 px-4 py-2 transition-colors focus-within:bg-accent/50 hover:bg-accent/50"
           >
             <span className="mt-0.5 font-mono text-sm text-muted-foreground/30 select-none">$</span>
             <input
-              value={cmd}
-              onChange={(e) => updateEntry(configKey, index, e.target.value)}
+              value={command}
+              onChange={(event) => update(index, event.target.value)}
               className="flex-1 bg-transparent py-1 font-mono text-[13px] text-foreground outline-none placeholder:text-muted-foreground/40"
               spellCheck={false}
             />
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => removeEntry(configKey, index)}
+              onClick={() => remove(index)}
               className="size-7 text-muted-foreground opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
               aria-label="Remove command"
               title="Remove command"
@@ -69,24 +82,24 @@ function CommandSection({
         <div className="flex items-center gap-3 bg-muted/30 px-4 py-2.5">
           <span className="mt-0.5 font-mono text-sm text-muted-foreground/30 select-none">$</span>
           <input
-            ref={newCmdInputRef}
-            value={newCmd}
-            onChange={(e) => setNewCmd(e.target.value)}
+            ref={inputRef}
+            value={newCommand}
+            onChange={(event) => setNewCommand(event.target.value)}
             placeholder={placeholder}
             className="flex-1 bg-transparent py-1 font-mono text-[13px] text-foreground outline-none placeholder:text-muted-foreground/40"
             spellCheck={false}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                handleAdd();
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                add();
               }
             }}
           />
           <Button
             size="sm"
-            variant={newCmd.trim() ? "default" : "secondary"}
-            onClick={handleAdd}
-            disabled={!newCmd.trim()}
+            variant={newCommand.trim() ? "default" : "secondary"}
+            onClick={add}
+            disabled={!newCommand.trim()}
             className="h-7 px-3 text-xs shadow-none transition-all"
           >
             <Plus className="mr-1.5 size-3" />
@@ -105,13 +118,13 @@ export function AutostartPanel({ focusKey }: PanelProps) {
     <PanelShell maxWidth="max-w-3xl">
       <PanelHeader
         title="Autostart"
-        description="Define applications and scripts to execute on compositor startup or reload."
+        description="Applications and scripts that run when mangowm starts or reloads."
         separator={false}
       />
 
       <div className="flex flex-col gap-5">
-        <div ref={fieldRef("exec-once")}>
-          <CommandSection title="exec-once" configKey="exec-once" placeholder="e.g., waybar &" />
+        <div ref={fieldRef("exec_once")}>
+          <CommandSection title="exec_once" configKey="exec_once" placeholder="e.g., waybar &" />
         </div>
 
         <div ref={fieldRef("exec")}>

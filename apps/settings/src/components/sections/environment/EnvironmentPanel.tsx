@@ -11,24 +11,16 @@ function parseEntry(raw: string): [string, string] {
   return idx === -1 ? [raw, ""] : [raw.slice(0, idx), raw.slice(idx + 1)];
 }
 
-function formatEntry(name: string, value: string): string {
-  return `${name},${value}`;
-}
-
 function sanitizeKey(key: string): string {
   return key.toUpperCase().replace(/[^A-Z0-9_]/g, "");
 }
 
 function EnvRow({
   raw,
-  index,
-  updateEntry,
-  removeEntry,
+  setPair,
 }: {
   raw: string;
-  index: number;
-  updateEntry: (key: "env", idx: number, val: string) => void;
-  removeEntry: (key: "env", idx: number) => void;
+  setPair: (table: "env" | "var", name: string, value?: string) => void;
 }) {
   const [initialKey, initialValue] = parseEntry(raw);
   const [localKey, setLocalKey] = useState(initialKey);
@@ -41,7 +33,10 @@ function EnvRow({
       setLocalValue(initialValue);
       return;
     }
-    updateEntry("env", index, formatEntry(cleanKey, localValue));
+    if (initialKey && cleanKey !== initialKey) {
+      setPair("env", initialKey, undefined);
+    }
+    setPair("env", cleanKey, localValue);
   };
 
   return (
@@ -77,7 +72,7 @@ function EnvRow({
         size="icon"
         onMouseDown={(e) => {
           e.preventDefault();
-          removeEntry("env", index);
+          setPair("env", initialKey, undefined);
         }}
         className="size-8 shrink-0 text-muted-foreground opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
         tabIndex={-1}
@@ -91,9 +86,7 @@ function EnvRow({
 export function EnvironmentPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
   const envVars = useConfigValues("env");
-  const addEntry = useConfigStore((state) => state.addEntry);
-  const updateEntry = useConfigStore((state) => state.updateEntry);
-  const removeEntry = useConfigStore((state) => state.removeEntry);
+  const setPair = useConfigStore((state) => state.setPair);
 
   const [newKey, setNewKey] = useState("");
   const [newValue, setNewValue] = useState("");
@@ -105,7 +98,7 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
     e?.preventDefault();
     const cleanKey = sanitizeKey(newKey);
     if (cleanKey) {
-      addEntry("env", formatEntry(cleanKey, newValue.trim()));
+      setPair("env", cleanKey, newValue.trim());
       setNewKey("");
       setNewValue("");
       keyInputRef.current?.focus();
@@ -194,13 +187,7 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
         ) : (
           <div className="flex flex-col rounded-xl border border-border/50 bg-card p-1 shadow-sm">
             {envVars.map((raw, index) => (
-              <EnvRow
-                key={`${index}-${raw.split(",")[0]}`}
-                raw={raw}
-                index={index}
-                updateEntry={updateEntry}
-                removeEntry={removeEntry}
-              />
+              <EnvRow key={`${index}-${raw.split(",")[0]}`} raw={raw} setPair={setPair} />
             ))}
           </div>
         )}
