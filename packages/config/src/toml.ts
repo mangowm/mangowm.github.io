@@ -184,9 +184,16 @@ export function parseToml(text: string, file = ""): ConfigDocument {
       if (joinsArray(key)) {
         nodes.push({ kind: "entry", path, value: elements.join(","), raw, at });
       } else {
-        for (const element of elements) {
-          nodes.push({ kind: "entry", path, value: element, raw, at });
-        }
+        elements.forEach((element, index) => {
+          nodes.push({
+            kind: "entry",
+            path,
+            value: element,
+            raw: index === 0 ? raw : "",
+            at,
+            synthetic: index > 0,
+          });
+        });
       }
       return;
     }
@@ -220,7 +227,10 @@ export function parseToml(text: string, file = ""): ConfigDocument {
 
 /** Write a TOML document back to text, preserving untouched statements. */
 export function formatToml(document: ConfigDocument): string {
-  return document.nodes.map((node) => node.raw).join(document.newline);
+  return document.nodes
+    .filter((node) => !(node.kind === "entry" && node.synthetic))
+    .map((node) => node.raw)
+    .join(document.newline);
 }
 
 const FLAGS = ["sym", "lock", "release", "pass", "conflict"] as const;

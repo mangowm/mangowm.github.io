@@ -30,6 +30,8 @@ export interface EntryNode {
   value: string;
   raw: string;
   at: SourceLocation;
+  /** True when the node was expanded from one array value; it has no text of its own. */
+  synthetic?: boolean;
 }
 
 /** A line the parser does not understand; kept so nothing is lost. */
