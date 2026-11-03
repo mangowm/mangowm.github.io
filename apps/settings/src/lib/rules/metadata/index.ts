@@ -1,3 +1,5 @@
+import { LAYOUTS } from "@mangowm.github.io/schema";
+
 import type { RuleType, OverrideMeta } from "../types";
 import { TAG_NUMBERS } from "../../dispatchers/types";
 import { windowMatchers, windowOverrides } from "./window";
@@ -62,23 +64,15 @@ export const RULE_MATCHER_LABELS: Record<string, string> = {
   layer_name: "Layer Name",
 };
 
+function layoutLabel(value: string): string {
+  return value
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 export const RULE_MATCHER_OPTIONS: Record<string, { value: string; label: string }[]> = {
-  layout_name: [
-    { value: "tile", label: "Tile" },
-    { value: "scroller", label: "Scroller" },
-    { value: "grid", label: "Grid" },
-    { value: "monocle", label: "Monocle" },
-    { value: "deck", label: "Deck" },
-    { value: "center_tile", label: "Center Tile" },
-    { value: "right_tile", label: "Right Tile" },
-    { value: "vertical_scroller", label: "Vertical Scroller" },
-    { value: "vertical_tile", label: "Vertical Tile" },
-    { value: "vertical_grid", label: "Vertical Grid" },
-    { value: "vertical_deck", label: "Vertical Deck" },
-    { value: "dwindle", label: "Dwindle" },
-    { value: "fair", label: "Fair" },
-    { value: "vertical_fair", label: "Vertical Fair" },
-  ],
+  layout_name: LAYOUTS.map((value) => ({ value, label: layoutLabel(value) })),
   id: [
     ...TAG_NUMBERS.map((n) => ({ value: n, label: n })),
     { value: "*", label: "All (wildcard)" },
