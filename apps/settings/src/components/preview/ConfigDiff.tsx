@@ -11,6 +11,14 @@ function languageOf(name: string): "ini" | "toml" {
 }
 
 export function ConfigDiff({ name, oldContents, newContents }: ConfigDiffProps) {
+  if (oldContents === newContents) {
+    return (
+      <div className="flex h-full items-center justify-center text-sm text-muted-foreground/40">
+        No changes
+      </div>
+    );
+  }
+
   return (
     <MultiFileDiff
       oldFile={{ name, contents: oldContents, lang: languageOf(name) }}
