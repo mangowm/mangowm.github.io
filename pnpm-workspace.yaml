@@ -30,6 +30,8 @@ catalog:
   takumi-js: ^2.14.0
   yaml: ^2.9.1
   "@pierre/diffs": ^1.6.2
+  "@mangowm.github.io/config": workspace:*
+  "@mangowm.github.io/schema": workspace:*
 overrides:
   vite@*: "catalog:"
 publicHoistPattern:

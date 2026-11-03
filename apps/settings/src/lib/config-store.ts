@@ -1,5 +1,12 @@
 import { create } from "zustand";
 import { temporal } from "zundo";
+import {
+  applyChange,
+  formatConf,
+  parseConf as parseDocument,
+  parseOption,
+} from "@mangowm.github.io/config";
+import { GLOBALS } from "@mangowm.github.io/schema";
 import { getHost, isTauri } from "./platform";
 import type { RawConfigFile } from "./platform";
 import { type ConfigData, type SourceFile, countLines } from "./config-types";
@@ -9,9 +16,31 @@ import { DEFAULTS } from "./defaults";
 import DEFAULT_CONFIG from "./default-config";
 
 const EMPTY_VALUES: readonly string[] = Object.freeze([]);
+const GLOBAL_BY_KEY = new Map(GLOBALS.map((option) => [option.key, option]));
 
 function toSourceFile(file: RawConfigFile): SourceFile {
   return { absPath: file.absPath, refPath: file.refPath, lines: parseConfig(file.text).lines };
+}
+
+function updateScalar(file: SourceFile, key: string, value: string): SourceFile {
+  const definition = GLOBAL_BY_KEY.get(key);
+
+  if (!definition) {
+    const lines = [...file.lines];
+    const index = lines.findIndex((line) => line.type === "entry" && line.key === key);
+    if (index >= 0) lines[index] = makeEntryLine(key, value);
+    else lines.push(makeEntryLine(key, value));
+    return { ...file, lines };
+  }
+
+  const document = parseDocument(serializeConfig(file.lines));
+  const next = applyChange(document, {
+    kind: "option",
+    key,
+    value: parseOption(value, definition),
+  });
+
+  return { ...file, lines: parseConfig(formatConf(next)).lines };
 }
 
 function mergeFileData(files: SourceFile[], prevData: ConfigData = {}): ConfigData {
@@ -148,17 +177,9 @@ export const useConfigStore = create<ConfigStore>()(
       setValue: (key, value) =>
         set((state) => {
           const fileIdx = fileIndexForKey(state.files, key);
-          const files = state.files.map((f, i) => {
-            if (i !== fileIdx) return f;
-            const newLines = [...f.lines];
-            const idx = newLines.findIndex((l) => l.type === "entry" && l.key === key);
-            if (idx >= 0) {
-              newLines[idx] = makeEntryLine(key, value);
-            } else {
-              newLines.push(makeEntryLine(key, value));
-            }
-            return { ...f, lines: newLines };
-          });
+          const files = state.files.map((file, index) =>
+            index === fileIdx ? updateScalar(file, key, value) : file,
+          );
           return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 
@@ -167,17 +188,9 @@ export const useConfigStore = create<ConfigStore>()(
           let files = state.files;
           for (const [key, value] of Object.entries(entries)) {
             const fileIdx = fileIndexForKey(files, key);
-            files = files.map((f, i) => {
-              if (i !== fileIdx) return f;
-              const newLines = [...f.lines];
-              const idx = newLines.findIndex((l) => l.type === "entry" && l.key === key);
-              if (idx >= 0) {
-                newLines[idx] = makeEntryLine(key, value);
-              } else {
-                newLines.push(makeEntryLine(key, value));
-              }
-              return { ...f, lines: newLines };
-            });
+            files = files.map((file, index) =>
+              index === fileIdx ? updateScalar(file, key, value) : file,
+            );
           }
           return { files, data: mergeFileData(files, state.data), dirty: true };
         }),

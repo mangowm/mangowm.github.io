@@ -167,6 +167,12 @@ catalogs:
     '@base-ui/react':
       specifier: ^1.9.0
       version: 1.9.0
+    '@mangowm.github.io/config':
+      specifier: workspace:*
+      version: workspace:*
+    '@mangowm.github.io/schema':
+      specifier: workspace:*
+      version: workspace:*
     '@pierre/diffs':
       specifier: ^1.6.2
       version: 1.6.2
@@ -314,6 +320,12 @@ importers:
       '@fontsource-variable/inter':
         specifier: ^5.3.0
         version: 5.3.0
+      '@mangowm.github.io/config':
+        specifier: 'catalog:'
+        version: link:../../packages/config
+      '@mangowm.github.io/schema':
+        specifier: 'catalog:'
+        version: link:../../packages/schema
       '@mangowm/assets':
         specifier: workspace:*
         version: link:../../packages/assets
