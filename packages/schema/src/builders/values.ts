@@ -203,7 +203,7 @@ function ruleField(field: RuleFieldDef): TSchema {
     case "color":
       return withVariable(Type.String({ pattern: COLOR_PATTERN }), metadata);
     case "key-binding":
-      return Type.String({ ...metadata, pattern: GLOBAL_KEY_BINDING_PATTERN });
+      return withVariable(Type.String({ pattern: GLOBAL_KEY_BINDING_PATTERN }), metadata);
     case "device-name":
       return Type.String({ ...metadata, pattern: "^[^,]+$" });
     case "tag-id":

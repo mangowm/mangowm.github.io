@@ -5,6 +5,7 @@ import Value from "typebox/value";
 import { DISPATCHER_ARGS, DISPATCHERS, type DispatcherArgKind } from "./data/dispatcherArgs";
 import { GLOBALS } from "./data/globals";
 import { RULES } from "./data/rules";
+import { validateAction } from "./index";
 import { schema } from "./schema";
 import { MANGO_VERSION } from "./version";
 
@@ -370,6 +371,13 @@ describe("schema", () => {
     ).toBe(false);
   });
 
+  it("validates a single action", () => {
+    expect(validateAction.Check({ dispatcher: "focusdir", args: "left" })).toBe(true);
+    expect(validateAction.Check({ dispatcher: "focusdir", args: "sideways" })).toBe(false);
+    expect(validateAction.Check({ variable: "term" })).toBe(true);
+    expect(validateAction.Check({ variable: "term", args: "--hold" })).toBe(true);
+  });
+
   it("accepts action objects", () => {
     expect(
       Value.Check(schema, {
@@ -496,6 +504,7 @@ describe("schema", () => {
             { global_key_binding: "ctrl+alt-o" },
             { global_key_binding: "SUPER - XF86AudioMute" },
             { global_key_binding: "$mod-o" },
+            { global_key_binding: "$binding" },
             { global_key_binding: "SUPER-code:24" },
           ],
         },

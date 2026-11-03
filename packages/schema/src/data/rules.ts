@@ -376,7 +376,7 @@ const WINDOW_RULE_FIELDS: readonly RuleFieldDef[] = [
     type: "key-binding",
     label: "Global Key Binding",
     description: "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
-    examples: ["ctrl+alt-o"],
+    examples: ["ctrl+alt-o", "$binding"],
   },
 ];
 

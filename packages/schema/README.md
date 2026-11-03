@@ -2,11 +2,13 @@
 
 One JSON Schema 2020-12 file generated from the TypeBox definitions in `src/`.
 It describes the canonical parsed configuration object. It does not validate
-`.conf` or TOML syntax.
+config text syntax.
 
 ```text
 https://mangowm.github.io/schema/<version>/schema.json
 ```
+
+It covers 240 global options, 165 rule fields, 94 dispatchers, and 14 layouts.
 
 ## Canonical model
 
@@ -125,7 +127,8 @@ validation.
 `src/index.ts` exports the schema, the builder, and a compiled validator:
 
 ```ts
-import { buildSchema, schema, validate } from "@mangowm.github.io/schema";
+import { buildSchema, schema, validate, validateAction } from "@mangowm.github.io/schema";
 
 validate.Check(config);
+validateAction.Check({ dispatcher: "focusdir", args: "left" });
 ```

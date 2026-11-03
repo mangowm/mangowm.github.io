@@ -10448,13 +10448,22 @@
                 "description": "Tell the client it is fullscreen while keeping its tiled size."
               },
               "global_key_binding": {
-                "type": "string",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*\\+\\s*(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})))*\\s*-\\s*(?!(?:[sS][uU][pP][eE][rR]|[cC][tT][rR][lL]|[sS][hH][iI][fF][tT]|[aA][lL][tT]|[hH][yY][pP][eE][rR]|[nN][oO][nN][eE])\\s*$)(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^(?:\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
+                  }
+                ],
                 "title": "Global Key Binding",
                 "description": "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
                 "examples": [
-                  "ctrl+alt-o"
-                ],
-                "pattern": "^(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*\\+\\s*(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})))*\\s*-\\s*(?!(?:[sS][uU][pP][eE][rR]|[cC][tT][rR][lL]|[sS][hH][iI][fF][tT]|[aA][lL][tT]|[hH][yY][pP][eE][rR]|[nN][oO][nN][eE])\\s*$)(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
+                  "ctrl+alt-o",
+                  "$binding"
+                ]
               }
             },
             "title": "Window Rules",
@@ -11217,13 +11226,22 @@
                 "description": "Tell the client it is fullscreen while keeping its tiled size."
               },
               "global_key_binding": {
-                "type": "string",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*\\+\\s*(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})))*\\s*-\\s*(?!(?:[sS][uU][pP][eE][rR]|[cC][tT][rR][lL]|[sS][hH][iI][fF][tT]|[aA][lL][tT]|[hH][yY][pP][eE][rR]|[nN][oO][nN][eE])\\s*$)(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^(?:\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
+                  }
+                ],
                 "title": "Global Key Binding",
                 "description": "Global keybinding as MODS-KEY, for example ctrl+alt-o. Wayland apps only.",
                 "examples": [
-                  "ctrl+alt-o"
-                ],
-                "pattern": "^(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))(?:\\s*\\+\\s*(?:[sS][uU][pP][eE][rR]|[sS][uU][pP][eE][rR]_[lL]|[sS][uU][pP][eE][rR]_[rR]|[cC][tT][rR][lL]|[cC][tT][rR][lL]_[lL]|[cC][tT][rR][lL]_[rR]|[sS][hH][iI][fF][tT]|[sS][hH][iI][fF][tT]_[lL]|[sS][hH][iI][fF][tT]_[rR]|[aA][lL][tT]|[aA][lL][tT]_[lL]|[aA][lL][tT]_[rR]|[hH][yY][pP][eE][rR]|[hH][yY][pP][eE][rR]_[lL]|[hH][yY][pP][eE][rR]_[rR]|[nN][oO][nN][eE]|code:(?:133|134|37|105|50|62|64|108)|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\})))*\\s*-\\s*(?!(?:[sS][uU][pP][eE][rR]|[cC][tT][rR][lL]|[sS][hH][iI][fF][tT]|[aA][lL][tT]|[hH][yY][pP][eE][rR]|[nN][oO][nN][eE])\\s*$)(?:[A-Za-z0-9_]+|code:[0-9]+|\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
+                  "ctrl+alt-o",
+                  "$binding"
+                ]
               }
             },
             "title": "Window Rules (Once)",
