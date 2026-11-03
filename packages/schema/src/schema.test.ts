@@ -5,7 +5,7 @@ import Value from "typebox/value";
 import { DISPATCHER_ARGS, DISPATCHERS, type DispatcherArgKind } from "./data/dispatcherArgs";
 import { GLOBALS } from "./data/globals";
 import { RULES } from "./data/rules";
-import { validateAction } from "./index";
+import { validate } from "./validate";
 import { schema } from "./schema";
 import { MANGO_VERSION } from "./version";
 
@@ -371,11 +371,9 @@ describe("schema", () => {
     ).toBe(false);
   });
 
-  it("validates a single action", () => {
-    expect(validateAction.Check({ dispatcher: "focusdir", args: "left" })).toBe(true);
-    expect(validateAction.Check({ dispatcher: "focusdir", args: "sideways" })).toBe(false);
-    expect(validateAction.Check({ variable: "term" })).toBe(true);
-    expect(validateAction.Check({ variable: "term", args: "--hold" })).toBe(true);
+  it("exports a compiled validator", () => {
+    expect(validate.Check(config)).toBe(true);
+    expect(validate.Check({ global: { blur: 1 } })).toBe(false);
   });
 
   it("accepts action objects", () => {

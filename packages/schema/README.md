@@ -124,11 +124,15 @@ validation.
 
 ## Runtime API
 
-`src/index.ts` exports the schema, the builder, and a compiled validator:
+`src/index.ts` exports the schema and the builder. The compiled validator is a
+separate entry point so consumers that only need the artifact do not load the
+compiler:
 
 ```ts
-import { buildSchema, schema, validate, validateAction } from "@mangowm.github.io/schema";
+import { buildSchema, schema } from "@mangowm.github.io/schema";
+import { validate } from "@mangowm.github.io/schema/validate";
 
 validate.Check(config);
-validateAction.Check({ dispatcher: "focusdir", args: "left" });
 ```
+
+Action-level parsing and validation belong to the runtime config layer.

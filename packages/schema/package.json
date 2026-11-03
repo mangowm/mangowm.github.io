@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./validate": "./src/validate.ts",
     "./schemas/*": "./schemas/*",
     "./package.json": "./package.json"
   },
