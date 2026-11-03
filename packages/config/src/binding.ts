@@ -137,8 +137,10 @@ export function formatBinding(binding: ParsedBinding): string {
   const action = formatAction(binding.action);
 
   if (binding.kind === "switch") return `${binding.trigger},${action}`;
+
+  const mods = binding.mods || "NONE";
   if (binding.kind === "gesture") {
-    return `${binding.mods},${binding.trigger},${binding.fingers},${action}`;
+    return `${mods},${binding.trigger},${binding.fingers},${action}`;
   }
-  return `${binding.mods},${binding.trigger},${action}`;
+  return `${mods},${binding.trigger},${action}`;
 }

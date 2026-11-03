@@ -7,3 +7,4 @@ export * from "./binding";
 export * from "./tag";
 export * from "./rule";
 export * from "./normalize";
+export * from "./serialize";
