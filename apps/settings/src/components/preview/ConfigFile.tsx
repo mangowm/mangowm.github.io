@@ -36,7 +36,7 @@ export function ConfigFile({ name, contents, editing = false, onCommit }: Config
         }}
         options={{
           disableFileHeader: true,
-          overflow: "scroll",
+          overflow: "wrap",
           themeType: "system",
         }}
         className="h-full"
