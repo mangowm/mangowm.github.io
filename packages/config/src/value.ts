@@ -10,16 +10,23 @@ export class ValueError extends Error {
   }
 }
 
-const VARIABLE = /^\$(?:[A-Za-z_][A-Za-z0-9_]*|\{[A-Za-z_][A-Za-z0-9_]*\})$/;
+const VARIABLE = /^\$(?:([A-Za-z_][A-Za-z0-9_]*)|\{([A-Za-z_][A-Za-z0-9_]*)\})$/;
 const INTEGER = /^[+-]?\d+$/;
 const COLOR = /^(?:0x|#)([0-9a-f]{6}|[0-9a-f]{8})$/i;
 
 const TRUE = new Set(["1", "true", "yes", "on"]);
 const FALSE = new Set(["0", "false", "no", "off"]);
 
+/** The name of a `$name` or `${name}` reference, without the syntax. */
+export function variableName(text: string): string | null {
+  const match = VARIABLE.exec(text.trim());
+  if (!match) return null;
+  return match[1] ?? match[2] ?? null;
+}
+
 /** Whether a value is a `$name` or `${name}` reference, which stays unresolved. */
 export function isVariable(text: string): boolean {
-  return VARIABLE.test(text);
+  return variableName(text) !== null;
 }
 
 /** Parse a boolean from `1`/`0` or `true`/`false`. */

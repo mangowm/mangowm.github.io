@@ -2,3 +2,5 @@ export type * from "./types";
 export * from "./document";
 export * from "./conf";
 export * from "./value";
+export * from "./dispatch";
+export * from "./binding";
