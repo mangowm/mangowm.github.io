@@ -113,6 +113,7 @@ export function createBrowserHost(defaultConfig: string): ConfigHost {
       writeStoredFiles(raw);
       downloadFiles(raw);
     },
+    remove: async () => {},
     reload: async () => {},
     download: downloadFiles,
     openExternal: async (url: string) => {

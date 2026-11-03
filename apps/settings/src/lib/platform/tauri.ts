@@ -8,6 +8,7 @@ import {
   mkdir,
   readDir,
   readTextFile,
+  remove,
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
 import { Command } from "@tauri-apps/plugin-shell";
@@ -137,19 +138,29 @@ export function createTauriHost(defaultConfig: string): ConfigHost {
     const home = await homeDir().catch(() => null);
     if (!home) return [];
 
-    const rootPath = `${home}/${CONFIG_DIR}/config.conf`;
-    const fallbackPath = "/etc/mango/config.conf";
+    const confPath = `${home}/${CONFIG_DIR}/config.conf`;
+    const tomlPath = `${home}/${CONFIG_DIR}/config.toml`;
 
-    let rootText = await read(rootPath);
-    let actualRootPath = rootPath;
+    let rootText = await read(confPath);
+    let actualRootPath = confPath;
 
     if (rootText === null) {
+      rootText = await read(tomlPath);
+      if (rootText !== null) actualRootPath = tomlPath;
+    }
+
+    if (rootText === null) {
+      const fallbackPath = "/etc/mango/config.conf";
       rootText = await read(fallbackPath);
       if (rootText !== null) actualRootPath = fallbackPath;
     }
 
     if (rootText === null) return [];
-    return readTree(actualRootPath, "config.conf", rootText);
+    return readTree(
+      actualRootPath,
+      actualRootPath.slice(actualRootPath.lastIndexOf("/") + 1),
+      rootText,
+    );
   }
 
   async function createDefault(): Promise<RawConfigFile[]> {
@@ -176,6 +187,7 @@ export function createTauriHost(defaultConfig: string): ConfigHost {
     );
     const root =
       candidates.find((entry) => entry.name === "config.conf") ??
+      candidates.find((entry) => entry.name === "config.toml") ??
       candidates.find((entry) => entry.name === "mango.conf") ??
       candidates[0];
 
@@ -218,6 +230,9 @@ export function createTauriHost(defaultConfig: string): ConfigHost {
       const directory = `${home}/${CONFIG_DIR}`;
       await mkdir(directory, { recursive: true });
       await openPath(directory);
+    },
+    remove: async (path: string) => {
+      await remove(path);
     },
     backup: async () => {
       const destination = `${CONFIG_DIR}/backups/${timestamp()}`;

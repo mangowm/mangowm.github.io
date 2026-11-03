@@ -4,7 +4,7 @@ import { useConfigStore } from "@/lib/config/store";
 import type { SourceFile } from "@/lib/config/types";
 import { ConfigDiff } from "@/components/preview/ConfigDiff";
 import { ConfigFile } from "@/components/preview/ConfigFile";
-import { serializeConfig } from "@/lib/config/parse";
+import { convertFile, convertName, convertOriginal } from "@/lib/config/convert";
 import { commonAncestorDir } from "@/lib/platform/paths";
 import { cn } from "cn";
 
@@ -131,6 +131,8 @@ function FileTreeNode({
 export function ConfigPreviewer() {
   const files = useConfigStore((s) => s.files);
   const setFileText = useConfigStore((s) => s.setFileText);
+  const outputFormat = useConfigStore((s) => s.outputFormat);
+  const setOutputFormat = useConfigStore((s) => s.setOutputFormat);
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [diffing, setDiffing] = useState(false);
@@ -150,23 +152,26 @@ export function ConfigPreviewer() {
     }
   }, [files, selectedPath]);
 
+  const contents = selectedFile ? convertFile(selectedFile, outputFormat) : "";
+  const converted = selectedFile ? outputFormat !== selectedFile.format : false;
+
   const handleCopy = useCallback(() => {
-    if (!selectedFile) return;
     navigator.clipboard
-      .writeText(serializeConfig(selectedFile.lines))
+      .writeText(contents)
       .then(() => {
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
       })
       .catch(() => {});
-  }, [selectedFile]);
+  }, [contents]);
 
-  const displayPath =
+  const basePath =
     selectedPath && rootDir
       ? selectedPath.startsWith(rootDir + "/")
         ? selectedPath.slice(rootDir.length + 1)
         : (selectedPath.split("/").pop() ?? selectedPath)
       : selectedPath;
+  const displayPath = basePath ? convertName(basePath, outputFormat) : basePath;
 
   if (files.length === 0) {
     return (
@@ -203,6 +208,26 @@ export function ConfigPreviewer() {
           <FileIcon className="size-3.5" />
           <span className="font-mono">{displayPath}</span>
           <span className="ml-auto flex items-center gap-1">
+            <div className="flex items-center rounded-md border border-border/40 p-0.5">
+              {(["conf", "toml"] as const).map((format) => (
+                <button
+                  key={format}
+                  onClick={() => {
+                    setEditing(false);
+                    setDiffing(false);
+                    setOutputFormat(format);
+                  }}
+                  className={cn(
+                    "rounded px-2 py-0.5 font-mono text-[10px] uppercase transition-colors",
+                    outputFormat === format
+                      ? "bg-accent text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {format}
+                </button>
+              ))}
+            </div>
             <button
               onClick={() => {
                 setEditing(false);
@@ -218,7 +243,8 @@ export function ConfigPreviewer() {
                 setDiffing(false);
                 setEditing((value) => !value);
               }}
-              disabled={!selectedFile}
+              disabled={!selectedFile || converted}
+              title={converted ? "Switch to the native format to edit" : undefined}
               className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
             >
               {editing ? "Done" : "Edit"}
@@ -236,7 +262,7 @@ export function ConfigPreviewer() {
             </button>
             <span className="ml-1">
               {selectedFile
-                ? `${selectedFile.lines.length} line${selectedFile.lines.length !== 1 ? "s" : ""}`
+                ? `${contents.split("\n").length} line${contents.split("\n").length !== 1 ? "s" : ""}`
                 : ""}
             </span>
           </span>
@@ -246,14 +272,14 @@ export function ConfigPreviewer() {
             diffing ? (
               <ConfigDiff
                 name={displayPath ?? selectedFile.refPath}
-                oldContents={selectedFile.original}
-                newContents={serializeConfig(selectedFile.lines)}
+                oldContents={convertOriginal(selectedFile, outputFormat)}
+                newContents={contents}
               />
             ) : (
               <ConfigFile
                 name={displayPath ?? selectedFile.refPath}
-                contents={serializeConfig(selectedFile.lines)}
-                editing={editing}
+                contents={contents}
+                editing={editing && !converted}
                 onCommit={(text) => setFileText(selectedFile.absPath, text)}
               />
             )

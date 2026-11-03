@@ -25,6 +25,7 @@ export interface ConfigHost {
   reload(): Promise<void>;
   download(files: RawConfigFile[]): void;
   backup?(): Promise<string>;
+  remove?(path: string): Promise<void>;
   openConfigFolder?(): Promise<void>;
   openExternal(url: string): Promise<void>;
   preferences: {

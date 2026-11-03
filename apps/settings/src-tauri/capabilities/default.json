@@ -93,6 +93,17 @@
           "path": "$HOME/.config/mango"
         }
       ]
+    },
+    {
+      "identifier": "fs:allow-remove",
+      "allow": [
+        {
+          "path": "$HOME/.config/mango/**/*"
+        },
+        {
+          "path": "$HOME/.config/mango/**/.*"
+        }
+      ]
     }
   ]
 }

@@ -32,6 +32,10 @@ export function createMemoryHost(files: RawConfigFile[] = [], defaultConfig = ""
         else current.push({ absPath: file.absPath, refPath: file.absPath, text: file.text });
       }
     },
+    remove: async (path: string) => {
+      const index = current.findIndex((file) => file.absPath === path);
+      if (index >= 0) current.splice(index, 1);
+    },
     reload: async () => {},
     download: () => {},
     openExternal: async () => {},

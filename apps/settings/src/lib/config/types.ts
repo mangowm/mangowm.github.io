@@ -1,4 +1,8 @@
+import type { ConfigDocument } from "@mangowm.github.io/config";
+
 export type ConfigData = Record<string, string[]>;
+
+export type FileFormat = "conf" | "toml";
 
 // Raw text preserved so serialization reproduces comments,
 // blank lines, and whitespace exactly.
@@ -15,6 +19,8 @@ export interface ParsedConfig {
 export interface SourceFile {
   absPath: string;
   refPath: string;
+  format: FileFormat;
+  document: ConfigDocument;
   lines: ConfigLine[];
   /** Text as loaded from disk; used for the pending-diff view. */
   original: string;

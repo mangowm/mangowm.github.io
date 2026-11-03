@@ -30,7 +30,7 @@ import {
 } from "@mangowm/ui/components/dialog";
 import { useConfigStore, undo, redo } from "@/lib/config/store";
 import { getHost } from "@/lib/platform";
-import { serializeConfig } from "@/lib/config/parse";
+import { convertFile, convertName } from "@/lib/config/convert";
 import { cn } from "cn";
 
 export function PageHeader({
@@ -173,15 +173,17 @@ function DownloadButton() {
     <Button
       variant="ghost"
       size="icon-sm"
-      onClick={() =>
+      onClick={() => {
+        const files = useConfigStore.getState().files;
+        const format = useConfigStore.getState().outputFormat;
         getHost().download(
-          useConfigStore.getState().files.map((file) => ({
-            absPath: file.absPath,
-            refPath: file.refPath,
-            text: serializeConfig(file.lines),
+          files.map((file) => ({
+            absPath: convertName(file.absPath, format),
+            refPath: convertName(file.refPath, format),
+            text: convertFile(file, format),
           })),
-        )
-      }
+        );
+      }}
       title="Download Config"
     >
       <Download className="size-4" />

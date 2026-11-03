@@ -1,36 +1,41 @@
 import { create } from "zustand";
 import { temporal } from "zundo";
-import {
-  applyChange,
-  formatConf,
-  parseConf as parseDocument,
-  parseOption,
-  type Change,
-} from "@mangowm.github.io/config";
+import { applyChange, parseOption, type Change } from "@mangowm.github.io/config";
 import { GLOBALS } from "@mangowm.github.io/schema";
 import { getHost, isTauri } from "../platform";
 import type { RawConfigFile } from "../platform";
-import { type ConfigData, type SourceFile, countLines } from "./types";
-import { makeEntryLine, parseConfig, serializeConfig } from "./parse";
+import { type ConfigData, type FileFormat, type SourceFile, countLines } from "./types";
+import {
+  detectFormat,
+  documentLines,
+  formatDocument,
+  makeEntryLine,
+  parseDocument,
+  serializeConfig,
+} from "./parse";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./helpers";
+import { convertFile, convertName } from "./convert";
 import { DEFAULTS } from "./defaults";
 
 const EMPTY_VALUES: readonly string[] = Object.freeze([]);
 const GLOBAL_BY_KEY = new Map(GLOBALS.map((option) => [option.key, option]));
 
 function toSourceFile(file: RawConfigFile): SourceFile {
+  const format = detectFormat(file.absPath || file.refPath, file.text);
+  const document = parseDocument(file.text, format);
   return {
     absPath: file.absPath,
     refPath: file.refPath,
-    lines: parseConfig(file.text).lines,
+    format,
+    document,
+    lines: documentLines(document),
     original: file.text,
   };
 }
 
 function updateDocument(file: SourceFile, change: Change): SourceFile {
-  const document = parseDocument(serializeConfig(file.lines));
-  const next = applyChange(document, change);
-  return { ...file, lines: parseConfig(formatConf(next)).lines };
+  const document = applyChange(file.document, change);
+  return { ...file, document, lines: documentLines(document) };
 }
 
 function updateScalar(file: SourceFile, key: string, value: string): SourceFile {
@@ -41,7 +46,7 @@ function updateScalar(file: SourceFile, key: string, value: string): SourceFile 
     const index = lines.findIndex((line) => line.type === "entry" && line.key === key);
     if (index >= 0) lines[index] = makeEntryLine(key, value);
     else lines.push(makeEntryLine(key, value));
-    return { ...file, lines };
+    return { ...file, document: parseDocument(serializeConfig(lines), file.format), lines };
   }
 
   return updateDocument(file, {
@@ -111,8 +116,10 @@ interface ConfigStore {
   dirty: boolean;
   error: string | null;
   isTauri: boolean;
+  outputFormat: FileFormat;
 
   load: () => Promise<void>;
+  setOutputFormat: (format: FileFormat) => void;
   apply: () => Promise<void>;
   createDefault: () => Promise<void>;
   importConfig: () => Promise<void>;
@@ -154,6 +161,9 @@ export const useConfigStore = create<ConfigStore>()(
       dirty: false,
       error: null,
       isTauri: isTauri(),
+      outputFormat: "conf",
+
+      setOutputFormat: (format) => set({ outputFormat: format }),
 
       load: async () => {
         set({ loading: true, error: null });
@@ -220,16 +230,50 @@ export const useConfigStore = create<ConfigStore>()(
       apply: async () => {
         set({ applying: true, error: null });
         try {
+          const host = getHost();
           const files = get().files;
-          await getHost().save(
+          const format = get().outputFormat;
+          const converting = files.some((file) => file.format !== format);
+
+          if (converting && host.backup) {
+            await get().backup();
+          }
+
+          await host.save(
             files.map((file) => ({
-              absPath: file.absPath,
-              text: serializeConfig(file.lines),
+              absPath: convertName(file.absPath, format),
+              text: convertFile(file, format),
             })),
           );
-          await getHost().reload();
+
+          if (converting) {
+            for (const file of files) {
+              if (convertName(file.absPath, format) !== file.absPath) {
+                await host.remove?.(file.absPath);
+              }
+            }
+          }
+
+          await host.reload();
+
+          const nextFiles = files.map((file) => {
+            const absPath = convertName(file.absPath, format);
+            const text = convertFile(file, format);
+            const document = parseDocument(text, format);
+            return {
+              ...file,
+              absPath,
+              refPath: convertName(file.refPath, format),
+              format,
+              document,
+              lines: documentLines(document),
+              original: text,
+            };
+          });
+
           set({
-            files: files.map((file) => ({ ...file, original: serializeConfig(file.lines) })),
+            files: nextFiles,
+            data: mergeFileData(nextFiles, {}),
             applying: false,
             dirty: false,
           });
@@ -338,9 +382,11 @@ export const useConfigStore = create<ConfigStore>()(
       setFileText: (absPath, text) =>
         set((state) => {
           const target = state.files.find((file) => file.absPath === absPath);
-          if (!target || serializeConfig(target.lines) === text) return state;
+          if (!target || formatDocument(target.document) === text) return state;
+          const document = parseDocument(text, target.format);
+          const lines = documentLines(document);
           const files = state.files.map((file) =>
-            file.absPath === absPath ? { ...file, lines: parseConfig(text).lines } : file,
+            file.absPath === absPath ? { ...file, document, lines } : file,
           );
           return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
