@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Plus, Search, AlertTriangle, X } from "lucide-react";
 import { cn } from "cn";
 import { useShallow } from "zustand/react/shallow";
-import { useConfigStore } from "@/lib/config-store";
+import { useConfigStore } from "@/lib/config/store";
 import { parseModifiers, serializeModifiers, bindingsConflict } from "@/lib/keybind-parse";
 import { DISPATCHER_MAP } from "@/lib/dispatchers";
 import type { Keybinding } from "@/lib/keybind-types";

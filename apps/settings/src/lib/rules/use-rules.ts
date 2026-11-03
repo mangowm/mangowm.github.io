@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useConfigStore } from "@/lib/config-store";
+import { useConfigStore } from "@/lib/config/store";
 import { parseRuleString, serializeRule } from "@/lib/rules/parser";
 import type { ParsedRule, RuleType } from "@/lib/rules/types";
 

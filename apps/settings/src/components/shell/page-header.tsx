@@ -4,9 +4,9 @@ import { useShallow } from "zustand/react/shallow";
 import { Separator } from "@mangowm/ui/components/separator";
 import { SidebarTrigger } from "@mangowm/ui/components/sidebar";
 import { Button } from "@mangowm/ui/components/button";
-import { useConfigStore, undo, redo } from "@/lib/config-store";
+import { useConfigStore, undo, redo } from "@/lib/config/store";
 import { getHost } from "@/lib/platform";
-import { serializeConfig } from "@/lib/config-parse";
+import { serializeConfig } from "@/lib/config/parse";
 import { cn } from "cn";
 
 export function PageHeader({

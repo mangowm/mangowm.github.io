@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Plus, TerminalSquare, Trash2 } from "lucide-react";
 
 import { Button } from "@mangowm/ui/components/button";
-import { useConfigStore, useConfigValues } from "@/lib/config-store";
+import { useConfigStore, useConfigValues } from "@/lib/config/store";
 import { useFocusField } from "@/lib/use-focus-field";
 import type { PanelProps } from "@/lib/section-types";
 import { PanelHeader, PanelShell, SectionCard } from "@/components/primitives/section-ui";

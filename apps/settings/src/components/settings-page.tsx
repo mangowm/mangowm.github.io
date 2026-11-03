@@ -9,7 +9,7 @@ const ConfigPreviewer = lazy(() =>
 );
 import { SidebarInset, SidebarProvider } from "@mangowm/ui/components/sidebar";
 import { Skeleton } from "@mangowm/ui/components/skeleton";
-import { useConfigStore } from "@/lib/config-store";
+import { useConfigStore } from "@/lib/config/store";
 import { getSectionById, SECTIONS } from "@/lib/sections";
 import { SearchCommand, useSearchShortcut } from "@/components/shell/search-command";
 import type { SearchSelection } from "@/components/shell/search-command";

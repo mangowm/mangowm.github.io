@@ -1,9 +1,9 @@
 import MiniSearch from "minisearch";
 import { useRef, useEffect, useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
-import { useConfigStore } from "./config-store";
+import { useConfigStore } from "./config/store";
 import { SECTIONS } from "./sections";
-import type { ConfigData } from "./config-types";
+import type { ConfigData } from "./config/types";
 import type { DynamicIndexSource, DynamicSearchItem } from "./section-types";
 import { parseKeybindings, ALL_BIND_VARIANTS } from "./keybind-parse";
 import { DISPATCHER_MAP } from "./dispatchers";

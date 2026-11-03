@@ -1,4 +1,4 @@
-import type { ConfigData, ConfigLine, SourceFile } from "./config-types";
+import type { ConfigData, ConfigLine, SourceFile } from "./config/types";
 import type { Keybinding, KeybindFlags, BindingType } from "./keybind-types";
 
 type TokenResult = {

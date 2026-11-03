@@ -4,8 +4,8 @@ import { Button } from "@mangowm/ui/components/button";
 import { completeOnboarding } from "@/lib/onboarding";
 import { getHost } from "@/lib/platform";
 import { uploadConfigFromDir } from "@/lib/platform/upload";
-import { parseConfig } from "@/lib/config-parse";
-import { useConfigStore } from "@/lib/config-store";
+import { parseConfig } from "@/lib/config/parse";
+import { useConfigStore } from "@/lib/config/store";
 import mangowmLogo from "@mangowm/assets/logos/mangowm.svg";
 
 interface OnboardingFlowProps {

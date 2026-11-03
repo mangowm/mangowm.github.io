@@ -1,5 +1,5 @@
 import { DEFAULTS } from "./defaults";
-import type { ConfigData } from "./config-types";
+import type { ConfigData } from "./types";
 
 function defaultStr(key: string): string {
   return DEFAULTS[key]?.[0] ?? "";

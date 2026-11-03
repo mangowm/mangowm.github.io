@@ -1,5 +1,5 @@
 import { cn } from "cn";
-import { useConfigStore, useConfigStr } from "@/lib/config-store";
+import { useConfigStore, useConfigStr } from "@/lib/config/store";
 import { LAYOUT_NAMES } from "@/lib/dispatchers/types";
 
 export function LayoutToggleGroup() {

@@ -8,11 +8,11 @@ import {
   type Change,
 } from "@mangowm.github.io/config";
 import { GLOBALS } from "@mangowm.github.io/schema";
-import { getHost, isTauri } from "./platform";
-import type { RawConfigFile } from "./platform";
-import { type ConfigData, type SourceFile, countLines } from "./config-types";
-import { makeEntryLine, parseConfig, serializeConfig } from "./config-parse";
-import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./config-helpers";
+import { getHost, isTauri } from "../platform";
+import type { RawConfigFile } from "../platform";
+import { type ConfigData, type SourceFile, countLines } from "./types";
+import { makeEntryLine, parseConfig, serializeConfig } from "./parse";
+import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./helpers";
 import { DEFAULTS } from "./defaults";
 import DEFAULT_CONFIG from "./default-config";
 

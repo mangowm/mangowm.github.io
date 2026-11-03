@@ -1,4 +1,4 @@
-import { useConfigStore, useConfigBool, useConfigInt } from "@/lib/config-store";
+import { useConfigStore, useConfigBool, useConfigInt } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {

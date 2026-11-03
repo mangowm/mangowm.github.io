@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useConfigBool, useConfigStr, useConfigInt, useConfigFloat } from "@/lib/config-store";
+import { useConfigBool, useConfigStr, useConfigInt, useConfigFloat } from "@/lib/config/store";
 import { parseCurve } from "@/lib/curve";
 import type { BezierValue } from "@/lib/curve";
 import { toCss } from "@/lib/color-utils";

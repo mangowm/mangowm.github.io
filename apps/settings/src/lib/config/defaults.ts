@@ -1,6 +1,6 @@
 import { GLOBALS } from "@mangowm.github.io/schema";
 
-import type { ConfigData } from "./config-types";
+import type { ConfigData } from "./types";
 
 function toText(value: unknown): string {
   if (typeof value === "boolean") return value ? "1" : "0";

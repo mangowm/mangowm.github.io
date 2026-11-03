@@ -4,7 +4,7 @@ import {
   useConfigInt,
   useConfigStr,
   useConfigStore,
-} from "@/lib/config-store";
+} from "@/lib/config/store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {

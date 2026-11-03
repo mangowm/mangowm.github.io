@@ -1,4 +1,4 @@
-import type { ConfigData, ConfigLine, ParsedConfig } from "./config-types";
+import type { ConfigData, ConfigLine, ParsedConfig } from "./types";
 
 /**
  * Parses the mango flat key=value config format.

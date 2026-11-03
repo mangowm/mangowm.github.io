@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useConfigStore, useConfigValues } from "@/lib/config-store";
+import { useConfigStore, useConfigValues } from "@/lib/config/store";
 import { Button } from "@mangowm/ui/components/button";
 import { Trash2, Plus } from "lucide-react";
 import type { PanelProps } from "@/lib/section-types";

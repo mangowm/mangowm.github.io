@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy } from "lucide-react";
-import { useConfigStore } from "@/lib/config-store";
-import type { SourceFile } from "@/lib/config-types";
+import { useConfigStore } from "@/lib/config/store";
+import type { SourceFile } from "@/lib/config/types";
 import { ConfigDiff } from "@/components/preview/ConfigDiff";
 import { ConfigFile } from "@/components/preview/ConfigFile";
-import { serializeConfig } from "@/lib/config-parse";
+import { serializeConfig } from "@/lib/config/parse";
 import { commonAncestorDir } from "@/lib/platform/paths";
 import { cn } from "cn";
 

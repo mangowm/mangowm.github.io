@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { configureHost } from "@/lib/platform";
-import DEFAULT_CONFIG from "@/lib/default-config";
+import DEFAULT_CONFIG from "@/lib/config/default-config";
 
 configureHost({ defaultConfig: DEFAULT_CONFIG });
 

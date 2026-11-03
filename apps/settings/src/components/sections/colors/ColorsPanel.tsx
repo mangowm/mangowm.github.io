@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback, memo } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
 import { Pipette } from "lucide-react";
-import { useConfigStore, useConfigStr } from "@/lib/config-store";
+import { useConfigStore, useConfigStr } from "@/lib/config/store";
 import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
 import type { PanelProps } from "@/lib/section-types";

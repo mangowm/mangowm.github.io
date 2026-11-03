@@ -29,7 +29,7 @@ import {
   serializeBinding,
   TYPE_TO_KEYWORD,
 } from "@/lib/keybind-parse";
-import { resolveGlobalIndex } from "@/lib/config-store";
+import { resolveGlobalIndex } from "@/lib/config/store";
 import {
   DISPATCHER_MAP,
   parseArgValues,
@@ -37,7 +37,7 @@ import {
   validateAllArgs,
 } from "@/lib/dispatchers";
 import type { Keybinding, KeybindFlags, BindingType } from "@/lib/keybind-types";
-import type { SourceFile } from "@/lib/config-types";
+import type { SourceFile } from "@/lib/config/types";
 import { useConflictCheck } from "../hooks/useConflictCheck";
 import { ActionSelector } from "./ActionSelector";
 import { DynamicArgField } from "./DynamicArgField";
