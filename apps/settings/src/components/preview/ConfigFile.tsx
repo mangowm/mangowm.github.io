@@ -2,6 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Editor } from "@pierre/diffs/edit";
 import { EditProvider, File, type EditorFactory } from "@pierre/diffs/react";
 
+import { validateText, type SyntaxIssue } from "@/lib/config/syntax";
+import type { FileFormat } from "@/lib/config/types";
+
 const createEditor: EditorFactory<undefined, undefined> = (type, options, key) =>
   new Editor(type, options, key);
 
@@ -11,21 +14,28 @@ export interface ConfigFileProps {
   name: string;
   contents: string;
   onCommit?: (contents: string) => void;
+  onIssues?: (issues: SyntaxIssue[]) => void;
 }
 
 function languageOf(name: string): "ini" | "toml" {
   return name.endsWith(".toml") ? "toml" : "ini";
 }
 
-export function ConfigFile({ name, contents, onCommit }: ConfigFileProps) {
+function formatOf(name: string): FileFormat {
+  return name.endsWith(".toml") ? "toml" : "conf";
+}
+
+export function ConfigFile({ name, contents, onCommit, onIssues }: ConfigFileProps) {
   const [draft, setDraft] = useState(contents);
   const draftRef = useRef(contents);
   const commitRef = useRef(onCommit);
+  const issuesRef = useRef(onIssues);
   const dirty = useRef(false);
   const timer = useRef<number | null>(null);
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   commitRef.current = onCommit;
+  issuesRef.current = onIssues;
 
   const flush = useCallback(() => {
     if (timer.current !== null) {
@@ -42,6 +52,10 @@ export function ConfigFile({ name, contents, onCommit }: ConfigFileProps) {
     if (timer.current !== null) window.clearTimeout(timer.current);
     timer.current = window.setTimeout(flush, COMMIT_DELAY);
   }, [flush]);
+
+  useEffect(() => {
+    issuesRef.current?.(validateText(draft, formatOf(name)));
+  }, [draft, name]);
 
   useEffect(() => {
     const onPointerDown = (event: PointerEvent) => {

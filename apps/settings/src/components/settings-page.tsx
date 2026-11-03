@@ -12,6 +12,7 @@ import { SidebarInset, SidebarProvider } from "@mangowm/ui/components/sidebar";
 import { Skeleton } from "@mangowm/ui/components/skeleton";
 import { useConfigStore } from "@/lib/config/store";
 import { getSectionById, SECTIONS } from "@/lib/presentation/sections";
+import { sectionForKey } from "@/lib/presentation/section-lookup";
 import { SearchCommand } from "@/components/shell/search-command";
 import { useSearchShortcut } from "@/components/shell/use-search-shortcut";
 import type { SearchSelection } from "@/components/shell/search-command";
@@ -80,7 +81,14 @@ export function SettingsPage() {
           <div className="flex-1 overflow-hidden p-5">
             <div className="flex h-full flex-col rounded-xl bg-card p-6 ring-1 ring-foreground/10">
               <Suspense fallback={<Skeleton className="h-96 w-full rounded-xl" />}>
-                <ConfigPreviewer />
+                <ConfigPreviewer
+                  resolveSection={sectionForKey}
+                  onOpenSection={(sectionId, key) => {
+                    setActiveSection(sectionId);
+                    setFocusKey(key);
+                    setShowConfig(false);
+                  }}
+                />
               </Suspense>
             </div>
           </div>

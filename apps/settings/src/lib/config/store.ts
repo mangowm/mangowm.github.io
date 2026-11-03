@@ -409,9 +409,10 @@ export const useConfigStore = create<ConfigStore>()(
             const source = format ?? target.format;
             const sourceDocument = parseDocument(text, source);
 
-            if (sourceDocument.nodes.some((node) => node.kind === "raw")) {
+            const badLine = sourceDocument.nodes.find((node) => node.kind === "raw");
+            if (badLine) {
               return {
-                error: "The edited config has an incomplete line; keeping the previous content.",
+                error: `Line ${badLine.at.line} is not a setting, so the edit was not saved.`,
               };
             }
 
@@ -420,7 +421,7 @@ export const useConfigStore = create<ConfigStore>()(
 
             if (text.trim() !== "" && nativeText.trim() === "") {
               return {
-                error: "The edited config could not be converted; keeping the previous content.",
+                error: "The edit produced an empty config, so it was not saved.",
               };
             }
 

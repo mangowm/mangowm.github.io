@@ -1,12 +1,30 @@
 import { useCallback, useEffect, useState } from "react";
-import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy } from "lucide-react";
+import {
+  AlertCircle,
+  ChevronRightIcon,
+  Copy,
+  FileIcon,
+  FolderIcon,
+  FolderOpenIcon,
+} from "lucide-react";
 import { useConfigStore } from "@/lib/config/store";
+import type { SyntaxIssue } from "@/lib/config/syntax";
 import type { SourceFile } from "@/lib/config/types";
 import { ConfigDiff } from "@/components/preview/ConfigDiff";
 import { ConfigFile } from "@/components/preview/ConfigFile";
 import { convertFile, convertName, convertOriginal } from "@/lib/config/convert";
 import { commonAncestorDir } from "@/lib/platform/paths";
 import { cn } from "cn";
+
+interface SectionSuggestion {
+  id: string;
+  label: string;
+}
+
+interface ConfigPreviewerProps {
+  resolveSection?: (key: string | undefined) => SectionSuggestion | undefined;
+  onOpenSection?: (sectionId: string, key?: string) => void;
+}
 
 interface TreeNode {
   name: string;
@@ -67,11 +85,13 @@ function FileTreeNode({
   node,
   selectedPath,
   onSelect,
+  disabled = false,
   depth = 0,
 }: {
   node: TreeNode;
   selectedPath: string | null;
   onSelect: (file: SourceFile) => void;
+  disabled?: boolean;
   depth?: number;
 }) {
   const [expanded, setExpanded] = useState(true);
@@ -80,11 +100,14 @@ function FileTreeNode({
     return (
       <button
         onClick={() => node.sourceFile && onSelect(node.sourceFile)}
+        disabled={disabled}
+        title={disabled ? "Fix the error first to switch files." : undefined}
         className={cn(
           "flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-left text-sm transition-colors",
           selectedPath === node.path
             ? "bg-accent font-medium text-accent-foreground"
             : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
+          disabled && "cursor-not-allowed opacity-40 hover:bg-transparent",
         )}
         style={{ paddingLeft: `${depth * 16 + 8}px` }}
       >
@@ -119,6 +142,7 @@ function FileTreeNode({
               node={child}
               selectedPath={selectedPath}
               onSelect={onSelect}
+              disabled={disabled}
               depth={depth + 1}
             />
           ))}
@@ -128,7 +152,7 @@ function FileTreeNode({
   );
 }
 
-export function ConfigPreviewer() {
+export function ConfigPreviewer({ resolveSection, onOpenSection }: ConfigPreviewerProps = {}) {
   const files = useConfigStore((s) => s.files);
   const setFileText = useConfigStore((s) => s.setFileText);
   const outputFormat = useConfigStore((s) => s.outputFormat);
@@ -137,6 +161,12 @@ export function ConfigPreviewer() {
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [diffing, setDiffing] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [issues, setIssues] = useState<SyntaxIssue[]>([]);
+
+  const invalid = issues.some((issue) => issue.severity === "error");
+  const firstIssue = issues[0];
+  const suggestion = resolveSection?.(firstIssue?.key);
+  const handleIssues = useCallback((next: SyntaxIssue[]) => setIssues(next), []);
 
   const rootDir = commonAncestorDir(files.map((f) => f.absPath));
   const tree = buildTree(files, rootDir);
@@ -192,6 +222,7 @@ export function ConfigPreviewer() {
               key={node.path}
               node={node}
               selectedPath={displayPath}
+              disabled={invalid}
               onSelect={(file) => {
                 setSelectedPath(file.absPath);
                 setDiffing(false);
@@ -214,11 +245,14 @@ export function ConfigPreviewer() {
                     setDiffing(false);
                     setOutputFormat(format);
                   }}
+                  disabled={invalid}
+                  title={invalid ? "Fix the error first to switch format." : undefined}
                   className={cn(
                     "rounded px-2 py-0.5 font-mono text-[10px] uppercase transition-colors",
                     outputFormat === format
                       ? "bg-accent text-foreground"
                       : "text-muted-foreground hover:text-foreground",
+                    invalid && "cursor-not-allowed opacity-40 hover:text-muted-foreground",
                   )}
                 >
                   {format}
@@ -227,7 +261,8 @@ export function ConfigPreviewer() {
             </div>
             <button
               onClick={() => setDiffing((value) => !value)}
-              disabled={!selectedFile}
+              disabled={!selectedFile || invalid}
+              title={invalid ? "Fix the error first to view the diff." : undefined}
               className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
             >
               {diffing ? "View" : "Diff"}
@@ -250,6 +285,38 @@ export function ConfigPreviewer() {
             </span>
           </span>
         </div>
+        {firstIssue && (
+          <div
+            className={cn(
+              "flex items-start gap-2 border-b px-4 py-2 text-xs",
+              invalid
+                ? "border-destructive/20 bg-destructive/5 text-destructive"
+                : "border-amber-500/20 bg-amber-500/5 text-amber-700 dark:text-amber-400",
+            )}
+          >
+            <AlertCircle className="mt-0.5 size-3.5 shrink-0" />
+            <div className="min-w-0 flex-1">
+              <p className="font-medium">
+                {invalid ? "Syntax error" : "Warning"} on line {firstIssue.line}
+              </p>
+              {firstIssue.text.trim() && (
+                <p className="truncate font-mono opacity-80">{firstIssue.text.trim()}</p>
+              )}
+              <p className="truncate opacity-80">{firstIssue.message}</p>
+            </div>
+            {issues.length > 1 && (
+              <span className="shrink-0 pt-0.5 opacity-70">{issues.length - 1} more</span>
+            )}
+            {suggestion && onOpenSection && (
+              <button
+                onClick={() => onOpenSection(suggestion.id, firstIssue.key)}
+                className="shrink-0 cursor-pointer rounded-md border border-border/50 px-2 py-1 font-medium transition-colors hover:bg-accent/50"
+              >
+                Open {suggestion.label}
+              </button>
+            )}
+          </div>
+        )}
         <div className="flex-1 overflow-hidden">
           {selectedFile ? (
             diffing ? (
@@ -264,6 +331,7 @@ export function ConfigPreviewer() {
                 name={displayPath ?? selectedFile.refPath}
                 contents={contents}
                 onCommit={(text) => setFileText(selectedFile.absPath, text, outputFormat)}
+                onIssues={handleIssues}
               />
             )
           ) : (
