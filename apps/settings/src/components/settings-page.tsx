@@ -3,7 +3,7 @@ import { lazy, Suspense, useEffect, useState, useTransition } from "react";
 import { SettingsSidebar } from "@/components/shell/settings-sidebar";
 import { PageHeader } from "@/components/shell/page-header";
 const ConfigPreviewer = lazy(() =>
-  import("@/components/config-previewer").then((module) => ({
+  import("@/components/preview/config-previewer").then((module) => ({
     default: module.ConfigPreviewer,
   })),
 );

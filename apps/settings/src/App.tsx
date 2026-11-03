@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { TooltipProvider } from "@mangowm/ui/components/tooltip";
 import { SettingsPage } from "@/components/settings-page";
-import { OnboardingFlow } from "@/components/onboarding-flow";
+import { OnboardingFlow } from "@/components/onboarding/onboarding-flow";
 import { isOnboardingCompleted } from "@/lib/onboarding";
 import "./index.css";
 
