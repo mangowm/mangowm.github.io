@@ -1,6 +1,6 @@
 import { DIRECTIVES, RULES } from "@mangowm.github.io/schema";
 
-import { parseBinding } from "./binding";
+import { bindingTrigger, parseBinding } from "./binding";
 import type { ConfigDocument, EntryNode } from "./document";
 import { normalize } from "./normalize";
 import type { CanonicalConfig, ConfigFormat } from "./types";
@@ -10,8 +10,8 @@ export type CommentAnchor =
   | { kind: "global"; key: string }
   | { kind: "directive"; key: string; index: number }
   | { kind: "pair"; table: "env" | "var"; name: string }
-  | { kind: "binding"; mode: string; trigger: string; keyword: string }
-  | { kind: "rule"; key: string; index: number }
+  | { kind: "binding"; mode: string; flags: string; trigger: string }
+  | { kind: "rule"; key: string; index: number; field?: string }
   | { kind: "section"; path: string[] }
   | { kind: "unplaced" };
 
@@ -31,6 +31,28 @@ const DIRECTIVE_KEYS = new Set<string>(DIRECTIVES.map((directive) => directive.k
 const RULE_KEYS = new Set<string>(RULES.map((rule) => rule.key));
 const BIND_KEY = /^bind[slrpc]*$/;
 const PLAIN_BINDINGS = new Set(["mousebind", "axisbind", "gesturebind", "switchbind"]);
+const FLAG_LETTER: Record<string, string> = {
+  sym: "s",
+  lock: "l",
+  release: "r",
+  pass: "p",
+  conflict: "c",
+};
+
+function keywordFlags(keyword: string): string {
+  const suffix = keyword.startsWith("bind") ? keyword.slice(4) : "";
+  return "slrpc"
+    .split("")
+    .filter((letter) => suffix.includes(letter))
+    .join("");
+}
+
+function sectionFlags(segments: readonly string[]): string {
+  return Object.entries(FLAG_LETTER)
+    .filter(([name]) => segments.includes(name))
+    .map(([, letter]) => letter)
+    .join("");
+}
 
 function inlineComment(raw: string): string | undefined {
   let quote = "";
@@ -74,8 +96,8 @@ function anchorForEntry(
         return {
           kind: "binding",
           mode: state.mode,
-          trigger: `${binding.mods ? `${binding.mods}+` : ""}${binding.trigger}`,
-          keyword: key,
+          flags: keywordFlags(key),
+          trigger: bindingTrigger(binding),
         };
       } catch {
         return { kind: "unplaced" };
@@ -121,19 +143,22 @@ function anchorForEntry(
     head === "gesturebind" ||
     head === "switchbind"
   ) {
-    const mode = section[1] ?? "default";
-    const flags = section.slice(2).join(".");
     return {
       kind: "binding",
-      mode,
+      mode: section[1] ?? "default",
+      flags: sectionFlags(section.slice(2)),
       trigger: last,
-      keyword: `${head}${flags ? `.${flags}` : ""}`,
     };
   }
 
   if (head === "rule") {
     const ruleKey = section[1] ?? "";
-    return { kind: "rule", key: ruleKey, index: state.ruleIndex.get(ruleKey) ?? 0 };
+    return {
+      kind: "rule",
+      key: ruleKey,
+      index: state.ruleIndex.get(ruleKey) ?? 0,
+      field: last,
+    };
   }
 
   return { kind: "unplaced" };
@@ -181,7 +206,17 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
     if (node.kind !== "entry") continue;
 
     if (document.format === "conf" && node.path[0] === "key_mode") {
-      state.mode = node.value.trim() || "default";
+      const mode = node.value.trim() || "default";
+      state.mode = mode;
+
+      const anchor: CommentAnchor = { kind: "section", path: ["bind", mode] };
+      for (const text of pending) {
+        comments.push({ text, anchor, position: "before" });
+      }
+      pending.length = 0;
+
+      const inline = inlineComment(node.raw);
+      if (inline) comments.push({ text: inline, anchor, position: "inline" });
       continue;
     }
 
@@ -191,7 +226,7 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
     for (const text of pending) {
       comments.push({
         text,
-        anchor: !seenEntry ? { kind: "file" } : hasAnchor ? anchor : { kind: "unplaced" },
+        anchor: hasAnchor ? anchor : seenEntry ? { kind: "unplaced" } : { kind: "file" },
         position: "before",
       });
     }
