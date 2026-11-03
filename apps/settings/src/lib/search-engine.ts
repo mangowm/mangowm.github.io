@@ -85,6 +85,13 @@ const staticDocs: SearchDocument[] = SECTIONS.flatMap((section) => {
 
 ms.addAll(staticDocs);
 
+const RULE_CONFIG_KEY = {
+  windowrule: "window_rule",
+  monitorrule: "monitor_rule",
+  tagrule: "tag_rule",
+  layerrule: "layer_rule",
+} as const;
+
 const DYNAMIC_SOURCES: DynamicIndexSource[] = [
   {
     sourceId: "exec_once",
@@ -160,13 +167,6 @@ const WATCH_KEYS = [...new Set(DYNAMIC_SOURCES.flatMap((s) => s.watchKeys))];
  * 1. One indexes the rule's matching criteria so searching "foot" finds the rule
  * 2. One indexes individual override entries so searching "floating" finds the rule
  */
-const RULE_CONFIG_KEY = {
-  windowrule: "window_rule",
-  monitorrule: "monitor_rule",
-  tagrule: "tag_rule",
-  layerrule: "layer_rule",
-} as const;
-
 function buildRuleDynamicSources(
   ruleType: "windowrule" | "monitorrule" | "tagrule" | "layerrule",
   sectionId: string,
