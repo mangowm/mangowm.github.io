@@ -121,12 +121,13 @@ obvious: colors, curves, presets, layouts, monitor specs, keybindings, tags,
 rules, actions, and one root config. They are annotations and do not affect
 validation.
 
-## Runtime API
+## Consumption
 
-`src/index.ts` exports the schema:
+The package publishes JSON artifacts under `schemas/` and at the versioned URL
+above. Import the JSON directly if the build supports JSON modules:
 
 ```ts
-import { schema } from "@mangowm.github.io/schema";
+import schema from "@mangowm.github.io/schema/schemas/0.18.4/schema.json" with { type: "json" };
 ```
 
 Validation is a consumer concern. Use any JSON Schema 2020-12 validator, or
