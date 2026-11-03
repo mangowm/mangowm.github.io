@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import logo from "@mangowm/assets/logos/mangowm.svg";
-import { SidebarNav } from "@/components/sidebar-nav";
+import { SidebarNav } from "@/components/shell/sidebar-nav";
 import {
   Sidebar,
   SidebarContent,

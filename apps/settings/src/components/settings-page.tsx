@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState, useTransition } from "react";
 
-import { SettingsSidebar } from "@/components/settings-sidebar";
-import { PageHeader } from "@/components/page-header";
+import { SettingsSidebar } from "@/components/shell/settings-sidebar";
+import { PageHeader } from "@/components/shell/page-header";
 const ConfigPreviewer = lazy(() =>
   import("@/components/config-previewer").then((module) => ({
     default: module.ConfigPreviewer,
@@ -11,8 +11,8 @@ import { SidebarInset, SidebarProvider } from "@mangowm/ui/components/sidebar";
 import { Skeleton } from "@mangowm/ui/components/skeleton";
 import { useConfigStore } from "@/lib/config-store";
 import { getSectionById, SECTIONS } from "@/lib/sections";
-import { SearchCommand, useSearchShortcut } from "@/components/search-command";
-import type { SearchSelection } from "@/components/search-command";
+import { SearchCommand, useSearchShortcut } from "@/components/shell/search-command";
+import type { SearchSelection } from "@/components/shell/search-command";
 
 const DEFAULT_SECTION = SECTIONS[0].id;
 
