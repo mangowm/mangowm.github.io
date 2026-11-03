@@ -4,3 +4,4 @@ export * from "./conf";
 export * from "./value";
 export * from "./dispatch";
 export * from "./binding";
+export * from "./tag";
