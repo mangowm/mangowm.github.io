@@ -134,7 +134,6 @@ export function ConfigPreviewer() {
   const outputFormat = useConfigStore((s) => s.outputFormat);
   const setOutputFormat = useConfigStore((s) => s.setOutputFormat);
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
-  const [editing, setEditing] = useState(false);
   const [diffing, setDiffing] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -194,7 +193,6 @@ export function ConfigPreviewer() {
               selectedPath={displayPath}
               onSelect={(file) => {
                 setSelectedPath(file.absPath);
-                setEditing(false);
                 setDiffing(false);
               }}
             />
@@ -212,7 +210,6 @@ export function ConfigPreviewer() {
                 <button
                   key={format}
                   onClick={() => {
-                    setEditing(false);
                     setDiffing(false);
                     setOutputFormat(format);
                   }}
@@ -228,24 +225,11 @@ export function ConfigPreviewer() {
               ))}
             </div>
             <button
-              onClick={() => {
-                setEditing(false);
-                setDiffing((value) => !value);
-              }}
+              onClick={() => setDiffing((value) => !value)}
               disabled={!selectedFile}
               className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
             >
               {diffing ? "View" : "Diff"}
-            </button>
-            <button
-              onClick={() => {
-                setDiffing(false);
-                setEditing((value) => !value);
-              }}
-              disabled={!selectedFile}
-              className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
-            >
-              {editing ? "Done" : "Edit"}
             </button>
             <button
               onClick={handleCopy}
@@ -275,9 +259,9 @@ export function ConfigPreviewer() {
               />
             ) : (
               <ConfigFile
+                key={`${selectedFile.absPath}:${outputFormat}`}
                 name={displayPath ?? selectedFile.refPath}
                 contents={contents}
-                editing={editing}
                 onCommit={(text) => setFileText(selectedFile.absPath, text, outputFormat)}
               />
             )
