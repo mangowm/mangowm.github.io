@@ -288,6 +288,8 @@ export const useConfigStore = create<ConfigStore>()(
 
       setFileText: (absPath, text) =>
         set((state) => {
+          const target = state.files.find((file) => file.absPath === absPath);
+          if (!target || serializeConfig(target.lines) === text) return state;
           const files = state.files.map((file) =>
             file.absPath === absPath ? { ...file, lines: parseConfig(text).lines } : file,
           );

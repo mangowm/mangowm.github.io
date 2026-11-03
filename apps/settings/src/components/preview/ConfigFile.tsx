@@ -31,7 +31,7 @@ export function ConfigFile({ name, contents, editing = false, onCommit }: Config
         file={{ name, contents, lang: languageOf(name) }}
         edit={editing}
         onEditComplete={(event) => {
-          setPending(event.file.contents);
+          if (event.file.contents !== contents) setPending(event.file.contents);
           return "accept";
         }}
         options={{
