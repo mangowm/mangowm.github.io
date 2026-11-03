@@ -124,10 +124,10 @@ validation.
 
 ## Runtime API
 
-`src/index.ts` exports the schema and the builder:
+`src/index.ts` exports the schema:
 
 ```ts
-import { buildSchema, schema } from "@mangowm.github.io/schema";
+import { schema } from "@mangowm.github.io/schema";
 ```
 
 Validation is a consumer concern. Use any JSON Schema 2020-12 validator, or

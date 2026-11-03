@@ -13,17 +13,13 @@ export interface SchemaDocument {
   [key: string]: unknown;
 }
 
-export function buildSchema(version: string): SchemaDocument {
-  return {
-    $schema: "https://json-schema.org/draft/2020-12/schema",
-    $id: `https://mangowm.github.io/schema/${version}/schema.json`,
-    $defs: {
-      ...actionDefs(),
-      ...bindingDefs(),
-    },
-    ...rootSchema(version),
-    title: `mangowm configuration ${version}`,
-  } satisfies SchemaDocument;
-}
-
-export const schema = buildSchema(MANGO_VERSION);
+export const schema: SchemaDocument = {
+  $schema: "https://json-schema.org/draft/2020-12/schema",
+  $id: `https://mangowm.github.io/schema/${MANGO_VERSION}/schema.json`,
+  $defs: {
+    ...actionDefs(),
+    ...bindingDefs(),
+  },
+  ...rootSchema(MANGO_VERSION),
+  title: `mangowm configuration ${MANGO_VERSION}`,
+};
