@@ -124,15 +124,12 @@ validation.
 
 ## Runtime API
 
-`src/index.ts` exports the schema and the builder. The compiled validator is a
-separate entry point so consumers that only need the artifact do not load the
-compiler:
+`src/index.ts` exports the schema and the builder:
 
 ```ts
 import { buildSchema, schema } from "@mangowm.github.io/schema";
-import { validate } from "@mangowm.github.io/schema/validate";
-
-validate.Check(config);
 ```
 
-Action-level parsing and validation belong to the runtime config layer.
+Validation is a consumer concern. Use any JSON Schema 2020-12 validator, or
+compile the schema with TypeBox in the runtime layer that needs it. Action
+parsing and action-level validation also belong to that runtime layer.

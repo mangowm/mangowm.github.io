@@ -5,7 +5,6 @@ import Value from "typebox/value";
 import { DISPATCHER_ARGS, DISPATCHERS, type DispatcherArgKind } from "./data/dispatcherArgs";
 import { GLOBALS } from "./data/globals";
 import { RULES } from "./data/rules";
-import { validate } from "./validate";
 import { schema } from "./schema";
 import { MANGO_VERSION } from "./version";
 
@@ -369,11 +368,6 @@ describe("schema", () => {
         bind: { default: { lock: { "SUPER+r": [{ dispatcher: "reload_confg" }] } } },
       }),
     ).toBe(false);
-  });
-
-  it("exports a compiled validator", () => {
-    expect(validate.Check(config)).toBe(true);
-    expect(validate.Check({ global: { blur: 1 } })).toBe(false);
   });
 
   it("accepts action objects", () => {
