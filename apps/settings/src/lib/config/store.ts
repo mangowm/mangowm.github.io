@@ -14,7 +14,7 @@ import {
   serializeConfig,
 } from "./parse";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./helpers";
-import { convertFile, convertName } from "./convert";
+import { convertDocument, convertFile, convertName } from "./convert";
 import { DEFAULTS } from "./defaults";
 
 const EMPTY_VALUES: readonly string[] = Object.freeze([]);
@@ -148,7 +148,7 @@ interface ConfigStore {
   removeEntry: (key: string, index: number) => void;
 
   /** Replace a whole file from text edited outside the form. */
-  setFileText: (absPath: string, text: string) => void;
+  setFileText: (absPath: string, text: string, format?: FileFormat) => void;
 }
 
 export const useConfigStore = create<ConfigStore>()(
@@ -379,16 +379,29 @@ export const useConfigStore = create<ConfigStore>()(
           return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 
-      setFileText: (absPath, text) =>
+      setFileText: (absPath, text, format) =>
         set((state) => {
           const target = state.files.find((file) => file.absPath === absPath);
-          if (!target || formatDocument(target.document) === text) return state;
-          const document = parseDocument(text, target.format);
-          const lines = documentLines(document);
-          const files = state.files.map((file) =>
-            file.absPath === absPath ? { ...file, document, lines } : file,
-          );
-          return { files, data: mergeFileData(files, state.data), dirty: true };
+          if (!target) return state;
+
+          try {
+            const source = format ?? target.format;
+            const nativeText =
+              source === target.format
+                ? text
+                : convertDocument(parseDocument(text, source), target.format);
+
+            if (formatDocument(target.document) === nativeText) return state;
+
+            const document = parseDocument(nativeText, target.format);
+            const lines = documentLines(document);
+            const files = state.files.map((file) =>
+              file.absPath === absPath ? { ...file, document, lines } : file,
+            );
+            return { files, data: mergeFileData(files, state.data), dirty: true, error: null };
+          } catch (error) {
+            return { error: error instanceof Error ? error.message : String(error) };
+          }
         }),
     }),
 

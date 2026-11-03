@@ -153,7 +153,6 @@ export function ConfigPreviewer() {
   }, [files, selectedPath]);
 
   const contents = selectedFile ? convertFile(selectedFile, outputFormat) : "";
-  const converted = selectedFile ? outputFormat !== selectedFile.format : false;
 
   const handleCopy = useCallback(() => {
     navigator.clipboard
@@ -243,8 +242,7 @@ export function ConfigPreviewer() {
                 setDiffing(false);
                 setEditing((value) => !value);
               }}
-              disabled={!selectedFile || converted}
-              title={converted ? "Switch to the native format to edit" : undefined}
+              disabled={!selectedFile}
               className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
             >
               {editing ? "Done" : "Edit"}
@@ -279,8 +277,8 @@ export function ConfigPreviewer() {
               <ConfigFile
                 name={displayPath ?? selectedFile.refPath}
                 contents={contents}
-                editing={editing && !converted}
-                onCommit={(text) => setFileText(selectedFile.absPath, text)}
+                editing={editing}
+                onCommit={(text) => setFileText(selectedFile.absPath, text, outputFormat)}
               />
             )
           ) : (
