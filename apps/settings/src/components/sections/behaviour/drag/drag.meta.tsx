@@ -35,18 +35,6 @@ export const dragMeta: SectionMeta = {
       aliases: ["tile thumbnail", "drag preview", "mini tile"],
     },
     {
-      configKey: "drag_tile_refresh_interval",
-      label: "Tile Drag Refresh",
-      description: "Render refresh interval when dragging tiled windows (1.0–16.0)",
-      aliases: ["tile refresh", "drag fps", "drag smoothness"],
-    },
-    {
-      configKey: "drag_floating_refresh_interval",
-      label: "Floating Drag Refresh",
-      description: "Render refresh interval when dragging floating windows (0.0–1000.0)",
-      aliases: ["floating refresh", "drag fps", "drag smoothness"],
-    },
-    {
       configKey: "snap_distance",
       label: "Snap Distance",
       description: "Distance in pixels for window snapping (0–99999)",

@@ -90,13 +90,13 @@ export const generalMeta: SectionMeta = {
       aliases: ["zoom finish", "zoom target", "final zoom"],
     },
     {
-      configKey: "fadein_begin_opacity",
+      configKey: "fade_in_begin_opacity",
       label: "Fade In Start Opacity",
       description: "Starting opacity for fade-in animations (0.0–1.0)",
       aliases: ["fade in begin", "fade start", "opacity start"],
     },
     {
-      configKey: "fadeout_begin_opacity",
+      configKey: "fade_out_begin_opacity",
       label: "Fade Out Start Opacity",
       description: "Starting opacity for fade-out animations (0.0–1.0)",
       aliases: ["fade out begin", "fade end", "opacity end"],

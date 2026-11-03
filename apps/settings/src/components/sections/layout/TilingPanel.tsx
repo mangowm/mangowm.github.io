@@ -16,8 +16,8 @@ export function TilingPanel({ focusKey }: PanelProps) {
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const newIsMaster = useConfigBool("new_is_master");
-  const mfact = useConfigFloat("default_mfact", undefined, 0.1, 0.9);
-  const nmaster = useConfigInt("default_nmaster", undefined, 1, 1000);
+  const mfact = useConfigFloat("default_master_factor", undefined, 0.1, 0.9);
+  const nmaster = useConfigInt("default_master_count", undefined, 1, 1000);
   const centerOverspread = useConfigBool("center_master_overspread");
   const centerSingleStack = useConfigBool("center_when_single_stack");
 
@@ -44,7 +44,7 @@ export function TilingPanel({ focusKey }: PanelProps) {
 
       <div className="mb-5">
         <SectionCard title="Master Area">
-          <div ref={fieldRef("default_mfact")}>
+          <div ref={fieldRef("default_master_factor")}>
             <SliderRow
               label="Master Area Factor"
               description="Fraction of the screen width given to the master area."
@@ -52,10 +52,10 @@ export function TilingPanel({ focusKey }: PanelProps) {
               min={0.1}
               max={0.9}
               step={0.01}
-              onChange={(v) => setValue("default_mfact", v.toFixed(2))}
+              onChange={(v) => setValue("default_master_factor", v.toFixed(2))}
             />
           </div>
-          <div ref={fieldRef("default_nmaster")}>
+          <div ref={fieldRef("default_master_count")}>
             <SliderRow
               label="Number of Masters"
               description="How many windows are kept in the master area."
@@ -63,7 +63,7 @@ export function TilingPanel({ focusKey }: PanelProps) {
               min={1}
               max={20}
               step={1}
-              onChange={(v) => setValue("default_nmaster", String(Math.round(v)))}
+              onChange={(v) => setValue("default_master_count", String(Math.round(v)))}
             />
           </div>
         </SectionCard>

@@ -1,19 +1,13 @@
-import {
-  useConfigStore,
-  useConfigBool,
-  useConfigFloat,
-  useConfigInt,
-  useConfigStr,
-} from "@/lib/config-store";
+import { useConfigStore, useConfigBool, useConfigInt, useConfigStr } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
   PanelShell,
   PanelHeader,
   SectionCard,
+  SliderRow,
   ToggleRow,
   SelectRow,
-  SliderRow,
 } from "@/components/sections/section-ui";
 
 const DRAG_CORNER_OPTIONS = [
@@ -34,8 +28,6 @@ export function DragPanel({ focusKey }: PanelProps) {
   const dragWarpCursor = useConfigBool("drag_warp_cursor");
   const dragTileToTile = useConfigBool("drag_tile_to_tile");
   const dragTileSmall = useConfigBool("drag_tile_small");
-  const tileRefresh = useConfigFloat("drag_tile_refresh_interval", undefined, 1.0, 16.0);
-  const floatRefresh = useConfigFloat("drag_floating_refresh_interval", undefined, 0.0, 1000.0);
   const snapDist = useConfigInt("snap_distance", undefined, 0, 99999);
   const floatSnap = useConfigBool("enable_floating_snap");
 
@@ -109,35 +101,6 @@ export function DragPanel({ focusKey }: PanelProps) {
               max={200}
               unit=" px"
               onChange={(v) => setValue("snap_distance", String(v))}
-            />
-          </div>
-        </SectionCard>
-      </div>
-
-      <div className="mb-5">
-        <SectionCard title="Drag Performance">
-          <div ref={fieldRef("drag_tile_refresh_interval")}>
-            <SliderRow
-              label="Tile Drag Refresh"
-              description="Render refresh interval when dragging tiled windows. Lower values = smoother but more GPU work. Mango range: 1.0–16.0."
-              value={tileRefresh}
-              min={1.0}
-              max={16.0}
-              step={0.5}
-              unit=" ms"
-              onChange={(v) => setValue("drag_tile_refresh_interval", v.toFixed(1))}
-            />
-          </div>
-          <div ref={fieldRef("drag_floating_refresh_interval")}>
-            <SliderRow
-              label="Floating Drag Refresh"
-              description="Render refresh interval when dragging floating windows. 0 = every frame. Mango range: 0.0–1000.0."
-              value={floatRefresh}
-              min={0.0}
-              max={1000.0}
-              step={0.5}
-              unit=" ms"
-              onChange={(v) => setValue("drag_floating_refresh_interval", v.toFixed(1))}
             />
           </div>
         </SectionCard>

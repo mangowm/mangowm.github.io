@@ -26,9 +26,8 @@ export function OverviewPanel({ focusKey }: PanelProps) {
   const enableHotarea = useConfigBool("enable_hotarea");
   const hotareaSize = useConfigInt("hotarea_size", undefined, 1, 1000);
   const hotareaCorner = useConfigInt("hotarea_corner", undefined, 0, 3);
-  const ovTabMode = useConfigBool("ov_tab_mode");
-  const overviewgappi = useConfigInt("overviewgappi", undefined, 0, 1000);
-  const overviewgappo = useConfigInt("overviewgappo", undefined, 0, 1000);
+  const overview_gap_inner = useConfigInt("overview_gap_inner", undefined, 0, 1000);
+  const overview_gap_outer = useConfigInt("overview_gap_outer", undefined, 0, 1000);
 
   return (
     <PanelShell>
@@ -75,42 +74,29 @@ export function OverviewPanel({ focusKey }: PanelProps) {
       </div>
 
       <div className="mb-5">
-        <SectionCard title="Grid Behavior">
-          <div ref={fieldRef("ov_tab_mode")}>
-            <ToggleRow
-              label="Tab Mode"
-              description="Show window tabs/headers in the overview grid."
-              value={ovTabMode}
-              onChange={tb("ov_tab_mode")}
-            />
-          </div>
-        </SectionCard>
-      </div>
-
-      <div className="mb-5">
         <SectionCard title="Gaps">
-          <div ref={fieldRef("overviewgappi")}>
+          <div ref={fieldRef("overview_gap_inner")}>
             <SliderRow
               label="Inner Gap"
               description="Gap between windows inside the overview grid."
-              value={overviewgappi}
+              value={overview_gap_inner}
               min={0}
               max={200}
               step={1}
               unit="px"
-              onChange={(v) => setValue("overviewgappi", String(Math.round(v)))}
+              onChange={(v) => setValue("overview_gap_inner", String(Math.round(v)))}
             />
           </div>
-          <div ref={fieldRef("overviewgappo")}>
+          <div ref={fieldRef("overview_gap_outer")}>
             <SliderRow
               label="Outer Gap"
               description="Gap between the overview grid and screen edges."
-              value={overviewgappo}
+              value={overview_gap_outer}
               min={0}
               max={200}
               step={1}
               unit="px"
-              onChange={(v) => setValue("overviewgappo", String(Math.round(v)))}
+              onChange={(v) => setValue("overview_gap_outer", String(Math.round(v)))}
             />
           </div>
         </SectionCard>

@@ -29,19 +29,13 @@ export const overviewMeta: SectionMeta = {
       aliases: ["corner", "hot corner position", "activation corner"],
     },
     {
-      configKey: "ov_tab_mode",
-      label: "Tab Mode",
-      description: "Show window tabs in the overview grid",
-      aliases: ["overview tabs", "window tabs", "tab overview"],
-    },
-    {
-      configKey: "overviewgappi",
+      configKey: "overview_gap_inner",
       label: "Inner Gap",
       description: "Gap between windows inside the overview grid (0–1000)",
       aliases: ["overview inner gap", "grid gap", "overview spacing"],
     },
     {
-      configKey: "overviewgappo",
+      configKey: "overview_gap_outer",
       label: "Outer Gap",
       description: "Gap between the overview grid and screen edges (0–1000)",
       aliases: ["overview outer gap", "grid margin", "overview margin"],

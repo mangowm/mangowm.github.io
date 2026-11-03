@@ -22,13 +22,13 @@ export const focusMeta: SectionMeta = {
   ],
   fields: [
     {
-      configKey: "sloppyfocus",
+      configKey: "sloppy_focus",
       label: "Sloppy Focus",
       description: "Focus follows the mouse pointer",
       aliases: ["focus follows mouse", "mouse focus"],
     },
     {
-      configKey: "warpcursor",
+      configKey: "warp_cursor",
       label: "Warp Cursor",
       description: "Auto-move cursor to center of focused window",
       aliases: ["cursor warp", "jump cursor"],

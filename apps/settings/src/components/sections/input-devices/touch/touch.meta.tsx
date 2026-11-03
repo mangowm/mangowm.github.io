@@ -22,10 +22,5 @@ export const touchMeta: SectionMeta = {
       description: "Convert touch gestures into mouse events",
       aliases: ["touch mouse", "emulate mouse", "touch clicks"],
     },
-    {
-      configKey: "touch_map_to_mon",
-      label: "Map to Monitor",
-      description: "Monitor to map the touchscreen to",
-    },
   ],
 };

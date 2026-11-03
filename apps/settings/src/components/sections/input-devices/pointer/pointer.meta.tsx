@@ -1,15 +1,42 @@
 import { MousePointer2Icon } from "lucide-react";
+
 import type { SectionMeta } from "@/lib/section-types";
 import { PointerPanel } from "./PointerPanel";
 
+const mouseFields = [
+  ["mouse_natural_scrolling", "Mouse Natural Scrolling"],
+  ["mouse_accel_profile", "Mouse Acceleration Profile"],
+  ["mouse_accel_speed", "Mouse Acceleration Speed"],
+  ["mouse_scroll_method", "Mouse Scroll Method"],
+  ["mouse_scroll_button", "Mouse Scroll Button"],
+  ["mouse_click_method", "Mouse Click Method"],
+  ["mouse_send_events_mode", "Mouse Send Events Mode"],
+  ["mouse_left_handed", "Mouse Left Handed"],
+  ["mouse_middle_button_emulation", "Mouse Middle Button Emulation"],
+] as const;
+
+const trackpadFields = [
+  ["trackpad_natural_scrolling", "Trackpad Natural Scrolling"],
+  ["trackpad_accel_profile", "Trackpad Acceleration Profile"],
+  ["trackpad_accel_speed", "Trackpad Acceleration Speed"],
+  ["trackpad_scroll_method", "Trackpad Scroll Method"],
+  ["trackpad_scroll_button", "Trackpad Scroll Button"],
+  ["trackpad_click_method", "Trackpad Click Method"],
+  ["trackpad_send_events_mode", "Trackpad Send Events Mode"],
+  ["trackpad_left_handed", "Trackpad Left Handed"],
+  ["trackpad_middle_button_emulation", "Trackpad Middle Button Emulation"],
+  ["trackpad_disable_while_typing", "Trackpad Disable While Typing"],
+] as const;
+
 export const pointerMeta: SectionMeta = {
   id: "pointer",
-  label: "Pointer / Mouse",
+  label: "Pointer",
   icon: <MousePointer2Icon />,
   panel: PointerPanel,
   parentId: "input-devices",
   keywords: [
     "mouse",
+    "trackpad",
     "pointer",
     "acceleration",
     "scrolling",
@@ -21,60 +48,12 @@ export const pointerMeta: SectionMeta = {
     "send events",
   ],
   fields: [
-    {
-      configKey: "mouse_natural_scrolling",
-      label: "Natural Scrolling",
-      description: "Reverse scroll direction for mouse",
-    },
+    ...mouseFields.map(([configKey, label]) => ({ configKey, label, description: "" })),
+    ...trackpadFields.map(([configKey, label]) => ({ configKey, label, description: "" })),
     {
       configKey: "axis_scroll_factor",
       label: "Axis Scroll Factor",
       description: "Multiplier for axis (wheel) scroll speed (0.1–10.0)",
-    },
-    {
-      configKey: "scroll_method",
-      label: "Scroll Method",
-      description: "Trackpad scroll method — Two-Finger, Edge, or On-Button-Down (0–4)",
-    },
-    {
-      configKey: "scroll_button",
-      label: "Scroll Button",
-      description: "Button used for on-button-down scrolling (272–279)",
-    },
-    {
-      configKey: "mouse_accel_profile",
-      label: "Acceleration Profile",
-      description: "Mouse acceleration profile — Flat, Adaptive, or Custom",
-    },
-    {
-      configKey: "mouse_accel_speed",
-      label: "Acceleration Speed",
-      description: "Mouse acceleration speed (-1.0 to 1.0)",
-    },
-    {
-      configKey: "click_method",
-      label: "Click Method",
-      description: "How clicks are detected — None, Clickfinger, or Button Areas",
-    },
-    {
-      configKey: "send_events_mode",
-      label: "Send Events Mode",
-      description: "When to send pointer events to the compositor (0–2)",
-    },
-    {
-      configKey: "disable_while_typing",
-      label: "Disable While Typing",
-      description: "Temporarily disable the touchpad while typing",
-    },
-    {
-      configKey: "left_handed",
-      label: "Left Handed",
-      description: "Swap left and right mouse buttons",
-    },
-    {
-      configKey: "middle_button_emulation",
-      label: "Middle Button Emulation",
-      description: "Emulate middle-click by pressing left+right simultaneously",
     },
     {
       configKey: "axis_bind_apply_timeout",

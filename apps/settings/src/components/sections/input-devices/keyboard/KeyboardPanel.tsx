@@ -18,7 +18,7 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
   // Ranges match mango's CLAMP_INT: repeat_rate [1,1000], repeat_delay [1,20000]
   const repeatRate = useConfigInt("repeat_rate", undefined, 1, 1000);
   const repeatDelay = useConfigInt("repeat_delay", undefined, 1, 20000);
-  const numlockOn = useConfigBool("numlockon");
+  const numlockOn = useConfigBool("numlock_on");
   const xkbLayout = useConfigStr("xkb_rules_layout");
   const xkbVariant = useConfigStr("xkb_rules_variant");
   const xkbOptions = useConfigStr("xkb_rules_options");
@@ -63,12 +63,12 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
 
       <div className="mb-5">
         <SectionCard title="Startup">
-          <div ref={fieldRef("numlockon")}>
+          <div ref={fieldRef("numlock_on")}>
             <ToggleRow
               label="NumLock On Startup"
               description="Enable NumLock when the compositor starts."
               value={numlockOn}
-              onChange={(v) => setValue("numlockon", v ? "1" : "0")}
+              onChange={(v) => setValue("numlock_on", v ? "1" : "0")}
             />
           </div>
         </SectionCard>

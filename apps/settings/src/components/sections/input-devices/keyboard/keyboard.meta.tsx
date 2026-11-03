@@ -21,7 +21,7 @@ export const keyboardMeta: SectionMeta = {
       description: "Delay before key repeat starts, in milliseconds",
     },
     {
-      configKey: "numlockon",
+      configKey: "numlock_on",
       label: "NumLock On Startup",
       description: "Enable NumLock when the compositor starts",
     },

@@ -38,12 +38,12 @@ const CURVE_FIELDS: { key: string; label: string; description: string }[] = [
     description: "Bezier curve for focus-change animations.",
   },
   {
-    key: "animation_curve_opafadein",
+    key: "animation_curve_opacity_fade_in",
     label: "Fade In Opacity",
     description: "Bezier curve for fade-in opacity transitions.",
   },
   {
-    key: "animation_curve_opafadeout",
+    key: "animation_curve_opacity_fade_out",
     label: "Fade Out Opacity",
     description: "Bezier curve for fade-out opacity transitions.",
   },
@@ -126,8 +126,8 @@ export function CurvesPanel({ focusKey }: PanelProps) {
   const curveClose = useConfigStr("animation_curve_close");
   const curveTag = useConfigStr("animation_curve_tag");
   const curveFocus = useConfigStr("animation_curve_focus");
-  const curveFadeIn = useConfigStr("animation_curve_opafadein");
-  const curveFadeOut = useConfigStr("animation_curve_opafadeout");
+  const curveFadeIn = useConfigStr("animation_curve_opacity_fade_in");
+  const curveFadeOut = useConfigStr("animation_curve_opacity_fade_out");
 
   const values: Record<string, string> = {
     animation_curve_move: curveMove,
@@ -135,8 +135,8 @@ export function CurvesPanel({ focusKey }: PanelProps) {
     animation_curve_close: curveClose,
     animation_curve_tag: curveTag,
     animation_curve_focus: curveFocus,
-    animation_curve_opafadein: curveFadeIn,
-    animation_curve_opafadeout: curveFadeOut,
+    animation_curve_opacity_fade_in: curveFadeIn,
+    animation_curve_opacity_fade_out: curveFadeOut,
   };
 
   const rawValue = values[selected];

@@ -11,12 +11,12 @@ export const dwindleMeta: SectionMeta = {
   keywords: ["split", "smart", "ratio", "direction"],
   fields: [
     {
-      configKey: "dwindle_vsplit",
+      configKey: "dwindle_vertical_split",
       label: "Vertical Split",
       description: "Policy for vertical splits in the dwindle layout",
     },
     {
-      configKey: "dwindle_hsplit",
+      configKey: "dwindle_horizontal_split",
       label: "Horizontal Split",
       description: "Policy for horizontal splits in the dwindle layout",
     },

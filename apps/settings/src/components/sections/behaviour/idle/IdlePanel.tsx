@@ -15,7 +15,7 @@ export function IdlePanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const idleInhibitIgnore = useConfigBool("idleinhibit_ignore_visible");
+  const idleInhibitIgnore = useConfigBool("idle_inhibit_ignore_visible");
   const cursorTimeout = useConfigInt("cursor_hide_timeout", undefined, 0, 36000);
   const cursorHideKeypress = useConfigBool("cursor_hide_on_keypress");
 
@@ -29,12 +29,12 @@ export function IdlePanel({ focusKey }: PanelProps) {
 
       <div className="mb-5">
         <SectionCard title="Screen Blanking">
-          <div ref={fieldRef("idleinhibit_ignore_visible")}>
+          <div ref={fieldRef("idle_inhibit_ignore_visible")}>
             <ToggleRow
               label="Idle Inhibit Ignore Visible"
               description="Only fullscreen windows may inhibit the idle inhibitor (DPMS/screen blanking). Requests from tiled or floating windows are ignored."
               value={idleInhibitIgnore}
-              onChange={tb("idleinhibit_ignore_visible")}
+              onChange={tb("idle_inhibit_ignore_visible")}
             />
           </div>
         </SectionCard>

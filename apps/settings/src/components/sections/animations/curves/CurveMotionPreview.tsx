@@ -40,8 +40,8 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
   const tagDir = useConfigInt("tag_animation_direction", undefined, 0, 1) === 1 ? 1 : 0;
   const zoomInitial = useConfigFloat("zoom_initial_ratio", undefined, 0.1, 1.0);
   const zoomEnd = useConfigFloat("zoom_end_ratio", undefined, 0.1, 1.0);
-  const fadeIn = useConfigFloat("fadein_begin_opacity", undefined, 0.0, 1.0);
-  const fadeOut = useConfigFloat("fadeout_begin_opacity", undefined, 0.0, 1.0);
+  const fadeIn = useConfigFloat("fade_in_begin_opacity", undefined, 0.0, 1.0);
+  const fadeOut = useConfigFloat("fade_out_begin_opacity", undefined, 0.0, 1.0);
   const rootColor = useConfigStr("root_color");
   const focusColor = useConfigStr("focus_color");
   const borderColor = useConfigStr("border_color");
@@ -57,8 +57,8 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
   const rawTag = useConfigStr("animation_curve_tag");
   const rawClose = useConfigStr("animation_curve_close");
   const rawFocus = useConfigStr("animation_curve_focus");
-  const rawFadeIn = useConfigStr("animation_curve_opafadein");
-  const rawFadeOut = useConfigStr("animation_curve_opafadeout");
+  const rawFadeIn = useConfigStr("animation_curve_opacity_fade_in");
+  const rawFadeOut = useConfigStr("animation_curve_opacity_fade_out");
 
   const curves: Record<string, BezierValue> = {
     animation_curve_move: parseStoredCurve(rawMove),
@@ -66,8 +66,8 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
     animation_curve_tag: parseStoredCurve(rawTag),
     animation_curve_close: parseStoredCurve(rawClose),
     animation_curve_focus: parseStoredCurve(rawFocus),
-    animation_curve_opafadein: parseStoredCurve(rawFadeIn),
-    animation_curve_opafadeout: parseStoredCurve(rawFadeOut),
+    animation_curve_opacity_fade_in: parseStoredCurve(rawFadeIn),
+    animation_curve_opacity_fade_out: parseStoredCurve(rawFadeOut),
   };
   curves[curveKey] = curve;
 

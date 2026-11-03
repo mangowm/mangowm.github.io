@@ -17,7 +17,7 @@ export const renderingMeta: SectionMeta = {
       aliases: ["tearing", "tear", "vsync", "async", "page flip"],
     },
     {
-      configKey: "syncobj_enable",
+      configKey: "sync_obj_enable",
       label: "Sync Object Enable",
       description: "Enable DRM sync object timeline support",
       aliases: ["sync", "drm", "timeline", "syncobj", "gpu"],

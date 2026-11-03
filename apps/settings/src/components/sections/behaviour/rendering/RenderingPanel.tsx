@@ -28,7 +28,7 @@ export function RenderingPanel({ focusKey }: PanelProps) {
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const tearing = useConfigStr("allow_tearing");
-  const syncobj = useConfigBool("syncobj_enable");
+  const syncobj = useConfigBool("sync_obj_enable");
   const hdrDepth = useConfigStr("hdr_depth");
 
   return (
@@ -55,12 +55,12 @@ export function RenderingPanel({ focusKey }: PanelProps) {
 
       <div className="mb-5">
         <SectionCard title="GPU Synchronisation">
-          <div ref={fieldRef("syncobj_enable")}>
+          <div ref={fieldRef("sync_obj_enable")}>
             <ToggleRow
               label="Sync Object Enable"
               description="Enable DRM sync object timeline support. May improve GPU scheduling on compatible hardware."
               value={syncobj}
-              onChange={tb("syncobj_enable")}
+              onChange={tb("sync_obj_enable")}
             />
           </div>
         </SectionCard>

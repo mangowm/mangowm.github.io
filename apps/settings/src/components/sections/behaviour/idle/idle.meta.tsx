@@ -22,7 +22,7 @@ export const idleMeta: SectionMeta = {
   ],
   fields: [
     {
-      configKey: "idleinhibit_ignore_visible",
+      configKey: "idle_inhibit_ignore_visible",
       label: "Idle Inhibit Ignore Visible",
       description: "Only fullscreen windows may inhibit the idle inhibitor",
       aliases: ["inhibit", "idle", "dpms", "screen blank", "power save"],

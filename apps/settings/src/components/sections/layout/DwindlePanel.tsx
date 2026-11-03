@@ -22,8 +22,8 @@ export function DwindlePanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const vsplit = useConfigStr("dwindle_vsplit");
-  const hsplit = useConfigStr("dwindle_hsplit");
+  const vsplit = useConfigStr("dwindle_vertical_split");
+  const hsplit = useConfigStr("dwindle_horizontal_split");
   const preserveSplit = useConfigBool("dwindle_preserve_split");
   const smartSplit = useConfigBool("dwindle_smart_split");
   const smartResize = useConfigBool("dwindle_smart_resize");
@@ -41,22 +41,22 @@ export function DwindlePanel({ focusKey }: PanelProps) {
 
       <div className="mb-5">
         <SectionCard title="Split Direction">
-          <div ref={fieldRef("dwindle_vsplit")}>
+          <div ref={fieldRef("dwindle_vertical_split")}>
             <SelectRow
               label="Vertical Split"
               description="Policy for vertical splits. Off = never, Smart = automatic, Force = always."
               value={vsplit}
               options={SPLIT_OPTIONS}
-              onChange={(v) => setValue("dwindle_vsplit", v)}
+              onChange={(v) => setValue("dwindle_vertical_split", v)}
             />
           </div>
-          <div ref={fieldRef("dwindle_hsplit")}>
+          <div ref={fieldRef("dwindle_horizontal_split")}>
             <SelectRow
               label="Horizontal Split"
               description="Policy for horizontal splits. Off = never, Smart = automatic, Force = always."
               value={hsplit}
               options={SPLIT_OPTIONS}
-              onChange={(v) => setValue("dwindle_hsplit", v)}
+              onChange={(v) => setValue("dwindle_horizontal_split", v)}
             />
           </div>
           <div ref={fieldRef("dwindle_preserve_split")}>

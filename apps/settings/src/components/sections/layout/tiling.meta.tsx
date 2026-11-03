@@ -16,12 +16,12 @@ export const tilingMeta: SectionMeta = {
       description: "New windows open in the master area instead of the stack",
     },
     {
-      configKey: "default_mfact",
+      configKey: "default_master_factor",
       label: "Master Area Factor",
       description: "Proportion of screen width allocated to the master area",
     },
     {
-      configKey: "default_nmaster",
+      configKey: "default_master_count",
       label: "Number of Masters",
       description: "How many windows are kept in the master area",
     },

@@ -46,8 +46,8 @@ export function GeneralPanel({ focusKey }: PanelProps) {
 
   const zoomInitial = useConfigFloat("zoom_initial_ratio", undefined, 0.1, 1.0);
   const zoomEnd = useConfigFloat("zoom_end_ratio", undefined, 0.1, 1.0);
-  const fadeInOpacity = useConfigFloat("fadein_begin_opacity", undefined, 0.0, 1.0);
-  const fadeOutOpacity = useConfigFloat("fadeout_begin_opacity", undefined, 0.0, 1.0);
+  const fadeInOpacity = useConfigFloat("fade_in_begin_opacity", undefined, 0.0, 1.0);
+  const fadeOutOpacity = useConfigFloat("fade_out_begin_opacity", undefined, 0.0, 1.0);
 
   return (
     <PanelShell>
@@ -191,7 +191,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
                   onChange={(v) => setValue("zoom_end_ratio", v.toFixed(2))}
                 />
               </div>
-              <div ref={fieldRef("fadein_begin_opacity")}>
+              <div ref={fieldRef("fade_in_begin_opacity")}>
                 <SliderRow
                   label="Fade In Start Opacity"
                   description="Starting opacity for fade-in animations (0.0–1.0)."
@@ -199,10 +199,10 @@ export function GeneralPanel({ focusKey }: PanelProps) {
                   min={0}
                   max={1}
                   step={0.01}
-                  onChange={(v) => setValue("fadein_begin_opacity", v.toFixed(2))}
+                  onChange={(v) => setValue("fade_in_begin_opacity", v.toFixed(2))}
                 />
               </div>
-              <div ref={fieldRef("fadeout_begin_opacity")}>
+              <div ref={fieldRef("fade_out_begin_opacity")}>
                 <SliderRow
                   label="Fade Out Start Opacity"
                   description="Starting opacity for fade-out animations (0.0–1.0)."
@@ -210,7 +210,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
                   min={0}
                   max={1}
                   step={0.01}
-                  onChange={(v) => setValue("fadeout_begin_opacity", v.toFixed(2))}
+                  onChange={(v) => setValue("fade_out_begin_opacity", v.toFixed(2))}
                 />
               </div>
             </SectionCard>

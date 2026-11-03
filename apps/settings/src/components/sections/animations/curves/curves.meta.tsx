@@ -53,13 +53,13 @@ export const curvesMeta: SectionMeta = {
       aliases: ["focus easing", "focus bezier", "focus control points"],
     },
     {
-      configKey: "animation_curve_opafadein",
+      configKey: "animation_curve_opacity_fade_in",
       label: "Fade In Curve",
       description: "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2)",
       aliases: ["fade in easing", "fade in bezier", "fade in control points"],
     },
     {
-      configKey: "animation_curve_opafadeout",
+      configKey: "animation_curve_opacity_fade_out",
       label: "Fade Out Curve",
       description: "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2)",
       aliases: ["fade out easing", "fade out bezier", "fade out control points"],

@@ -1,13 +1,7 @@
-import { useConfigStore, useConfigBool, useConfigStr } from "@/lib/config-store";
+import { useConfigBool, useConfigStore } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
-import {
-  PanelShell,
-  PanelHeader,
-  SectionCard,
-  ToggleRow,
-  TextInputRow,
-} from "@/components/sections/section-ui";
+import { PanelShell, PanelHeader, SectionCard, ToggleRow } from "@/components/sections/section-ui";
 
 export function TouchPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
@@ -17,7 +11,6 @@ export function TouchPanel({ focusKey }: PanelProps) {
 
   const touchEnable = useConfigBool("touch_enable");
   const touchMouseEmulation = useConfigBool("touch_enable_mouse_emulation");
-  const touchMapToMon = useConfigStr("touch_map_to_mon");
 
   return (
     <PanelShell>
@@ -44,21 +37,6 @@ export function TouchPanel({ focusKey }: PanelProps) {
               value={touchMouseEmulation}
               enabled={touchEnable}
               onChange={tb("touch_enable_mouse_emulation")}
-            />
-          </div>
-        </SectionCard>
-      </div>
-
-      <div className="mb-5">
-        <SectionCard title="Mapping">
-          <div ref={fieldRef("touch_map_to_mon")}>
-            <TextInputRow
-              label="Map to Monitor"
-              description="Monitor name to map the touchscreen to. Leave empty for no mapping."
-              value={touchMapToMon}
-              placeholder="eDP-1"
-              enabled={touchEnable}
-              onChange={(v) => setValue("touch_map_to_mon", v)}
             />
           </div>
         </SectionCard>

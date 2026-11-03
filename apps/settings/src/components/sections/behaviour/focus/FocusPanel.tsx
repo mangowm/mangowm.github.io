@@ -9,8 +9,8 @@ export function FocusPanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const sloppyfocus = useConfigBool("sloppyfocus");
-  const warpcursor = useConfigBool("warpcursor");
+  const sloppy_focus = useConfigBool("sloppy_focus");
+  const warp_cursor = useConfigBool("warp_cursor");
   const focusOnActivate = useConfigBool("focus_on_activate");
   const focusCrossMon = useConfigBool("focus_cross_monitor");
   const focusCrossTag = useConfigBool("focus_cross_tag");
@@ -26,20 +26,20 @@ export function FocusPanel({ focusKey }: PanelProps) {
 
       <div className="mb-5">
         <SectionCard title="Behaviour">
-          <div ref={fieldRef("sloppyfocus")}>
+          <div ref={fieldRef("sloppy_focus")}>
             <ToggleRow
               label="Sloppy Focus"
               description="Focus follows the mouse: moving the pointer into a window focuses it without clicking. When disabled, you must click to focus."
-              value={sloppyfocus}
-              onChange={tb("sloppyfocus")}
+              value={sloppy_focus}
+              onChange={tb("sloppy_focus")}
             />
           </div>
-          <div ref={fieldRef("warpcursor")}>
+          <div ref={fieldRef("warp_cursor")}>
             <ToggleRow
               label="Warp Cursor"
               description="Teleport the cursor to the centre of the newly focused window."
-              value={warpcursor}
-              onChange={tb("warpcursor")}
+              value={warp_cursor}
+              onChange={tb("warp_cursor")}
             />
           </div>
           <div ref={fieldRef("focus_on_activate")}>

@@ -110,7 +110,7 @@ function exitRect(type: MotionEffect, slot: MotionRect, cfg: MotionCfg): MotionR
 function renderOpen(t: number, cfg: MotionCfg): MotionWin[] {
   if (cfg.openType === "none") return [mkWin(1, "A", SLOT_A, 1, true)];
   const p = findAnimationCurveAt(t, cfg.curves.animation_curve_open);
-  const o = findAnimationCurveAt(t, cfg.curves.animation_curve_opafadein);
+  const o = findAnimationCurveAt(t, cfg.curves.animation_curve_opacity_fade_in);
   return [
     mkWin(
       1,
@@ -150,12 +150,12 @@ function renderTag(t: number, cfg: MotionCfg): MotionWin[] {
 }
 
 function renderFadeOut(t: number, cfg: MotionCfg): MotionWin[] {
-  const p = findAnimationCurveAt(t, cfg.curves.animation_curve_opafadeout);
+  const p = findAnimationCurveAt(t, cfg.curves.animation_curve_opacity_fade_out);
   return [mkWin(1, "A", SLOT_A, lerp(1, cfg.fadeOut, p), true), mkWin(2, "B", SLOT_B, 1, false)];
 }
 
 function renderFadeIn(t: number, cfg: MotionCfg): MotionWin[] {
-  const p = findAnimationCurveAt(t, cfg.curves.animation_curve_opafadein);
+  const p = findAnimationCurveAt(t, cfg.curves.animation_curve_opacity_fade_in);
   return [mkWin(1, "A", SLOT_A, lerp(cfg.fadeIn, 1, p), true), mkWin(2, "B", SLOT_B, 1, false)];
 }
 
@@ -163,7 +163,7 @@ function renderClose(t: number, cfg: MotionCfg): MotionWin[] {
   const wins: MotionWin[] = [mkWin(1, "A", SLOT_A, 1, true)];
   if (t < 1) {
     const p = findAnimationCurveAt(t, cfg.curves.animation_curve_close);
-    const o = findAnimationCurveAt(t, cfg.curves.animation_curve_opafadeout);
+    const o = findAnimationCurveAt(t, cfg.curves.animation_curve_opacity_fade_out);
     const rect =
       cfg.closeType === "none" ? SLOT_B : lerpRect(SLOT_B, exitRect(cfg.closeType, SLOT_B, cfg), p);
     const opacity = cfg.closeType === "none" ? 1 : lerp(1, cfg.fadeOut, o);
@@ -183,9 +183,9 @@ export function renderMotion(key: string, t: number, cfg: MotionCfg): MotionWin[
       return renderFocus(t, cfg);
     case "animation_curve_tag":
       return renderTag(t, cfg);
-    case "animation_curve_opafadein":
+    case "animation_curve_opacity_fade_in":
       return renderFadeIn(t, cfg);
-    case "animation_curve_opafadeout":
+    case "animation_curve_opacity_fade_out":
       return renderFadeOut(t, cfg);
     case "animation_curve_close":
       return renderClose(t, cfg);
@@ -199,8 +199,8 @@ export const MOTION_LABELS: Record<string, string> = {
   animation_curve_move: "Move / Resize",
   animation_curve_focus: "Focus",
   animation_curve_tag: "Tag Switch",
-  animation_curve_opafadein: "Fade In",
-  animation_curve_opafadeout: "Fade Out",
+  animation_curve_opacity_fade_in: "Fade In",
+  animation_curve_opacity_fade_out: "Fade Out",
   animation_curve_close: "Close",
 };
 
@@ -210,6 +210,6 @@ export const MOTION_DURATION_KEYS: Record<string, string> = {
   animation_curve_close: "animation_duration_close",
   animation_curve_tag: "animation_duration_tag",
   animation_curve_focus: "animation_duration_focus",
-  animation_curve_opafadein: "animation_duration_move",
-  animation_curve_opafadeout: "animation_duration_move",
+  animation_curve_opacity_fade_in: "animation_duration_move",
+  animation_curve_opacity_fade_out: "animation_duration_move",
 };
