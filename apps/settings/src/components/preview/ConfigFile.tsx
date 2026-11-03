@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Editor } from "@pierre/diffs/edit";
 import { EditProvider, File, type EditorFactory } from "@pierre/diffs/react";
 
@@ -16,14 +17,21 @@ function languageOf(name: string): "ini" | "toml" {
 }
 
 export function ConfigFile({ name, contents, editing = false, onCommit }: ConfigFileProps) {
+  const [pending, setPending] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (editing || pending === null) return;
+    onCommit?.(pending);
+    setPending(null);
+  }, [editing, pending, onCommit]);
+
   return (
     <EditProvider createEditor={createEditor}>
       <File
         file={{ name, contents, lang: languageOf(name) }}
         edit={editing}
-        editStateKey={name}
         onEditComplete={(event) => {
-          onCommit?.(event.file.contents);
+          setPending(event.file.contents);
           return "accept";
         }}
         options={{
