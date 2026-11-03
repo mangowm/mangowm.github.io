@@ -15,7 +15,7 @@ import {
   ToggleRow,
   SliderRow,
   MultiTagInput,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 /**
  * Keep only valid proportion values (0.1–1.0, 2-decimal precision).

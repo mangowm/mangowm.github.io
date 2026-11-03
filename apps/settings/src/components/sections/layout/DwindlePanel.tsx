@@ -8,7 +8,7 @@ import {
   ToggleRow,
   SliderRow,
   SelectRow,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 const SPLIT_OPTIONS = [
   { value: "0", label: "Off" },

@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 import { cn } from "cn";
-import { Row, FieldLabel } from "@/components/sections/section-ui";
+import { Row, FieldLabel } from "@/components/primitives/section-ui";
 import { Slider } from "@mangowm/ui/components/slider";
 import { Input } from "@mangowm/ui/components/input";
 import {

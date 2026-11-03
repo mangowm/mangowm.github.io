@@ -8,7 +8,7 @@ import {
   SliderRow,
   ToggleRow,
   SelectRow,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 const DRAG_CORNER_OPTIONS = [
   { value: "0", label: "Top-Left" },

@@ -7,7 +7,7 @@ import {
   SectionCard,
   ToggleRow,
   SliderRow,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 export function IdlePanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);

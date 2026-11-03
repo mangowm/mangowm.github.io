@@ -1,5 +1,5 @@
 import type { PanelProps } from "@/lib/section-types";
-import { PanelHeader, PanelShell } from "@/components/sections/section-ui";
+import { PanelHeader, PanelShell } from "@/components/primitives/section-ui";
 
 export function TabletPanel(_props: PanelProps) {
   return (

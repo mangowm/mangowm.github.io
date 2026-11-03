@@ -14,7 +14,7 @@ import {
   SelectRow,
   SliderRow,
   ToggleRow,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 const ACCEL_PROFILE_OPTIONS = [
   { value: "0", label: "None" },

@@ -9,7 +9,7 @@ import {
   SliderRow,
   TextInputRow,
   MultiTagInput,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 export function KeyboardPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);

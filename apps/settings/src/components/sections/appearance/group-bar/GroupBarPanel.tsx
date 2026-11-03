@@ -7,7 +7,7 @@ import {
   SectionCard,
   SliderRow,
   TextInputRow,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 export function GroupBarPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);

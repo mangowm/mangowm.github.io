@@ -7,7 +7,7 @@ import {
   SectionCard,
   SliderRow,
   ToggleRow,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 export function GapsBordersPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);

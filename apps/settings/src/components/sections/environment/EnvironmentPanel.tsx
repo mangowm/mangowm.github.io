@@ -4,7 +4,7 @@ import { Button } from "@mangowm/ui/components/button";
 import { Trash2, Plus } from "lucide-react";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
-import { PanelShell, PanelHeader } from "@/components/sections/section-ui";
+import { PanelShell, PanelHeader } from "@/components/primitives/section-ui";
 
 function parseEntry(raw: string): [string, string] {
   const idx = raw.indexOf(",");

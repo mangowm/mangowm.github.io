@@ -1,7 +1,12 @@
 import { useConfigStore, useConfigBool } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
-import { PanelShell, PanelHeader, SectionCard, ToggleRow } from "@/components/sections/section-ui";
+import {
+  PanelShell,
+  PanelHeader,
+  SectionCard,
+  ToggleRow,
+} from "@/components/primitives/section-ui";
 
 export function XWaylandPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);

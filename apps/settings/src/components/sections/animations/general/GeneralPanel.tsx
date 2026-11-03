@@ -8,7 +8,7 @@ import {
   ToggleRow,
   SliderRow,
   SelectRow,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 // Animation type options — empty string is mango's actual default (none selected)
 const ANIM_TYPE_OPTIONS = [

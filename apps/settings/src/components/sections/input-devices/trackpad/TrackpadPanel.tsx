@@ -14,7 +14,7 @@ import {
   ToggleRow,
   SliderRow,
   SelectRow,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 // CLAMP_INT(trackpad_accel_profile, 0, 2)
 //   libinput: 0 = NONE, 1 = FLAT, 2 = ADAPTIVE

@@ -7,7 +7,7 @@ import {
   SectionCard,
   ToggleRow,
   SelectRow,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 const INHIBIT_OPTIONS = [
   { value: "0", label: "Disabled" },

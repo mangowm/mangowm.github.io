@@ -7,7 +7,7 @@ import {
   SectionCard,
   TextInputRow,
   SliderRow,
-} from "@/components/sections/section-ui";
+} from "@/components/primitives/section-ui";
 
 export function CursorPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);

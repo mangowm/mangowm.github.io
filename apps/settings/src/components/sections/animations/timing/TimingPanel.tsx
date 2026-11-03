@@ -1,7 +1,12 @@
 import { useConfigStore, useConfigInt } from "@/lib/config-store";
 import type { PanelProps } from "@/lib/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
-import { PanelShell, PanelHeader, SectionCard, SliderRow } from "@/components/sections/section-ui";
+import {
+  PanelShell,
+  PanelHeader,
+  SectionCard,
+  SliderRow,
+} from "@/components/primitives/section-ui";
 
 export function TimingPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
