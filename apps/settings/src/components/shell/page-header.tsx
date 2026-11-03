@@ -197,14 +197,10 @@ function SetupMenu() {
         <DropdownMenuItem onClick={() => void importConfig()}>Import config</DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            if (
-              hasFiles &&
-              !window.confirm(
-                "Replace the current config with the default? A backup will be created first.",
-              )
-            ) {
-              return;
-            }
+            const message = isTauri
+              ? "Replace the current config with the default? A backup will be created first."
+              : "Replace the current config with the default? This cannot be undone.";
+            if (hasFiles && !window.confirm(message)) return;
             void createDefault();
           }}
         >
