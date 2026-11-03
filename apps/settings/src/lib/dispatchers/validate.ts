@@ -2,6 +2,9 @@ import type { DispatcherArg } from "./types";
 import {
   DIRECTION_OPTS,
   CIRCLE_DIR_OPTS,
+  OVERCIRCLE_OPTS,
+  SWITCHER_OPTS,
+  PREV_NEXT_OPTS,
   LAYOUT_NAMES,
   MOUSE_ACTION_OPTS,
   TAG_COUNT_MAX,
@@ -29,6 +32,16 @@ export function validateArgValue(value: string, arg: DispatcherArg): string | nu
       break;
     case "circle-dir":
       if (!CIRCLE_DIR_OPTS.includes(value as any)) return "Must be next or prev";
+      break;
+    case "overcircle":
+      if (!OVERCIRCLE_OPTS.includes(value as any))
+        return "Must be next, prev, current_next, or current_prev";
+      break;
+    case "switcher":
+      if (!SWITCHER_OPTS.includes(value as any)) return "Must be a switcher direction";
+      break;
+    case "prev-next":
+      if (!PREV_NEXT_OPTS.includes(value as any)) return "Must be prev or next";
       break;
     case "int":
       if (!/^-?\d+$/.test(value)) return "Must be an integer";

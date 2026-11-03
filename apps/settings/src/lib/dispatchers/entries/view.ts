@@ -1,6 +1,6 @@
 import type { DispatcherInfo } from "../types";
-import { namedArg } from "../helpers";
-import { TAG_NUMBERS, BOOL_FLAGS } from "../types";
+import { namedArg, oneArg } from "../helpers";
+import { TAG_NUMBERS, BOOL_FLAGS, PREV_NEXT_OPTS } from "../types";
 
 export const VIEW_ENTRIES: DispatcherInfo[] = [
   {
@@ -98,5 +98,29 @@ export const VIEW_ENTRIES: DispatcherInfo[] = [
       required: true,
     }),
     description: "View multiple tags pressed simultaneously (combo-key style navigation)",
+  },
+  {
+    name: "view_insert",
+    category: "view",
+    args: oneArg("prev-next", "Direction", "Insert before or after the current tag", {
+      options: [...PREV_NEXT_OPTS],
+    }),
+    description: "Insert an empty tag before or after the current one",
+  },
+  {
+    name: "viewnext_have_client",
+    category: "view",
+    args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
+      options: [...BOOL_FLAGS],
+    }),
+    description: "View the next tag if it has a client, otherwise the current tag",
+  },
+  {
+    name: "viewprev_have_client",
+    category: "view",
+    args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
+      options: [...BOOL_FLAGS],
+    }),
+    description: "View the previous tag if it has a client, otherwise the current tag",
   },
 ];

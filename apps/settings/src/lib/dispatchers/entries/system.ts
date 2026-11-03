@@ -1,6 +1,6 @@
 import type { DispatcherInfo } from "../types";
-import { namedArg } from "../helpers";
-import { BOOL_FLAGS } from "../types";
+import { namedArg, oneArg } from "../helpers";
+import { BOOL_FLAGS, SWITCHER_OPTS } from "../types";
 
 export const SYSTEM_ENTRIES: DispatcherInfo[] = [
   {
@@ -97,5 +97,25 @@ export const SYSTEM_ENTRIES: DispatcherInfo[] = [
       required: true,
     }),
     description: "Switch to a virtual terminal by number",
+  },
+  {
+    name: "enteroverview",
+    category: "system",
+    args: [],
+    description: "Enter overview mode",
+  },
+  {
+    name: "leaveoverview",
+    category: "system",
+    args: [],
+    description: "Leave overview mode",
+  },
+  {
+    name: "switcher",
+    category: "system",
+    args: oneArg("switcher", "Direction", "Switcher direction", {
+      options: [...SWITCHER_OPTS],
+    }),
+    description: "Switch between windows using the switcher",
   },
 ];

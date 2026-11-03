@@ -51,4 +51,16 @@ export const WINDOW_ENTRIES: DispatcherInfo[] = [
     args: [],
     description: "Toggle the overlay state for the focused window (always-on-top layer)",
   },
+  {
+    name: "smartkillclient",
+    category: "window",
+    args: [],
+    description: "Remove the focused window from the current tags, or close it if it is only there",
+  },
+  {
+    name: "togglegroupbar",
+    category: "window",
+    args: [],
+    description: "Toggle the group bar on every tiled window",
+  },
 ];

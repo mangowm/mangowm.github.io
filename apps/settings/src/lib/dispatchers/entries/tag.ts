@@ -82,4 +82,22 @@ export const TAG_ENTRIES: DispatcherInfo[] = [
     }),
     description: "Toggle a tag (1-9) on the focused window",
   },
+  {
+    name: "tag_special_silent",
+    category: "tag",
+    args: [],
+    description: "Move the focused window to or from the special workspace without focusing it",
+  },
+  {
+    name: "tag_special_tag",
+    category: "tag",
+    args: [],
+    description: "Move the focused window to or from the special workspace",
+  },
+  {
+    name: "toggle_special_tag",
+    category: "tag",
+    args: [],
+    description: "Toggle the special workspace overlay",
+  },
 ];

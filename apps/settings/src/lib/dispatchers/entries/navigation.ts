@@ -1,6 +1,6 @@
 import type { DispatcherInfo } from "../types";
 import { oneArg, namedArg } from "../helpers";
-import { DIRECTION_OPTS, CIRCLE_DIR_OPTS, BOOL_FLAGS } from "../types";
+import { DIRECTION_OPTS, CIRCLE_DIR_OPTS, OVERCIRCLE_OPTS, BOOL_FLAGS } from "../types";
 
 export const NAVIGATION_ENTRIES: DispatcherInfo[] = [
   {
@@ -90,5 +90,21 @@ export const NAVIGATION_ENTRIES: DispatcherInfo[] = [
       options: [...BOOL_FLAGS],
     }),
     description: "Toggle the jump-label overlay for quick window selection",
+  },
+  {
+    name: "move_client",
+    category: "navigation",
+    args: oneArg("direction", "Direction", "Move the focused window in this direction", {
+      options: [...DIRECTION_OPTS],
+    }),
+    description: "Move the focused window in a direction",
+  },
+  {
+    name: "overcircle",
+    category: "navigation",
+    args: oneArg("overcircle", "Direction", "Cycle focus in the overview grid", {
+      options: [...OVERCIRCLE_OPTS],
+    }),
+    description: "Cycle focus in the overview grid",
   },
 ];

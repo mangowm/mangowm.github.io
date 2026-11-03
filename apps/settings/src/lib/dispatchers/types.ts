@@ -4,6 +4,9 @@ export type ArgType =
   | "none"
   | "direction"
   | "circle-dir"
+  | "overcircle"
+  | "switcher"
+  | "prev-next"
   | "int"
   | "uint"
   | "float"
@@ -31,6 +34,16 @@ export interface DispatcherArg {
 
 export const DIRECTION_OPTS = ["left", "right", "up", "down"] as const;
 export const CIRCLE_DIR_OPTS = ["next", "prev"] as const;
+export const OVERCIRCLE_OPTS = ["next", "prev", "current_next", "current_prev"] as const;
+export const SWITCHER_OPTS = [
+  "next",
+  "prev",
+  "all_next",
+  "all_prev",
+  "all_tag_next",
+  "all_tag_prev",
+] as const;
+export const PREV_NEXT_OPTS = ["prev", "next"] as const;
 export const LAYOUT_NAMES = LAYOUTS;
 export const MOUSE_ACTION_OPTS = ["curmove", "curresize", "curnormal", "curpressed"] as const;
 export const TAG_COUNT_MAX = 31;
