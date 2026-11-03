@@ -11,7 +11,7 @@ describe("annotate", () => {
     const annotated = annotate(document);
 
     expect(annotated.comments).toEqual([
-      { text: "# header", anchor: { kind: "global", key: "blur" }, position: "before" },
+      { text: "# header", anchor: { kind: "file" }, position: "before" },
       { text: "# note", anchor: { kind: "global", key: "blur" }, position: "inline" },
     ]);
   });

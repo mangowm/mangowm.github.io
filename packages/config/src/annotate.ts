@@ -174,7 +174,7 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
     ruleIndex: new Map<string, number>(),
     directiveIndex: new Map<string, number>(),
   };
-  let seenEntry = false;
+  let seenContent = false;
 
   for (const node of document.nodes) {
     if (node.kind === "blank") {
@@ -195,6 +195,7 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
         });
       }
       pending.length = 0;
+      seenContent = true;
 
       if (node.path[0] === "rule" && node.path[1]) {
         const key = node.path[1];
@@ -214,6 +215,7 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
         comments.push({ text, anchor, position: "before" });
       }
       pending.length = 0;
+      seenContent = true;
 
       const inline = inlineComment(node.raw);
       if (inline) comments.push({ text: inline, anchor, position: "inline" });
@@ -226,12 +228,12 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
     for (const text of pending) {
       comments.push({
         text,
-        anchor: hasAnchor ? anchor : seenEntry ? { kind: "unplaced" } : { kind: "file" },
+        anchor: !seenContent ? { kind: "file" } : hasAnchor ? anchor : { kind: "unplaced" },
         position: "before",
       });
     }
     pending.length = 0;
-    seenEntry = true;
+    seenContent = true;
 
     const inline = inlineComment(node.raw);
     if (inline && hasAnchor) comments.push({ text: inline, anchor, position: "inline" });
@@ -240,7 +242,7 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
   for (const text of pending) {
     comments.push({
       text,
-      anchor: seenEntry ? { kind: "unplaced" } : { kind: "file" },
+      anchor: seenContent ? { kind: "unplaced" } : { kind: "file" },
       position: "before",
     });
   }
