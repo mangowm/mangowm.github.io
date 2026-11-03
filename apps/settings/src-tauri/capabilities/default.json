@@ -85,6 +85,14 @@
           "path": "/etc/mango/config.conf"
         }
       ]
+    },
+    {
+      "identifier": "opener:allow-open-path",
+      "allow": [
+        {
+          "path": "$HOME/.config/mango"
+        }
+      ]
     }
   ]
 }

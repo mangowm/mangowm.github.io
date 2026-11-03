@@ -215,7 +215,9 @@ export function createTauriHost(defaultConfig: string): ConfigHost {
     openExternal: openUrl,
     openConfigFolder: async () => {
       const home = await homeDir();
-      await openPath(`${home}/${CONFIG_DIR}`);
+      const directory = `${home}/${CONFIG_DIR}`;
+      await mkdir(directory, { recursive: true });
+      await openPath(directory);
     },
     backup: async () => {
       const destination = `${CONFIG_DIR}/backups/${timestamp()}`;
