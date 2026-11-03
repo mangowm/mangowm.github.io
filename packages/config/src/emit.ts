@@ -1,6 +1,6 @@
 import { DIRECTIVES, GLOBALS, RULES } from "@mangowm.github.io/schema";
 
-import type { AnnotatedComment, AnnotatedConfig, CommentAnchor } from "./annotate";
+import type { AnnotatedBlank, AnnotatedComment, AnnotatedConfig, CommentAnchor } from "./annotate";
 import { bindingTrigger, parseBinding } from "./binding";
 import { serializeConf } from "./serialize";
 import { serializeToml } from "./toml";
@@ -71,6 +71,27 @@ function commentsByAnchor(comments: AnnotatedComment[], format: ConfigFormat) {
   }
 
   return { before, inline };
+}
+
+function blanksByAnchor(blanks: AnnotatedBlank[], format: ConfigFormat): Map<string, number> {
+  const result = new Map<string, number>();
+
+  for (const blank of blanks) {
+    const key = anchorKey(blank.anchor, format);
+    result.set(key, Math.max(result.get(key) ?? 0, blank.count));
+  }
+
+  return result;
+}
+
+function ensureBlanks(output: string[], count: number): void {
+  let index = output.length - 1;
+  while (index >= 0 && output[index].trim() === "") index -= 1;
+
+  // Do not open a table with a blank line; the serializer already spaced it.
+  if (index < 0 || /^\[+[^\]]+\]+$/.test(output[index].trim())) return;
+
+  for (let current = output.length - 1 - index; current < count; current++) output.push("");
 }
 
 interface EmitState {
@@ -178,8 +199,14 @@ function tomlLineAnchor(line: string, state: EmitState): string | undefined {
   return undefined;
 }
 
-function applyComments(text: string, format: ConfigFormat, comments: AnnotatedComment[]): string {
+function applyComments(
+  text: string,
+  format: ConfigFormat,
+  comments: AnnotatedComment[],
+  blanks: AnnotatedBlank[],
+): string {
   const { before, inline } = commentsByAnchor(comments, format);
+  const blankCounts = blanksByAnchor(blanks, format);
   const used = new Set<string>();
   const lines = text.split("\n");
   const output: string[] = [];
@@ -204,6 +231,8 @@ function applyComments(text: string, format: ConfigFormat, comments: AnnotatedCo
 
           const index = state.ruleIndex.get(key) ?? 0;
           const ruleKey = `r:${key}:${index}`;
+          ensureBlanks(output, blankCounts.get(ruleKey) ?? 0);
+
           const leading = before.get(ruleKey);
           if (leading) {
             output.push(...leading);
@@ -212,6 +241,8 @@ function applyComments(text: string, format: ConfigFormat, comments: AnnotatedCo
         }
 
         const sectionKey = `s:${state.section.join(".")}`;
+        ensureBlanks(output, blankCounts.get(sectionKey) ?? 0);
+
         const sectionComments = before.get(sectionKey);
         if (sectionComments) {
           output.push(...sectionComments);
@@ -231,6 +262,8 @@ function applyComments(text: string, format: ConfigFormat, comments: AnnotatedCo
       const sectionKey = confSectionAnchor(line);
       if (sectionKey && !state.seenSections.has(sectionKey)) {
         state.seenSections.add(sectionKey);
+        ensureBlanks(output, blankCounts.get(sectionKey) ?? 0);
+
         const sectionComments = before.get(sectionKey);
         if (sectionComments) {
           output.push(...sectionComments);
@@ -258,6 +291,8 @@ function applyComments(text: string, format: ConfigFormat, comments: AnnotatedCo
     }
 
     used.add(anchor);
+    ensureBlanks(output, blankCounts.get(anchor) ?? 0);
+
     const leading = before.get(anchor);
     if (leading) output.push(...leading);
 
@@ -283,5 +318,5 @@ export function emit(annotated: AnnotatedConfig, target: ConfigFormat): string {
   const text =
     target === "toml" ? serializeToml(annotated.canonical) : serializeConf(annotated.canonical);
 
-  return applyComments(text, target, annotated.comments);
+  return applyComments(text, target, annotated.comments, annotated.blanks);
 }

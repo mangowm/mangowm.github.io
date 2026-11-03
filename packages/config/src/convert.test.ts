@@ -92,3 +92,52 @@ describe("convertDocument anchors", () => {
     expect(toml.indexOf("# bindings")).toBeGreaterThan(toml.indexOf("[global]"));
   });
 });
+
+describe("convertDocument blanks", () => {
+  it("keeps blank lines between entries in the same group", () => {
+    const conf = parseConf(["env = DPI,140", "", "env = THEME,dark"].join("\n"));
+
+    const toml = convertDocument(conf, "toml");
+
+    expect(toml).toContain('"DPI" = "140"\n\n"THEME" = "dark"');
+  });
+
+  it("keeps blank lines before a new section", () => {
+    const conf = parseConf(["blur = 1", "", "", "env = DPI,140"].join("\n"));
+
+    const toml = convertDocument(conf, "toml");
+
+    expect(toml).toContain("blur = true\n\n\n[env]");
+  });
+
+  it("does not duplicate the serializer's blank line between rules", () => {
+    const conf = parseConf(["window_rule = app_id:one", "", "window_rule = app_id:two"].join("\n"));
+
+    const toml = convertDocument(conf, "toml");
+
+    expect(toml).toContain('[[rule.window_rule]]\napp_id = "one"\n\n[[rule.window_rule]]');
+    expect(toml).not.toContain('app_id = "one"\n\n\n[[rule.window_rule]]');
+  });
+
+  it("keeps comments and blank lines with the matching rule instance", () => {
+    const toml = parseToml(
+      [
+        "[[rule.window_rule]]",
+        'app_id = "one"',
+        "",
+        "# second rule",
+        "[[rule.window_rule]]",
+        'app_id = "two"',
+      ].join("\n"),
+    );
+
+    const conf = convertDocument(toml, "conf");
+    const lines = conf.split("\n");
+    const second = lines.findIndex((line) => line.includes("app_id:two"));
+
+    expect(second).toBeGreaterThan(0);
+    expect(lines[second - 1]).toBe("# second rule");
+    expect(lines[second - 2]).toBe("");
+    expect(lines.findIndex((line) => line.includes("app_id:one"))).toBeLessThan(second);
+  });
+});

@@ -21,10 +21,16 @@ export interface AnnotatedComment {
   position: "before" | "inline";
 }
 
+export interface AnnotatedBlank {
+  anchor: CommentAnchor;
+  count: number;
+}
+
 export interface AnnotatedConfig {
   format: ConfigFormat;
   canonical: CanonicalConfig;
   comments: AnnotatedComment[];
+  blanks: AnnotatedBlank[];
 }
 
 const DIRECTIVE_KEYS = new Set<string>(DIRECTIVES.map((directive) => directive.key));
@@ -168,16 +174,25 @@ function anchorForEntry(
 export function annotate(document: ConfigDocument): AnnotatedConfig {
   const { config } = normalize(document);
   const comments: AnnotatedComment[] = [];
+  const blanks: AnnotatedBlank[] = [];
   const pending: string[] = [];
   const state = {
     mode: "default",
     ruleIndex: new Map<string, number>(),
     directiveIndex: new Map<string, number>(),
   };
+  let pendingBlanks = 0;
+  let lastGroup = "";
   let seenContent = false;
+
+  const flushBlanks = (anchor: CommentAnchor | undefined) => {
+    if (anchor && pendingBlanks > 0) blanks.push({ anchor, count: pendingBlanks });
+    pendingBlanks = 0;
+  };
 
   for (const node of document.nodes) {
     if (node.kind === "blank") {
+      pendingBlanks += 1;
       continue;
     }
 
@@ -187,20 +202,25 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
     }
 
     if (node.kind === "section") {
+      const isRuleArray = node.array && node.path[0] === "rule" && Boolean(node.path[1]);
+      let anchor: CommentAnchor;
+
+      if (isRuleArray) {
+        const key = node.path[1] ?? "";
+        const index = (state.ruleIndex.get(key) ?? -1) + 1;
+        state.ruleIndex.set(key, index);
+        anchor = { kind: "rule", key, index };
+      } else {
+        anchor = { kind: "section", path: [...node.path] };
+      }
+
+      flushBlanks(seenContent ? anchor : undefined);
+
       for (const text of pending) {
-        comments.push({
-          text,
-          anchor: { kind: "section", path: [...node.path] },
-          position: "before",
-        });
+        comments.push({ text, anchor, position: "before" });
       }
       pending.length = 0;
       seenContent = true;
-
-      if (node.path[0] === "rule" && node.path[1]) {
-        const key = node.path[1];
-        state.ruleIndex.set(key, (state.ruleIndex.get(key) ?? -1) + 1);
-      }
       continue;
     }
 
@@ -211,6 +231,8 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
       state.mode = mode;
 
       const anchor: CommentAnchor = { kind: "section", path: ["bind", mode] };
+      flushBlanks(seenContent ? anchor : undefined);
+
       for (const text of pending) {
         comments.push({ text, anchor, position: "before" });
       }
@@ -224,6 +246,21 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
 
     const anchor = anchorForEntry(node, document.format, state);
     const hasAnchor = anchor.kind !== "unplaced";
+    let blankAnchor: CommentAnchor | undefined = !seenContent
+      ? undefined
+      : hasAnchor
+        ? anchor
+        : { kind: "unplaced" };
+
+    if (document.format === "conf") {
+      const group = node.path[0] === "env" || node.path[0] === "var" ? node.path[0] : "other";
+      if (group !== "other" && lastGroup !== group && seenContent) {
+        blankAnchor = { kind: "section", path: [group] };
+      }
+      lastGroup = group;
+    }
+
+    flushBlanks(blankAnchor);
 
     for (const text of pending) {
       comments.push({
@@ -247,5 +284,5 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
     });
   }
 
-  return { format: document.format, canonical: config, comments };
+  return { format: document.format, canonical: config, comments, blanks };
 }
