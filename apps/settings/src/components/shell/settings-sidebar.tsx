@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
 } from "@mangowm/ui/components/sidebar";
 import { ROOT_SECTIONS, getChildren } from "@/lib/sections";
-import { MANGO_VERSION } from "@/lib/config/version";
+import { MANGO_VERSION } from "@mangowm.github.io/schema";
 
 const NAV_ITEMS = ROOT_SECTIONS.map((s) => {
   const children = getChildren(s.id);
