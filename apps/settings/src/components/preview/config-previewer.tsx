@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   AlertCircle,
+  ArrowUpRight,
   ChevronRightIcon,
   Copy,
   FileIcon,
@@ -288,7 +289,7 @@ export function ConfigPreviewer({ resolveSection, onOpenSection }: ConfigPreview
         {firstIssue && (
           <div
             className={cn(
-              "flex items-start gap-2 border-b px-4 py-2 text-xs",
+              "flex items-start gap-2 border-b px-4 py-2.5 text-xs",
               invalid
                 ? "border-destructive/20 bg-destructive/5 text-destructive"
                 : "border-amber-500/20 bg-amber-500/5 text-amber-700 dark:text-amber-400",
@@ -296,23 +297,26 @@ export function ConfigPreviewer({ resolveSection, onOpenSection }: ConfigPreview
           >
             <AlertCircle className="mt-0.5 size-3.5 shrink-0" />
             <div className="min-w-0 flex-1">
-              <p className="font-medium">
-                {invalid ? "Syntax error" : "Warning"} on line {firstIssue.line}
-              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="font-medium">
+                  {invalid ? "Syntax error" : "Warning"} on line {firstIssue.line}
+                </p>
+                {issues.length > 1 && (
+                  <span className="text-[11px] opacity-70">{issues.length - 1} more</span>
+                )}
+              </div>
               {firstIssue.text.trim() && (
                 <p className="truncate font-mono opacity-80">{firstIssue.text.trim()}</p>
               )}
               <p className="truncate opacity-80">{firstIssue.message}</p>
             </div>
-            {issues.length > 1 && (
-              <span className="shrink-0 pt-0.5 opacity-70">{issues.length - 1} more</span>
-            )}
             {suggestion && onOpenSection && (
               <button
                 onClick={() => onOpenSection(suggestion.id, firstIssue.key)}
-                className="shrink-0 cursor-pointer rounded-md border border-border/50 px-2 py-1 font-medium transition-colors hover:bg-accent/50"
+                className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 self-center rounded-md border border-border/50 px-2 py-1 text-xs font-medium whitespace-nowrap text-foreground transition-colors hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
               >
                 Open {suggestion.label}
+                <ArrowUpRight className="size-3.5" />
               </button>
             )}
           </div>
