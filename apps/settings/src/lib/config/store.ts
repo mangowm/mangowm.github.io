@@ -13,6 +13,7 @@ import {
   parseDocument,
   serializeConfig,
 } from "./parse";
+import { validateText } from "./syntax";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./helpers";
 import { convertDocument, convertFile, convertName } from "./convert";
 import { DEFAULTS } from "./defaults";
@@ -407,15 +408,14 @@ export const useConfigStore = create<ConfigStore>()(
 
           try {
             const source = format ?? target.format;
-            const sourceDocument = parseDocument(text, source);
-
-            const badLine = sourceDocument.nodes.find((node) => node.kind === "raw");
-            if (badLine) {
-              return {
-                error: `Line ${badLine.at.line} is not a setting, so the edit was not saved.`,
-              };
+            const issue = validateText(text, source).find(
+              (candidate) => candidate.severity === "error",
+            );
+            if (issue) {
+              return { error: `Line ${issue.line}: ${issue.message}` };
             }
 
+            const sourceDocument = parseDocument(text, source);
             const nativeText =
               source === target.format ? text : convertDocument(sourceDocument, target.format);
 
