@@ -412,7 +412,7 @@ export const useConfigStore = create<ConfigStore>()(
               (candidate) => candidate.severity === "error",
             );
             if (issue) {
-              return { error: `Line ${issue.line}: ${issue.message}` };
+              return state;
             }
 
             const sourceDocument = parseDocument(text, source);
