@@ -117,6 +117,7 @@ interface ConfigStore {
   error: string | null;
   isTauri: boolean;
   outputFormat: FileFormat;
+  revision: number;
 
   load: () => Promise<void>;
   setOutputFormat: (format: FileFormat) => void;
@@ -162,6 +163,7 @@ export const useConfigStore = create<ConfigStore>()(
       error: null,
       isTauri: isTauri(),
       outputFormat: "conf",
+      revision: 0,
 
       setOutputFormat: (format) => set({ outputFormat: format }),
 
@@ -170,7 +172,13 @@ export const useConfigStore = create<ConfigStore>()(
         try {
           const loaded = await getHost().load();
           const files = loaded.map(toSourceFile);
-          set({ files, data: mergeFileData(files, {}), loading: false, dirty: false });
+          set({
+            files,
+            data: mergeFileData(files, {}),
+            loading: false,
+            dirty: false,
+            revision: get().revision + 1,
+          });
           useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
           set({ error: String(e instanceof Error ? e.message : e), loading: false });
@@ -190,7 +198,13 @@ export const useConfigStore = create<ConfigStore>()(
             }
           }
           const files = (await host.createDefault()).map(toSourceFile);
-          set({ files, data: mergeFileData(files, {}), loading: false, dirty: false });
+          set({
+            files,
+            data: mergeFileData(files, {}),
+            loading: false,
+            dirty: false,
+            revision: get().revision + 1,
+          });
           useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
           set({ error: String(e instanceof Error ? e.message : e), loading: false });
@@ -206,7 +220,13 @@ export const useConfigStore = create<ConfigStore>()(
             return;
           }
           const files = loaded.map(toSourceFile);
-          set({ files, data: mergeFileData(files, {}), loading: false, dirty: false });
+          set({
+            files,
+            data: mergeFileData(files, {}),
+            loading: false,
+            dirty: false,
+            revision: get().revision + 1,
+          });
           useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
           set({ error: String(e instanceof Error ? e.message : e), loading: false });
@@ -276,6 +296,7 @@ export const useConfigStore = create<ConfigStore>()(
             data: mergeFileData(nextFiles, {}),
             applying: false,
             dirty: false,
+            revision: get().revision + 1,
           });
           useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
@@ -386,10 +407,22 @@ export const useConfigStore = create<ConfigStore>()(
 
           try {
             const source = format ?? target.format;
+            const sourceDocument = parseDocument(text, source);
+
+            if (sourceDocument.nodes.some((node) => node.kind === "raw")) {
+              return {
+                error: "The edited config has an incomplete line; keeping the previous content.",
+              };
+            }
+
             const nativeText =
-              source === target.format
-                ? text
-                : convertDocument(parseDocument(text, source), target.format);
+              source === target.format ? text : convertDocument(sourceDocument, target.format);
+
+            if (text.trim() !== "" && nativeText.trim() === "") {
+              return {
+                error: "The edited config could not be converted; keeping the previous content.",
+              };
+            }
 
             if (formatDocument(target.document) === nativeText) return state;
 
@@ -461,8 +494,10 @@ export function useConfigStr(key: string, fallback?: string): string {
 
 export function undo() {
   useConfigStore.temporal.getState().undo();
+  useConfigStore.setState((state) => ({ revision: state.revision + 1 }));
 }
 
 export function redo() {
   useConfigStore.temporal.getState().redo();
+  useConfigStore.setState((state) => ({ revision: state.revision + 1 }));
 }

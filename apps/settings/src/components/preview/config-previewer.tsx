@@ -133,6 +133,7 @@ export function ConfigPreviewer() {
   const setFileText = useConfigStore((s) => s.setFileText);
   const outputFormat = useConfigStore((s) => s.outputFormat);
   const setOutputFormat = useConfigStore((s) => s.setOutputFormat);
+  const revision = useConfigStore((s) => s.revision);
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [diffing, setDiffing] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -259,7 +260,7 @@ export function ConfigPreviewer() {
               />
             ) : (
               <ConfigFile
-                key={`${selectedFile.absPath}:${outputFormat}`}
+                key={`${selectedFile.absPath}:${outputFormat}:${revision}`}
                 name={displayPath ?? selectedFile.refPath}
                 contents={contents}
                 onCommit={(text) => setFileText(selectedFile.absPath, text, outputFormat)}

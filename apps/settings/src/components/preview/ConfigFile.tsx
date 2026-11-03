@@ -23,6 +23,7 @@ export function ConfigFile({ name, contents, onCommit }: ConfigFileProps) {
   const commitRef = useRef(onCommit);
   const dirty = useRef(false);
   const timer = useRef<number | null>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   commitRef.current = onCommit;
 
@@ -43,33 +44,38 @@ export function ConfigFile({ name, contents, onCommit }: ConfigFileProps) {
   }, [flush]);
 
   useEffect(() => {
-    if (dirty.current || contents === draftRef.current) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const root = rootRef.current;
+      if (root && event.composedPath().includes(root)) return;
+      flush();
+    };
 
-    draftRef.current = contents;
-    setDraft(contents);
-  }, [contents]);
+    document.addEventListener("pointerdown", onPointerDown, true);
+    return () => document.removeEventListener("pointerdown", onPointerDown, true);
+  }, [flush]);
 
   useEffect(() => () => flush(), [flush]);
 
   return (
-    <EditProvider createEditor={createEditor}>
-      <File
-        file={{ name, contents: draft, lang: languageOf(name) }}
-        edit
-        editStateKey={name}
-        onEditChange={(event) => {
-          draftRef.current = event.file.contents;
-          dirty.current = true;
-          setDraft(event.file.contents);
-          schedule();
-        }}
-        options={{
-          disableFileHeader: true,
-          overflow: "wrap",
-          themeType: "system",
-        }}
-        className="h-full"
-      />
-    </EditProvider>
+    <div ref={rootRef} className="h-full">
+      <EditProvider createEditor={createEditor}>
+        <File
+          file={{ name, contents: draft, lang: languageOf(name) }}
+          edit
+          onEditChange={(event) => {
+            draftRef.current = event.file.contents;
+            dirty.current = true;
+            setDraft(event.file.contents);
+            schedule();
+          }}
+          options={{
+            disableFileHeader: true,
+            overflow: "wrap",
+            themeType: "system",
+          }}
+          className="h-full"
+        />
+      </EditProvider>
+    </div>
   );
 }
