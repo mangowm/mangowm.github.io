@@ -21,7 +21,7 @@
     "takumi-js": "catalog:"
   },
   "devDependencies": {
-    "@mangowm.github.io/config": "workspace:*",
+    "@mangowm.github.io/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "typescript": "catalog:",

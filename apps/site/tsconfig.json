@@ -1,5 +1,5 @@
 {
-  "extends": "@mangowm.github.io/config/tsconfig.json",
+  "extends": "@mangowm.github.io/tsconfig/tsconfig.json",
   "compilerOptions": {
     "types": ["node", "vite-plus/client"],
     "noUncheckedIndexedAccess": true,

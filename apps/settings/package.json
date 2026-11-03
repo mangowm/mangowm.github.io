@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@babel/core": "^8.0.6",
-    "@mangowm.github.io/config": "workspace:*",
+    "@mangowm.github.io/tsconfig": "workspace:*",
     "@mangowm/og": "workspace:*",
     "@tauri-apps/cli": "catalog:",
     "@types/babel__core": "^7.20.5",

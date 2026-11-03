@@ -8,7 +8,7 @@
     "prepare": "vp config"
   },
   "devDependencies": {
-    "@mangowm.github.io/config": "workspace:*",
+    "@mangowm.github.io/tsconfig": "workspace:*",
     "vite-plus": "catalog:"
   },
   "devEngines": {

@@ -25,7 +25,7 @@
     "react-dom": "catalog:"
   },
   "devDependencies": {
-    "@mangowm.github.io/config": "workspace:*",
+    "@mangowm.github.io/tsconfig": "workspace:*",
     "@mangowm/og": "workspace:*",
     "@napi-rs/image": "^1.15.0",
     "@rolldown/plugin-babel": "catalog:",

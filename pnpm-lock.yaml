@@ -238,9 +238,9 @@ importers:
 
   .:
     devDependencies:
-      '@mangowm.github.io/config':
+      '@mangowm.github.io/tsconfig':
         specifier: workspace:*
-        version: link:packages/config
+        version: link:packages/tsconfig
       vite-plus:
         specifier: 'catalog:'
         version: 1.4.0(@types/node@26.6.3)(@vitest/ui@5.0.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(typescript@7.0.2)(yaml@2.9.1)
@@ -272,9 +272,9 @@ importers:
         specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
     devDependencies:
-      '@mangowm.github.io/config':
+      '@mangowm.github.io/tsconfig':
         specifier: workspace:*
-        version: link:../../packages/config
+        version: link:../../packages/tsconfig
       '@mangowm/og':
         specifier: workspace:*
         version: link:../../packages/og
@@ -378,9 +378,9 @@ importers:
       '@babel/core':
         specifier: ^8.0.6
         version: 8.0.6
-      '@mangowm.github.io/config':
+      '@mangowm.github.io/tsconfig':
         specifier: workspace:*
-        version: link:../../packages/config
+        version: link:../../packages/tsconfig
       '@mangowm/og':
         specifier: workspace:*
         version: link:../../packages/og
@@ -439,9 +439,9 @@ importers:
         specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
     devDependencies:
-      '@mangowm.github.io/config':
+      '@mangowm.github.io/tsconfig':
         specifier: workspace:*
-        version: link:../../packages/config
+        version: link:../../packages/tsconfig
       '@mangowm/og':
         specifier: workspace:*
         version: link:../../packages/og
@@ -493,8 +493,6 @@ importers:
 
   packages/assets: {}
 
-  packages/config: {}
-
   packages/og:
     dependencies:
       '@mangowm/assets':
@@ -507,9 +505,9 @@ importers:
         specifier: 'catalog:'
         version: 2.14.0(csstype@3.2.3)(react@19.3.0)
     devDependencies:
-      '@mangowm.github.io/config':
+      '@mangowm.github.io/tsconfig':
         specifier: workspace:*
-        version: link:../config
+        version: link:../tsconfig
       '@types/node':
         specifier: 'catalog:'
         version: 26.6.5
@@ -529,15 +527,17 @@ importers:
         specifier: ^1.4.3
         version: 1.4.3
     devDependencies:
-      '@mangowm.github.io/config':
+      '@mangowm.github.io/tsconfig':
         specifier: workspace:*
-        version: link:../config
+        version: link:../tsconfig
       '@types/node':
         specifier: 'catalog:'
         version: 26.6.5
       vite-plus:
         specifier: 'catalog:'
         version: 1.4.0(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(typescript@7.0.2)(yaml@2.9.1)
+
+  packages/tsconfig: {}
 
   packages/ui:
     dependencies:
@@ -569,9 +569,9 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
     devDependencies:
-      '@mangowm.github.io/config':
+      '@mangowm.github.io/tsconfig':
         specifier: workspace:*
-        version: link:../config
+        version: link:../tsconfig
       '@types/node':
         specifier: 'catalog:'
         version: 26.6.5
