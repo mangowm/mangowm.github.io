@@ -160,17 +160,25 @@ const WATCH_KEYS = [...new Set(DYNAMIC_SOURCES.flatMap((s) => s.watchKeys))];
  * 1. One indexes the rule's matching criteria so searching "foot" finds the rule
  * 2. One indexes individual override entries so searching "floating" finds the rule
  */
+const RULE_CONFIG_KEY = {
+  windowrule: "window_rule",
+  monitorrule: "monitor_rule",
+  tagrule: "tag_rule",
+  layerrule: "layer_rule",
+} as const;
+
 function buildRuleDynamicSources(
   ruleType: "windowrule" | "monitorrule" | "tagrule" | "layerrule",
   sectionId: string,
 ): DynamicIndexSource[] {
   const sectionLabel = RULE_LABELS[ruleType];
+  const configKey = RULE_CONFIG_KEY[ruleType];
   return [
     {
       sourceId: `${ruleType}-matchers`,
-      watchKeys: [ruleType],
+      watchKeys: [configKey],
       buildItems: (data) =>
-        (data[ruleType] ?? []).flatMap((raw, ruleIdx) => {
+        (data[configKey] ?? []).flatMap((raw, ruleIdx) => {
           const parsed = parseRuleString(ruleType, raw);
           const items: DynamicSearchItem[] = [];
           for (const [key, val] of Object.entries(parsed.matchers)) {
@@ -181,7 +189,7 @@ function buildRuleDynamicSources(
                 description: `${key} matches "${val}"`,
                 sectionLabel,
                 sectionId,
-                configKey: ruleType,
+                configKey,
               });
             }
           }
@@ -190,9 +198,9 @@ function buildRuleDynamicSources(
     },
     {
       sourceId: `${ruleType}-overrides`,
-      watchKeys: [ruleType],
+      watchKeys: [configKey],
       buildItems: (data) =>
-        (data[ruleType] ?? []).flatMap((raw, ruleIdx) => {
+        (data[configKey] ?? []).flatMap((raw, ruleIdx) => {
           const parsed = parseRuleString(ruleType, raw);
           const overridesMeta = getOverridesForRuleType(ruleType);
           const metaMap = new Map(overridesMeta.map((m) => [m.key, m]));
