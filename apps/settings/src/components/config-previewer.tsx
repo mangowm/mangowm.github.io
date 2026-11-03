@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy } from "lucide-react";
 import { useConfigStore } from "@/lib/config-store";
 import type { SourceFile } from "@/lib/config-types";
+import { ConfigDiff } from "@/components/preview/ConfigDiff";
 import { ConfigFile } from "@/components/preview/ConfigFile";
 import { serializeConfig } from "@/lib/config-parse";
 import { commonAncestorDir } from "@/lib/platform/paths";
@@ -132,6 +133,7 @@ export function ConfigPreviewer() {
   const setFileText = useConfigStore((s) => s.setFileText);
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
+  const [diffing, setDiffing] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const rootDir = commonAncestorDir(files.map((f) => f.absPath));
@@ -189,6 +191,7 @@ export function ConfigPreviewer() {
               onSelect={(file) => {
                 setSelectedPath(file.absPath);
                 setEditing(false);
+                setDiffing(false);
               }}
             />
           ))}
@@ -201,7 +204,20 @@ export function ConfigPreviewer() {
           <span className="font-mono">{displayPath}</span>
           <span className="ml-auto flex items-center gap-1">
             <button
-              onClick={() => setEditing((value) => !value)}
+              onClick={() => {
+                setEditing(false);
+                setDiffing((value) => !value);
+              }}
+              disabled={!selectedFile}
+              className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
+            >
+              {diffing ? "View" : "Diff"}
+            </button>
+            <button
+              onClick={() => {
+                setDiffing(false);
+                setEditing((value) => !value);
+              }}
               disabled={!selectedFile}
               className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
             >
@@ -227,12 +243,20 @@ export function ConfigPreviewer() {
         </div>
         <div className="flex-1 overflow-hidden">
           {selectedFile ? (
-            <ConfigFile
-              name={displayPath ?? selectedFile.refPath}
-              contents={serializeConfig(selectedFile.lines)}
-              editing={editing}
-              onCommit={(text) => setFileText(selectedFile.absPath, text)}
-            />
+            diffing ? (
+              <ConfigDiff
+                name={displayPath ?? selectedFile.refPath}
+                oldContents={selectedFile.original}
+                newContents={serializeConfig(selectedFile.lines)}
+              />
+            ) : (
+              <ConfigFile
+                name={displayPath ?? selectedFile.refPath}
+                contents={serializeConfig(selectedFile.lines)}
+                editing={editing}
+                onCommit={(text) => setFileText(selectedFile.absPath, text)}
+              />
+            )
           ) : (
             <div className="flex h-full items-center justify-center text-sm text-muted-foreground/40">
               Select a file to view

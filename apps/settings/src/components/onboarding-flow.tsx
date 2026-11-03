@@ -56,7 +56,11 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         setStatus("welcome");
         return;
       }
-      const files = raw.map((file) => ({ ...file, lines: parseConfig(file.text).lines }));
+      const files = raw.map((file) => ({
+        ...file,
+        lines: parseConfig(file.text).lines,
+        original: file.text,
+      }));
       useConfigStore.setState({ files, loading: false, error: null });
       useConfigStore.temporal.getState().clear();
     } catch (e) {

@@ -16,6 +16,8 @@ export interface SourceFile {
   absPath: string;
   refPath: string;
   lines: ConfigLine[];
+  /** Text as loaded from disk; used for the pending-diff view. */
+  original: string;
 }
 
 /** Count how many entry lines for a given key exist in `lines`. */

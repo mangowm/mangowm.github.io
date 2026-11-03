@@ -20,7 +20,12 @@ const EMPTY_VALUES: readonly string[] = Object.freeze([]);
 const GLOBAL_BY_KEY = new Map(GLOBALS.map((option) => [option.key, option]));
 
 function toSourceFile(file: RawConfigFile): SourceFile {
-  return { absPath: file.absPath, refPath: file.refPath, lines: parseConfig(file.text).lines };
+  return {
+    absPath: file.absPath,
+    refPath: file.refPath,
+    lines: parseConfig(file.text).lines,
+    original: file.text,
+  };
 }
 
 function updateDocument(file: SourceFile, change: Change): SourceFile {
@@ -166,14 +171,19 @@ export const useConfigStore = create<ConfigStore>()(
       apply: async () => {
         set({ applying: true, error: null });
         try {
+          const files = get().files;
           await getHost().save(
-            get().files.map((file) => ({
+            files.map((file) => ({
               absPath: file.absPath,
               text: serializeConfig(file.lines),
             })),
           );
           await getHost().reload();
-          set({ applying: false, dirty: false });
+          set({
+            files: files.map((file) => ({ ...file, original: serializeConfig(file.lines) })),
+            applying: false,
+            dirty: false,
+          });
           useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
           set({ error: String(e instanceof Error ? e.message : e), applying: false });
