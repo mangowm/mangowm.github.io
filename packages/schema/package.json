@@ -4,16 +4,19 @@
   "private": true,
   "type": "module",
   "exports": {
+    ".": "./src/index.ts",
     "./schemas/*": "./schemas/*",
     "./package.json": "./package.json"
   },
   "scripts": {
     "build": "vpx scripts/build.ts"
   },
+  "dependencies": {
+    "typebox": "^1.4.3"
+  },
   "devDependencies": {
     "@mangowm.github.io/config": "workspace:*",
     "@types/node": "catalog:",
-    "typebox": "^1.4.3",
     "vite-plus": "catalog:"
   }
 }

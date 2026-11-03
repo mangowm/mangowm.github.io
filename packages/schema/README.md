@@ -123,8 +123,20 @@ validation.
 
 ## Consumption
 
-The package publishes JSON artifacts under `schemas/` and at the versioned URL
-above. Import the JSON directly if the build supports JSON modules:
+Workspace consumers import the schema and its source data directly:
+
+```ts
+import {
+  DISPATCHER_ARGS,
+  DISPATCHERS,
+  GLOBALS,
+  LAYOUTS,
+  RULES,
+  schema,
+} from "@mangowm.github.io/schema";
+```
+
+External consumers use the versioned URL above or the JSON artifact:
 
 ```ts
 import schema from "@mangowm.github.io/schema/schemas/0.18.4/schema.json" with { type: "json" };

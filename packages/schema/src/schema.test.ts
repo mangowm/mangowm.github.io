@@ -4,6 +4,7 @@ import Value from "typebox/value";
 
 import { DISPATCHER_ARGS, DISPATCHERS, type DispatcherArgKind } from "./data/dispatcherArgs";
 import { GLOBALS } from "./data/globals";
+import { GLOBALS as exportedGlobals, schema as packageSchema } from "./index";
 import { RULES } from "./data/rules";
 import { schema } from "./schema";
 import { MANGO_VERSION } from "./version";
@@ -39,6 +40,11 @@ describe("schema", () => {
   it("uses the expected dialect and URL", () => {
     expect(schema.$schema).toBe("https://json-schema.org/draft/2020-12/schema");
     expect(schema.$id).toBe(`https://mangowm.github.io/schema/${MANGO_VERSION}/schema.json`);
+  });
+
+  it("exports the schema and source data", () => {
+    expect(packageSchema).toBe(schema);
+    expect(exportedGlobals).toBe(GLOBALS);
   });
 
   it("matches the published snapshot", () => {
