@@ -89,3 +89,124 @@ describe("applyChange toml", () => {
     expect(next.nodes[1]).toMatchObject({ value: "96", raw: '"DPI" = "96"' });
   });
 });
+
+describe("applyChange bindings", () => {
+  const flags = { sym: false, lock: false, release: false, pass: false, conflict: false };
+
+  it("updates a conf binding", () => {
+    const document = parseConf("key_mode = default\nbind = SUPER,r,reload_config\n");
+    const next = applyChange(document, {
+      kind: "binding",
+      binding: "key",
+      mode: "default",
+      flags,
+      trigger: "SUPER+r",
+      actions: [{ dispatcher: "spawn", args: "foot" }],
+    });
+
+    expect(
+      next.nodes.some((node) => node.kind === "entry" && node.raw === "bind = SUPER,r,spawn,foot"),
+    ).toBe(true);
+  });
+
+  it("adds a conf binding with its mode", () => {
+    const next = applyChange(parseConf(""), {
+      kind: "binding",
+      binding: "key",
+      mode: "resize",
+      flags,
+      trigger: "SUPER+Left",
+      actions: [{ dispatcher: "resizewin", args: "-10,0" }],
+    });
+
+    const values = next.nodes.filter((node) => node.kind === "entry").map((node) => node.raw);
+    expect(values).toContain("key_mode = resize");
+    expect(values).toContain("bind = SUPER,Left,resizewin,-10,0");
+  });
+
+  it("updates a toml binding", () => {
+    const document = parseToml('[bind.default]\n"SUPER+r" = "reload_config"\n');
+    const next = applyChange(document, {
+      kind: "binding",
+      binding: "key",
+      mode: "default",
+      flags,
+      trigger: "SUPER+r",
+      actions: [{ dispatcher: "spawn", args: "foot" }],
+    });
+
+    expect(next.nodes[1]).toMatchObject({ raw: '"SUPER+r" = "spawn,foot"' });
+  });
+
+  it("writes conflicting actions as an array", () => {
+    const document = parseToml("[bind.default]\n");
+    const next = applyChange(document, {
+      kind: "binding",
+      binding: "key",
+      mode: "default",
+      flags: { ...flags, conflict: true },
+      trigger: "SUPER+a",
+      actions: [{ dispatcher: "centerwin" }, { dispatcher: "reload_config" }],
+    });
+
+    expect(next.nodes.at(-1)).toMatchObject({
+      raw: '"SUPER+a" = ["centerwin", "reload_config"]',
+    });
+  });
+});
+
+describe("applyChange rules", () => {
+  it("updates a conf rule field", () => {
+    const document = parseConf("window_rule = app_id:firefox,tags:1\n");
+    const next = applyChange(document, {
+      kind: "rule",
+      rule: "window_rule",
+      index: 0,
+      field: "tags",
+      value: [1, 3],
+    });
+
+    expect(next.nodes[0]).toMatchObject({ raw: "window_rule = app_id:firefox,tags:1|3" });
+  });
+
+  it("adds a missing conf rule field", () => {
+    const document = parseConf("window_rule = app_id:firefox\n");
+    const next = applyChange(document, {
+      kind: "rule",
+      rule: "window_rule",
+      index: 0,
+      field: "tags",
+      value: [2],
+    });
+
+    expect(next.nodes[0]).toMatchObject({ raw: "window_rule = app_id:firefox,tags:2" });
+  });
+
+  it("updates a toml rule field", () => {
+    const document = parseToml('[[rule.window_rule]]\napp_id = "firefox"\n');
+    const next = applyChange(document, {
+      kind: "rule",
+      rule: "window_rule",
+      index: 0,
+      field: "tags",
+      value: [1, 3],
+    });
+
+    expect(next.nodes.at(-1)).toMatchObject({ raw: 'tags = "1|3"' });
+  });
+
+  it("removes a toml rule field", () => {
+    const document = parseToml('[[rule.window_rule]]\napp_id = "firefox"\nwidth = 800\n');
+    const next = applyChange(document, {
+      kind: "rule",
+      rule: "window_rule",
+      index: 0,
+      field: "width",
+      value: undefined,
+    });
+
+    expect(next.nodes.some((node) => node.kind === "entry" && node.path[2] === "width")).toBe(
+      false,
+    );
+  });
+});
