@@ -11,7 +11,8 @@ import { SidebarInset, SidebarProvider } from "@mangowm/ui/components/sidebar";
 import { Skeleton } from "@mangowm/ui/components/skeleton";
 import { useConfigStore } from "@/lib/config/store";
 import { getSectionById, SECTIONS } from "@/lib/presentation/sections";
-import { SearchCommand, useSearchShortcut } from "@/components/shell/search-command";
+import { SearchCommand } from "@/components/shell/search-command";
+import { useSearchShortcut } from "@/components/shell/use-search-shortcut";
 import type { SearchSelection } from "@/components/shell/search-command";
 
 const DEFAULT_SECTION = SECTIONS[0].id;
