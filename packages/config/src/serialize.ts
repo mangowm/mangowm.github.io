@@ -2,6 +2,7 @@ import { GLOBALS, RULES, type RuleDef } from "@mangowm.github.io/schema";
 
 import {
   bindKeyword,
+  flagLetters,
   formatBinding,
   splitTrigger,
   type BindingFlags,
@@ -9,6 +10,7 @@ import {
   type ParsedBinding,
 } from "./binding";
 import { formatTagMask } from "./tag";
+import { orderedBy, type OrderMap } from "./order";
 import type { BindingMap, BindingNode, CanonicalConfig, OptionValue, RuleRecord } from "./types";
 
 const FLAGS = ["sym", "lock", "release", "pass", "conflict"] as const;
@@ -47,102 +49,136 @@ function bindingMap(config: CanonicalConfig, kind: BindingKind): BindingMap | un
   }
 }
 
-function emitBindings(
+interface LineItem {
+  key: string;
+  line: string;
+}
+
+function collectBindings(
   node: BindingNode,
-  kind: BindingKind,
+  family: BindingKind,
+  mode: string,
   flags: BindingFlags,
-  lines: string[],
-): void {
+): LineItem[] {
+  const items: LineItem[] = [];
+
   for (const flag of FLAGS) {
     const child = node[flag];
     if (child !== undefined && !Array.isArray(child)) {
-      emitBindings(child, kind, { ...flags, [flag]: true }, lines);
+      items.push(...collectBindings(child, family, mode, { ...flags, [flag]: true }));
     }
   }
 
   for (const [trigger, actions] of Object.entries(node)) {
     if ((FLAGS as readonly string[]).includes(trigger) || !Array.isArray(actions)) continue;
 
-    const parts = splitTrigger(kind, trigger);
+    const parts = splitTrigger(family, trigger);
     for (const action of actions) {
       const binding: ParsedBinding = {
-        kind,
+        kind: family,
         flags,
         mods: parts.mods,
         trigger: parts.key,
         fingers: parts.fingers,
         action,
       };
-      lines.push(`${bindKeyword(binding)} = ${formatBinding(binding)}`);
+      items.push({
+        key: `b:${family}:${mode}:${flagLetters(flags)}:${trigger}`,
+        line: `${bindKeyword(binding)} = ${formatBinding(binding)}`,
+      });
     }
   }
+
+  return items;
 }
 
 /** Serialize the canonical config to `.conf` text. */
-export function serializeConf(config: CanonicalConfig): string {
-  const sections: string[][] = [];
+export function serializeConf(config: CanonicalConfig, order?: OrderMap): string {
   const global = config.global ?? {};
 
-  const options: string[] = [];
-  for (const def of GLOBALS) {
+  const optionItems: LineItem[] = GLOBALS.flatMap((def) => {
     const value = global[def.key];
-    if (value !== undefined) options.push(`${def.key} = ${formatOption(value)}`);
-  }
-  if (options.length > 0) sections.push(options);
+    return value === undefined
+      ? []
+      : [{ key: `g:${def.key}`, line: `${def.key} = ${formatOption(value)}` }];
+  });
 
-  const pairs: string[] = [];
-  for (const [name, value] of Object.entries(config.env ?? {})) {
-    pairs.push(`env = ${name},${value}`);
-  }
-  for (const [name, value] of Object.entries(config.var ?? {})) {
-    pairs.push(`var = ${name},${value}`);
-  }
-  if (pairs.length > 0) sections.push(pairs);
+  const pairItems: LineItem[] = [
+    ...Object.entries(config.env ?? {}).map(([name, value]) => ({
+      key: `p:env:${name}`,
+      line: `env = ${name},${value}`,
+    })),
+    ...Object.entries(config.var ?? {}).map(([name, value]) => ({
+      key: `p:var:${name}`,
+      line: `var = ${name},${value}`,
+    })),
+  ];
 
-  const directives: string[] = [];
-  for (const key of DIRECTIVES) {
+  const directiveItems: LineItem[] = DIRECTIVES.flatMap((key) => {
     const values = global[key];
-    if (!Array.isArray(values)) continue;
-    for (const value of values as string[]) {
-      directives.push(`${key} = ${value}`);
-    }
-  }
-  if (directives.length > 0) sections.push(directives);
+    if (!Array.isArray(values)) return [];
+    return (values as string[]).map((value, index) => ({
+      key: `d:${key}:${index}`,
+      line: `${key} = ${value}`,
+    }));
+  });
 
-  const rules: string[] = [];
+  const ruleItems: LineItem[] = [];
   for (const rule of RULES) {
-    for (const record of config.rule?.[rule.key] ?? []) {
-      const parts = rule.fields
-        .filter((field) => record[field.key] !== undefined)
-        .map(
-          (field) =>
-            `${field.key}:${formatRuleValue(rule, field.key, record[field.key] as RuleRecord[string])}`,
-        );
-      if (parts.length > 0) rules.push(`${rule.key} = ${parts.join(",")}`);
-    }
-  }
-  if (rules.length > 0) sections.push(rules);
+    (config.rule?.[rule.key] ?? []).forEach((record, index) => {
+      const parts = orderedBy(
+        rule.fields
+          .filter((field) => record[field.key] !== undefined)
+          .map((field) => ({
+            key: `r:${rule.key}:${index}:${field.key}`,
+            line: `${field.key}:${formatRuleValue(
+              rule,
+              field.key,
+              record[field.key] as RuleRecord[string],
+            )}`,
+          })),
+        (item) => item.key,
+        order,
+      ).map((item) => item.line);
 
-  const bindings: string[] = [];
-  for (const kind of KINDS) {
-    const map = bindingMap(config, kind);
-    for (const [mode, node] of Object.entries(map ?? {})) {
-      bindings.push(`key_mode = ${mode}`);
-      emitBindings(
-        node,
-        kind,
-        {
-          sym: false,
-          lock: false,
-          release: false,
-          pass: false,
-          conflict: false,
-        },
-        bindings,
-      );
-    }
+      if (parts.length > 0) {
+        ruleItems.push({ key: `r:${rule.key}:${index}`, line: `${rule.key} = ${parts.join(",")}` });
+      }
+    });
   }
-  if (bindings.length > 0) sections.push(bindings);
+
+  const bindingItems: LineItem[] = KINDS.flatMap((kind) => {
+    const map = bindingMap(config, kind);
+    return Object.entries(map ?? {}).flatMap(([mode, node]) => [
+      { key: `s:bind.${mode}`, line: `key_mode = ${mode}` },
+      ...collectBindings(node, kind, mode, {
+        sym: false,
+        lock: false,
+        release: false,
+        pass: false,
+        conflict: false,
+      }),
+    ]);
+  });
+
+  if (order) {
+    const flat = orderedBy(
+      [...optionItems, ...pairItems, ...directiveItems, ...ruleItems, ...bindingItems],
+      (item) => item.key,
+      order,
+    );
+    return flat.length === 0 ? "" : `${flat.map((item) => item.line).join("\n")}\n`;
+  }
+
+  const sections = [
+    orderedBy(optionItems, (item) => item.key, order),
+    orderedBy(pairItems, (item) => item.key, order),
+    orderedBy(directiveItems, (item) => item.key, order),
+    orderedBy(ruleItems, (item) => item.key, order),
+    orderedBy(bindingItems, (item) => item.key, order),
+  ]
+    .filter((items) => items.length > 0)
+    .map((items) => items.map((item) => item.line));
 
   if (sections.length === 0) return "";
   return `${sections.map((section) => section.join("\n")).join("\n\n")}\n`;

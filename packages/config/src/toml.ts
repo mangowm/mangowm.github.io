@@ -1,8 +1,9 @@
 import { GLOBALS, RULES } from "@mangowm.github.io/schema";
 
-import { type BindingKind } from "./binding";
+import { flagLetters, type BindingFlags, type BindingKind } from "./binding";
 import { formatAction } from "./dispatch";
 import type { ConfigDocument, DocumentNode } from "./document";
+import { orderedBy, type OrderMap } from "./order";
 import { formatTagMask } from "./tag";
 import type {
   Action,
@@ -235,6 +236,11 @@ export function formatToml(document: ConfigDocument): string {
 
 const FLAGS = ["sym", "lock", "release", "pass", "conflict"] as const;
 const DIRECTIVES = ["exec", "exec_once", "source", "source_optional"] as const;
+
+interface LineItem {
+  key: string;
+  line: string;
+}
 const KINDS: readonly [BindingKind, string][] = [
   ["key", "bind"],
   ["mouse", "mousebind"],
@@ -287,17 +293,34 @@ function bindingMap(config: CanonicalConfig, kind: BindingKind): BindingMap | un
   }
 }
 
-function emitTomlBindings(node: BindingNode, path: string[], lines: string[]): void {
-  const triggers = Object.entries(node).filter(
-    ([name, value]) => !(FLAGS as readonly string[]).includes(name) && Array.isArray(value),
+function emitTomlBindings(
+  node: BindingNode,
+  path: string[],
+  family: BindingKind,
+  mode: string,
+  flags: BindingFlags,
+  order: OrderMap | undefined,
+  lines: string[],
+): void {
+  const triggers = orderedBy(
+    Object.entries(node)
+      .filter(
+        ([name, value]) => !(FLAGS as readonly string[]).includes(name) && Array.isArray(value),
+      )
+      .map(([trigger, actions]) => ({
+        key: `b:${family}:${mode}:${flagLetters(flags)}:${trigger}`,
+        trigger,
+        actions: actions as Action[],
+      })),
+    (item) => item.key,
+    order,
   );
-  const conflict = path[path.length - 1] === "conflict";
 
   if (triggers.length > 0) {
     lines.push(`[${path.join(".")}]`);
-    for (const [trigger, actions] of triggers) {
-      const values = (actions as Action[]).map(formatAction);
-      if (conflict) {
+    for (const { trigger, actions } of triggers) {
+      const values = actions.map(formatAction);
+      if (flags.conflict) {
         lines.push(`${quote(trigger)} = [`);
         for (const value of values) lines.push(`  ${quote(value)},`);
         lines.push("]");
@@ -311,56 +334,106 @@ function emitTomlBindings(node: BindingNode, path: string[], lines: string[]): v
   for (const flag of FLAGS) {
     const child = node[flag];
     if (child !== undefined && !Array.isArray(child)) {
-      emitTomlBindings(child, [...path, flag], lines);
+      emitTomlBindings(
+        child,
+        [...path, flag],
+        family,
+        mode,
+        { ...flags, [flag]: true },
+        order,
+        lines,
+      );
     }
   }
 }
 
 /** Serialize the canonical config to mango's TOML subset. */
-export function serializeToml(config: CanonicalConfig): string {
+export function serializeToml(config: CanonicalConfig, order?: OrderMap): string {
   const lines: string[] = [];
   const global = config.global ?? {};
 
-  const options: string[] = [];
+  const globalItems: LineItem[] = [];
   for (const def of GLOBALS) {
     const value = global[def.key];
-    if (value !== undefined) options.push(`${def.key} = ${tomlValue(value)}`);
+    if (value !== undefined) {
+      globalItems.push({ key: `g:${def.key}`, line: `${def.key} = ${tomlValue(value)}` });
+    }
   }
   for (const directive of DIRECTIVES) {
     const value = global[directive];
-    if (Array.isArray(value)) options.push(`${directive} = ${tomlValue(value as string[])}`);
+    if (!Array.isArray(value)) continue;
+    const values = value as string[];
+    const key =
+      values
+        .map((_, index) => `d:${directive}:${index}`)
+        .find((candidate) => order?.has(candidate)) ?? `d:${directive}:0`;
+    globalItems.push({ key, line: `${directive} = ${tomlValue(values)}` });
   }
+  const options = orderedBy(globalItems, (item) => item.key, order).map((item) => item.line);
   if (options.length > 0) lines.push("[global]", ...options, "");
 
-  const env = Object.entries(config.env ?? {});
-  if (env.length > 0) {
-    lines.push("[env]");
-    for (const [name, value] of env) lines.push(`${tomlKey(name, true)} = ${quote(value)}`);
-    lines.push("");
-  }
+  const env = orderedBy(
+    Object.entries(config.env ?? {}).map(([name, value]) => ({
+      key: `p:env:${name}`,
+      line: `${tomlKey(name, true)} = ${quote(value)}`,
+    })),
+    (item) => item.key,
+    order,
+  );
+  if (env.length > 0) lines.push("[env]", ...env.map((item) => item.line), "");
 
-  const vars = Object.entries(config.var ?? {});
-  if (vars.length > 0) {
-    lines.push("[var]");
-    for (const [name, value] of vars) lines.push(`${tomlKey(name)} = ${quote(value)}`);
-    lines.push("");
-  }
+  const vars = orderedBy(
+    Object.entries(config.var ?? {}).map(([name, value]) => ({
+      key: `p:var:${name}`,
+      line: `${tomlKey(name)} = ${quote(value)}`,
+    })),
+    (item) => item.key,
+    order,
+  );
+  if (vars.length > 0) lines.push("[var]", ...vars.map((item) => item.line), "");
 
+  const ruleItems: { key: string; ruleKey: string; fields: string[] }[] = [];
   for (const rule of RULES) {
-    for (const record of config.rule?.[rule.key] ?? []) {
-      lines.push(`[[rule.${rule.key}]]`);
-      for (const field of rule.fields) {
-        const value = record[field.key];
-        if (value === undefined) continue;
-        lines.push(`${field.key} = ${tomlRuleValue(field.type, value)}`);
-      }
-      lines.push("");
-    }
+    (config.rule?.[rule.key] ?? []).forEach((record, index) => {
+      const fields = orderedBy(
+        rule.fields.flatMap((field) => {
+          const value = record[field.key];
+          return value === undefined
+            ? []
+            : [
+                {
+                  key: `r:${rule.key}:${index}:${field.key}`,
+                  line: `${field.key} = ${tomlRuleValue(field.type, value)}`,
+                },
+              ];
+        }),
+        (item) => item.key,
+        order,
+      ).map((item) => item.line);
+
+      ruleItems.push({ key: `r:${rule.key}:${index}`, ruleKey: rule.key, fields });
+    });
+  }
+  for (const item of orderedBy(ruleItems, (rule) => rule.key, order)) {
+    lines.push(`[[rule.${item.ruleKey}]]`, ...item.fields, "");
   }
 
   for (const [kind, section] of KINDS) {
-    for (const [mode, node] of Object.entries(bindingMap(config, kind) ?? {})) {
-      emitTomlBindings(node, [section, mode], lines);
+    const modes = orderedBy(
+      Object.entries(bindingMap(config, kind) ?? {}),
+      ([mode]) => `s:bind.${mode}`,
+      order,
+    );
+    for (const [mode, node] of modes) {
+      emitTomlBindings(
+        node,
+        [section, mode],
+        kind,
+        mode,
+        { sym: false, lock: false, release: false, pass: false, conflict: false },
+        order,
+        lines,
+      );
     }
   }
 

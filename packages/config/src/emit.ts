@@ -1,7 +1,8 @@
 import { DIRECTIVES, GLOBALS, RULES } from "@mangowm.github.io/schema";
 
 import type { AnnotatedBlank, AnnotatedComment, AnnotatedConfig, CommentAnchor } from "./annotate";
-import { bindingTrigger, parseBinding } from "./binding";
+import { anchorKey } from "./annotate";
+import { bindingKind, bindingTrigger, parseBinding } from "./binding";
 import { serializeConf } from "./serialize";
 import { serializeToml } from "./toml";
 import type { ConfigFormat } from "./types";
@@ -34,28 +35,10 @@ function sectionFlags(segments: readonly string[]): string {
     .join("");
 }
 
-function anchorKey(anchor: CommentAnchor, format: ConfigFormat): string {
-  switch (anchor.kind) {
-    case "global":
-      return `g:${anchor.key}`;
-    case "directive":
-      return `d:${anchor.key}:${anchor.index}`;
-    case "pair":
-      return `p:${anchor.table}:${anchor.name}`;
-    case "binding":
-      return `b:${anchor.mode}:${anchor.flags}:${anchor.trigger}`;
-    case "rule":
-      // A conf rule is a single line, so field comments ride along with the rule.
-      return format === "conf"
-        ? `r:${anchor.key}:${anchor.index}`
-        : `r:${anchor.key}:${anchor.index}${anchor.field ? `:${anchor.field}` : ""}`;
-    case "section":
-      return `s:${anchor.path.join(".")}`;
-    case "file":
-      return "file";
-    case "unplaced":
-      return "unplaced";
-  }
+function commentKey(anchor: CommentAnchor, format: ConfigFormat): string {
+  // TOML emits one array line per directive, so every value shares that anchor.
+  if (format === "toml" && anchor.kind === "directive") return `d:${anchor.key}:0`;
+  return anchorKey(anchor, format);
 }
 
 function commentsByAnchor(comments: AnnotatedComment[], format: ConfigFormat) {
@@ -63,7 +46,7 @@ function commentsByAnchor(comments: AnnotatedComment[], format: ConfigFormat) {
   const inline = new Map<string, string[]>();
 
   for (const comment of comments) {
-    const key = anchorKey(comment.anchor, format);
+    const key = commentKey(comment.anchor, format);
     const target = comment.position === "inline" ? inline : before;
     const list = target.get(key) ?? [];
     list.push(comment.text);
@@ -77,7 +60,7 @@ function blanksByAnchor(blanks: AnnotatedBlank[], format: ConfigFormat): Map<str
   const result = new Map<string, number>();
 
   for (const blank of blanks) {
-    const key = anchorKey(blank.anchor, format);
+    const key = commentKey(blank.anchor, format);
     result.set(key, Math.max(result.get(key) ?? 0, blank.count));
   }
 
@@ -85,13 +68,36 @@ function blanksByAnchor(blanks: AnnotatedBlank[], format: ConfigFormat): Map<str
 }
 
 function ensureBlanks(output: string[], count: number): void {
-  let index = output.length - 1;
-  while (index >= 0 && output[index].trim() === "") index -= 1;
+  let existing = 0;
+  for (let index = output.length - 1; index >= 0 && output[index].trim() === ""; index--) {
+    existing += 1;
+  }
 
-  // Do not open a table with a blank line; the serializer already spaced it.
-  if (index < 0 || /^\[+[^\]]+\]+$/.test(output[index].trim())) return;
+  for (let current = existing; current < count; current++) output.push("");
+}
 
-  for (let current = output.length - 1 - index; current < count; current++) output.push("");
+/** Keep blank lines that separate a table from what came before it, not its first key. */
+function hoistSectionBlanks(lines: string[]): string[] {
+  const result: string[] = [];
+
+  for (let index = 0; index < lines.length; index++) {
+    const line = lines[index] ?? "";
+    if (!/^\[+[^\]]+\]+$/.test(line.trim())) {
+      result.push(line);
+      continue;
+    }
+
+    let end = index + 1;
+    while (end < lines.length && (lines[end] ?? "").trim() === "") end += 1;
+
+    const blanks = end - index - 1;
+    const before = result.some((entry) => entry.trim() !== "");
+    if (blanks > 0 && before) result.push(...Array<string>(blanks).fill(""));
+    result.push(line);
+    index = end - 1;
+  }
+
+  return result;
 }
 
 interface EmitState {
@@ -115,7 +121,7 @@ function confSectionAnchor(line: string): string | undefined {
   }
   if (RULE_KEYS.has(key)) return `s:rule.${key}`;
   if (key === "env" || key === "var") return `s:${key}`;
-  if (GLOBAL_KEYS.has(key)) return "s:global";
+  if (GLOBAL_KEYS.has(key) || DIRECTIVE_KEYS.has(key)) return "s:global";
   return undefined;
 }
 
@@ -139,7 +145,7 @@ function confLineAnchor(line: string, state: EmitState): string | undefined {
   if (BIND_KEY.test(key) || PLAIN_BINDINGS.has(key)) {
     try {
       const binding = parseBinding(key, value);
-      return `b:${state.mode}:${keywordFlags(key)}:${bindingTrigger(binding)}`;
+      return `b:${binding.kind}:${state.mode}:${keywordFlags(key)}:${bindingTrigger(binding)}`;
     } catch {
       return undefined;
     }
@@ -187,7 +193,9 @@ function tomlLineAnchor(line: string, state: EmitState): string | undefined {
     head === "gesturebind" ||
     head === "switchbind"
   ) {
-    return `b:${state.section[1] ?? "default"}:${sectionFlags(state.section.slice(2))}:${key}`;
+    const mode = state.section[1] ?? "default";
+    const flags = sectionFlags(state.section.slice(2));
+    return `b:${bindingKind(head)}:${mode}:${flags}:${key}`;
   }
 
   if (head === "rule") {
@@ -310,13 +318,16 @@ function applyComments(
   ];
 
   const header = [...file, ...unplaced];
-  return [...header, ...output].join("\n");
+  const merged = [...header, ...output];
+  return (format === "toml" ? hoistSectionBlanks(merged) : merged).join("\n");
 }
 
 /** Emit an annotated config in the requested format, preserving placed comments. */
 export function emit(annotated: AnnotatedConfig, target: ConfigFormat): string {
   const text =
-    target === "toml" ? serializeToml(annotated.canonical) : serializeConf(annotated.canonical);
+    target === "toml"
+      ? serializeToml(annotated.canonical, annotated.order)
+      : serializeConf(annotated.canonical, annotated.order);
 
   return applyComments(text, target, annotated.comments, annotated.blanks);
 }

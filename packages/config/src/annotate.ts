@@ -1,6 +1,6 @@
 import { DIRECTIVES, RULES } from "@mangowm.github.io/schema";
 
-import { bindingTrigger, parseBinding } from "./binding";
+import { bindingKind, bindingTrigger, parseBinding, type BindingKind } from "./binding";
 import type { ConfigDocument, EntryNode } from "./document";
 import { normalize } from "./normalize";
 import type { CanonicalConfig, ConfigFormat } from "./types";
@@ -10,7 +10,7 @@ export type CommentAnchor =
   | { kind: "global"; key: string }
   | { kind: "directive"; key: string; index: number }
   | { kind: "pair"; table: "env" | "var"; name: string }
-  | { kind: "binding"; mode: string; flags: string; trigger: string }
+  | { kind: "binding"; family: BindingKind; mode: string; flags: string; trigger: string }
   | { kind: "rule"; key: string; index: number; field?: string }
   | { kind: "section"; path: string[] }
   | { kind: "unplaced" };
@@ -31,6 +31,7 @@ export interface AnnotatedConfig {
   canonical: CanonicalConfig;
   comments: AnnotatedComment[];
   blanks: AnnotatedBlank[];
+  order: Map<string, number>;
 }
 
 const DIRECTIVE_KEYS = new Set<string>(DIRECTIVES.map((directive) => directive.key));
@@ -58,6 +59,31 @@ function sectionFlags(segments: readonly string[]): string {
     .filter(([name]) => segments.includes(name))
     .map(([, letter]) => letter)
     .join("");
+}
+
+/** Stable key for a comment or blank anchor. */
+export function anchorKey(anchor: CommentAnchor, format?: ConfigFormat): string {
+  switch (anchor.kind) {
+    case "global":
+      return `g:${anchor.key}`;
+    case "directive":
+      return `d:${anchor.key}:${anchor.index}`;
+    case "pair":
+      return `p:${anchor.table}:${anchor.name}`;
+    case "binding":
+      return `b:${anchor.family}:${anchor.mode}:${anchor.flags}:${anchor.trigger}`;
+    case "rule":
+      // A conf rule is a single line, so field comments ride along with the rule.
+      return format === "conf"
+        ? `r:${anchor.key}:${anchor.index}`
+        : `r:${anchor.key}:${anchor.index}${anchor.field ? `:${anchor.field}` : ""}`;
+    case "section":
+      return `s:${anchor.path.join(".")}`;
+    case "file":
+      return "file";
+    case "unplaced":
+      return "unplaced";
+  }
 }
 
 function inlineComment(raw: string): string | undefined {
@@ -101,6 +127,7 @@ function anchorForEntry(
         const binding = parseBinding(key, entry.value);
         return {
           kind: "binding",
+          family: binding.kind,
           mode: state.mode,
           flags: keywordFlags(key),
           trigger: bindingTrigger(binding),
@@ -151,6 +178,7 @@ function anchorForEntry(
   ) {
     return {
       kind: "binding",
+      family: bindingKind(head),
       mode: section[1] ?? "default",
       flags: sectionFlags(section.slice(2)),
       trigger: last,
@@ -170,11 +198,12 @@ function anchorForEntry(
   return { kind: "unplaced" };
 }
 
-/** Extract canonical values and comment anchors from a document. */
+/** Extract canonical values, comment anchors, and document order. */
 export function annotate(document: ConfigDocument): AnnotatedConfig {
   const { config } = normalize(document);
   const comments: AnnotatedComment[] = [];
   const blanks: AnnotatedBlank[] = [];
+  const order = new Map<string, number>();
   const pending: string[] = [];
   const state = {
     mode: "default",
@@ -184,14 +213,35 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
   let pendingBlanks = 0;
   let lastGroup = "";
   let seenContent = false;
+  let leading = true;
+  let hasFileHeader = false;
+
+  const mark = (anchor: CommentAnchor) => {
+    const key = anchorKey(anchor);
+    if (!order.has(key)) order.set(key, order.size);
+  };
 
   const flushBlanks = (anchor: CommentAnchor | undefined) => {
     if (anchor && pendingBlanks > 0) blanks.push({ anchor, count: pendingBlanks });
     pendingBlanks = 0;
   };
 
+  const flushComments = (anchor: CommentAnchor) => {
+    for (const text of pending) comments.push({ text, anchor, position: "before" });
+    pending.length = 0;
+  };
+
+  const fileAnchor: CommentAnchor = { kind: "file" };
+
   for (const node of document.nodes) {
     if (node.kind === "blank") {
+      if (!seenContent && leading) {
+        if (pending.length > 0) {
+          flushComments(fileAnchor);
+          hasFileHeader = true;
+        }
+        leading = false;
+      }
       pendingBlanks += 1;
       continue;
     }
@@ -214,12 +264,10 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
         anchor = { kind: "section", path: [...node.path] };
       }
 
-      flushBlanks(seenContent ? anchor : undefined);
-
-      for (const text of pending) {
-        comments.push({ text, anchor, position: "before" });
-      }
-      pending.length = 0;
+      mark(anchor);
+      flushBlanks(seenContent ? anchor : hasFileHeader ? anchor : undefined);
+      flushComments(!seenContent && leading ? fileAnchor : anchor);
+      leading = false;
       seenContent = true;
       continue;
     }
@@ -231,12 +279,10 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
       state.mode = mode;
 
       const anchor: CommentAnchor = { kind: "section", path: ["bind", mode] };
-      flushBlanks(seenContent ? anchor : undefined);
-
-      for (const text of pending) {
-        comments.push({ text, anchor, position: "before" });
-      }
-      pending.length = 0;
+      mark(anchor);
+      flushBlanks(seenContent ? anchor : hasFileHeader ? anchor : undefined);
+      flushComments(!seenContent && leading ? fileAnchor : anchor);
+      leading = false;
       seenContent = true;
 
       const inline = inlineComment(node.raw);
@@ -246,11 +292,23 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
 
     const anchor = anchorForEntry(node, document.format, state);
     const hasAnchor = anchor.kind !== "unplaced";
-    let blankAnchor: CommentAnchor | undefined = !seenContent
-      ? undefined
-      : hasAnchor
-        ? anchor
-        : { kind: "unplaced" };
+    if (hasAnchor) mark(anchor);
+    if (document.format === "conf" && anchor.kind === "binding") {
+      mark({ kind: "section", path: ["bind", state.mode] });
+    }
+    if (document.format === "conf" && anchor.kind === "rule") {
+      for (const part of node.value.split(",")) {
+        const colon = part.indexOf(":");
+        if (colon > 0) mark({ ...anchor, field: part.slice(0, colon).trim() });
+      }
+    }
+
+    let blankAnchor: CommentAnchor | undefined;
+    if (seenContent) {
+      blankAnchor = hasAnchor ? anchor : { kind: "unplaced" };
+    } else if (hasFileHeader && hasAnchor) {
+      blankAnchor = anchor;
+    }
 
     if (document.format === "conf") {
       const group = node.path[0] === "env" || node.path[0] === "var" ? node.path[0] : "other";
@@ -261,15 +319,8 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
     }
 
     flushBlanks(blankAnchor);
-
-    for (const text of pending) {
-      comments.push({
-        text,
-        anchor: !seenContent ? { kind: "file" } : hasAnchor ? anchor : { kind: "unplaced" },
-        position: "before",
-      });
-    }
-    pending.length = 0;
+    flushComments(!seenContent && leading ? fileAnchor : hasAnchor ? anchor : { kind: "unplaced" });
+    leading = false;
     seenContent = true;
 
     const inline = inlineComment(node.raw);
@@ -279,10 +330,10 @@ export function annotate(document: ConfigDocument): AnnotatedConfig {
   for (const text of pending) {
     comments.push({
       text,
-      anchor: seenContent ? { kind: "unplaced" } : { kind: "file" },
+      anchor: seenContent ? { kind: "unplaced" } : fileAnchor,
       position: "before",
     });
   }
 
-  return { format: document.format, canonical: config, comments, blanks };
+  return { format: document.format, canonical: config, comments, blanks, order };
 }

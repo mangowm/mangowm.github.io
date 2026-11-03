@@ -42,6 +42,21 @@ const KEYWORD_BY_KIND: Record<BindingKind, string> = {
   switch: "switchbind",
 };
 
+const LETTER_BY_FLAG: readonly [keyof BindingFlags, string][] = [
+  ["sym", "s"],
+  ["lock", "l"],
+  ["release", "r"],
+  ["pass", "p"],
+  ["conflict", "c"],
+];
+
+/** The `s`/`l`/`r`/`p`/`c` suffix for a set of flags. */
+export function flagLetters(flags: BindingFlags): string {
+  return LETTER_BY_FLAG.filter(([flag]) => flags[flag])
+    .map(([, letter]) => letter)
+    .join("");
+}
+
 /** The binding family for a config keyword. */
 export function bindingKind(keyword: string): BindingKind {
   if (KEY_BIND.test(keyword)) return "key";

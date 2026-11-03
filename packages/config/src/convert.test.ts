@@ -141,3 +141,59 @@ describe("convertDocument blanks", () => {
     expect(lines.findIndex((line) => line.includes("app_id:one"))).toBeLessThan(second);
   });
 });
+
+describe("convertDocument grouping", () => {
+  it("keeps the first comment block as the file header and later blocks with their entries", () => {
+    const conf = parseConf(
+      [
+        "# Environment",
+        "# env=QT_QPA_PLATFORMTHEME,qt6ct",
+        "",
+        "# Autostart",
+        "# exec_once = echo hi",
+        "exec_once = noctalia",
+        "",
+        "# Input",
+        "xkb_rules_options=caps:swapescape",
+        "drag_tile_to_tile=1",
+        "trackpad_natural_scrolling=1",
+        "",
+        "source=~/.config/mango/layout.conf",
+        "",
+        "shadows_color = 0x15161eff",
+      ].join("\n"),
+    );
+
+    const toml = convertDocument(conf, "toml");
+
+    expect(toml).toContain("# Environment\n# env=QT_QPA_PLATFORMTHEME,qt6ct\n\n[global]");
+    expect(toml.indexOf("# Autostart")).toBeGreaterThan(toml.indexOf("[global]"));
+    expect(toml.indexOf("# Autostart")).toBeLessThan(toml.indexOf("exec_once"));
+    expect(toml.indexOf("# Input")).toBeLessThan(toml.indexOf("xkb_rules_options"));
+    expect(toml.indexOf("xkb_rules_options")).toBeLessThan(toml.indexOf("drag_tile_to_tile"));
+    expect(toml.indexOf("drag_tile_to_tile")).toBeLessThan(
+      toml.indexOf("trackpad_natural_scrolling"),
+    );
+    expect(toml.indexOf("trackpad_natural_scrolling")).toBeLessThan(toml.indexOf("source = ["));
+    expect(toml.indexOf("source = [")).toBeLessThan(toml.indexOf("shadows_color"));
+  });
+
+  it("keeps rule field order from conf", () => {
+    const toml = convertDocument(
+      parseConf("window_rule=is_named_scratchpad:1,app_id:firefox,width:100"),
+      "toml",
+    );
+
+    expect(toml.indexOf("is_named_scratchpad")).toBeLessThan(toml.indexOf("app_id"));
+    expect(toml.indexOf("app_id")).toBeLessThan(toml.indexOf("width"));
+  });
+
+  it("stacks directive comments above the array line in toml", () => {
+    const toml = convertDocument(
+      parseConf(["exec_once = a", "# second", "exec_once = b"].join("\n")),
+      "toml",
+    );
+
+    expect(toml).toContain('# second\nexec_once = ["a", "b"]');
+  });
+});
