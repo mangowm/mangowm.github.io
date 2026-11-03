@@ -1,39 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { exists, readDir, copyFile, mkdir, BaseDirectory } from "@tauri-apps/plugin-fs";
-import { join } from "@tauri-apps/api/path";
 import { AlertCircle, ArrowRight, Check, Loader2, Upload } from "lucide-react";
 import { Button } from "@mangowm/ui/components/button";
 import { completeOnboarding } from "@/lib/onboarding";
-import { updateSettings } from "@/lib/settings";
-import { uploadConfigFromDir } from "@/lib/config-file";
+import { getHost } from "@/lib/platform";
+import { uploadConfigFromDir } from "@/lib/platform/upload";
+import { parseConfig } from "@/lib/config-parse";
 import { useConfigStore } from "@/lib/config-store";
 import mangowmLogo from "@mangowm/assets/logos/mangowm.svg";
-
-const BASE = ".config/mango";
-const BD = BaseDirectory.Home;
-
-async function copyRecursive(rel: string, dstRoot: string) {
-  const src = rel ? await join(BASE, rel) : BASE;
-  const entries = await readDir(src, { baseDir: BD });
-
-  for (const entry of entries) {
-    const childRel = rel ? await join(rel, entry.name) : entry.name;
-    const childSrc = await join(BASE, childRel);
-    const childDst = await join(dstRoot, childRel);
-
-    if (entry.name === "backups") continue;
-
-    if (entry.isDirectory) {
-      await mkdir(childDst, { baseDir: BD, recursive: true });
-      await copyRecursive(childRel, dstRoot);
-    } else {
-      await copyFile(childSrc, childDst, {
-        fromPathBaseDir: BD,
-        toPathBaseDir: BD,
-      });
-    }
-  }
-}
 
 interface OnboardingFlowProps {
   onComplete: () => void;
@@ -52,9 +25,9 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     void (async () => {
       const splash = new Promise((r) => setTimeout(r, 800));
       try {
-        const [dirExists] = await Promise.all([exists(BASE, { baseDir: BD }), splash]);
-        setMode("tauri");
-        setStatus(dirExists ? "ready" : "welcome");
+        const [hasConfig] = await Promise.all([getHost().hasConfig(), splash]);
+        setMode(getHost().kind);
+        setStatus(hasConfig ? "ready" : "welcome");
       } catch {
         setMode("browser");
         setStatus("welcome");
@@ -77,12 +50,13 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     setStatus("uploading");
     setError("");
     try {
-      const files = await uploadConfigFromDir(Array.from(fileList));
-      if (files.length === 0) {
+      const raw = await uploadConfigFromDir(Array.from(fileList));
+      if (raw.length === 0) {
         setError("No .conf files found in selected folder.");
         setStatus("welcome");
         return;
       }
+      const files = raw.map((file) => ({ ...file, lines: parseConfig(file.text).lines }));
       useConfigStore.setState({ files, loading: false, error: null });
       useConfigStore.temporal.getState().clear();
     } catch (e) {
@@ -102,15 +76,11 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
     try {
       const minDelay = new Promise<void>((resolve) => setTimeout(resolve, 600));
-      const now = new Date();
-      const ts = (n: number) => n.toString().padStart(2, "0");
-      const timestamp = `${now.getFullYear()}-${ts(now.getMonth() + 1)}-${ts(now.getDate())}_${ts(now.getHours())}${ts(now.getMinutes())}${ts(now.getSeconds())}`;
-      const dstRoot = `.config/mango/backups/${timestamp}`;
+      const destination = await getHost().backup?.();
+      if (!destination) throw new Error("Backup is not available");
 
-      await mkdir(dstRoot, { baseDir: BD, recursive: true });
-      await copyRecursive("", dstRoot);
-      await updateSettings({
-        backup: { createdAt: new Date().toISOString(), path: dstRoot },
+      await getHost().preferences.write({
+        backup: { createdAt: new Date().toISOString(), path: destination },
         onboardingCompleted: true,
       });
 

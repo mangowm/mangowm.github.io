@@ -1,19 +1,13 @@
-import { readTextFile } from "@tauri-apps/plugin-fs";
-import { BaseDirectory } from "@tauri-apps/api/path";
-import { updateSettings } from "./settings";
-
-const SETTINGS = ".config/mango/.settings";
-const BD = BaseDirectory.Home;
+import { getHost } from "./platform";
 
 export async function isOnboardingCompleted(): Promise<boolean> {
   try {
-    const content = await readTextFile(SETTINGS, { baseDir: BD });
-    return !!JSON.parse(content).onboardingCompleted;
+    return (await getHost().preferences.read()).onboardingCompleted === true;
   } catch {
     return false;
   }
 }
 
-export async function completeOnboarding() {
-  await updateSettings({ onboardingCompleted: true });
+export async function completeOnboarding(): Promise<void> {
+  await getHost().preferences.write({ onboardingCompleted: true });
 }

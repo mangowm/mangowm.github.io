@@ -5,7 +5,8 @@ import { Separator } from "@mangowm/ui/components/separator";
 import { SidebarTrigger } from "@mangowm/ui/components/sidebar";
 import { Button } from "@mangowm/ui/components/button";
 import { useConfigStore, undo, redo } from "@/lib/config-store";
-import { downloadConfig } from "@/lib/config-file";
+import { getHost } from "@/lib/platform";
+import { serializeConfig } from "@/lib/config-parse";
 import { cn } from "cn";
 
 export function PageHeader({
@@ -147,7 +148,15 @@ function DownloadButton() {
     <Button
       variant="ghost"
       size="icon-sm"
-      onClick={() => downloadConfig(useConfigStore.getState().files)}
+      onClick={() =>
+        getHost().download(
+          useConfigStore.getState().files.map((file) => ({
+            absPath: file.absPath,
+            refPath: file.refPath,
+            text: serializeConfig(file.lines),
+          })),
+        )
+      }
       title="Download Config"
     >
       <Download className="size-4" />

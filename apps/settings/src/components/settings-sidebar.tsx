@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
 } from "@mangowm/ui/components/sidebar";
 import { ROOT_SECTIONS, getChildren } from "@/lib/sections";
-import { MANGO_SUPPORTED_VERSION } from "@/lib/settings";
+import { MANGO_VERSION } from "@/lib/config/version";
 
 const NAV_ITEMS = ROOT_SECTIONS.map((s) => {
   const children = getChildren(s.id);
@@ -43,7 +43,7 @@ export function SettingsSidebar({
               <div className="flex min-w-0 flex-col">
                 <span className="text-base leading-none font-semibold">mangowm settings</span>
                 <span className="mt-1 font-mono text-[10px] text-muted-foreground/70">
-                  mango v{MANGO_SUPPORTED_VERSION}
+                  mango v{MANGO_VERSION}
                 </span>
               </div>
             </SidebarMenuButton>

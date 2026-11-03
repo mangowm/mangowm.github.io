@@ -3,7 +3,7 @@ import { FileIcon, FolderIcon, FolderOpenIcon, ChevronRightIcon, Copy } from "lu
 import { useConfigStore } from "@/lib/config-store";
 import type { SourceFile, ConfigLine } from "@/lib/config-types";
 import { serializeConfig } from "@/lib/config-parse";
-import { commonAncestorDir } from "@/lib/path-utils";
+import { commonAncestorDir } from "@/lib/platform/paths";
 import { cn } from "cn";
 
 interface TreeNode {

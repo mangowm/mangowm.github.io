@@ -1,14 +1,18 @@
 import { create } from "zustand";
 import { temporal } from "zundo";
-import { readAllConfigFiles, writeAllConfigFiles, reloadMango } from "./config-file";
+import { getHost, isTauri } from "./platform";
+import type { RawConfigFile } from "./platform";
 import { type ConfigData, type SourceFile, countLines } from "./config-types";
-import { makeEntryLine } from "./config-parse";
+import { makeEntryLine, parseConfig, serializeConfig } from "./config-parse";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./config-helpers";
 import { DEFAULTS } from "./defaults";
+import DEFAULT_CONFIG from "./default-config";
 
 const EMPTY_VALUES: readonly string[] = Object.freeze([]);
 
-const IS_TAURI = typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
+function toSourceFile(file: RawConfigFile): SourceFile {
+  return { absPath: file.absPath, refPath: file.refPath, lines: parseConfig(file.text).lines };
+}
 
 function mergeFileData(files: SourceFile[], prevData: ConfigData = {}): ConfigData {
   const next: ConfigData = {};
@@ -103,12 +107,17 @@ export const useConfigStore = create<ConfigStore>()(
       applying: false,
       dirty: false,
       error: null,
-      isTauri: IS_TAURI,
+      isTauri: isTauri(),
 
       load: async () => {
         set({ loading: true, error: null });
         try {
-          const files = await readAllConfigFiles();
+          const loaded = await getHost().load();
+          const files = (
+            loaded.length > 0
+              ? loaded
+              : [{ absPath: "config.conf", refPath: "config.conf", text: DEFAULT_CONFIG }]
+          ).map(toSourceFile);
           set({ files, data: mergeFileData(files, {}), loading: false, dirty: false });
           useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
@@ -119,8 +128,13 @@ export const useConfigStore = create<ConfigStore>()(
       apply: async () => {
         set({ applying: true, error: null });
         try {
-          await writeAllConfigFiles(get().files);
-          await reloadMango();
+          await getHost().save(
+            get().files.map((file) => ({
+              absPath: file.absPath,
+              text: serializeConfig(file.lines),
+            })),
+          );
+          await getHost().reload();
           set({ applying: false, dirty: false });
           useConfigStore.temporal.getState().clear();
         } catch (e: unknown) {
