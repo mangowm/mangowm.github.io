@@ -284,15 +284,9 @@ function rulesSchema(): TSchema {
   });
 }
 
-export function rootSchema(version: string) {
+export function rootSchema() {
   return Type.Object(
     {
-      $schema: Type.Optional(
-        Type.Literal(`https://mangowm.github.io/schema/${version}/schema.json`, {
-          title: "Schema",
-          description: "Schema URL for editor tooling.",
-        }),
-      ),
       global: Type.Optional(globalSchema()),
       env: Type.Optional(envMap()),
       var: Type.Optional(varMap()),

@@ -20,6 +20,6 @@ export const schema: SchemaDocument = {
     ...actionDefs(),
     ...bindingDefs(),
   },
-  ...rootSchema(MANGO_VERSION),
+  ...rootSchema(),
   title: "mangowm configuration",
 };

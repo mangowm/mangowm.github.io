@@ -14,8 +14,7 @@ It covers 240 global options, 165 rule fields, 94 dispatchers, and 14 layouts.
 
 The schema is the semantic contract for one configuration file. Mango expands
 `$var` and `${var}` at parse time, while canonical keeps the reference. It does
-not merge `source` files. An optional root `$schema` key may hold this URL for
-editor tooling.
+not merge `source` files.
 
 Values are normalized:
 
