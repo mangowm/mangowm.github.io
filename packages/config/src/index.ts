@@ -10,3 +10,6 @@ export * from "./normalize";
 export * from "./serialize";
 export * from "./toml";
 export * from "./edit";
+export * from "./annotate";
+export * from "./emit";
+export * from "./convert";
