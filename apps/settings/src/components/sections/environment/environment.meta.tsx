@@ -11,8 +11,6 @@ export const environmentMeta: SectionMeta = {
   fields: [
     {
       configKey: "env",
-      label: "Environment Variable",
-      description: "Key-value pairs injected into the session",
     },
   ],
 };

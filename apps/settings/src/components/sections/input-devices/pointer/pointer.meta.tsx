@@ -52,13 +52,9 @@ export const pointerMeta: SectionMeta = {
     ...trackpadFields.map(([configKey, label]) => ({ configKey, label, description: "" })),
     {
       configKey: "axis_scroll_factor",
-      label: "Axis Scroll Factor",
-      description: "Multiplier for axis (wheel) scroll speed (0.1–10.0)",
     },
     {
       configKey: "axis_bind_apply_timeout",
-      label: "Axis Bind Apply Timeout",
-      description: "Milliseconds before a scroll axis binding fires (0–1000)",
       aliases: ["scroll bind", "axis bind", "scroll timeout"],
     },
   ],

@@ -12,32 +12,22 @@ export const overviewMeta: SectionMeta = {
   fields: [
     {
       configKey: "enable_hotarea",
-      label: "Enable Hotarea",
-      description: "Activate overview by moving the cursor to a screen corner",
       aliases: ["hot corner", "corner action", "overview hot corner"],
     },
     {
       configKey: "hotarea_size",
-      label: "Hotarea Size",
-      description: "Size of the corner activation zone in pixels (1–1000)",
       aliases: ["corner size", "activation zone", "hot corner size"],
     },
     {
       configKey: "hotarea_corner",
-      label: "Hotarea Corner",
-      description: "Which screen corner triggers the overview (0–3)",
       aliases: ["corner", "hot corner position", "activation corner"],
     },
     {
       configKey: "overview_gap_inner",
-      label: "Inner Gap",
-      description: "Gap between windows inside the overview grid (0–1000)",
       aliases: ["overview inner gap", "grid gap", "overview spacing"],
     },
     {
       configKey: "overview_gap_outer",
-      label: "Outer Gap",
-      description: "Gap between the overview grid and screen edges (0–1000)",
       aliases: ["overview outer gap", "grid margin", "overview margin"],
     },
   ],

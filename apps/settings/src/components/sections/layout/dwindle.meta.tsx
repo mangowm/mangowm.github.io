@@ -12,43 +12,27 @@ export const dwindleMeta: SectionMeta = {
   fields: [
     {
       configKey: "dwindle_vertical_split",
-      label: "Vertical Split",
-      description: "Policy for vertical splits in the dwindle layout",
     },
     {
       configKey: "dwindle_horizontal_split",
-      label: "Horizontal Split",
-      description: "Policy for horizontal splits in the dwindle layout",
     },
     {
       configKey: "dwindle_preserve_split",
-      label: "Preserve Split",
-      description: "Keep the current split direction when inserting",
     },
     {
       configKey: "dwindle_smart_split",
-      label: "Smart Split",
-      description: "Auto-choose split direction based on dimensions",
     },
     {
       configKey: "dwindle_smart_resize",
-      label: "Smart Resize",
-      description: "Intelligently resize adjacent windows",
     },
     {
       configKey: "dwindle_drop_simple_split",
-      label: "Drop Simple Split",
-      description: "Fall back to simple split when smart split can't decide",
     },
     {
       configKey: "dwindle_manual_split",
-      label: "Manual Split",
-      description: "Require explicit split direction input",
     },
     {
       configKey: "dwindle_split_ratio",
-      label: "Split Ratio",
-      description: "Proportion of space for the first child when splitting",
     },
   ],
 };

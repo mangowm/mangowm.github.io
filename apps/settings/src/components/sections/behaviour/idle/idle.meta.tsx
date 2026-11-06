@@ -23,20 +23,14 @@ export const idleMeta: SectionMeta = {
   fields: [
     {
       configKey: "idle_inhibit_ignore_visible",
-      label: "Idle Inhibit Ignore Visible",
-      description: "Only fullscreen windows may inhibit the idle inhibitor",
       aliases: ["inhibit", "idle", "dpms", "screen blank", "power save"],
     },
     {
       configKey: "cursor_hide_timeout",
-      label: "Cursor Hide Timeout",
-      description: "Seconds of inactivity before auto-hiding the cursor (0 = never)",
       aliases: ["hide cursor", "cursor auto-hide", "cursor timeout"],
     },
     {
       configKey: "cursor_hide_on_keypress",
-      label: "Hide Cursor on Keypress",
-      description: "Auto-hide the cursor whenever any keyboard key is pressed",
       aliases: ["keypress hide", "hide on keypress", "typing hide"],
     },
   ],

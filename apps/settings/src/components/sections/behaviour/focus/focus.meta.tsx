@@ -23,38 +23,26 @@ export const focusMeta: SectionMeta = {
   fields: [
     {
       configKey: "sloppy_focus",
-      label: "Sloppy Focus",
-      description: "Focus follows the mouse pointer",
       aliases: ["focus follows mouse", "mouse focus"],
     },
     {
       configKey: "warp_cursor",
-      label: "Warp Cursor",
-      description: "Auto-move cursor to center of focused window",
       aliases: ["cursor warp", "jump cursor"],
     },
     {
       configKey: "focus_on_activate",
-      label: "Focus on Activate",
-      description: "Focus windows immediately when they request activation",
       aliases: ["urgency focus", "activate", "demand attention"],
     },
     {
       configKey: "focus_cross_monitor",
-      label: "Cross-Monitor Focus",
-      description: "Allow focus operations to move between monitors",
       aliases: ["multi-monitor focus", "across monitors"],
     },
     {
       configKey: "focus_cross_tag",
-      label: "Cross-Tag Focus",
-      description: "Allow focus to move between windows on different tags",
       aliases: ["across tags", "tag crossing"],
     },
     {
       configKey: "exchange_cross_monitor",
-      label: "Cross-Monitor Exchange",
-      description: "Allow swapping windows between monitors",
       aliases: ["swap across monitors", "exchange"],
     },
   ],

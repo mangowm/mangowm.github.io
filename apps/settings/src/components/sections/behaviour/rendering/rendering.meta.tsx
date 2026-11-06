@@ -12,20 +12,14 @@ export const renderingMeta: SectionMeta = {
   fields: [
     {
       configKey: "allow_tearing",
-      label: "Allow Tearing",
-      description: "Permit screen tearing for lower latency",
       aliases: ["tearing", "tear", "vsync", "async", "page flip"],
     },
     {
       configKey: "sync_obj_enable",
-      label: "Sync Object Enable",
-      description: "Enable DRM sync object timeline support",
       aliases: ["sync", "drm", "timeline", "syncobj", "gpu"],
     },
     {
       configKey: "hdr_depth",
-      label: "HDR Bit Depth",
-      description: "HDR rendering output bit depth",
       aliases: ["hdr", "bit depth", "high dynamic range", "color depth"],
     },
   ],

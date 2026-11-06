@@ -1,4 +1,5 @@
 import MiniSearch from "minisearch";
+import { GLOBALS } from "@mangowm.github.io/schema";
 import { useRef, useEffect, useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useConfigStore } from "./config/store";
@@ -9,6 +10,15 @@ import { parseKeybindings, ALL_BIND_VARIANTS } from "./keybind-parse";
 import { DISPATCHER_MAP } from "./dispatchers";
 import { getOverridesForRuleType, RULE_LABELS } from "./rules/metadata";
 import { parseRuleString } from "@/lib/rules/parser";
+
+const FIELD_META = new Map(GLOBALS.map((option) => [option.key, option]));
+
+const EXTRA_FIELD_META: Record<string, { label: string; description: string }> = {
+  env: {
+    label: "Environment Variables",
+    description: "Environment variables passed to the compositor.",
+  },
+};
 
 interface SearchDocument {
   id: string;
@@ -67,10 +77,11 @@ const staticDocs: SearchDocument[] = SECTIONS.flatMap((section) => {
   });
 
   for (const field of section.fields ?? []) {
+    const meta = FIELD_META.get(field.configKey) ?? EXTRA_FIELD_META[field.configKey];
     docs.push({
       id: `s:${section.id}:${field.configKey}`,
-      label: field.label,
-      description: field.description ?? "",
+      label: meta?.label ?? field.configKey,
+      description: meta?.description ?? "",
       configKey: field.configKey,
       sectionKeywords,
       aliases: field.aliases?.join(" ") ?? "",
