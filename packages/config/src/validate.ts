@@ -32,6 +32,7 @@ interface ArrayFrame {
 }
 
 const RULE_BY_KEY = new Map(RULES.map((rule) => [rule.key as string, rule]));
+const TEXT_ENCODER = new TextEncoder();
 const MONITOR_MATCHERS = ["name", "make", "model", "serial"] as const;
 
 function keyFromLine(line: string): string | undefined {
@@ -97,7 +98,7 @@ function checkConfStructure(text: string): ValidationIssue[] {
     }
 
     const valueText = raw.slice(equals + 1);
-    if (Buffer.byteLength(valueText, "utf8") > 255) {
+    if (TEXT_ENCODER.encode(valueText).length > 255) {
       issues.push(issue(line, raw, "The value exceeds 255 bytes.", "error", "invalid-value"));
     }
 
