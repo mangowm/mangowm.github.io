@@ -1,15 +1,12 @@
-/**
- * Parse a mango animation-curve value into exactly four non-negative numbers,
- * mirroring parse_double_array (parse_config.h): mango rejects malformed or
- * negative values at config load, and each curve option requires all 4
- * components.
- */
+import { parseCurve as parseConfigCurve } from "@mangowm.github.io/config";
+
+/** Parse a curve value, returning null instead of throwing on invalid input. */
 export function parseCurve(value: string): number[] | null {
-  const parts = value.split(",").map((p) => p.trim());
-  if (parts.length !== 4 || parts.some((p) => p === "")) return null;
-  const nums = parts.map(Number);
-  if (nums.some((n) => !Number.isFinite(n) || n < 0)) return null;
-  return nums;
+  try {
+    return parseConfigCurve(value);
+  } catch {
+    return null;
+  }
 }
 
 /** Cubic-bezier control points [x1, y1, x2, y2], each clamped to 0..1. */
