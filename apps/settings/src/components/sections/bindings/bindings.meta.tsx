@@ -19,7 +19,7 @@ export const bindingsMeta: SectionMeta = {
     "keysym",
     "keycode",
     "submap",
-    "keymode",
+    "key_mode",
     "dispatch",
     "hotkey",
   ],

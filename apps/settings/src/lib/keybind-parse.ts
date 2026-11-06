@@ -199,7 +199,7 @@ export function parseKeybindings(data: ConfigData): Keybinding[] {
   return entries;
 }
 
-/** Parse bindings from SourceFiles, tracking `keymode` entries for mode context. */
+/** Parse bindings from SourceFiles, tracking `key_mode` entries for mode context. */
 export function parseKeybindingsFromFiles(files: SourceFile[]): Keybinding[] {
   const entries: Keybinding[] = [];
   let currentMode = "default";
@@ -208,7 +208,7 @@ export function parseKeybindingsFromFiles(files: SourceFile[]): Keybinding[] {
     for (const line of file.lines) {
       if (line.type !== "entry") continue;
       const { key, value } = line;
-      if (key === "keymode") {
+      if (key === "key_mode") {
         currentMode = value;
         continue;
       }
@@ -222,33 +222,33 @@ export function parseKeybindingsFromFiles(files: SourceFile[]): Keybinding[] {
   return entries;
 }
 
-/** Effective mode at the end of all loaded files (the last `keymode` value). */
+/** Effective mode at the end of all loaded files (the last `key_mode` value). */
 export function getActiveModeAtEnd(files: SourceFile[]): string {
   let mode = "default";
   for (const file of files) {
     for (const line of file.lines) {
-      if (line.type === "entry" && line.key === "keymode") mode = line.value;
+      if (line.type === "entry" && line.key === "key_mode") mode = line.value;
     }
   }
   return mode;
 }
 
-/** Index of the last `keymode <mode>` line, or -1. */
-export function findLastKeymodeLine(lines: ConfigLine[], mode?: string): number {
+/** Index of the last `key_mode <mode>` line, or -1. */
+export function findLastKeyModeLine(lines: ConfigLine[], mode?: string): number {
   for (let i = lines.length - 1; i >= 0; i--) {
     const ln = lines[i];
-    if (ln.type === "entry" && ln.key === "keymode") {
+    if (ln.type === "entry" && ln.key === "key_mode") {
       if (mode === undefined || ln.value === mode) return i;
     }
   }
   return -1;
 }
 
-/** Last line of the mode block starting at keymodeIdx. */
-export function findBlockEnd(lines: ConfigLine[], keymodeIdx: number): number {
-  for (let i = keymodeIdx + 1; i < lines.length; i++) {
+/** Last line of the mode block starting at keyModeIdx. */
+export function findBlockEnd(lines: ConfigLine[], keyModeIdx: number): number {
+  for (let i = keyModeIdx + 1; i < lines.length; i++) {
     const ln = lines[i];
-    if (ln.type === "entry" && ln.key === "keymode") return i - 1;
+    if (ln.type === "entry" && ln.key === "key_mode") return i - 1;
   }
   return lines.length - 1;
 }
@@ -262,11 +262,11 @@ export function findInsertPosition(
   targetMode: string,
 ): { afterLineIdx: number } | null {
   if (targetMode === "default") {
-    const firstKm = lines.findIndex((ln) => ln.type === "entry" && ln.key === "keymode");
+    const firstKm = lines.findIndex((ln) => ln.type === "entry" && ln.key === "key_mode");
     if (firstKm >= 0) return { afterLineIdx: firstKm - 1 };
     return null;
   }
-  const kmIdx = findLastKeymodeLine(lines, targetMode);
+  const kmIdx = findLastKeyModeLine(lines, targetMode);
   if (kmIdx >= 0) return { afterLineIdx: findBlockEnd(lines, kmIdx) };
   return null;
 }
@@ -336,8 +336,8 @@ function findFileForConfigKey(files: SourceFile[], key: string): number {
 
 /**
  * Insert a binding respecting its mode: default-mode bindings go into the
- * leading block (before the first `keymode=` line), named-mode bindings go
- * into their `keymode=` block, creating it when needed.
+ * leading block (before the first `key_mode=` line), named-mode bindings go
+ * into their `key_mode=` block, creating it when needed.
  */
 export function insertModeAwareBinding(
   files: SourceFile[],
@@ -360,7 +360,7 @@ export function insertModeAwareBinding(
   if (pos) {
     insertEntry(key, value, { fileIdx: targetFileIdx, ...pos });
   } else if (mode !== "default") {
-    insertEntry("keymode", mode, {
+    insertEntry("key_mode", mode, {
       fileIdx: targetFileIdx,
       afterLineIdx: file.lines.length - 1,
     });

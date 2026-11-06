@@ -391,7 +391,7 @@ export function EditDialog({
                     Mode
                   </Label>
                   <span className="text-[11px] text-muted-foreground/70">
-                    Restrict this binding to a specific context (keymode). Bindings in{" "}
+                    Restrict this binding to a specific context (key_mode). Bindings in{" "}
                     <span className="font-mono text-muted-foreground">common</span> apply in every
                     mode.
                   </span>
