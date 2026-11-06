@@ -68,6 +68,13 @@ export function validateArgValue(value: string, arg: DispatcherArg): string | nu
     case "mouse-action":
       if (!MOUSE_ACTION_OPTS.includes(value as any)) return "Must be curmove or curresize";
       break;
+    case "force":
+      if (value !== "force" && value !== "unforce") return "Must be force or unforce";
+      break;
+    case "on-off":
+      if (value !== "on" && value !== "off" && value !== "toggle")
+        return "Must be on, off, or toggle";
+      break;
     case "layout":
       if (!LAYOUT_NAMES.includes(value as any)) return `Must be one of: ${LAYOUT_NAMES.join(", ")}`;
       break;

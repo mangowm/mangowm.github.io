@@ -1,8 +1,8 @@
-import type { DispatcherInfo } from "../types";
+import type { DispatcherUi } from "../types";
 import { namedArg, oneArg } from "../helpers";
 import { TAG_NUMBERS, BOOL_FLAGS, PREV_NEXT_OPTS } from "../types";
 
-export const VIEW_ENTRIES: DispatcherInfo[] = [
+export const VIEW_ENTRIES: DispatcherUi[] = [
   {
     name: "view",
     category: "view",

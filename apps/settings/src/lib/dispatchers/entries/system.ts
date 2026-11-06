@@ -1,8 +1,8 @@
-import type { DispatcherInfo } from "../types";
+import type { DispatcherUi } from "../types";
 import { namedArg, oneArg } from "../helpers";
 import { BOOL_FLAGS, SWITCHER_OPTS } from "../types";
 
-export const SYSTEM_ENTRIES: DispatcherInfo[] = [
+export const SYSTEM_ENTRIES: DispatcherUi[] = [
   {
     name: "reload_config",
     category: "system",
@@ -30,7 +30,10 @@ export const SYSTEM_ENTRIES: DispatcherInfo[] = [
   {
     name: "create_virtual_output",
     category: "system",
-    args: [],
+    args: namedArg("name", "string", "Name", "Virtual output name", {
+      placeholder: "e.g. HEADLESS-1",
+      required: true,
+    }),
     description: "Create a headless virtual monitor (for VNC or Sunshine streaming)",
   },
   {

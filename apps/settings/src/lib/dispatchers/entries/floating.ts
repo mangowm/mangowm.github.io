@@ -1,8 +1,8 @@
-import type { DispatcherInfo } from "../types";
+import type { DispatcherUi } from "../types";
 import { oneArg, namedArg } from "../helpers";
 import { DIRECTION_OPTS, MOUSE_ACTION_OPTS } from "../types";
 
-export const FLOATING_ENTRIES: DispatcherInfo[] = [
+export const FLOATING_ENTRIES: DispatcherUi[] = [
   {
     name: "smartmovewin",
     category: "floating",

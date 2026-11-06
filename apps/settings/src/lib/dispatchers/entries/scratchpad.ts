@@ -1,6 +1,6 @@
-import type { DispatcherInfo } from "../types";
+import type { DispatcherUi } from "../types";
 
-export const SCRATCHPAD_ENTRIES: DispatcherInfo[] = [
+export const SCRATCHPAD_ENTRIES: DispatcherUi[] = [
   {
     name: "minimized",
     category: "scratchpad",

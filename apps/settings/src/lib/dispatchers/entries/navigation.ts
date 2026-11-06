@@ -1,8 +1,8 @@
-import type { DispatcherInfo } from "../types";
+import type { DispatcherUi } from "../types";
 import { oneArg, namedArg } from "../helpers";
 import { DIRECTION_OPTS, CIRCLE_DIR_OPTS, OVERCIRCLE_OPTS, BOOL_FLAGS } from "../types";
 
-export const NAVIGATION_ENTRIES: DispatcherInfo[] = [
+export const NAVIGATION_ENTRIES: DispatcherUi[] = [
   {
     name: "focusdir",
     category: "navigation",

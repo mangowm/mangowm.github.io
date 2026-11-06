@@ -17,7 +17,9 @@ export type ArgType =
   | "tag"
   | "tag-mask"
   | "bool-flag"
-  | "mouse-action";
+  | "mouse-action"
+  | "force"
+  | "on-off";
 
 export interface DispatcherArg {
   name: string;
@@ -69,4 +71,12 @@ export interface DispatcherInfo {
   category: DispatcherCategory;
   description: string;
   args: DispatcherArg[];
+}
+
+/** UI-only metadata keyed by dispatcher name. Argument signatures come from schema. */
+export interface DispatcherUi {
+  name: string;
+  category: DispatcherCategory;
+  description: string;
+  args?: Partial<DispatcherArg>[];
 }

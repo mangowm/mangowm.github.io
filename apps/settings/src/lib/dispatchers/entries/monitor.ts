@@ -1,8 +1,8 @@
-import type { DispatcherInfo } from "../types";
+import type { DispatcherUi } from "../types";
 import { namedArg } from "../helpers";
 import { BOOL_FLAGS } from "../types";
 
-export const MONITOR_ENTRIES: DispatcherInfo[] = [
+export const MONITOR_ENTRIES: DispatcherUi[] = [
   {
     name: "focusmon",
     category: "monitor",

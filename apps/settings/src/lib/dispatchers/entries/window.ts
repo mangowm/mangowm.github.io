@@ -1,7 +1,13 @@
-import type { DispatcherInfo } from "../types";
+import type { DispatcherUi } from "../types";
+import { namedArg } from "../helpers";
 
-export const WINDOW_ENTRIES: DispatcherInfo[] = [
-  { name: "killclient", category: "window", args: [], description: "Close the focused window" },
+export const WINDOW_ENTRIES: DispatcherUi[] = [
+  {
+    name: "killclient",
+    category: "window",
+    args: namedArg("force", "force", "Force", "Close the window even if it resists"),
+    description: "Close the focused window",
+  },
   {
     name: "togglefloating",
     category: "window",

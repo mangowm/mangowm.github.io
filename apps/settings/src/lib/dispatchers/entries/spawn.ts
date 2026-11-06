@@ -1,8 +1,8 @@
-import type { DispatcherInfo } from "../types";
+import type { DispatcherUi } from "../types";
 import { namedArg } from "../helpers";
 import { TAG_NUMBERS } from "../types";
 
-export const SPAWN_ENTRIES: DispatcherInfo[] = [
+export const SPAWN_ENTRIES: DispatcherUi[] = [
   {
     name: "spawn",
     category: "spawn",
