@@ -1,4 +1,4 @@
-import { useConfigStore, useConfigBool, useConfigInt, useConfigFloat } from "@/lib/config/store";
+import { useConfigStore, useConfigBool, useGlobalInt, useGlobalFloat } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -16,8 +16,8 @@ export function TilingPanel({ focusKey }: PanelProps) {
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const newIsMaster = useConfigBool("new_is_master");
-  const mfact = useConfigFloat("default_master_factor", undefined, 0.1, 0.9);
-  const nmaster = useConfigInt("default_master_count", undefined, 1, 1000);
+  const mfact = useGlobalFloat("default_master_factor");
+  const nmaster = useGlobalInt("default_master_count");
   const centerOverspread = useConfigBool("center_master_overspread");
   const centerSingleStack = useConfigBool("center_when_single_stack");
 
@@ -46,22 +46,20 @@ export function TilingPanel({ focusKey }: PanelProps) {
         <SectionCard title="Master Area">
           <div ref={fieldRef("default_master_factor")}>
             <SliderRow
+              configKey="default_master_factor"
               label="Master Area Factor"
               description="Fraction of the screen width given to the master area."
               value={mfact}
-              min={0.1}
-              max={0.9}
               step={0.01}
               onChange={(v) => setValue("default_master_factor", v.toFixed(2))}
             />
           </div>
           <div ref={fieldRef("default_master_count")}>
             <SliderRow
+              configKey="default_master_count"
               label="Number of Masters"
               description="How many windows are kept in the master area."
               value={nmaster}
-              min={1}
-              max={20}
               step={1}
               onChange={(v) => setValue("default_master_count", String(Math.round(v)))}
             />

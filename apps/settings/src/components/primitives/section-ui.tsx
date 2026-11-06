@@ -33,6 +33,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@mangowm/ui/components/select";
+import { globalMax, globalMeta, globalMin, globalOptions } from "@/lib/config/schema-meta";
+
+function fieldText(configKey: string | undefined, label?: string, description?: string) {
+  const meta = configKey ? globalMeta(configKey) : undefined;
+  return {
+    label: label ?? meta?.label ?? "",
+    description: description ?? meta?.description ?? "",
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Primitives
@@ -110,8 +119,9 @@ export function SectionCard({ title, children }: SectionCardProps) {
 // ---------------------------------------------------------------------------
 
 export interface ToggleRowProps {
-  label: string;
-  description: string;
+  configKey?: string;
+  label?: string;
+  description?: string;
   value: boolean;
   onChange: (v: boolean) => void;
   /** When false the row is visually dimmed and non-interactive. */
@@ -119,11 +129,19 @@ export interface ToggleRowProps {
 }
 
 /** A row with a Switch toggle and an on/off text indicator. */
-export function ToggleRow({ label, description, value, onChange, enabled }: ToggleRowProps) {
+export function ToggleRow({
+  configKey,
+  label,
+  description,
+  value,
+  onChange,
+  enabled,
+}: ToggleRowProps) {
   const isOff = enabled === false;
+  const field = fieldText(configKey, label, description);
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
-      <FieldLabel label={label} description={description} />
+      <FieldLabel label={field.label} description={field.description} />
       <div className="flex shrink-0 items-center gap-2">
         <span
           className={
@@ -141,11 +159,12 @@ export function ToggleRow({ label, description, value, onChange, enabled }: Togg
 }
 
 export interface SliderRowProps {
-  label: string;
-  description: string;
+  configKey?: string;
+  label?: string;
+  description?: string;
   value: number;
-  min: number;
-  max: number;
+  min?: number;
+  max?: number;
   step?: number;
   /** Unit suffix shown after the numeric value, e.g. "px". */
   unit?: string;
@@ -163,6 +182,7 @@ export interface SliderRowProps {
  * Integers display without decimals; floats show up to 2 decimal places.
  */
 export function SliderRow({
+  configKey,
   label,
   description,
   value,
@@ -174,16 +194,19 @@ export function SliderRow({
   onChange,
 }: SliderRowProps) {
   const isOff = enabled === false;
+  const field = fieldText(configKey, label, description);
+  const resolvedMin = min ?? (configKey ? globalMin(configKey) : undefined) ?? 0;
+  const resolvedMax = max ?? (configKey ? globalMax(configKey) : undefined) ?? 1;
   const display = value % 1 === 0 ? String(value) : value.toFixed(2);
 
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
-      <FieldLabel label={label} description={description} />
+      <FieldLabel label={field.label} description={field.description} />
       <div className="flex w-44 shrink-0 items-center gap-3">
         <Slider
           value={[value]}
-          min={min}
-          max={max}
+          min={resolvedMin}
+          max={resolvedMax}
           step={step ?? 1}
           onValueChange={(v) => {
             const arr = Array.isArray(v) ? v : [v];
@@ -191,7 +214,7 @@ export function SliderRow({
           }}
           className="flex-1"
           disabled={isOff}
-          aria-label={label}
+          aria-label={field.label}
         />
         <span className="w-14 text-right font-mono text-[12px] text-foreground/80 tabular-nums">
           {display}
@@ -208,10 +231,11 @@ export interface SelectOption {
 }
 
 export interface SelectRowProps {
-  label: string;
-  description: string;
+  configKey?: string;
+  label?: string;
+  description?: string;
   value: string;
-  options: readonly SelectOption[];
+  options?: readonly SelectOption[];
   onChange: (v: string) => void;
   /** When false the row is visually dimmed and non-interactive. */
   enabled?: boolean;
@@ -219,6 +243,7 @@ export interface SelectRowProps {
 
 /** A row with a Select dropdown. */
 export function SelectRow({
+  configKey,
   label,
   description,
   value,
@@ -227,15 +252,19 @@ export function SelectRow({
   enabled,
 }: SelectRowProps) {
   const isOff = enabled === false;
+  const field = fieldText(configKey, label, description);
+  const resolvedOptions = options ?? (configKey ? globalOptions(configKey) : undefined) ?? [];
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
-      <FieldLabel label={label} description={description} />
+      <FieldLabel label={field.label} description={field.description} />
       <Select value={value} onValueChange={(v) => v && onChange(v)} disabled={isOff}>
-        <SelectTrigger className="w-28" aria-label={label}>
-          <SelectValue>{options.find((o) => o.value === value)?.label ?? value}</SelectValue>
+        <SelectTrigger className="w-28" aria-label={field.label}>
+          <SelectValue>
+            {resolvedOptions.find((o) => o.value === value)?.label ?? value}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
-          {options.map((opt) => (
+          {resolvedOptions.map((opt) => (
             <SelectItem key={opt.value} value={opt.value}>
               {opt.label}
             </SelectItem>
@@ -247,8 +276,9 @@ export function SelectRow({
 }
 
 export interface TextInputRowProps {
-  label: string;
-  description: string;
+  configKey?: string;
+  label?: string;
+  description?: string;
   value: string;
   placeholder?: string;
   onChange: (v: string) => void;
@@ -256,8 +286,9 @@ export interface TextInputRowProps {
 }
 
 export interface MultiTagInputProps {
-  label: string;
-  description: string;
+  configKey?: string;
+  label?: string;
+  description?: string;
   /** Comma-separated values */
   value: string;
   /** Placeholder for the add-input */
@@ -272,6 +303,7 @@ export interface MultiTagInputProps {
  * The combined value is stored as a comma-separated string.
  */
 export function MultiTagInput({
+  configKey,
   label,
   description,
   value,
@@ -282,6 +314,7 @@ export function MultiTagInput({
   const [text, setText] = React.useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
   const isOff = enabled === false;
+  const field = fieldText(configKey, label, description);
 
   const tags = value ? value.split(",").filter((t) => t.trim()) : [];
 
@@ -315,7 +348,7 @@ export function MultiTagInput({
 
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
-      <FieldLabel label={label} description={description} />
+      <FieldLabel label={field.label} description={field.description} />
       <div className="flex w-52 shrink-0 flex-col items-stretch gap-1.5">
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-1">
@@ -368,6 +401,7 @@ export function MultiTagInput({
 
 /** A row with a text input field. */
 export function TextInputRow({
+  configKey,
   label,
   description,
   value,
@@ -376,9 +410,10 @@ export function TextInputRow({
   enabled,
 }: TextInputRowProps) {
   const isOff = enabled === false;
+  const field = fieldText(configKey, label, description);
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
-      <FieldLabel label={label} description={description} />
+      <FieldLabel label={field.label} description={field.description} />
       <Input
         type="text"
         value={value}
@@ -387,7 +422,7 @@ export function TextInputRow({
         spellCheck={false}
         className="w-44 shrink-0 font-mono text-[12px]"
         disabled={isOff}
-        aria-label={label}
+        aria-label={field.label}
       />
     </Row>
   );

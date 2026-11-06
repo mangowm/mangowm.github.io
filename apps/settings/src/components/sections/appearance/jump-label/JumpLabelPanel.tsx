@@ -1,4 +1,4 @@
-import { useConfigStore, useConfigStr, useConfigInt } from "@/lib/config/store";
+import { useConfigStore, useConfigStr, useGlobalInt } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -15,10 +15,10 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
 
   const jumpLabels = useConfigStr("jump_labels");
   const fontDesc = useConfigStr("jump_label_decorate_font_desc");
-  const borderWidth = useConfigInt("jump_label_decorate_border_width", undefined, 0, 100);
-  const cornerRadius = useConfigInt("jump_label_decorate_corner_radius", undefined, 0, 100);
-  const paddingX = useConfigInt("jump_label_decorate_padding_x", undefined, 0, 100);
-  const paddingY = useConfigInt("jump_label_decorate_padding_y", undefined, 0, 100);
+  const borderWidth = useGlobalInt("jump_label_decorate_border_width");
+  const cornerRadius = useGlobalInt("jump_label_decorate_corner_radius");
+  const paddingX = useGlobalInt("jump_label_decorate_padding_x");
+  const paddingY = useGlobalInt("jump_label_decorate_padding_y");
 
   return (
     <PanelShell>
@@ -60,44 +60,40 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
         <SectionCard title="Decoration">
           <div ref={fieldRef("jump_label_decorate_border_width")}>
             <SliderRow
+              configKey="jump_label_decorate_border_width"
               label="Border Width"
               description="Thickness of the jump label border in pixels."
               value={borderWidth}
-              min={0}
-              max={100}
               unit="px"
               onChange={(v) => setValue("jump_label_decorate_border_width", String(v))}
             />
           </div>
           <div ref={fieldRef("jump_label_decorate_corner_radius")}>
             <SliderRow
+              configKey="jump_label_decorate_corner_radius"
               label="Corner Radius"
               description="Rounding radius for jump label corners."
               value={cornerRadius}
-              min={0}
-              max={100}
               unit="px"
               onChange={(v) => setValue("jump_label_decorate_corner_radius", String(v))}
             />
           </div>
           <div ref={fieldRef("jump_label_decorate_padding_x")}>
             <SliderRow
+              configKey="jump_label_decorate_padding_x"
               label="Padding X"
               description="Horizontal padding inside jump labels."
               value={paddingX}
-              min={0}
-              max={100}
               unit="px"
               onChange={(v) => setValue("jump_label_decorate_padding_x", String(v))}
             />
           </div>
           <div ref={fieldRef("jump_label_decorate_padding_y")}>
             <SliderRow
+              configKey="jump_label_decorate_padding_y"
               label="Padding Y"
               description="Vertical padding inside jump labels."
               value={paddingY}
-              min={0}
-              max={100}
               unit="px"
               onChange={(v) => setValue("jump_label_decorate_padding_y", String(v))}
             />

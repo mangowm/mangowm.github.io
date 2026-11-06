@@ -1,4 +1,4 @@
-import { useConfigBool, useConfigInt, useConfigStore } from "@/lib/config/store";
+import { useConfigStore, useConfigBool, useGlobalInt } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -14,11 +14,11 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
   const setValue = useConfigStore((state) => state.setValue);
 
   const smartGaps = useConfigBool("smart_gaps");
-  const innerHorizontal = useConfigInt("gap_inner_horizontal", undefined, 0, 1000);
-  const innerVertical = useConfigInt("gap_inner_vertical", undefined, 0, 1000);
-  const outerHorizontal = useConfigInt("gap_outer_horizontal", undefined, 0, 1000);
-  const outerVertical = useConfigInt("gap_outer_vertical", undefined, 0, 1000);
-  const borderWidth = useConfigInt("border_px", undefined, 0, 200);
+  const innerHorizontal = useGlobalInt("gap_inner_horizontal");
+  const innerVertical = useGlobalInt("gap_inner_vertical");
+  const outerHorizontal = useGlobalInt("gap_outer_horizontal");
+  const outerVertical = useGlobalInt("gap_outer_vertical");
+  const borderWidth = useGlobalInt("border_px");
   const noBorderSingle = useConfigBool("no_border_when_single");
   const noRadiusSingle = useConfigBool("no_radius_when_single");
 
@@ -44,44 +44,40 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("gap_inner_horizontal")}>
             <SliderRow
+              configKey="gap_inner_horizontal"
               label="Inner Gap Horizontal"
               description="Horizontal gap between tiled windows."
               value={innerHorizontal}
-              min={0}
-              max={1000}
               unit="px"
               onChange={(value) => setValue("gap_inner_horizontal", String(value))}
             />
           </div>
           <div ref={fieldRef("gap_inner_vertical")}>
             <SliderRow
+              configKey="gap_inner_vertical"
               label="Inner Gap Vertical"
               description="Vertical gap between tiled windows."
               value={innerVertical}
-              min={0}
-              max={1000}
               unit="px"
               onChange={(value) => setValue("gap_inner_vertical", String(value))}
             />
           </div>
           <div ref={fieldRef("gap_outer_horizontal")}>
             <SliderRow
+              configKey="gap_outer_horizontal"
               label="Outer Gap Horizontal"
               description="Horizontal gap between windows and screen edges."
               value={outerHorizontal}
-              min={0}
-              max={1000}
               unit="px"
               onChange={(value) => setValue("gap_outer_horizontal", String(value))}
             />
           </div>
           <div ref={fieldRef("gap_outer_vertical")}>
             <SliderRow
+              configKey="gap_outer_vertical"
               label="Outer Gap Vertical"
               description="Vertical gap between windows and screen edges."
               value={outerVertical}
-              min={0}
-              max={1000}
               unit="px"
               onChange={(value) => setValue("gap_outer_vertical", String(value))}
             />
@@ -93,11 +89,10 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
         <SectionCard title="Border">
           <div ref={fieldRef("border_px")}>
             <SliderRow
+              configKey="border_px"
               label="Border Width"
               description="Thickness of window borders in pixels."
               value={borderWidth}
-              min={0}
-              max={200}
               unit="px"
               onChange={(value) => setValue("border_px", String(value))}
             />

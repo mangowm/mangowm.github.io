@@ -1,4 +1,4 @@
-import { useConfigStore, useConfigBool, useConfigInt, useConfigStr } from "@/lib/config/store";
+import { useConfigStore, useConfigBool, useConfigStr, useGlobalInt } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -16,8 +16,8 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
   const setValue = useConfigStore((s) => s.setValue);
 
   // Ranges match mango's CLAMP_INT: repeat_rate [1,1000], repeat_delay [1,20000]
-  const repeatRate = useConfigInt("repeat_rate", undefined, 1, 1000);
-  const repeatDelay = useConfigInt("repeat_delay", undefined, 1, 20000);
+  const repeatRate = useGlobalInt("repeat_rate");
+  const repeatDelay = useGlobalInt("repeat_delay");
   const numlockOn = useConfigBool("numlock_on");
   const xkbLayout = useConfigStr("xkb_rules_layout");
   const xkbVariant = useConfigStr("xkb_rules_variant");
@@ -37,22 +37,20 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
         <SectionCard title="Key Repeat">
           <div ref={fieldRef("repeat_rate")}>
             <SliderRow
+              configKey="repeat_rate"
               label="Repeat Rate"
               description="Characters per second while a key is held. Mango range: 1–1000. (0 disables repeat.)"
               value={repeatRate}
-              min={1}
-              max={1000}
               unit=" cps"
               onChange={(v) => setValue("repeat_rate", String(v))}
             />
           </div>
           <div ref={fieldRef("repeat_delay")}>
             <SliderRow
+              configKey="repeat_delay"
               label="Repeat Delay"
               description="Milliseconds before key repeat starts. Mango range: 1–20000."
               value={repeatDelay}
-              min={1}
-              max={20000}
               step={50}
               unit=" ms"
               onChange={(v) => setValue("repeat_delay", String(v))}

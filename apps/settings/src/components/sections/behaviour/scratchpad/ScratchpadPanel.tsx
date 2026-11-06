@@ -1,4 +1,4 @@
-import { useConfigStore, useConfigBool, useConfigFloat } from "@/lib/config/store";
+import { useConfigStore, useConfigBool, useGlobalFloat } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -17,8 +17,8 @@ export function ScratchpadPanel({ focusKey }: PanelProps) {
 
   const scratchpadCrossMon = useConfigBool("scratchpad_cross_monitor");
   const singleScratchpad = useConfigBool("single_scratchpad");
-  const scratchpadWidth = useConfigFloat("scratchpad_width_ratio", undefined, 0.1, 1.0);
-  const scratchpadHeight = useConfigFloat("scratchpad_height_ratio", undefined, 0.1, 1.0);
+  const scratchpadWidth = useGlobalFloat("scratchpad_width_ratio");
+  const scratchpadHeight = useGlobalFloat("scratchpad_height_ratio");
 
   return (
     <PanelShell>
@@ -53,22 +53,20 @@ export function ScratchpadPanel({ focusKey }: PanelProps) {
         <SectionCard title="Size">
           <div ref={fieldRef("scratchpad_width_ratio")}>
             <SliderRow
+              configKey="scratchpad_width_ratio"
               label="Width Ratio"
               description="Width of the scratchpad window relative to the monitor. Mango range: 0.1–1.0."
               value={scratchpadWidth}
-              min={0.1}
-              max={1.0}
               step={0.05}
               onChange={(v) => setValue("scratchpad_width_ratio", v.toFixed(2))}
             />
           </div>
           <div ref={fieldRef("scratchpad_height_ratio")}>
             <SliderRow
+              configKey="scratchpad_height_ratio"
               label="Height Ratio"
               description="Height of the scratchpad window relative to the monitor. Mango range: 0.1–1.0."
               value={scratchpadHeight}
-              min={0.1}
-              max={1.0}
               step={0.05}
               onChange={(v) => setValue("scratchpad_height_ratio", v.toFixed(2))}
             />

@@ -1,4 +1,4 @@
-import { useConfigStore, useConfigInt, useConfigStr } from "@/lib/config/store";
+import { useConfigStore, useConfigStr, useGlobalInt } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -14,7 +14,7 @@ export function CursorPanel({ focusKey }: PanelProps) {
   const setValue = useConfigStore((s) => s.setValue);
 
   const cursorTheme = useConfigStr("cursor_theme");
-  const cursorSize = useConfigInt("cursor_size", undefined, 16, 128);
+  const cursorSize = useGlobalInt("cursor_size");
 
   return (
     <PanelShell>
@@ -37,11 +37,10 @@ export function CursorPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("cursor_size")}>
             <SliderRow
+              configKey="cursor_size"
               label="Size"
               description="Cursor size in pixels. Larger values are more visible on HiDPI displays."
               value={cursorSize}
-              min={16}
-              max={128}
               unit=" px"
               onChange={(v) => setValue("cursor_size", String(v))}
             />

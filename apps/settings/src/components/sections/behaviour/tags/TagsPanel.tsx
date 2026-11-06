@@ -1,4 +1,4 @@
-import { useConfigStore, useConfigBool, useConfigInt } from "@/lib/config/store";
+import { useConfigStore, useConfigBool, useGlobalInt } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -17,7 +17,7 @@ export function TagsPanel({ focusKey }: PanelProps) {
 
   const tagCarousel = useConfigBool("tag_carousel");
   const viewToBack = useConfigBool("view_current_to_back");
-  const tagNum = useConfigInt("tag_num", undefined, 1, 31);
+  const tagNum = useGlobalInt("tag_num");
   const tagGather = useConfigBool("tag_gather");
 
   return (
@@ -32,11 +32,10 @@ export function TagsPanel({ focusKey }: PanelProps) {
         <SectionCard title="Count">
           <div ref={fieldRef("tag_num")}>
             <SliderRow
+              configKey="tag_num"
               label="Number of Tags"
               description="How many workspaces/tags are available. Range: 1–31."
               value={tagNum}
-              min={1}
-              max={31}
               unit=" tags"
               onChange={(v) => setValue("tag_num", String(Math.round(v)))}
             />

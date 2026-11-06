@@ -1,4 +1,4 @@
-import { useConfigStore, useConfigBool, useConfigInt } from "@/lib/config/store";
+import { useConfigStore, useConfigBool, useGlobalInt } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -16,7 +16,7 @@ export function IdlePanel({ focusKey }: PanelProps) {
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const idleInhibitIgnore = useConfigBool("idle_inhibit_ignore_visible");
-  const cursorTimeout = useConfigInt("cursor_hide_timeout", undefined, 0, 36000);
+  const cursorTimeout = useGlobalInt("cursor_hide_timeout");
   const cursorHideKeypress = useConfigBool("cursor_hide_on_keypress");
 
   return (
@@ -44,11 +44,10 @@ export function IdlePanel({ focusKey }: PanelProps) {
         <SectionCard title="Cursor">
           <div ref={fieldRef("cursor_hide_timeout")}>
             <SliderRow
+              configKey="cursor_hide_timeout"
               label="Cursor Hide Timeout"
               description="Auto-hide the cursor after this many seconds of inactivity. Set to 0 to never auto-hide. Mango range: 0–36000."
               value={cursorTimeout}
-              min={0}
-              max={600}
               unit=" s"
               onChange={(v) => setValue("cursor_hide_timeout", String(v))}
             />

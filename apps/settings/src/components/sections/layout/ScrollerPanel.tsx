@@ -3,8 +3,8 @@ import {
   useConfigStore,
   useConfigBool,
   useConfigInt,
-  useConfigFloat,
   useConfigStr,
+  useGlobalFloat,
 } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
@@ -40,14 +40,14 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const defaultProportion = useConfigFloat("scroller_default_proportion", undefined, 0.1, 1.0);
-  const defaultSingle = useConfigFloat("scroller_default_proportion_single", undefined, 0.1, 1.0);
+  const defaultProportion = useGlobalFloat("scroller_default_proportion");
+  const defaultSingle = useGlobalFloat("scroller_default_proportion_single");
   const ignoreSingle = useConfigBool("scroller_ignore_proportion_single");
   const focusCenter = useConfigBool("scroller_focus_center");
   const preferCenter = useConfigBool("scroller_prefer_center");
   const preferOverspread = useConfigBool("scroller_prefer_overspread");
   const pointerFocus = useConfigBool("edge_scroller_pointer_focus");
-  const allowSpeed = useConfigFloat("edge_scroller_focus_allow_speed", undefined, 0.0, 1000.0);
+  const allowSpeed = useGlobalFloat("edge_scroller_focus_allow_speed");
   const structs = useConfigInt("scroller_structs");
 
   const presetValue = useConfigStr("scroller_proportion_preset");
@@ -71,22 +71,20 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
         <SectionCard title="Proportions">
           <div ref={fieldRef("scroller_default_proportion")}>
             <SliderRow
+              configKey="scroller_default_proportion"
               label="Default Proportion"
               description="Default proportion of the container occupied by each tiled window."
               value={defaultProportion}
-              min={0.1}
-              max={1.0}
               step={0.05}
               onChange={(v) => setValue("scroller_default_proportion", v.toFixed(2))}
             />
           </div>
           <div ref={fieldRef("scroller_default_proportion_single")}>
             <SliderRow
+              configKey="scroller_default_proportion_single"
               label="Single Window Proportion"
               description="Proportion when there is only one window on the tag."
               value={defaultSingle}
-              min={0.1}
-              max={1.0}
               step={0.05}
               onChange={(v) => setValue("scroller_default_proportion_single", v.toFixed(2))}
             />
@@ -152,11 +150,10 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("edge_scroller_focus_allow_speed")}>
             <SliderRow
+              configKey="edge_scroller_focus_allow_speed"
               label="Focus Allow Speed"
               description="Maximum pointer speed for edge-triggered focus changes (0 = always allowed)."
               value={allowSpeed}
-              min={0}
-              max={1000}
               step={1}
               onChange={(v) => setValue("edge_scroller_focus_allow_speed", String(v))}
             />
@@ -168,11 +165,10 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
         <SectionCard title="Structs">
           <div ref={fieldRef("scroller_structs")}>
             <SliderRow
+              configKey="scroller_structs"
               label="Scroller Structs"
               description="Number of structural positions available in the scroller."
               value={structs}
-              min={0}
-              max={100}
               step={1}
               onChange={(v) => setValue("scroller_structs", String(Math.round(v)))}
             />

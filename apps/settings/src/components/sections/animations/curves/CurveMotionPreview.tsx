@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useConfigBool, useConfigStr, useConfigInt, useConfigFloat } from "@/lib/config/store";
+import { useConfigBool, useConfigStr, useGlobalInt, useGlobalFloat } from "@/lib/config/store";
 import { parseCurve } from "@/lib/curve";
 import type { BezierValue } from "@/lib/curve";
 import { toCss } from "@/lib/color-utils";
@@ -37,20 +37,20 @@ export function CurveMotionPreview({ curveKey, curve }: { curveKey: string; curv
   const animationsOn = useConfigBool("animations");
   const openType = resolveMotionType(useConfigStr("animation_type_open"));
   const closeType = resolveMotionType(useConfigStr("animation_type_close"));
-  const tagDir = useConfigInt("tag_animation_direction", undefined, 0, 1) === 1 ? 1 : 0;
-  const zoomInitial = useConfigFloat("zoom_initial_ratio", undefined, 0.1, 1.0);
-  const zoomEnd = useConfigFloat("zoom_end_ratio", undefined, 0.1, 1.0);
-  const fadeIn = useConfigFloat("fade_in_begin_opacity", undefined, 0.0, 1.0);
-  const fadeOut = useConfigFloat("fade_out_begin_opacity", undefined, 0.0, 1.0);
+  const tagDir = useGlobalInt("tag_animation_direction") === 1 ? 1 : 0;
+  const zoomInitial = useGlobalFloat("zoom_initial_ratio");
+  const zoomEnd = useGlobalFloat("zoom_end_ratio");
+  const fadeIn = useGlobalFloat("fade_in_begin_opacity");
+  const fadeOut = useGlobalFloat("fade_out_begin_opacity");
   const rootColor = useConfigStr("root_color");
   const focusColor = useConfigStr("focus_color");
   const borderColor = useConfigStr("border_color");
 
-  const durMove = useConfigInt("animation_duration_move", undefined, 1, 50000);
-  const durOpen = useConfigInt("animation_duration_open", undefined, 1, 50000);
-  const durTag = useConfigInt("animation_duration_tag", undefined, 1, 50000);
-  const durClose = useConfigInt("animation_duration_close", undefined, 1, 50000);
-  const durFocus = useConfigInt("animation_duration_focus", undefined, 1, 50000);
+  const durMove = useGlobalInt("animation_duration_move");
+  const durOpen = useGlobalInt("animation_duration_open");
+  const durTag = useGlobalInt("animation_duration_tag");
+  const durClose = useGlobalInt("animation_duration_close");
+  const durFocus = useGlobalInt("animation_duration_focus");
 
   const rawMove = useConfigStr("animation_curve_move");
   const rawOpen = useConfigStr("animation_curve_open");
