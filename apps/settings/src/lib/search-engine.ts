@@ -1,14 +1,14 @@
 import MiniSearch from "minisearch";
-import { GLOBALS } from "@mangowm.github.io/schema";
+import { DIRECTIVES, GLOBALS } from "@mangowm.github.io/schema";
 import { useRef, useEffect, useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useConfigStore } from "./config/store";
 import { SECTIONS } from "./presentation/sections";
 import type { ConfigData } from "./config/types";
 import type { DynamicIndexSource, DynamicSearchItem } from "./presentation/section-types";
-import { parseKeybindings, ALL_BIND_VARIANTS } from "./keybind-parse";
+import { parseKeybindings, ALL_BIND_VARIANTS, NON_KEYBOARD_KEYS } from "./keybind-parse";
 import { DISPATCHER_MAP } from "./dispatchers";
-import { getOverridesForRuleType, RULE_LABELS } from "./rules/metadata";
+import { getOverridesForRuleType, RULE_CONFIG_KEY, RULE_LABELS } from "./rules/metadata";
 import { parseRuleString } from "@/lib/rules/parser";
 
 const FIELD_META = new Map(GLOBALS.map((option) => [option.key, option]));
@@ -96,40 +96,45 @@ const staticDocs: SearchDocument[] = SECTIONS.flatMap((section) => {
 
 ms.addAll(staticDocs);
 
-const RULE_CONFIG_KEY = {
-  windowrule: "window_rule",
-  monitorrule: "monitor_rule",
-  tagrule: "tag_rule",
-  layerrule: "layer_rule",
-} as const;
+const DIRECTIVE_META = new Map(DIRECTIVES.map((directive) => [directive.key, directive]));
+const execOnce = DIRECTIVE_META.get("exec_once");
+const exec = DIRECTIVE_META.get("exec");
 
 const DYNAMIC_SOURCES: DynamicIndexSource[] = [
-  {
-    sourceId: "exec_once",
-    watchKeys: ["exec_once"],
-    buildItems: (data) =>
-      (data["exec_once"] ?? []).map((cmd, i) => ({
-        id: `exec_once:${i}`,
-        label: cmd,
-        description: "Runs once on compositor launch",
-        sectionLabel: "Autostart",
-        sectionId: "autostart",
-        configKey: "exec_once",
-      })),
-  },
-  {
-    sourceId: "exec",
-    watchKeys: ["exec"],
-    buildItems: (data) =>
-      (data["exec"] ?? []).map((cmd, i) => ({
-        id: `exec:${i}`,
-        label: cmd,
-        description: "Runs on every config reload",
-        sectionLabel: "Autostart",
-        sectionId: "autostart",
-        configKey: "exec",
-      })),
-  },
+  ...(execOnce
+    ? [
+        {
+          sourceId: execOnce.key,
+          watchKeys: [execOnce.key],
+          buildItems: (data: ConfigData) =>
+            (data[execOnce.key] ?? []).map((cmd, i) => ({
+              id: `${execOnce.key}:${i}`,
+              label: cmd,
+              description: execOnce.description,
+              sectionLabel: "Autostart",
+              sectionId: "autostart",
+              configKey: execOnce.key,
+            })),
+        },
+      ]
+    : []),
+  ...(exec
+    ? [
+        {
+          sourceId: exec.key,
+          watchKeys: [exec.key],
+          buildItems: (data: ConfigData) =>
+            (data[exec.key] ?? []).map((cmd, i) => ({
+              id: `${exec.key}:${i}`,
+              label: cmd,
+              description: exec.description,
+              sectionLabel: "Autostart",
+              sectionId: "autostart",
+              configKey: exec.key,
+            })),
+        },
+      ]
+    : []),
   {
     sourceId: "env",
     watchKeys: ["env"],
@@ -150,7 +155,7 @@ const DYNAMIC_SOURCES: DynamicIndexSource[] = [
   },
   {
     sourceId: "bindings",
-    watchKeys: [...ALL_BIND_VARIANTS, "mousebind", "axisbind", "switchbind", "gesturebind"],
+    watchKeys: [...ALL_BIND_VARIANTS, ...NON_KEYBOARD_KEYS],
     buildItems: (data) =>
       parseKeybindings(data).map((b, i) => {
         const prefix = b.type === "keyboard" ? "keybind" : b.type;

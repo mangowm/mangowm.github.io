@@ -2,19 +2,13 @@ import { useCallback } from "react";
 
 import { useConfigStore } from "@/lib/config/store";
 import { parseRuleString, serializeRule } from "@/lib/rules/parser";
+import { RULE_CONFIG_KEY } from "@/lib/rules/metadata";
 import type { ParsedRule, RuleType } from "@/lib/rules/types";
 
 export type { ParsedRule, RuleType };
 
-const CONFIG_KEY: Record<RuleType, string> = {
-  windowrule: "window_rule",
-  monitorrule: "monitor_rule",
-  tagrule: "tag_rule",
-  layerrule: "layer_rule",
-};
-
 export function useRules(ruleType: RuleType) {
-  const key = CONFIG_KEY[ruleType];
+  const key = RULE_CONFIG_KEY[ruleType];
   const rawRules = useConfigStore((state) => state.data[key]) ?? [];
   const addEntry = useConfigStore((state) => state.addEntry);
   const updateEntry = useConfigStore((state) => state.updateEntry);

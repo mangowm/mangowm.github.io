@@ -3,7 +3,7 @@ import { LAYOUTS, RULES, type RuleDef, type RuleFieldDef } from "@mangowm.github
 import { TAG_NUMBERS } from "../../dispatchers/types";
 import type { OverrideMeta, OverrideValueType, RuleType } from "../types";
 
-const RULE_KEY: Record<RuleType, RuleDef["key"]> = {
+export const RULE_CONFIG_KEY: Record<RuleType, RuleDef["key"]> = {
   windowrule: "window_rule",
   monitorrule: "monitor_rule",
   tagrule: "tag_rule",
@@ -172,8 +172,8 @@ const UI_OVERRIDES: Record<RuleType, Record<string, OverrideUi>> = {
 };
 
 function ruleDef(type: RuleType): RuleDef {
-  const rule = RULES.find((candidate) => candidate.key === RULE_KEY[type]);
-  if (!rule) throw new Error(`Missing schema rule ${RULE_KEY[type]}`);
+  const rule = RULES.find((candidate) => candidate.key === RULE_CONFIG_KEY[type]);
+  if (!rule) throw new Error(`Missing schema rule ${RULE_CONFIG_KEY[type]}`);
   return rule;
 }
 
