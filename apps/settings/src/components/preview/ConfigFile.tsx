@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Editor } from "@pierre/diffs/edit";
 import { EditProvider, File, type EditorFactory } from "@pierre/diffs/react";
 
-import { validateText, type SyntaxIssue } from "@/lib/config/syntax";
+import { validateText, type ValidationIssue } from "@mangowm.github.io/config";
 import type { FileFormat } from "@/lib/config/types";
 
 const createEditor: EditorFactory<undefined, undefined> = (type, options, key) =>
@@ -14,7 +14,7 @@ export interface ConfigFileProps {
   name: string;
   contents: string;
   onCommit?: (contents: string) => void;
-  onIssues?: (issues: SyntaxIssue[]) => void;
+  onIssues?: (issues: ValidationIssue[]) => void;
 }
 
 function languageOf(name: string): "ini" | "toml" {

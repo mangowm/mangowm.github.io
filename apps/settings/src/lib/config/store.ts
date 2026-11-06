@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { temporal } from "zundo";
-import { applyChange, parseOption, type Change } from "@mangowm.github.io/config";
+import { applyChange, parseOption, validateText, type Change } from "@mangowm.github.io/config";
 import { getHost, isTauri } from "../platform";
 import type { RawConfigFile } from "../platform";
 import { type ConfigData, type FileFormat, type SourceFile, countLines } from "./types";
@@ -12,7 +12,6 @@ import {
   parseDocument,
   serializeConfig,
 } from "./parse";
-import { validateText } from "./syntax";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./helpers";
 import { convertDocument, convertFile, convertName } from "./convert";
 import { DEFAULTS } from "./defaults";

@@ -9,7 +9,7 @@ import {
   FolderOpenIcon,
 } from "lucide-react";
 import { useConfigStore } from "@/lib/config/store";
-import type { SyntaxIssue } from "@/lib/config/syntax";
+import type { ValidationIssue } from "@mangowm.github.io/config";
 import type { SourceFile } from "@/lib/config/types";
 import { ConfigDiff } from "@/components/preview/ConfigDiff";
 import { ConfigFile } from "@/components/preview/ConfigFile";
@@ -162,12 +162,12 @@ export function ConfigPreviewer({ resolveSection, onOpenSection }: ConfigPreview
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [diffing, setDiffing] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [issues, setIssues] = useState<SyntaxIssue[]>([]);
+  const [issues, setIssues] = useState<ValidationIssue[]>([]);
 
   const invalid = issues.some((issue) => issue.severity === "error");
   const firstIssue = issues[0];
   const suggestion = resolveSection?.(firstIssue?.key);
-  const handleIssues = useCallback((next: SyntaxIssue[]) => setIssues(next), []);
+  const handleIssues = useCallback((next: ValidationIssue[]) => setIssues(next), []);
 
   const rootDir = commonAncestorDir(files.map((f) => f.absPath));
   const tree = buildTree(files, rootDir);
