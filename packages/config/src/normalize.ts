@@ -22,11 +22,32 @@ import type {
 } from "./types";
 import { parseOption } from "./value";
 
+export type WarningSeverity = "error" | "warning";
+
+export type WarningCode =
+  | "unknown-option"
+  | "unknown-section"
+  | "unknown-rule-field"
+  | "invalid-value"
+  | "invalid-variable"
+  | "duplicate-binding"
+  | "reserved-binding"
+  | "clamped";
+
 /** A recoverable problem in the source text. */
 export interface Warning {
   message: string;
   at: SourceLocation;
+  severity: WarningSeverity;
+  code: WarningCode;
 }
+
+export type WarnFn = (
+  message: string,
+  at: SourceLocation,
+  code?: WarningCode,
+  severity?: WarningSeverity,
+) => void;
 
 /** The canonical config plus every warning collected while normalizing. */
 export interface NormalizedConfig {
@@ -80,11 +101,11 @@ function placeAction(
   flags: BindingFlags,
   trigger: string,
   action: Action,
-  warn: (message: string, at: SourceLocation) => void,
+  warn: WarnFn,
   at: SourceLocation,
 ): void {
   if (RESERVED_TRIGGERS.has(trigger)) {
-    warn(`"${trigger}" is a reserved binding name`, at);
+    warn(`"${trigger}" is a reserved binding name`, at, "reserved-binding");
     return;
   }
 
@@ -104,7 +125,7 @@ function placeAction(
   }
 
   if (existing !== undefined) {
-    warn(`duplicate binding "${trigger}"`, at);
+    warn(`duplicate binding "${trigger}"`, at, "duplicate-binding");
   }
 
   node[trigger] = [action];
@@ -114,7 +135,7 @@ function placeBinding(
   config: CanonicalConfig,
   mode: string,
   binding: ParsedBinding,
-  warn: (message: string, at: SourceLocation) => void,
+  warn: WarnFn,
   at: SourceLocation,
 ): void {
   placeAction(
@@ -169,7 +190,7 @@ function applyGlobal(
   key: string,
   value: string,
   at: SourceLocation,
-  warn: (message: string, at: SourceLocation) => void,
+  warn: WarnFn,
 ): void {
   if (DIRECTIVES.has(key)) {
     addDirective(config, key, value);
@@ -178,7 +199,7 @@ function applyGlobal(
 
   const def = GLOBAL_BY_KEY.get(key);
   if (!def) {
-    warn(`unknown option "${key}"`, at);
+    warn(`unknown option "${key}"`, at, "unknown-option", "warning");
     return;
   }
 
@@ -186,7 +207,7 @@ function applyGlobal(
     const [parsed, clamped] = clampOption(parseOption(value, def), def);
     (config.global ??= {})[key] = parsed;
     if (clamped) {
-      warn(`${key} clamped to ${JSON.stringify(parsed)}`, at);
+      warn(`${key} clamped to ${JSON.stringify(parsed)}`, at, "clamped", "warning");
     }
   } catch (error) {
     warn(error instanceof Error ? error.message : String(error), at);
@@ -197,7 +218,8 @@ function applyGlobal(
 export function normalizeConf(document: ConfigDocument): NormalizedConfig {
   const config: CanonicalConfig = {};
   const warnings: Warning[] = [];
-  const warn = (message: string, at: SourceLocation) => warnings.push({ message, at });
+  const warn: WarnFn = (message, at, code = "invalid-value", severity = "error") =>
+    warnings.push({ message, at, code, severity });
   let mode = "default";
 
   for (const node of document.nodes) {
@@ -212,13 +234,13 @@ export function normalizeConf(document: ConfigDocument): NormalizedConfig {
     if (key === "env" || key === "var") {
       const pair = splitPair(node.value);
       if (!pair) {
-        warn(`expected name,value in ${key}`, node.at);
+        warn(`expected name,value in ${key}`, node.at, "invalid-value");
         continue;
       }
       const [name, value] = pair;
       if (key === "var") {
         if (!VARIABLE_NAME.test(name)) {
-          warn(`invalid variable name "${name}"`, node.at);
+          warn(`invalid variable name "${name}"`, node.at, "invalid-variable");
           continue;
         }
         (config.var ??= {})[name] = value;
@@ -231,7 +253,15 @@ export function normalizeConf(document: ConfigDocument): NormalizedConfig {
     const rule = RULE_BY_KEY.get(key);
     if (rule) {
       const parsed = parseRule(rule, node.value);
-      for (const message of parsed.warnings) warn(message, node.at);
+      for (const message of parsed.warnings) {
+        const unknown = message.startsWith("unknown ");
+        warn(
+          message,
+          node.at,
+          unknown ? "unknown-rule-field" : "invalid-value",
+          unknown ? "warning" : "error",
+        );
+      }
       if (Object.keys(parsed.record).length > 0) {
         const rules = (config.rule ??= {});
         (rules[parsed.key] ??= []).push(parsed.record);
@@ -258,7 +288,8 @@ export function normalizeConf(document: ConfigDocument): NormalizedConfig {
 export function normalizeToml(document: ConfigDocument): NormalizedConfig {
   const config: CanonicalConfig = {};
   const warnings: Warning[] = [];
-  const warn = (message: string, at: SourceLocation) => warnings.push({ message, at });
+  const warn: WarnFn = (message, at, code = "invalid-value", severity = "error") =>
+    warnings.push({ message, at, code, severity });
   let rule: { key: RuleKey; record: RuleRecord } | null = null;
 
   const flushRule = () => {
@@ -291,7 +322,7 @@ export function normalizeToml(document: ConfigDocument): NormalizedConfig {
 
     if (head === "env" || head === "var") {
       if (head === "var" && !VARIABLE_NAME.test(second)) {
-        warn(`invalid variable name "${second}"`, node.at);
+        warn(`invalid variable name "${second}"`, node.at, "invalid-variable");
         continue;
       }
       if (head === "env") {
@@ -308,7 +339,7 @@ export function normalizeToml(document: ConfigDocument): NormalizedConfig {
       const field = definition?.fields.find((candidate) => candidate.key === fieldKey);
 
       if (!definition || !field) {
-        warn(`unknown rule field "${fieldKey}"`, node.at);
+        warn(`unknown rule field "${fieldKey}"`, node.at, "unknown-rule-field", "warning");
         continue;
       }
 
@@ -327,7 +358,7 @@ export function normalizeToml(document: ConfigDocument): NormalizedConfig {
 
     const kind = KIND_BY_SECTION[head];
     if (!kind) {
-      warn(`unknown section "${head}"`, node.at);
+      warn(`unknown section "${head}"`, node.at, "unknown-section", "warning");
       continue;
     }
 
@@ -345,7 +376,7 @@ export function normalizeToml(document: ConfigDocument): NormalizedConfig {
       if (segment in flags) {
         flags[segment as keyof BindingFlags] = true;
       } else {
-        warn(`unknown binding flag "${segment}"`, node.at);
+        warn(`unknown binding flag "${segment}"`, node.at, "invalid-value");
       }
     }
 

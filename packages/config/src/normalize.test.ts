@@ -96,7 +96,12 @@ describe("normalizeConf", () => {
     const { warnings } = normalizeConf(parseConf("blur=1\nnope=2\n", "mango.conf"));
 
     expect(warnings).toEqual([
-      { message: 'unknown option "nope"', at: { file: "mango.conf", line: 2 } },
+      {
+        message: 'unknown option "nope"',
+        at: { file: "mango.conf", line: 2 },
+        severity: "warning",
+        code: "unknown-option",
+      },
     ]);
   });
 
