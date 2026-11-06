@@ -1,13 +1,17 @@
+import {
+  bindKeyword,
+  bindingKind,
+  formatBinding,
+  parseBinding,
+  parseFlags,
+  type Action,
+  type BindingFlags,
+  type BindingKind,
+  type ParsedBinding,
+} from "@mangowm.github.io/config";
+
 import type { ConfigData, ConfigLine, SourceFile } from "./config/types";
 import type { Keybinding, KeybindFlags, BindingType } from "./keybind-types";
-
-type TokenResult = {
-  mods: string;
-  trigger: string;
-  func: string;
-  args: string;
-  fingers?: string;
-};
 
 /** Stable hash of (keyword, type, mods, trigger, func, args, fingers). */
 export function makeBindingId(
@@ -28,106 +32,117 @@ export function makeBindingId(
   return (h >>> 0).toString(36);
 }
 
-const BIND_KEY_RE = /^bind[slrpc]*$/;
-const MOUSEBIND_KEY = "mousebind";
-const AXISBIND_KEY = "axisbind";
-const SWITCHBIND_KEY = "switchbind";
-const GESTUREBIND_KEY = "gesturebind";
-
-export const NON_KEYBOARD_KEYS = [
-  MOUSEBIND_KEY,
-  AXISBIND_KEY,
-  SWITCHBIND_KEY,
-  GESTUREBIND_KEY,
-] as const;
-
-/** All 32 canonical bind key variants (s→l→r→p→c flag order). */
-export const ALL_BIND_VARIANTS: readonly string[] = (() => {
-  const letters = ["s", "l", "r", "p", "c"] as const;
-  const keys: string[] = ["bind"];
-  for (let mask = 1; mask < 32; mask++) {
-    let key = "bind";
-    for (let i = 0; i < 5; i++) {
-      if (mask & (1 << i)) key += letters[i];
-    }
-    keys.push(key);
-  }
-  return keys;
-})();
-
-export function isBindKey(key: string): boolean {
-  return BIND_KEY_RE.test(key);
-}
-
-export function isMouseBindKey(key: string): boolean {
-  return key === MOUSEBIND_KEY;
-}
-
-export function isAxisBindKey(key: string): boolean {
-  return key === AXISBIND_KEY;
-}
-
-export function isSwitchBindKey(key: string): boolean {
-  return key === SWITCHBIND_KEY;
-}
-
-export function isGestureBindKey(key: string): boolean {
-  return key === GESTUREBIND_KEY;
-}
-
-export function isNonKeyboardBindKey(key: string): boolean {
-  return (NON_KEYBOARD_KEYS as readonly string[]).includes(key);
-}
-
-const KEYWORD_TO_TYPE: Record<string, BindingType> = {
-  mousebind: "mouse",
-  axisbind: "axis",
-  switchbind: "switch",
-  gesturebind: "gesture",
+const EMPTY_FLAGS: BindingFlags = {
+  sym: false,
+  lock: false,
+  release: false,
+  pass: false,
+  conflict: false,
 };
 
-export function detectBindingType(keyword: string): BindingType {
-  return KEYWORD_TO_TYPE[keyword] ?? "keyboard";
+const KIND_BY_TYPE: Record<BindingType, BindingKind> = {
+  keyboard: "key",
+  mouse: "mouse",
+  axis: "axis",
+  switch: "switch",
+  gesture: "gesture",
+};
+
+function keywordForKind(kind: BindingKind): string {
+  return bindKeyword({
+    kind,
+    flags: EMPTY_FLAGS,
+    mods: "",
+    trigger: "",
+    fingers: "",
+    action: { dispatcher: "" },
+  });
 }
 
 export const TYPE_TO_KEYWORD: Record<BindingType, string> = {
-  keyboard: "bind",
-  mouse: "mousebind",
-  axis: "axisbind",
-  switch: "switchbind",
-  gesture: "gesturebind",
+  keyboard: keywordForKind("key"),
+  mouse: keywordForKind("mouse"),
+  axis: keywordForKind("axis"),
+  switch: keywordForKind("switch"),
+  gesture: keywordForKind("gesture"),
 };
 
-/**
- * Tokenise a comma-separated binding value.
- * Structure varies by type:
- *   keyboard/mouse/axis: mods, trigger, func, args…
- *   switch:              trigger (no mods), func, args…
- *   gesture:             mods, motion, fingers, func, args…
- */
-function tokenizeBinding(keyword: string, value: string): TokenResult | null {
-  const parts = value.split(",");
-  const type = detectBindingType(keyword);
+export const NON_KEYBOARD_KEYS: readonly string[] = (
+  ["mouse", "axis", "switch", "gesture"] as BindingKind[]
+).map(keywordForKind);
 
-  switch (type) {
-    case "switch": {
-      if (parts.length < 2) return null;
-      return { mods: "none", trigger: parts[0], func: parts[1], args: parts.slice(2).join(",") };
-    }
-    case "gesture": {
-      if (parts.length < 4) return null;
-      return {
-        mods: parts[0],
-        trigger: parts[1],
-        func: parts[3],
-        args: parts.slice(4).join(","),
-        fingers: parts[2],
-      };
-    }
-    default: {
-      if (parts.length < 3) return null;
-      return { mods: parts[0], trigger: parts[1], func: parts[2], args: parts.slice(3).join(",") };
-    }
+/** All 32 canonical bind key variants (s→l→r→p→c flag order). */
+export const ALL_BIND_VARIANTS: readonly string[] = Array.from({ length: 32 }, (_, mask) =>
+  bindKeyword({
+    kind: "key",
+    flags: {
+      sym: Boolean(mask & 1),
+      lock: Boolean(mask & 2),
+      release: Boolean(mask & 4),
+      pass: Boolean(mask & 8),
+      conflict: Boolean(mask & 16),
+    },
+    mods: "",
+    trigger: "",
+    fingers: "",
+    action: { dispatcher: "" },
+  }),
+);
+
+export function isBindKey(key: string): boolean {
+  try {
+    return bindingKind(key) === "key";
+  } catch {
+    return false;
+  }
+}
+
+export function isMouseBindKey(key: string): boolean {
+  try {
+    return bindingKind(key) === "mouse";
+  } catch {
+    return false;
+  }
+}
+
+export function isAxisBindKey(key: string): boolean {
+  try {
+    return bindingKind(key) === "axis";
+  } catch {
+    return false;
+  }
+}
+
+export function isSwitchBindKey(key: string): boolean {
+  try {
+    return bindingKind(key) === "switch";
+  } catch {
+    return false;
+  }
+}
+
+export function isGestureBindKey(key: string): boolean {
+  try {
+    return bindingKind(key) === "gesture";
+  } catch {
+    return false;
+  }
+}
+
+export function isNonKeyboardBindKey(key: string): boolean {
+  try {
+    return bindingKind(key) !== "key";
+  } catch {
+    return false;
+  }
+}
+
+export function detectBindingType(keyword: string): BindingType {
+  try {
+    const kind = bindingKind(keyword);
+    return kind === "key" ? "keyboard" : kind;
+  } catch {
+    return "keyboard";
   }
 }
 
@@ -137,50 +152,59 @@ export function parseSingleBinding(
   value: string,
   mode = "default",
 ): Keybinding | null {
-  const tokens = tokenizeBinding(keyword, value);
-  if (!tokens) return null;
+  let parsed: ParsedBinding;
 
-  const type = detectBindingType(keyword);
-  const isKbd = type === "keyboard";
+  try {
+    parsed = parseBinding(keyword, value);
+  } catch {
+    return null;
+  }
+
+  const type = parsed.kind === "key" ? "keyboard" : parsed.kind;
+  const action = parsed.action;
+  const func = "dispatcher" in action ? action.dispatcher : `$${action.variable}`;
+  const args = action.args ?? "";
 
   return {
-    id: makeBindingId(
-      keyword,
-      type,
-      tokens.mods,
-      tokens.trigger,
-      tokens.func,
-      tokens.args,
-      tokens.fingers ?? "",
-    ),
+    id: makeBindingId(keyword, type, parsed.mods, parsed.trigger, func, args, parsed.fingers),
     keyword,
     ordinal,
     type,
-    mods: tokens.mods,
-    key: tokens.trigger,
-    func: tokens.func,
-    args: tokens.args,
+    mods: parsed.kind === "switch" ? "none" : parsed.mods,
+    key: parsed.trigger,
+    func,
+    args,
     mode,
-    flags: isKbd
-      ? parseFlagsFromKey(keyword)
-      : { symOnly: false, onLock: false, onRelease: false, pass: false, allowConflict: false },
-    fingers: tokens.fingers ?? "",
+    flags: {
+      symOnly: parsed.flags.sym,
+      onLock: parsed.flags.lock,
+      onRelease: parsed.flags.release,
+      pass: parsed.flags.pass,
+      allowConflict: parsed.flags.conflict,
+    },
+    fingers: parsed.fingers,
   };
 }
 
 export function serializeBinding(b: Keybinding): string {
-  const parts: string[] = [];
+  const action: Action = b.func.startsWith("$")
+    ? { variable: b.func.slice(1), ...(b.args ? { args: b.args } : {}) }
+    : { dispatcher: b.func, ...(b.args ? { args: b.args } : {}) };
 
-  if (b.type === "switch") {
-    parts.push(b.key, b.func);
-  } else if (b.type === "gesture") {
-    parts.push(b.mods, b.key, b.fingers || "3", b.func);
-  } else {
-    parts.push(b.mods, b.key, b.func);
-  }
-
-  if (b.args) parts.push(b.args);
-  return parts.join(",");
+  return formatBinding({
+    kind: KIND_BY_TYPE[b.type],
+    flags: {
+      sym: b.flags.symOnly,
+      lock: b.flags.onLock,
+      release: b.flags.onRelease,
+      pass: b.flags.pass,
+      conflict: b.flags.allowConflict,
+    },
+    mods: b.mods,
+    trigger: b.key,
+    fingers: b.fingers,
+    action,
+  });
 }
 
 /** Parse bindings from a flat ConfigData map (mode-less, for search engine). */
@@ -273,25 +297,42 @@ export function findInsertPosition(
 
 /** Build a bind keyword from flags, e.g. { symOnly: true, onRelease: true } → "bindsr". */
 export function bindKeyFromFlags(flags: KeybindFlags): string {
-  let key = "bind";
-  if (flags.symOnly) key += "s";
-  if (flags.onLock) key += "l";
-  if (flags.onRelease) key += "r";
-  if (flags.pass) key += "p";
-  if (flags.allowConflict) key += "c";
-  return key;
+  return bindKeyword({
+    kind: "key",
+    flags: {
+      sym: flags.symOnly,
+      lock: flags.onLock,
+      release: flags.onRelease,
+      pass: flags.pass,
+      conflict: flags.allowConflict,
+    },
+    mods: "",
+    trigger: "",
+    fingers: "",
+    action: { dispatcher: "" },
+  });
 }
 
 /** Parse a bind keyword into flags, e.g. "bindsr" → { symOnly: true, onRelease: true, … }. */
 export function parseFlagsFromKey(key: string): KeybindFlags {
-  const suffix = key.startsWith("bind") ? key.slice(4) : "";
-  return {
-    symOnly: suffix.includes("s"),
-    onLock: suffix.includes("l"),
-    onRelease: suffix.includes("r"),
-    pass: suffix.includes("p"),
-    allowConflict: suffix.includes("c"),
-  };
+  try {
+    const flags = parseFlags(key);
+    return {
+      symOnly: flags.sym,
+      onLock: flags.lock,
+      onRelease: flags.release,
+      pass: flags.pass,
+      allowConflict: flags.conflict,
+    };
+  } catch {
+    return {
+      symOnly: false,
+      onLock: false,
+      onRelease: false,
+      pass: false,
+      allowConflict: false,
+    };
+  }
 }
 
 /**
