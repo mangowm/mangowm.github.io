@@ -9,7 +9,7 @@ export const windowRulesMeta: SectionMeta = {
   parentId: "rules",
   panel: WindowRulesPanel,
   keywords: [
-    "appid",
+    "app_id",
     "title",
     "floating",
     "fullscreen",

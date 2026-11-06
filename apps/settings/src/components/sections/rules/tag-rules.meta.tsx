@@ -8,5 +8,14 @@ export const tagRulesMeta: SectionMeta = {
   icon: <Tags />,
   parentId: "rules",
   panel: TagRulesPanel,
-  keywords: ["tag", "workspace", "layout", "nmaster", "mfact", "floating", "border", "hide"],
+  keywords: [
+    "tag",
+    "workspace",
+    "layout",
+    "master_count",
+    "master_factor",
+    "floating",
+    "border",
+    "hide",
+  ],
 };
