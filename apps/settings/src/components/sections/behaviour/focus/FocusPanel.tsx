@@ -33,24 +33,17 @@ export function FocusPanel({ focusKey }: PanelProps) {
         <SectionCard title="Behaviour">
           <div ref={fieldRef("sloppy_focus")}>
             <ToggleRow
-              label="Sloppy Focus"
-              description="Focus follows the mouse: moving the pointer into a window focuses it without clicking. When disabled, you must click to focus."
+              configKey="sloppy_focus"
               value={sloppy_focus}
               onChange={tb("sloppy_focus")}
             />
           </div>
           <div ref={fieldRef("warp_cursor")}>
-            <ToggleRow
-              label="Warp Cursor"
-              description="Teleport the cursor to the centre of the newly focused window."
-              value={warp_cursor}
-              onChange={tb("warp_cursor")}
-            />
+            <ToggleRow configKey="warp_cursor" value={warp_cursor} onChange={tb("warp_cursor")} />
           </div>
           <div ref={fieldRef("focus_on_activate")}>
             <ToggleRow
-              label="Focus on Activate"
-              description="When a window requests activation (urgency hint, xdg-activate), it receives focus immediately."
+              configKey="focus_on_activate"
               value={focusOnActivate}
               onChange={tb("focus_on_activate")}
             />
@@ -62,24 +55,21 @@ export function FocusPanel({ focusKey }: PanelProps) {
         <SectionCard title="Cross-Monitor">
           <div ref={fieldRef("focus_cross_monitor")}>
             <ToggleRow
-              label="Cross-Monitor Focus"
-              description="Allow directional focus changes (focusdir, focusstack) to move between monitors."
+              configKey="focus_cross_monitor"
               value={focusCrossMon}
               onChange={tb("focus_cross_monitor")}
             />
           </div>
           <div ref={fieldRef("exchange_cross_monitor")}>
             <ToggleRow
-              label="Cross-Monitor Exchange"
-              description="Allow swapping window positions between different monitors."
+              configKey="exchange_cross_monitor"
               value={exchangeCrossMon}
               onChange={tb("exchange_cross_monitor")}
             />
           </div>
           <div ref={fieldRef("focus_cross_tag")}>
             <ToggleRow
-              label="Cross-Tag Focus"
-              description="Allow focus to move between windows on different tags."
+              configKey="focus_cross_tag"
               value={focusCrossTag}
               onChange={tb("focus_cross_tag")}
             />

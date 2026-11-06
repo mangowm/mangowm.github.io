@@ -31,8 +31,7 @@ export function IdlePanel({ focusKey }: PanelProps) {
         <SectionCard title="Screen Blanking">
           <div ref={fieldRef("idle_inhibit_ignore_visible")}>
             <ToggleRow
-              label="Idle Inhibit Ignore Visible"
-              description="Only fullscreen windows may inhibit the idle inhibitor (DPMS/screen blanking). Requests from tiled or floating windows are ignored."
+              configKey="idle_inhibit_ignore_visible"
               value={idleInhibitIgnore}
               onChange={tb("idle_inhibit_ignore_visible")}
             />
@@ -45,8 +44,6 @@ export function IdlePanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("cursor_hide_timeout")}>
             <SliderRow
               configKey="cursor_hide_timeout"
-              label="Cursor Hide Timeout"
-              description="Auto-hide the cursor after this many seconds of inactivity. Set to 0 to never auto-hide. Mango range: 0–36000."
               value={cursorTimeout}
               unit=" s"
               onChange={(v) => setValue("cursor_hide_timeout", String(v))}
@@ -54,8 +51,7 @@ export function IdlePanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("cursor_hide_on_keypress")}>
             <ToggleRow
-              label="Hide Cursor on Keypress"
-              description="Automatically hide the cursor whenever any keyboard key is pressed. The cursor reappears on mouse movement."
+              configKey="cursor_hide_on_keypress"
               value={cursorHideKeypress}
               onChange={tb("cursor_hide_on_keypress")}
             />

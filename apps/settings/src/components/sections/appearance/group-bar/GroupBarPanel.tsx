@@ -33,8 +33,6 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("group_bar_height")}>
             <SliderRow
               configKey="group_bar_height"
-              label="Bar Height"
-              description="Height of the window group bar in pixels."
               value={barHeight}
               unit="px"
               onChange={(v) => setValue("group_bar_height", String(v))}
@@ -42,8 +40,7 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("group_bar_decorate_font_desc")}>
             <TextInputRow
-              label="Font"
-              description="Pango font description for window group labels, e.g. 'Sans 10' or 'monospace bold 11'."
+              configKey="group_bar_decorate_font_desc"
               value={fontDesc}
               placeholder="Sans 10"
               onChange={(v) => setValue("group_bar_decorate_font_desc", v)}
@@ -57,8 +54,6 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("group_bar_decorate_border_width")}>
             <SliderRow
               configKey="group_bar_decorate_border_width"
-              label="Border Width"
-              description="Thickness of the window group bar border in pixels."
               value={borderWidth}
               unit="px"
               onChange={(v) => setValue("group_bar_decorate_border_width", String(v))}
@@ -67,8 +62,6 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("group_bar_decorate_corner_radius")}>
             <SliderRow
               configKey="group_bar_decorate_corner_radius"
-              label="Corner Radius"
-              description="Rounding radius for window group bar corners."
               value={cornerRadius}
               unit="px"
               onChange={(v) => setValue("group_bar_decorate_corner_radius", String(v))}
@@ -77,8 +70,6 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("group_bar_decorate_padding_x")}>
             <SliderRow
               configKey="group_bar_decorate_padding_x"
-              label="Padding X"
-              description="Horizontal padding inside the window group bar."
               value={paddingX}
               unit="px"
               onChange={(v) => setValue("group_bar_decorate_padding_x", String(v))}
@@ -87,8 +78,6 @@ export function GroupBarPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("group_bar_decorate_padding_y")}>
             <SliderRow
               configKey="group_bar_decorate_padding_y"
-              label="Padding Y"
-              description="Vertical padding inside the window group bar."
               value={paddingY}
               unit="px"
               onChange={(v) => setValue("group_bar_decorate_padding_y", String(v))}

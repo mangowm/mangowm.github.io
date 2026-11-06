@@ -48,36 +48,28 @@ export function GeneralPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Master Controls">
           <div ref={fieldRef("animations")}>
-            <ToggleRow
-              label="Enable Animations"
-              description="Master toggle for all window animations."
-              value={animationsOn}
-              onChange={tb("animations")}
-            />
+            <ToggleRow configKey="animations" value={animationsOn} onChange={tb("animations")} />
           </div>
 
           {animationsOn ? (
             <>
               <div ref={fieldRef("layer_animations")}>
                 <ToggleRow
-                  label="Layer Animations"
-                  description="Enable animations for layer-shell surfaces (panels, notifications, etc.)."
+                  configKey="layer_animations"
                   value={layerAnimationsOn}
                   onChange={tb("layer_animations")}
                 />
               </div>
               <div ref={fieldRef("animation_fade_in")}>
                 <ToggleRow
-                  label="Fade In"
-                  description="Fade windows in when they appear."
+                  configKey="animation_fade_in"
                   value={animFadeIn}
                   onChange={tb("animation_fade_in")}
                 />
               </div>
               <div ref={fieldRef("animation_fade_out")}>
                 <ToggleRow
-                  label="Fade Out"
-                  description="Fade windows out when they close."
+                  configKey="animation_fade_out"
                   value={animFadeOut}
                   onChange={tb("animation_fade_out")}
                 />
@@ -99,8 +91,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
             <SectionCard title="Window Animation Types">
               <div ref={fieldRef("animation_type_open")}>
                 <SelectRow
-                  label="Open Animation Type"
-                  description="Animation style when a window opens."
+                  configKey="animation_type_open"
                   value={animTypeOpen}
                   options={ANIM_TYPE_OPTIONS}
                   onChange={(v) => setValue("animation_type_open", v)}
@@ -108,8 +99,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
               </div>
               <div ref={fieldRef("animation_type_close")}>
                 <SelectRow
-                  label="Close Animation Type"
-                  description="Animation style when a window closes."
+                  configKey="animation_type_close"
                   value={animTypeClose}
                   options={ANIM_TYPE_OPTIONS}
                   onChange={(v) => setValue("animation_type_close", v)}
@@ -122,8 +112,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
             <SectionCard title="Layer Animation Types">
               <div ref={fieldRef("layer_animation_type_open")}>
                 <SelectRow
-                  label="Layer Open Animation Type"
-                  description="Animation style when a layer-surface (panel, notification) opens."
+                  configKey="layer_animation_type_open"
                   value={layerAnimTypeOpen}
                   options={ANIM_TYPE_OPTIONS}
                   onChange={(v) => setValue("layer_animation_type_open", v)}
@@ -131,8 +120,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
               </div>
               <div ref={fieldRef("layer_animation_type_close")}>
                 <SelectRow
-                  label="Layer Close Animation Type"
-                  description="Animation style when a layer-surface (panel, notification) closes."
+                  configKey="layer_animation_type_close"
                   value={layerAnimTypeClose}
                   options={ANIM_TYPE_OPTIONS}
                   onChange={(v) => setValue("layer_animation_type_close", v)}
@@ -145,8 +133,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
             <SectionCard title="Tag Switch Direction">
               <div ref={fieldRef("tag_animation_direction")}>
                 <SelectRow
-                  label="Tag Animation Direction"
-                  description="Direction of the tag-switch (workspace) animation."
+                  configKey="tag_animation_direction"
                   value={tagDir}
                   options={DIRECTION_OPTIONS}
                   onChange={(v) => setValue("tag_animation_direction", v)}
@@ -159,8 +146,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
             <SectionCard title="Zoom &amp; Opacity Parameters">
               <div ref={fieldRef("zoom_initial_ratio")}>
                 <SliderRow
-                  label="Zoom Initial Ratio"
-                  description="Starting scale factor for zoom animations (0.1–1.0)."
+                  configKey="zoom_initial_ratio"
                   value={zoomInitial}
                   min={globalMin("zoom_initial_ratio") ?? 0.1}
                   max={globalMax("zoom_initial_ratio") ?? 1}
@@ -170,8 +156,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
               </div>
               <div ref={fieldRef("zoom_end_ratio")}>
                 <SliderRow
-                  label="Zoom End Ratio"
-                  description="Ending scale factor for zoom animations (0.1–1.0)."
+                  configKey="zoom_end_ratio"
                   value={zoomEnd}
                   min={globalMin("zoom_end_ratio") ?? 0.1}
                   max={globalMax("zoom_end_ratio") ?? 1}
@@ -181,8 +166,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
               </div>
               <div ref={fieldRef("fade_in_begin_opacity")}>
                 <SliderRow
-                  label="Fade In Start Opacity"
-                  description="Starting opacity for fade-in animations (0.0–1.0)."
+                  configKey="fade_in_begin_opacity"
                   value={fadeInOpacity}
                   min={globalMin("fade_in_begin_opacity") ?? 0}
                   max={globalMax("fade_in_begin_opacity") ?? 1}
@@ -192,8 +176,7 @@ export function GeneralPanel({ focusKey }: PanelProps) {
               </div>
               <div ref={fieldRef("fade_out_begin_opacity")}>
                 <SliderRow
-                  label="Fade Out Start Opacity"
-                  description="Starting opacity for fade-out animations (0.0–1.0)."
+                  configKey="fade_out_begin_opacity"
                   value={fadeOutOpacity}
                   min={globalMin("fade_out_begin_opacity") ?? 0}
                   max={globalMax("fade_out_begin_opacity") ?? 1}

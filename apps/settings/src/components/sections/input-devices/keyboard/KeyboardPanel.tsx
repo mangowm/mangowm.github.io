@@ -38,8 +38,6 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("repeat_rate")}>
             <SliderRow
               configKey="repeat_rate"
-              label="Repeat Rate"
-              description="Characters per second while a key is held. Mango range: 1–1000. (0 disables repeat.)"
               value={repeatRate}
               unit=" cps"
               onChange={(v) => setValue("repeat_rate", String(v))}
@@ -48,8 +46,6 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("repeat_delay")}>
             <SliderRow
               configKey="repeat_delay"
-              label="Repeat Delay"
-              description="Milliseconds before key repeat starts. Mango range: 1–20000."
               value={repeatDelay}
               step={50}
               unit=" ms"
@@ -63,8 +59,7 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
         <SectionCard title="Startup">
           <div ref={fieldRef("numlock_on")}>
             <ToggleRow
-              label="NumLock On Startup"
-              description="Enable NumLock when the compositor starts."
+              configKey="numlock_on"
               value={numlockOn}
               onChange={(v) => setValue("numlock_on", v ? "1" : "0")}
             />
@@ -76,8 +71,7 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
         <SectionCard title="XKB Layout">
           <div ref={fieldRef("xkb_rules_layout")}>
             <MultiTagInput
-              label="Layout"
-              description="Keyboard layout(s). Add each layout as a separate tag — e.g. 'us', 'ru', 'de'."
+              configKey="xkb_rules_layout"
               value={xkbLayout}
               tagPlaceholder="us"
               onChange={(v) => setValue("xkb_rules_layout", v)}
@@ -85,8 +79,7 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("xkb_rules_variant")}>
             <MultiTagInput
-              label="Variant"
-              description="Layout variant(s). Add one per layout — e.g. 'dvorak' for 'us', 'winkeys' for 'ru'. Leave blank for default."
+              configKey="xkb_rules_variant"
               value={xkbVariant}
               tagPlaceholder="dvorak"
               onChange={(v) => setValue("xkb_rules_variant", v)}
@@ -94,8 +87,7 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("xkb_rules_options")}>
             <MultiTagInput
-              label="Options"
-              description="XKB option(s). Add each option as a separate tag — e.g. 'ctrl:nocaps', 'compose:rwin'."
+              configKey="xkb_rules_options"
               value={xkbOptions}
               tagPlaceholder="ctrl:nocaps"
               onChange={(v) => setValue("xkb_rules_options", v)}
@@ -103,8 +95,7 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("xkb_rules_model")}>
             <TextInputRow
-              label="Model"
-              description="Keyboard model hint for XKB layout mapping."
+              configKey="xkb_rules_model"
               value={xkbModel}
               placeholder=""
               onChange={(v) => setValue("xkb_rules_model", v)}
@@ -112,8 +103,7 @@ export function KeyboardPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("xkb_rules_rules")}>
             <TextInputRow
-              label="Rules File"
-              description="XKB rules file name — usually left empty for the system default."
+              configKey="xkb_rules_rules"
               value={xkbRules}
               placeholder=""
               onChange={(v) => setValue("xkb_rules_rules", v)}

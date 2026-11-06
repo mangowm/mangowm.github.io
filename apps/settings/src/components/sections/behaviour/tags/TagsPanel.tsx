@@ -33,20 +33,13 @@ export function TagsPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("tag_num")}>
             <SliderRow
               configKey="tag_num"
-              label="Number of Tags"
-              description="How many workspaces/tags are available. Range: 1–31."
               value={tagNum}
               unit=" tags"
               onChange={(v) => setValue("tag_num", String(Math.round(v)))}
             />
           </div>
           <div ref={fieldRef("tag_gather")}>
-            <ToggleRow
-              label="Gather Tags"
-              description="Compact tags to remove gaps after windows leave tags."
-              value={tagGather}
-              onChange={tb("tag_gather")}
-            />
+            <ToggleRow configKey="tag_gather" value={tagGather} onChange={tb("tag_gather")} />
           </div>
         </SectionCard>
       </div>
@@ -54,17 +47,11 @@ export function TagsPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Navigation">
           <div ref={fieldRef("tag_carousel")}>
-            <ToggleRow
-              label="Tag Carousel"
-              description="Tags wrap around in a carousel — navigating past the last tag goes back to the first, and vice versa."
-              value={tagCarousel}
-              onChange={tb("tag_carousel")}
-            />
+            <ToggleRow configKey="tag_carousel" value={tagCarousel} onChange={tb("tag_carousel")} />
           </div>
           <div ref={fieldRef("view_current_to_back")}>
             <ToggleRow
-              label="View Current to Back"
-              description="When you try to view the currently active tag, it sends the current view to the background and switches to the previous tag."
+              configKey="view_current_to_back"
               value={viewToBack}
               onChange={tb("view_current_to_back")}
             />

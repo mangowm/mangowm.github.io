@@ -31,8 +31,6 @@ export function TimingPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("animation_duration_move")}>
             <SliderRow
               configKey="animation_duration_move"
-              label="Move / Resize"
-              description="Animation duration when a window moves or resizes."
               value={durMove}
               step={10}
               unit="ms"
@@ -42,8 +40,6 @@ export function TimingPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("animation_duration_open")}>
             <SliderRow
               configKey="animation_duration_open"
-              label="Window Open"
-              description="Animation duration when a new window opens."
               value={durOpen}
               step={10}
               unit="ms"
@@ -53,8 +49,6 @@ export function TimingPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("animation_duration_close")}>
             <SliderRow
               configKey="animation_duration_close"
-              label="Window Close"
-              description="Animation duration when a window closes."
               value={durClose}
               step={10}
               unit="ms"
@@ -64,8 +58,6 @@ export function TimingPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("animation_duration_tag")}>
             <SliderRow
               configKey="animation_duration_tag"
-              label="Tag Switch"
-              description="Animation duration when switching tags (workspaces)."
               value={durTag}
               step={10}
               unit="ms"
@@ -75,8 +67,6 @@ export function TimingPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("animation_duration_focus")}>
             <SliderRow
               configKey="animation_duration_focus"
-              label="Focus Change"
-              description="Animation duration when focus changes between windows."
               value={durFocus}
               step={10}
               unit="ms"

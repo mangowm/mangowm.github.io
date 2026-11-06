@@ -44,8 +44,7 @@ export function DragPanel({ focusKey }: PanelProps) {
         <SectionCard title="Floating Resize">
           <div ref={fieldRef("drag_corner")}>
             <SelectRow
-              label="Resize Corner"
-              description="Default corner used when resizing floating windows with the mouse. Auto picks the corner nearest to the cursor."
+              configKey="drag_corner"
               value={dragCorner}
               options={DRAG_CORNER_OPTIONS}
               onChange={(v) => setValue("drag_corner", v)}
@@ -53,8 +52,7 @@ export function DragPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("drag_warp_cursor")}>
             <ToggleRow
-              label="Warp Cursor on Drag Resize"
-              description="Move the cursor to the resize corner when initiating a mouse drag resize."
+              configKey="drag_warp_cursor"
               value={dragWarpCursor}
               onChange={tb("drag_warp_cursor")}
             />
@@ -66,16 +64,14 @@ export function DragPanel({ focusKey }: PanelProps) {
         <SectionCard title="Tile Drag">
           <div ref={fieldRef("drag_tile_to_tile")}>
             <ToggleRow
-              label="Tile-to-Tile Drag"
-              description="Allow reordering tiled windows by dragging one onto another. When disabled, tiled windows cannot be dragged."
+              configKey="drag_tile_to_tile"
               value={dragTileToTile}
               onChange={tb("drag_tile_to_tile")}
             />
           </div>
           <div ref={fieldRef("drag_tile_small")}>
             <ToggleRow
-              label="Small Tile Preview"
-              description="When dragging a tiled window, shrink it to a small thumbnail so you can see the layout underneath."
+              configKey="drag_tile_small"
               value={dragTileSmall}
               onChange={tb("drag_tile_small")}
             />
@@ -87,16 +83,14 @@ export function DragPanel({ focusKey }: PanelProps) {
         <SectionCard title="Floating Snap">
           <div ref={fieldRef("enable_floating_snap")}>
             <ToggleRow
-              label="Floating Snap"
-              description="Snap floating windows to each other and to screen edges when moved close enough."
+              configKey="enable_floating_snap"
               value={floatSnap}
               onChange={tb("enable_floating_snap")}
             />
           </div>
           <div ref={fieldRef("snap_distance")}>
             <SliderRow
-              label="Snap Distance"
-              description="Maximum distance in pixels for a floating window to snap. Mango range: 0–99999."
+              configKey="snap_distance"
               value={snapDist}
               min={globalMin("snap_distance") ?? 0}
               max={globalMax("snap_distance") ?? 200}

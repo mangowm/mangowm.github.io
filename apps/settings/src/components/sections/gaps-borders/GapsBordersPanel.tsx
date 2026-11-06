@@ -35,18 +35,11 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Window Gaps">
           <div ref={fieldRef("smart_gaps")}>
-            <ToggleRow
-              label="Smart Gaps"
-              description="Only show gaps when there are multiple windows on the same tag."
-              value={smartGaps}
-              onChange={toggle("smart_gaps")}
-            />
+            <ToggleRow configKey="smart_gaps" value={smartGaps} onChange={toggle("smart_gaps")} />
           </div>
           <div ref={fieldRef("gap_inner_horizontal")}>
             <SliderRow
               configKey="gap_inner_horizontal"
-              label="Inner Gap Horizontal"
-              description="Horizontal gap between tiled windows."
               value={innerHorizontal}
               unit="px"
               onChange={(value) => setValue("gap_inner_horizontal", String(value))}
@@ -55,8 +48,6 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("gap_inner_vertical")}>
             <SliderRow
               configKey="gap_inner_vertical"
-              label="Inner Gap Vertical"
-              description="Vertical gap between tiled windows."
               value={innerVertical}
               unit="px"
               onChange={(value) => setValue("gap_inner_vertical", String(value))}
@@ -65,8 +56,6 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("gap_outer_horizontal")}>
             <SliderRow
               configKey="gap_outer_horizontal"
-              label="Outer Gap Horizontal"
-              description="Horizontal gap between windows and screen edges."
               value={outerHorizontal}
               unit="px"
               onChange={(value) => setValue("gap_outer_horizontal", String(value))}
@@ -75,8 +64,6 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("gap_outer_vertical")}>
             <SliderRow
               configKey="gap_outer_vertical"
-              label="Outer Gap Vertical"
-              description="Vertical gap between windows and screen edges."
               value={outerVertical}
               unit="px"
               onChange={(value) => setValue("gap_outer_vertical", String(value))}
@@ -90,8 +77,6 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("border_px")}>
             <SliderRow
               configKey="border_px"
-              label="Border Width"
-              description="Thickness of window borders in pixels."
               value={borderWidth}
               unit="px"
               onChange={(value) => setValue("border_px", String(value))}
@@ -99,16 +84,14 @@ export function GapsBordersPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("no_border_when_single")}>
             <ToggleRow
-              label="Hide Border When Solo"
-              description="Remove window borders when only one window is visible on the tag."
+              configKey="no_border_when_single"
               value={noBorderSingle}
               onChange={toggle("no_border_when_single")}
             />
           </div>
           <div ref={fieldRef("no_radius_when_single")}>
             <ToggleRow
-              label="Hide Radius When Solo"
-              description="Remove corner radius when only one window is visible on the tag."
+              configKey="no_radius_when_single"
               value={noRadiusSingle}
               onChange={toggle("no_radius_when_single")}
             />

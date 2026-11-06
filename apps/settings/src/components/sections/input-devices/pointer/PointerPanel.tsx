@@ -50,8 +50,7 @@ function DeviceSection({ prefix, title, focusKey, trackpad = false }: DeviceSect
       <SectionCard title={title}>
         <div ref={fieldRef(`${prefix}_natural_scrolling`)}>
           <ToggleRow
-            label="Natural Scrolling"
-            description="Reverse scroll direction so content moves with your fingers."
+            configKey={`${prefix}_natural_scrolling`}
             value={naturalScrolling}
             onChange={toggle(`${prefix}_natural_scrolling`)}
           />
@@ -59,8 +58,7 @@ function DeviceSection({ prefix, title, focusKey, trackpad = false }: DeviceSect
 
         <div ref={fieldRef(`${prefix}_accel_profile`)}>
           <SelectRow
-            label="Acceleration Profile"
-            description="Flat keeps constant speed. Adaptive varies with velocity."
+            configKey={`${prefix}_accel_profile`}
             value={accelProfile}
             options={accelProfileOptions}
             onChange={(value) => setValue(`${prefix}_accel_profile`, value)}
@@ -69,8 +67,7 @@ function DeviceSection({ prefix, title, focusKey, trackpad = false }: DeviceSect
 
         <div ref={fieldRef(`${prefix}_accel_speed`)}>
           <SliderRow
-            label="Acceleration Speed"
-            description="Negative slows down, positive speeds up."
+            configKey={`${prefix}_accel_speed`}
             value={accelSpeed}
             min={globalMin(`${prefix}_accel_speed`) ?? -1}
             max={globalMax(`${prefix}_accel_speed`) ?? 1}
@@ -81,8 +78,7 @@ function DeviceSection({ prefix, title, focusKey, trackpad = false }: DeviceSect
 
         <div ref={fieldRef(`${prefix}_scroll_method`)}>
           <SelectRow
-            label="Scroll Method"
-            description="Two-finger, edge scrolling, or on-button-down."
+            configKey={`${prefix}_scroll_method`}
             value={scrollMethod}
             options={scrollMethodOptions}
             onChange={(value) => setValue(`${prefix}_scroll_method`, value)}
@@ -91,8 +87,7 @@ function DeviceSection({ prefix, title, focusKey, trackpad = false }: DeviceSect
 
         <div ref={fieldRef(`${prefix}_scroll_button`)}>
           <SelectRow
-            label="Scroll Button"
-            description="Button used for on-button-down scrolling."
+            configKey={`${prefix}_scroll_button`}
             value={scrollButton}
             options={scrollButtonOptions}
             onChange={(value) => setValue(`${prefix}_scroll_button`, value)}
@@ -101,8 +96,7 @@ function DeviceSection({ prefix, title, focusKey, trackpad = false }: DeviceSect
 
         <div ref={fieldRef(`${prefix}_click_method`)}>
           <SelectRow
-            label="Click Method"
-            description="How clicks are detected."
+            configKey={`${prefix}_click_method`}
             value={clickMethod}
             options={clickMethodOptions}
             onChange={(value) => setValue(`${prefix}_click_method`, value)}
@@ -111,8 +105,7 @@ function DeviceSection({ prefix, title, focusKey, trackpad = false }: DeviceSect
 
         <div ref={fieldRef(`${prefix}_send_events_mode`)}>
           <SelectRow
-            label="Send Events Mode"
-            description="When pointer events are sent to the compositor."
+            configKey={`${prefix}_send_events_mode`}
             value={sendEvents}
             options={sendEventsOptions}
             onChange={(value) => setValue(`${prefix}_send_events_mode`, value)}
@@ -121,8 +114,7 @@ function DeviceSection({ prefix, title, focusKey, trackpad = false }: DeviceSect
 
         <div ref={fieldRef(`${prefix}_left_handed`)}>
           <ToggleRow
-            label="Left Handed"
-            description="Swap the left and right buttons."
+            configKey={`${prefix}_left_handed`}
             value={leftHanded}
             onChange={toggle(`${prefix}_left_handed`)}
           />
@@ -130,8 +122,7 @@ function DeviceSection({ prefix, title, focusKey, trackpad = false }: DeviceSect
 
         <div ref={fieldRef(`${prefix}_middle_button_emulation`)}>
           <ToggleRow
-            label="Middle Button Emulation"
-            description="Emulate middle-click with the left and right buttons."
+            configKey={`${prefix}_middle_button_emulation`}
             value={middleButton}
             onChange={toggle(`${prefix}_middle_button_emulation`)}
           />
@@ -140,8 +131,7 @@ function DeviceSection({ prefix, title, focusKey, trackpad = false }: DeviceSect
         {trackpad && (
           <div ref={fieldRef("trackpad_disable_while_typing")}>
             <ToggleRow
-              label="Disable While Typing"
-              description="Temporarily disable the touchpad while typing."
+              configKey="trackpad_disable_while_typing"
               value={disableWhileTyping}
               onChange={toggle("trackpad_disable_while_typing")}
             />
@@ -174,8 +164,7 @@ export function PointerPanel({ focusKey }: PanelProps) {
         <SectionCard title="Axis">
           <div ref={fieldRef("axis_scroll_factor")}>
             <SliderRow
-              label="Axis Scroll Factor"
-              description="Multiplier for scroll wheel speed."
+              configKey="axis_scroll_factor"
               value={scrollFactor}
               min={globalMin("axis_scroll_factor") ?? 0.1}
               max={globalMax("axis_scroll_factor") ?? 10}
@@ -185,8 +174,7 @@ export function PointerPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("axis_bind_apply_timeout")}>
             <SliderRow
-              label="Axis Bind Apply Timeout"
-              description="How long a scroll axis must be held before its binding fires."
+              configKey="axis_bind_apply_timeout"
               value={axisBindTimeout}
               min={globalMin("axis_bind_apply_timeout") ?? 0}
               max={globalMax("axis_bind_apply_timeout") ?? 1000}

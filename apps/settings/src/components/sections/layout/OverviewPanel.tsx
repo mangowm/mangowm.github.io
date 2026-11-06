@@ -37,16 +37,14 @@ export function OverviewPanel({ focusKey }: PanelProps) {
         <SectionCard title="Activation">
           <div ref={fieldRef("enable_hotarea")}>
             <ToggleRow
-              label="Enable Hotarea"
-              description="Activate overview by moving the cursor to a screen corner."
+              configKey="enable_hotarea"
               value={enableHotarea}
               onChange={tb("enable_hotarea")}
             />
           </div>
           <div ref={fieldRef("hotarea_size")}>
             <SliderRow
-              label="Hotarea Size"
-              description="Size of the corner activation zone in pixels."
+              configKey="hotarea_size"
               value={hotareaSize}
               min={globalMin("hotarea_size") ?? 1}
               max={globalMax("hotarea_size") ?? 200}
@@ -58,8 +56,7 @@ export function OverviewPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("hotarea_corner")}>
             <SelectRow
-              label="Hotarea Corner"
-              description="Which screen corner triggers the overview."
+              configKey="hotarea_corner"
               value={String(hotareaCorner)}
               options={CORNER_OPTIONS}
               enabled={enableHotarea}
@@ -73,8 +70,7 @@ export function OverviewPanel({ focusKey }: PanelProps) {
         <SectionCard title="Gaps">
           <div ref={fieldRef("overview_gap_inner")}>
             <SliderRow
-              label="Inner Gap"
-              description="Gap between windows inside the overview grid."
+              configKey="overview_gap_inner"
               value={overview_gap_inner}
               min={globalMin("overview_gap_inner") ?? 0}
               max={globalMax("overview_gap_inner") ?? 200}
@@ -85,8 +81,7 @@ export function OverviewPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("overview_gap_outer")}>
             <SliderRow
-              label="Outer Gap"
-              description="Gap between the overview grid and screen edges."
+              configKey="overview_gap_outer"
               value={overview_gap_outer}
               min={globalMin("overview_gap_outer") ?? 0}
               max={globalMax("overview_gap_outer") ?? 200}

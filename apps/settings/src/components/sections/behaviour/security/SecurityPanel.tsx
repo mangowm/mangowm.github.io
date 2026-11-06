@@ -29,8 +29,7 @@ export function SecurityPanel({ focusKey }: PanelProps) {
         <SectionCard title="Keyboard">
           <div ref={fieldRef("allow_shortcuts_inhibit")}>
             <ToggleRow
-              label="Allow Shortcuts Inhibit"
-              description="When enabled, applications (games, VMs, remote desktop) can request the compositor to suspend keybindings so all key events reach the app."
+              configKey="allow_shortcuts_inhibit"
               value={shortcutsInhibit}
               onChange={tb("allow_shortcuts_inhibit")}
             />
@@ -42,8 +41,7 @@ export function SecurityPanel({ focusKey }: PanelProps) {
         <SectionCard title="Lockscreen">
           <div ref={fieldRef("allow_lock_transparent")}>
             <ToggleRow
-              label="Allow Lock Transparent"
-              description="Permit transparent or translucent lockscreen surfaces. Disable to enforce fully opaque lockscreens for privacy and security."
+              configKey="allow_lock_transparent"
               value={lockTransparent}
               onChange={tb("allow_lock_transparent")}
             />

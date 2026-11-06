@@ -32,16 +32,14 @@ export function ScratchpadPanel({ focusKey }: PanelProps) {
         <SectionCard title="Behaviour">
           <div ref={fieldRef("single_scratchpad")}>
             <ToggleRow
-              label="Single Scratchpad"
-              description="Only one scratchpad window exists at a time. Opening a new one hides the previous."
+              configKey="single_scratchpad"
               value={singleScratchpad}
               onChange={tb("single_scratchpad")}
             />
           </div>
           <div ref={fieldRef("scratchpad_cross_monitor")}>
             <ToggleRow
-              label="Cross-Monitor"
-              description="Scratchpad windows can be shown on any monitor, not just the one they were moved from."
+              configKey="scratchpad_cross_monitor"
               value={scratchpadCrossMon}
               onChange={tb("scratchpad_cross_monitor")}
             />
@@ -54,8 +52,6 @@ export function ScratchpadPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("scratchpad_width_ratio")}>
             <SliderRow
               configKey="scratchpad_width_ratio"
-              label="Width Ratio"
-              description="Width of the scratchpad window relative to the monitor. Mango range: 0.1–1.0."
               value={scratchpadWidth}
               step={0.05}
               onChange={(v) => setValue("scratchpad_width_ratio", v.toFixed(2))}
@@ -64,8 +60,6 @@ export function ScratchpadPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("scratchpad_height_ratio")}>
             <SliderRow
               configKey="scratchpad_height_ratio"
-              label="Height Ratio"
-              description="Height of the scratchpad window relative to the monitor. Mango range: 0.1–1.0."
               value={scratchpadHeight}
               step={0.05}
               onChange={(v) => setValue("scratchpad_height_ratio", v.toFixed(2))}

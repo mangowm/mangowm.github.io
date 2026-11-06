@@ -40,8 +40,7 @@ export function DwindlePanel({ focusKey }: PanelProps) {
         <SectionCard title="Split Direction">
           <div ref={fieldRef("dwindle_vertical_split")}>
             <SelectRow
-              label="Vertical Split"
-              description="Policy for vertical splits. Off = never, Smart = automatic, Force = always."
+              configKey="dwindle_vertical_split"
               value={vsplit}
               options={SPLIT_OPTIONS}
               onChange={(v) => setValue("dwindle_vertical_split", v)}
@@ -49,8 +48,7 @@ export function DwindlePanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("dwindle_horizontal_split")}>
             <SelectRow
-              label="Horizontal Split"
-              description="Policy for horizontal splits. Off = never, Smart = automatic, Force = always."
+              configKey="dwindle_horizontal_split"
               value={hsplit}
               options={SPLIT_OPTIONS}
               onChange={(v) => setValue("dwindle_horizontal_split", v)}
@@ -58,8 +56,7 @@ export function DwindlePanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("dwindle_preserve_split")}>
             <ToggleRow
-              label="Preserve Split"
-              description="Keep the current split direction when inserting a new window."
+              configKey="dwindle_preserve_split"
               value={preserveSplit}
               onChange={tb("dwindle_preserve_split")}
             />
@@ -71,32 +68,28 @@ export function DwindlePanel({ focusKey }: PanelProps) {
         <SectionCard title="Smart Behavior">
           <div ref={fieldRef("dwindle_smart_split")}>
             <ToggleRow
-              label="Smart Split"
-              description="Automatically choose split direction based on the window's dimensions."
+              configKey="dwindle_smart_split"
               value={smartSplit}
               onChange={tb("dwindle_smart_split")}
             />
           </div>
           <div ref={fieldRef("dwindle_smart_resize")}>
             <ToggleRow
-              label="Smart Resize"
-              description="Intelligently resize adjacent windows during resize operations."
+              configKey="dwindle_smart_resize"
               value={smartResize}
               onChange={tb("dwindle_smart_resize")}
             />
           </div>
           <div ref={fieldRef("dwindle_drop_simple_split")}>
             <ToggleRow
-              label="Drop Simple Split"
-              description="Fall back to a simple split when smart split cannot determine a direction."
+              configKey="dwindle_drop_simple_split"
               value={dropSimple}
               onChange={tb("dwindle_drop_simple_split")}
             />
           </div>
           <div ref={fieldRef("dwindle_manual_split")}>
             <ToggleRow
-              label="Manual Split"
-              description="Require explicit split direction input instead of automatic detection."
+              configKey="dwindle_manual_split"
               value={manualSplit}
               onChange={tb("dwindle_manual_split")}
             />
@@ -108,8 +101,7 @@ export function DwindlePanel({ focusKey }: PanelProps) {
         <SectionCard title="Ratio">
           <div ref={fieldRef("dwindle_split_ratio")}>
             <SliderRow
-              label="Split Ratio"
-              description="Proportion of space allotted to the first child when a split occurs."
+              configKey="dwindle_split_ratio"
               value={splitRatio}
               min={globalMin("dwindle_split_ratio") ?? 0.05}
               max={globalMax("dwindle_split_ratio") ?? 0.95}

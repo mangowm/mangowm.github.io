@@ -56,28 +56,17 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Background Blur">
           <div ref={fieldRef("blur")}>
-            <ToggleRow
-              label="Enable Blur"
-              description="Toggle background blur behind windows."
-              value={blurOn}
-              onChange={tb("blur")}
-            />
+            <ToggleRow configKey="blur" value={blurOn} onChange={tb("blur")} />
           </div>
 
           {blurOn ? (
             <>
               <div ref={fieldRef("blur_layer")}>
-                <ToggleRow
-                  label="Layer Surfaces"
-                  description="Apply blur to layer-shell surfaces (notifications, panels, etc.)."
-                  value={blurLayerOn}
-                  onChange={tb("blur_layer")}
-                />
+                <ToggleRow configKey="blur_layer" value={blurLayerOn} onChange={tb("blur_layer")} />
               </div>
               <div ref={fieldRef("blur_optimized")}>
                 <ToggleRow
-                  label="Optimized Blur"
-                  description="Use a faster blur algorithm — slightly different visual quality."
+                  configKey="blur_optimized"
                   value={blurOptimizedOn}
                   onChange={tb("blur_optimized")}
                 />
@@ -85,8 +74,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("blur_params_num_passes")}>
                 <SliderRow
                   configKey="blur_params_num_passes"
-                  label="Blur Passes"
-                  description="Number of blur iterations — higher is smoother but more GPU work."
                   value={blurPasses}
                   onChange={(v) => setValue("blur_params_num_passes", String(v))}
                 />
@@ -94,8 +81,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("blur_params_radius")}>
                 <SliderRow
                   configKey="blur_params_radius"
-                  label="Blur Radius"
-                  description="Pixel radius of the blur kernel."
                   value={blurRadius}
                   onChange={(v) => setValue("blur_params_radius", String(v))}
                 />
@@ -103,8 +88,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("blur_params_noise")}>
                 <SliderRow
                   configKey="blur_params_noise"
-                  label="Noise"
-                  description="Adds grain to reduce banding artifacts (0.0 – 1.0)."
                   value={blurNoise}
                   step={0.01}
                   onChange={(v) => setValue("blur_params_noise", v.toFixed(2))}
@@ -113,8 +96,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("blur_params_brightness")}>
                 <SliderRow
                   configKey="blur_params_brightness"
-                  label="Brightness"
-                  description="Brightness multiplier for the blurred layer (0.0 – 1.0)."
                   value={blurBrightness}
                   step={0.01}
                   onChange={(v) => setValue("blur_params_brightness", v.toFixed(2))}
@@ -123,8 +104,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("blur_params_contrast")}>
                 <SliderRow
                   configKey="blur_params_contrast"
-                  label="Contrast"
-                  description="Contrast multiplier for the blurred layer (0.0 – 1.0)."
                   value={blurContrast}
                   step={0.01}
                   onChange={(v) => setValue("blur_params_contrast", v.toFixed(2))}
@@ -133,8 +112,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("blur_params_saturation")}>
                 <SliderRow
                   configKey="blur_params_saturation"
-                  label="Saturation"
-                  description="Saturation multiplier for the blurred layer."
                   value={blurSaturation}
                   step={0.01}
                   onChange={(v) => setValue("blur_params_saturation", v.toFixed(2))}
@@ -156,8 +133,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("border_radius")}>
             <SliderRow
               configKey="border_radius"
-              label="Radius"
-              description="Corner rounding in pixels — 0 for sharp corners."
               value={radius}
               onChange={(v) => setValue("border_radius", String(v))}
             />
@@ -170,8 +145,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("focused_opacity")}>
             <SliderRow
               configKey="focused_opacity"
-              label="Focused Opacity"
-              description="Opacity of the currently focused window. 1.0 = fully opaque."
               value={focusedOpacity}
               step={0.01}
               onChange={(v) => setValue("focused_opacity", v.toFixed(2))}
@@ -180,8 +153,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("unfocused_opacity")}>
             <SliderRow
               configKey="unfocused_opacity"
-              label="Unfocused Opacity"
-              description="Opacity of unfocused (background) windows. Lower values make them dimmer."
               value={unfocusedOpacity}
               step={0.01}
               onChange={(v) => setValue("unfocused_opacity", v.toFixed(2))}
@@ -193,28 +164,21 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Drop Shadows">
           <div ref={fieldRef("shadows")}>
-            <ToggleRow
-              label="Enable Shadows"
-              description="Render drop shadows behind windows."
-              value={shadowsOn}
-              onChange={tb("shadows")}
-            />
+            <ToggleRow configKey="shadows" value={shadowsOn} onChange={tb("shadows")} />
           </div>
 
           {shadowsOn ? (
             <>
               <div ref={fieldRef("shadow_only_floating")}>
                 <ToggleRow
-                  label="Floating Only"
-                  description="Only draw shadows for floating (non-tiled) windows."
+                  configKey="shadow_only_floating"
                   value={shadowsFloatingOn}
                   onChange={tb("shadow_only_floating")}
                 />
               </div>
               <div ref={fieldRef("layer_shadows")}>
                 <ToggleRow
-                  label="Layer Surfaces"
-                  description="Draw shadows under layer-shell surfaces as well."
+                  configKey="layer_shadows"
                   value={layerShadowsOn}
                   onChange={tb("layer_shadows")}
                 />
@@ -222,8 +186,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("shadows_size")}>
                 <SliderRow
                   configKey="shadows_size"
-                  label="Size"
-                  description="How far the shadow extends beyond the window edges."
                   value={shadowsSize}
                   onChange={(v) => setValue("shadows_size", String(v))}
                 />
@@ -231,8 +193,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("shadows_blur")}>
                 <SliderRow
                   configKey="shadows_blur"
-                  label="Softness"
-                  description="Gaussian blur sigma — higher values create softer shadows."
                   value={shadowsBlur}
                   onChange={(v) => setValue("shadows_blur", String(v))}
                 />
@@ -240,8 +200,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("shadows_position_x")}>
                 <SliderRow
                   configKey="shadows_position_x"
-                  label="Offset X"
-                  description="Horizontal shadow offset (negative = left, positive = right)."
                   value={shadowsPosX}
                   onChange={(v) => setValue("shadows_position_x", String(v))}
                 />
@@ -249,8 +207,6 @@ export function WindowEffectsPanel({ focusKey }: PanelProps) {
               <div ref={fieldRef("shadows_position_y")}>
                 <SliderRow
                   configKey="shadows_position_y"
-                  label="Offset Y"
-                  description="Vertical shadow offset (negative = up, positive = down)."
                   value={shadowsPosY}
                   onChange={(v) => setValue("shadows_position_y", String(v))}
                 />

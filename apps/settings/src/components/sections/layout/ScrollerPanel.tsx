@@ -72,8 +72,6 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("scroller_default_proportion")}>
             <SliderRow
               configKey="scroller_default_proportion"
-              label="Default Proportion"
-              description="Default proportion of the container occupied by each tiled window."
               value={defaultProportion}
               step={0.05}
               onChange={(v) => setValue("scroller_default_proportion", v.toFixed(2))}
@@ -82,8 +80,6 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("scroller_default_proportion_single")}>
             <SliderRow
               configKey="scroller_default_proportion_single"
-              label="Single Window Proportion"
-              description="Proportion when there is only one window on the tag."
               value={defaultSingle}
               step={0.05}
               onChange={(v) => setValue("scroller_default_proportion_single", v.toFixed(2))}
@@ -91,16 +87,14 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
           </div>
           <div ref={fieldRef("scroller_ignore_proportion_single")}>
             <ToggleRow
-              label="Ignore Proportion When Solo"
-              description="Ignore the proportion setting when only one window is visible."
+              configKey="scroller_ignore_proportion_single"
               value={ignoreSingle}
               onChange={tb("scroller_ignore_proportion_single")}
             />
           </div>
           <div ref={fieldRef("scroller_proportion_preset")}>
             <MultiTagInput
-              label="Proportion Presets"
-              description="Comma-separated preset proportion values (0.1–1.0) for quick switching"
+              configKey="scroller_proportion_preset"
               value={presetValue}
               tagPlaceholder="0.50"
               onChange={handlePresetChange}
@@ -113,24 +107,21 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
         <SectionCard title="Focus">
           <div ref={fieldRef("scroller_focus_center")}>
             <ToggleRow
-              label="Focus Center"
-              description="Focus the window at the center of the viewport when scrolling."
+              configKey="scroller_focus_center"
               value={focusCenter}
               onChange={tb("scroller_focus_center")}
             />
           </div>
           <div ref={fieldRef("scroller_prefer_center")}>
             <ToggleRow
-              label="Prefer Center"
-              description="Prefer to keep the focused window centered in the viewport."
+              configKey="scroller_prefer_center"
               value={preferCenter}
               onChange={tb("scroller_prefer_center")}
             />
           </div>
           <div ref={fieldRef("scroller_prefer_overspread")}>
             <ToggleRow
-              label="Prefer Overspread"
-              description="Prefer to overspread windows across the available space."
+              configKey="scroller_prefer_overspread"
               value={preferOverspread}
               onChange={tb("scroller_prefer_overspread")}
             />
@@ -142,8 +133,7 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
         <SectionCard title="Edge Scrolling">
           <div ref={fieldRef("edge_scroller_pointer_focus")}>
             <ToggleRow
-              label="Pointer Focus at Edge"
-              description="Automatically focus the adjacent window when the pointer reaches the screen edge."
+              configKey="edge_scroller_pointer_focus"
               value={pointerFocus}
               onChange={tb("edge_scroller_pointer_focus")}
             />
@@ -151,8 +141,6 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("edge_scroller_focus_allow_speed")}>
             <SliderRow
               configKey="edge_scroller_focus_allow_speed"
-              label="Focus Allow Speed"
-              description="Maximum pointer speed for edge-triggered focus changes (0 = always allowed)."
               value={allowSpeed}
               step={1}
               onChange={(v) => setValue("edge_scroller_focus_allow_speed", String(v))}
@@ -166,8 +154,6 @@ export function ScrollerPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("scroller_structs")}>
             <SliderRow
               configKey="scroller_structs"
-              label="Scroller Structs"
-              description="Number of structural positions available in the scroller."
               value={structs}
               step={1}
               onChange={(v) => setValue("scroller_structs", String(Math.round(v)))}

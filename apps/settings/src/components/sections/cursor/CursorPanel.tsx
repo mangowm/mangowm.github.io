@@ -28,8 +28,7 @@ export function CursorPanel({ focusKey }: PanelProps) {
         <SectionCard title="Cursor">
           <div ref={fieldRef("cursor_theme")}>
             <TextInputRow
-              label="Theme"
-              description="XCursor theme name — e.g. 'Adwaita', 'Breeze', 'DMZ-White', 'Vanilla-DMZ'."
+              configKey="cursor_theme"
               value={cursorTheme}
               placeholder="Adwaita"
               onChange={(v) => setValue("cursor_theme", v)}
@@ -38,8 +37,6 @@ export function CursorPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("cursor_size")}>
             <SliderRow
               configKey="cursor_size"
-              label="Size"
-              description="Cursor size in pixels. Larger values are more visible on HiDPI displays."
               value={cursorSize}
               unit=" px"
               onChange={(v) => setValue("cursor_size", String(v))}

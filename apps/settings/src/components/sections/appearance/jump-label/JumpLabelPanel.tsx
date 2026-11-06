@@ -32,8 +32,7 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
         <SectionCard title="Labels">
           <div ref={fieldRef("jump_labels")}>
             <TextInputRow
-              label="Jump Label Characters"
-              description="Ordered characters used for quick window selection in jump label mode."
+              configKey="jump_labels"
               value={jumpLabels}
               placeholder="HJKLASDFGQWERTYUIOPZXCVBNM"
               onChange={(v) => setValue("jump_labels", v)}
@@ -46,8 +45,7 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
         <SectionCard title="Label">
           <div ref={fieldRef("jump_label_decorate_font_desc")}>
             <TextInputRow
-              label="Font"
-              description="Pango font description for jump labels, e.g. 'Sans 10' or 'monospace bold 11'."
+              configKey="jump_label_decorate_font_desc"
               value={fontDesc}
               placeholder="Sans 10"
               onChange={(v) => setValue("jump_label_decorate_font_desc", v)}
@@ -61,8 +59,6 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("jump_label_decorate_border_width")}>
             <SliderRow
               configKey="jump_label_decorate_border_width"
-              label="Border Width"
-              description="Thickness of the jump label border in pixels."
               value={borderWidth}
               unit="px"
               onChange={(v) => setValue("jump_label_decorate_border_width", String(v))}
@@ -71,8 +67,6 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("jump_label_decorate_corner_radius")}>
             <SliderRow
               configKey="jump_label_decorate_corner_radius"
-              label="Corner Radius"
-              description="Rounding radius for jump label corners."
               value={cornerRadius}
               unit="px"
               onChange={(v) => setValue("jump_label_decorate_corner_radius", String(v))}
@@ -81,8 +75,6 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("jump_label_decorate_padding_x")}>
             <SliderRow
               configKey="jump_label_decorate_padding_x"
-              label="Padding X"
-              description="Horizontal padding inside jump labels."
               value={paddingX}
               unit="px"
               onChange={(v) => setValue("jump_label_decorate_padding_x", String(v))}
@@ -91,8 +83,6 @@ export function JumpLabelPanel({ focusKey }: PanelProps) {
           <div ref={fieldRef("jump_label_decorate_padding_y")}>
             <SliderRow
               configKey="jump_label_decorate_padding_y"
-              label="Padding Y"
-              description="Vertical padding inside jump labels."
               value={paddingY}
               unit="px"
               onChange={(v) => setValue("jump_label_decorate_padding_y", String(v))}

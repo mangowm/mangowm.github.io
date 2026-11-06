@@ -35,8 +35,7 @@ export function RenderingPanel({ focusKey }: PanelProps) {
         <SectionCard title="Tearing">
           <div ref={fieldRef("allow_tearing")}>
             <SelectRow
-              label="Allow Tearing"
-              description="Reduce input latency by permitting screen tearing. Disabled = smooth (vsync), Always = maximum responsiveness, Fullscreen Only = compromise for games and video."
+              configKey="allow_tearing"
               value={tearing}
               options={TEARING_OPTIONS}
               onChange={(v) => setValue("allow_tearing", v)}
@@ -49,8 +48,7 @@ export function RenderingPanel({ focusKey }: PanelProps) {
         <SectionCard title="GPU Synchronisation">
           <div ref={fieldRef("sync_obj_enable")}>
             <ToggleRow
-              label="Sync Object Enable"
-              description="Enable DRM sync object timeline support. May improve GPU scheduling on compatible hardware."
+              configKey="sync_obj_enable"
               value={syncobj}
               onChange={tb("sync_obj_enable")}
             />
@@ -62,8 +60,7 @@ export function RenderingPanel({ focusKey }: PanelProps) {
         <SectionCard title="HDR">
           <div ref={fieldRef("hdr_depth")}>
             <SelectRow
-              label="HDR Bit Depth"
-              description="Output bit depth for HDR rendering. 10-bit is recommended for HDR displays; 8-bit for SDR fallback; Default uses the compositor-preferred setting."
+              configKey="hdr_depth"
               value={hdrDepth}
               options={HDR_OPTIONS}
               onChange={(v) => setValue("hdr_depth", v)}

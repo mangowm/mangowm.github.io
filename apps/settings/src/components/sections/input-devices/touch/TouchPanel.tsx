@@ -28,17 +28,11 @@ export function TouchPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Behaviour">
           <div ref={fieldRef("touch_enable")}>
-            <ToggleRow
-              label="Enable Touch"
-              description="Enable touchscreen input. Disabling turns off all touch events."
-              value={touchEnable}
-              onChange={tb("touch_enable")}
-            />
+            <ToggleRow configKey="touch_enable" value={touchEnable} onChange={tb("touch_enable")} />
           </div>
           <div ref={fieldRef("touch_enable_mouse_emulation")}>
             <ToggleRow
-              label="Mouse Emulation"
-              description="Convert touch gestures into mouse events (click, drag, scroll)."
+              configKey="touch_enable_mouse_emulation"
               value={touchMouseEmulation}
               enabled={touchEnable}
               onChange={tb("touch_enable_mouse_emulation")}
