@@ -211,7 +211,7 @@ export interface SelectRowProps {
   label: string;
   description: string;
   value: string;
-  options: SelectOption[];
+  options: readonly SelectOption[];
   onChange: (v: string) => void;
   /** When false the row is visually dimmed and non-interactive. */
   enabled?: boolean;

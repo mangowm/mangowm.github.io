@@ -1,10 +1,11 @@
 import {
   useConfigStore,
   useConfigBool,
-  useConfigFloat,
-  useConfigInt,
   useConfigStr,
+  useGlobalFloat,
+  useGlobalInt,
 } from "@/lib/config/store";
+import { globalMax, globalMin, globalOptions } from "@/lib/config/schema-meta";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -16,20 +17,8 @@ import {
   SelectRow,
 } from "@/components/primitives/section-ui";
 
-// CLAMP_INT(trackpad_accel_profile, 0, 2)
-//   libinput: 0 = NONE, 1 = FLAT, 2 = ADAPTIVE
-const ACCEL_PROFILE_OPTIONS = [
-  { value: "0", label: "None" },
-  { value: "1", label: "Flat" },
-  { value: "2", label: "Adaptive" },
-];
-
-// mango: CLAMP_INT(button_map, 0, 1)
-//   0 = LMR (Left/Middle/Right), 1 = LRM (Left/Right/Middle)
-const BUTTON_MAP_OPTIONS = [
-  { value: "0", label: "LMR" },
-  { value: "1", label: "LRM" },
-];
+const ACCEL_PROFILE_OPTIONS = globalOptions("trackpad_accel_profile") ?? [];
+const BUTTON_MAP_OPTIONS = globalOptions("button_map") ?? [];
 
 export function TrackpadPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
@@ -39,14 +28,14 @@ export function TrackpadPanel({ focusKey }: PanelProps) {
 
   const naturalScroll = useConfigBool("trackpad_natural_scrolling");
   const accelProfile = useConfigStr("trackpad_accel_profile");
-  const accelSpeed = useConfigFloat("trackpad_accel_speed", undefined, -1.0, 1.0);
-  const scrollFactor = useConfigFloat("trackpad_scroll_factor", undefined, 0.1, 10.0);
+  const accelSpeed = useGlobalFloat("trackpad_accel_speed");
+  const scrollFactor = useGlobalFloat("trackpad_scroll_factor");
   const disabled = useConfigBool("disable_trackpad");
   const tapToClick = useConfigBool("tap_to_click");
   const tapAndDrag = useConfigBool("tap_and_drag");
   const dragLock = useConfigBool("drag_lock");
   const buttonMap = useConfigStr("button_map");
-  const swipeThreshold = useConfigInt("swipe_min_threshold");
+  const swipeThreshold = useGlobalInt("swipe_min_threshold");
 
   return (
     <PanelShell>
@@ -71,8 +60,8 @@ export function TrackpadPanel({ focusKey }: PanelProps) {
               label="Scroll Factor"
               description="Multiplier for trackpad scroll speed. Mango range: 0.1–10.0."
               value={scrollFactor}
-              min={0.1}
-              max={10.0}
+              min={globalMin("trackpad_scroll_factor") ?? 0.1}
+              max={globalMax("trackpad_scroll_factor") ?? 10}
               step={0.1}
               onChange={(v) => setValue("trackpad_scroll_factor", v.toFixed(1))}
             />
@@ -96,8 +85,8 @@ export function TrackpadPanel({ focusKey }: PanelProps) {
               label="Acceleration Speed"
               description="Trackpad pointer acceleration factor."
               value={accelSpeed}
-              min={-1.0}
-              max={1.0}
+              min={globalMin("trackpad_accel_speed") ?? -1}
+              max={globalMax("trackpad_accel_speed") ?? 1}
               step={0.01}
               onChange={(v) => setValue("trackpad_accel_speed", v.toFixed(2))}
             />
@@ -145,8 +134,8 @@ export function TrackpadPanel({ focusKey }: PanelProps) {
               label="Swipe Minimum Threshold"
               description="Minimum pointer movement in pixels to trigger a swipe gesture. Higher values reduce accidental triggers. Mango range: 1–1000."
               value={swipeThreshold}
-              min={1}
-              max={200}
+              min={globalMin("swipe_min_threshold") ?? 1}
+              max={globalMax("swipe_min_threshold") ?? 200}
               unit=" px"
               onChange={(v) => setValue("swipe_min_threshold", String(v))}
             />

@@ -1,4 +1,5 @@
-import { useConfigStore, useConfigBool, useConfigInt, useConfigStr } from "@/lib/config/store";
+import { useConfigStore, useConfigBool, useConfigStr, useGlobalInt } from "@/lib/config/store";
+import { globalMax, globalMin } from "@/lib/config/schema-meta";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -28,7 +29,7 @@ export function DragPanel({ focusKey }: PanelProps) {
   const dragWarpCursor = useConfigBool("drag_warp_cursor");
   const dragTileToTile = useConfigBool("drag_tile_to_tile");
   const dragTileSmall = useConfigBool("drag_tile_small");
-  const snapDist = useConfigInt("snap_distance", undefined, 0, 99999);
+  const snapDist = useGlobalInt("snap_distance");
   const floatSnap = useConfigBool("enable_floating_snap");
 
   return (
@@ -97,8 +98,8 @@ export function DragPanel({ focusKey }: PanelProps) {
               label="Snap Distance"
               description="Maximum distance in pixels for a floating window to snap. Mango range: 0–99999."
               value={snapDist}
-              min={0}
-              max={200}
+              min={globalMin("snap_distance") ?? 0}
+              max={globalMax("snap_distance") ?? 200}
               unit=" px"
               onChange={(v) => setValue("snap_distance", String(v))}
             />

@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { temporal } from "zundo";
 import { applyChange, parseOption, type Change } from "@mangowm.github.io/config";
-import { GLOBALS } from "@mangowm.github.io/schema";
 import { getHost, isTauri } from "../platform";
 import type { RawConfigFile } from "../platform";
 import { type ConfigData, type FileFormat, type SourceFile, countLines } from "./types";
@@ -17,9 +16,9 @@ import { validateText } from "./syntax";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./helpers";
 import { convertDocument, convertFile, convertName } from "./convert";
 import { DEFAULTS } from "./defaults";
+import { GLOBAL_META as GLOBAL_BY_KEY, globalMax, globalMin } from "./schema-meta";
 
 const EMPTY_VALUES: readonly string[] = Object.freeze([]);
-const GLOBAL_BY_KEY = new Map(GLOBALS.map((option) => [option.key, option]));
 
 function toSourceFile(file: RawConfigFile): SourceFile {
   const format = detectFormat(file.absPath || file.refPath, file.text);
@@ -491,6 +490,14 @@ export function useConfigFloat(key: string, fallback?: number, min?: number, max
 
 export function useConfigStr(key: string, fallback?: string): string {
   return useConfigStore((s) => cfgStr(s.data, key, fallback));
+}
+
+export function useGlobalInt(key: string): number {
+  return useConfigInt(key, undefined, globalMin(key), globalMax(key));
+}
+
+export function useGlobalFloat(key: string): number {
+  return useConfigFloat(key, undefined, globalMin(key), globalMax(key));
 }
 
 export function undo() {

@@ -1,4 +1,5 @@
-import { useConfigStore, useConfigBool, useConfigFloat, useConfigStr } from "@/lib/config/store";
+import { useConfigStore, useConfigBool, useConfigStr, useGlobalFloat } from "@/lib/config/store";
+import { globalMax, globalMin, globalOptions } from "@/lib/config/schema-meta";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -10,21 +11,8 @@ import {
   SelectRow,
 } from "@/components/primitives/section-ui";
 
-// Animation type options — empty string is mango's actual default (none selected)
-const ANIM_TYPE_OPTIONS = [
-  { value: "", label: "Default (none)" },
-  { value: "none", label: "None" },
-  { value: "fade", label: "Fade" },
-  { value: "zoom", label: "Zoom" },
-  { value: "slide", label: "Slide" },
-];
-
-// enum { VERTICAL, HORIZONTAL } → VERTICAL=0, HORIZONTAL=1
-// Default in mango is HORIZONTAL (=1)
-const DIRECTION_OPTIONS = [
-  { value: "0", label: "Vertical" },
-  { value: "1", label: "Horizontal" },
-];
+const ANIM_TYPE_OPTIONS = globalOptions("animation_type_open") ?? [];
+const DIRECTION_OPTIONS = globalOptions("tag_animation_direction") ?? [];
 
 export function GeneralPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
@@ -44,10 +32,10 @@ export function GeneralPanel({ focusKey }: PanelProps) {
 
   const tagDir = useConfigStr("tag_animation_direction");
 
-  const zoomInitial = useConfigFloat("zoom_initial_ratio", undefined, 0.1, 1.0);
-  const zoomEnd = useConfigFloat("zoom_end_ratio", undefined, 0.1, 1.0);
-  const fadeInOpacity = useConfigFloat("fade_in_begin_opacity", undefined, 0.0, 1.0);
-  const fadeOutOpacity = useConfigFloat("fade_out_begin_opacity", undefined, 0.0, 1.0);
+  const zoomInitial = useGlobalFloat("zoom_initial_ratio");
+  const zoomEnd = useGlobalFloat("zoom_end_ratio");
+  const fadeInOpacity = useGlobalFloat("fade_in_begin_opacity");
+  const fadeOutOpacity = useGlobalFloat("fade_out_begin_opacity");
 
   return (
     <PanelShell>
@@ -174,8 +162,8 @@ export function GeneralPanel({ focusKey }: PanelProps) {
                   label="Zoom Initial Ratio"
                   description="Starting scale factor for zoom animations (0.1–1.0)."
                   value={zoomInitial}
-                  min={0.1}
-                  max={1.0}
+                  min={globalMin("zoom_initial_ratio") ?? 0.1}
+                  max={globalMax("zoom_initial_ratio") ?? 1}
                   step={0.01}
                   onChange={(v) => setValue("zoom_initial_ratio", v.toFixed(2))}
                 />
@@ -185,8 +173,8 @@ export function GeneralPanel({ focusKey }: PanelProps) {
                   label="Zoom End Ratio"
                   description="Ending scale factor for zoom animations (0.1–1.0)."
                   value={zoomEnd}
-                  min={0.1}
-                  max={1.0}
+                  min={globalMin("zoom_end_ratio") ?? 0.1}
+                  max={globalMax("zoom_end_ratio") ?? 1}
                   step={0.01}
                   onChange={(v) => setValue("zoom_end_ratio", v.toFixed(2))}
                 />
@@ -196,8 +184,8 @@ export function GeneralPanel({ focusKey }: PanelProps) {
                   label="Fade In Start Opacity"
                   description="Starting opacity for fade-in animations (0.0–1.0)."
                   value={fadeInOpacity}
-                  min={0}
-                  max={1}
+                  min={globalMin("fade_in_begin_opacity") ?? 0}
+                  max={globalMax("fade_in_begin_opacity") ?? 1}
                   step={0.01}
                   onChange={(v) => setValue("fade_in_begin_opacity", v.toFixed(2))}
                 />
@@ -207,8 +195,8 @@ export function GeneralPanel({ focusKey }: PanelProps) {
                   label="Fade Out Start Opacity"
                   description="Starting opacity for fade-out animations (0.0–1.0)."
                   value={fadeOutOpacity}
-                  min={0}
-                  max={1}
+                  min={globalMin("fade_out_begin_opacity") ?? 0}
+                  max={globalMax("fade_out_begin_opacity") ?? 1}
                   step={0.01}
                   onChange={(v) => setValue("fade_out_begin_opacity", v.toFixed(2))}
                 />

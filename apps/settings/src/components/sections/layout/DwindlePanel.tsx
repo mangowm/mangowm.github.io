@@ -1,4 +1,5 @@
-import { useConfigStore, useConfigBool, useConfigFloat, useConfigStr } from "@/lib/config/store";
+import { useConfigStore, useConfigBool, useConfigStr, useGlobalFloat } from "@/lib/config/store";
+import { globalMax, globalMin, globalOptions } from "@/lib/config/schema-meta";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -10,11 +11,7 @@ import {
   SelectRow,
 } from "@/components/primitives/section-ui";
 
-const SPLIT_OPTIONS = [
-  { value: "0", label: "Off" },
-  { value: "1", label: "Smart" },
-  { value: "2", label: "Force" },
-];
+const SPLIT_OPTIONS = globalOptions("dwindle_vertical_split") ?? [];
 
 export function DwindlePanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
@@ -29,7 +26,7 @@ export function DwindlePanel({ focusKey }: PanelProps) {
   const smartResize = useConfigBool("dwindle_smart_resize");
   const dropSimple = useConfigBool("dwindle_drop_simple_split");
   const manualSplit = useConfigBool("dwindle_manual_split");
-  const splitRatio = useConfigFloat("dwindle_split_ratio", undefined, 0.05, 0.95);
+  const splitRatio = useGlobalFloat("dwindle_split_ratio");
 
   return (
     <PanelShell>
@@ -114,8 +111,8 @@ export function DwindlePanel({ focusKey }: PanelProps) {
               label="Split Ratio"
               description="Proportion of space allotted to the first child when a split occurs."
               value={splitRatio}
-              min={0.05}
-              max={0.95}
+              min={globalMin("dwindle_split_ratio") ?? 0.05}
+              max={globalMax("dwindle_split_ratio") ?? 0.95}
               step={0.01}
               onChange={(v) => setValue("dwindle_split_ratio", v.toFixed(2))}
             />

@@ -1,4 +1,5 @@
 import { useConfigStore, useConfigBool, useConfigStr } from "@/lib/config/store";
+import { globalOptions } from "@/lib/config/schema-meta";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -9,17 +10,8 @@ import {
   SelectRow,
 } from "@/components/primitives/section-ui";
 
-const TEARING_OPTIONS = [
-  { value: "0", label: "Disabled" },
-  { value: "1", label: "Always" },
-  { value: "2", label: "Fullscreen Only" },
-];
-
-const HDR_OPTIONS = [
-  { value: "0", label: "Default" },
-  { value: "1", label: "8-bit" },
-  { value: "2", label: "10-bit" },
-];
+const TEARING_OPTIONS = globalOptions("allow_tearing") ?? [];
+const HDR_OPTIONS = globalOptions("hdr_depth") ?? [];
 
 export function RenderingPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);

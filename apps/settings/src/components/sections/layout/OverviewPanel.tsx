@@ -1,4 +1,5 @@
-import { useConfigStore, useConfigBool, useConfigInt } from "@/lib/config/store";
+import { useConfigStore, useConfigBool, useGlobalInt } from "@/lib/config/store";
+import { globalMax, globalMin, globalOptions } from "@/lib/config/schema-meta";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -10,12 +11,7 @@ import {
   SelectRow,
 } from "@/components/primitives/section-ui";
 
-const CORNER_OPTIONS = [
-  { value: "0", label: "Top Left" },
-  { value: "1", label: "Top Right" },
-  { value: "2", label: "Bottom Left" },
-  { value: "3", label: "Bottom Right" },
-];
+const CORNER_OPTIONS = globalOptions("hotarea_corner") ?? [];
 
 export function OverviewPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
@@ -24,10 +20,10 @@ export function OverviewPanel({ focusKey }: PanelProps) {
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const enableHotarea = useConfigBool("enable_hotarea");
-  const hotareaSize = useConfigInt("hotarea_size", undefined, 1, 1000);
-  const hotareaCorner = useConfigInt("hotarea_corner", undefined, 0, 3);
-  const overview_gap_inner = useConfigInt("overview_gap_inner", undefined, 0, 1000);
-  const overview_gap_outer = useConfigInt("overview_gap_outer", undefined, 0, 1000);
+  const hotareaSize = useGlobalInt("hotarea_size");
+  const hotareaCorner = useGlobalInt("hotarea_corner");
+  const overview_gap_inner = useGlobalInt("overview_gap_inner");
+  const overview_gap_outer = useGlobalInt("overview_gap_outer");
 
   return (
     <PanelShell>
@@ -52,8 +48,8 @@ export function OverviewPanel({ focusKey }: PanelProps) {
               label="Hotarea Size"
               description="Size of the corner activation zone in pixels."
               value={hotareaSize}
-              min={1}
-              max={200}
+              min={globalMin("hotarea_size") ?? 1}
+              max={globalMax("hotarea_size") ?? 200}
               step={1}
               unit="px"
               enabled={enableHotarea}
@@ -80,8 +76,8 @@ export function OverviewPanel({ focusKey }: PanelProps) {
               label="Inner Gap"
               description="Gap between windows inside the overview grid."
               value={overview_gap_inner}
-              min={0}
-              max={200}
+              min={globalMin("overview_gap_inner") ?? 0}
+              max={globalMax("overview_gap_inner") ?? 200}
               step={1}
               unit="px"
               onChange={(v) => setValue("overview_gap_inner", String(Math.round(v)))}
@@ -92,8 +88,8 @@ export function OverviewPanel({ focusKey }: PanelProps) {
               label="Outer Gap"
               description="Gap between the overview grid and screen edges."
               value={overview_gap_outer}
-              min={0}
-              max={200}
+              min={globalMin("overview_gap_outer") ?? 0}
+              max={globalMax("overview_gap_outer") ?? 200}
               step={1}
               unit="px"
               onChange={(v) => setValue("overview_gap_outer", String(Math.round(v)))}

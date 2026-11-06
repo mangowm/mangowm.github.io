@@ -1,4 +1,4 @@
-import { useConfigStore, useConfigBool, useConfigStr } from "@/lib/config/store";
+import { useConfigStore, useConfigBool } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import {
@@ -6,13 +6,7 @@ import {
   PanelHeader,
   SectionCard,
   ToggleRow,
-  SelectRow,
 } from "@/components/primitives/section-ui";
-
-const INHIBIT_OPTIONS = [
-  { value: "0", label: "Disabled" },
-  { value: "1", label: "Enabled" },
-];
 
 export function SecurityPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
@@ -20,7 +14,7 @@ export function SecurityPanel({ focusKey }: PanelProps) {
 
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
-  const shortcutsInhibit = useConfigStr("allow_shortcuts_inhibit");
+  const shortcutsInhibit = useConfigBool("allow_shortcuts_inhibit");
   const lockTransparent = useConfigBool("allow_lock_transparent");
 
   return (
@@ -34,12 +28,11 @@ export function SecurityPanel({ focusKey }: PanelProps) {
       <div className="mb-5">
         <SectionCard title="Keyboard">
           <div ref={fieldRef("allow_shortcuts_inhibit")}>
-            <SelectRow
+            <ToggleRow
               label="Allow Shortcuts Inhibit"
               description="When enabled, applications (games, VMs, remote desktop) can request the compositor to suspend keybindings so all key events reach the app."
               value={shortcutsInhibit}
-              options={INHIBIT_OPTIONS}
-              onChange={(v) => setValue("allow_shortcuts_inhibit", v)}
+              onChange={tb("allow_shortcuts_inhibit")}
             />
           </div>
         </SectionCard>
