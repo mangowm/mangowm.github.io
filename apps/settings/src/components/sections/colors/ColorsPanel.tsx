@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback, memo } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
 import { Pipette } from "lucide-react";
+import { GLOBALS } from "@mangowm.github.io/schema";
 import { useConfigStore, useConfigStr } from "@/lib/config/store";
 import { toHex, toCss, formatColor } from "@/lib/color-utils";
 import type { ColorMode } from "@/lib/color-utils";
@@ -220,16 +221,36 @@ interface ColorPalette {
   colors: ColorsConfig;
 }
 
+const GLOBAL_DEFAULTS = new Map(GLOBALS.map((option) => [option.key, option.default]));
+
+function schemaDefaultColors(): ColorsConfig {
+  const colors = {} as ColorsConfig;
+  for (const { key } of COLORS_FIELDS) {
+    const value = GLOBAL_DEFAULTS.get(key);
+    if (typeof value !== "string") {
+      throw new Error(`Missing schema color default for "${key}"`);
+    }
+    colors[key] = value;
+  }
+  return colors;
+}
+
+const DEFAULT_PALETTE: ColorPalette = {
+  name: "Default",
+  colors: schemaDefaultColors(),
+};
+
 const paletteModules = import.meta.glob<{ default: ColorPalette }>("./palettes/*.json", {
   eager: true,
 });
-const PALETTES: ColorPalette[] = Object.values(paletteModules)
-  .map((m) => m.default)
-  .sort((a, b) => {
-    if (a.name === "Default") return -1;
-    if (b.name === "Default") return 1;
-    return a.name.localeCompare(b.name);
-  });
+const PALETTES: ColorPalette[] = [
+  DEFAULT_PALETTE,
+  ...Object.values(paletteModules).map((m) => m.default),
+].sort((a, b) => {
+  if (a.name === "Default") return -1;
+  if (b.name === "Default") return 1;
+  return a.name.localeCompare(b.name);
+});
 
 const COLOR_MODES: ColorMode[] = ["hex", "rgb", "hsl"];
 
