@@ -28,6 +28,9 @@ export function SettingsPage() {
   const [activeSection, setActiveSection] = useState(DEFAULT_SECTION);
   const [focusKey, setFocusKey] = useState<string | undefined>(undefined);
   const [showConfig, setShowConfig] = useState(false);
+  // Mount the config editor on first use, then keep it alive so switching
+  // between settings and the editor doesn't rebuild the whole editor.
+  const [configMounted, setConfigMounted] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [ready, setReady] = useState(false);
   const [, startTransition] = useTransition();
@@ -75,10 +78,13 @@ export function SettingsPage() {
           title={showConfig ? "Config Files" : (section?.label ?? "Settings")}
           onSearch={() => setSearchOpen(true)}
           showConfig={showConfig}
-          onToggleConfig={() => setShowConfig((v) => !v)}
+          onToggleConfig={() => {
+            if (!showConfig) setConfigMounted(true);
+            setShowConfig(!showConfig);
+          }}
         />
-        {showConfig ? (
-          <div className="flex-1 overflow-hidden p-5">
+        {configMounted && (
+          <div className="flex-1 overflow-hidden p-5" hidden={!showConfig}>
             <div className="flex h-full flex-col rounded-xl bg-card p-6 ring-1 ring-foreground/10">
               <Suspense fallback={<Skeleton className="h-96 w-full rounded-xl" />}>
                 <ConfigPreviewer
@@ -92,23 +98,22 @@ export function SettingsPage() {
               </Suspense>
             </div>
           </div>
-        ) : (
-          <div className="flex-1 scrollbar-gutter-stable overflow-y-auto p-5">
-            <div className="flex min-h-full flex-row gap-5">
-              <div className="relative flex flex-1 flex-col rounded-xl bg-card p-6 ring-1 ring-foreground/10">
-                {!ready ? (
-                  <div className="flex-1">
-                    <Skeleton className="h-96 w-full rounded-xl" />
-                  </div>
-                ) : !hasFiles ? (
-                  <EmptyConfig />
-                ) : (
-                  Panel && <Panel focusKey={focusKey} />
-                )}
-              </div>
+        )}
+        <div className="flex-1 scrollbar-gutter-stable overflow-y-auto p-5" hidden={showConfig}>
+          <div className="flex min-h-full flex-row gap-5">
+            <div className="relative flex flex-1 flex-col rounded-xl bg-card p-6 ring-1 ring-foreground/10">
+              {!ready ? (
+                <div className="flex-1">
+                  <Skeleton className="h-96 w-full rounded-xl" />
+                </div>
+              ) : !hasFiles ? (
+                <EmptyConfig />
+              ) : (
+                Panel && <Panel focusKey={focusKey} />
+              )}
             </div>
           </div>
-        )}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

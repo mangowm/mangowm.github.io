@@ -57,6 +57,17 @@ export function ConfigFile({ name, contents, onCommit, onIssues }: ConfigFilePro
     issuesRef.current?.(validateText(draft, formatOf(name)));
   }, [draft, name]);
 
+  // The previewer stays mounted while the settings view is shown, so pick up
+  // config changes made outside the editor. Never clobber an in-progress edit
+  // or the text the user is currently typing into.
+  useEffect(() => {
+    if (contents === draftRef.current || dirty.current) return;
+    const root = rootRef.current;
+    if (root && root.contains(document.activeElement)) return;
+    draftRef.current = contents;
+    setDraft(contents);
+  }, [contents]);
+
   useEffect(() => {
     const onPointerDown = (event: PointerEvent) => {
       const root = rootRef.current;
