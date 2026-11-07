@@ -26,11 +26,24 @@ interface ColorsConfig {
   group_bar_decorate_focus_fg_color: string;
   group_bar_decorate_focus_bg_color: string;
   group_bar_decorate_border_color: string;
+  group_bar_button_color: string;
   jump_label_decorate_fg_color: string;
   jump_label_decorate_bg_color: string;
   jump_label_decorate_focus_fg_color: string;
   jump_label_decorate_focus_bg_color: string;
   jump_label_decorate_border_color: string;
+  tab_bar_decorate_fg_color: string;
+  tab_bar_decorate_bg_color: string;
+  tab_bar_decorate_focus_fg_color: string;
+  tab_bar_decorate_focus_bg_color: string;
+  tab_bar_decorate_border_color: string;
+  title_message_bar_decorate_fg_color: string;
+  title_message_bar_decorate_bg_color: string;
+  title_message_bar_decorate_focus_fg_color: string;
+  title_message_bar_decorate_focus_bg_color: string;
+  title_message_bar_decorate_border_color: string;
+  dim_focused_color: string;
+  dim_unfocused_color: string;
 }
 
 const COLORS_FIELDS: Array<{
@@ -111,6 +124,11 @@ const COLORS_FIELDS: Array<{
     description: "Color of the window group bar outline",
   },
   {
+    key: "group_bar_button_color",
+    label: "Close Button",
+    description: "Color of the group bar close button",
+  },
+  {
     key: "jump_label_decorate_fg_color",
     label: "Text",
     description: "Foreground color of jump labels",
@@ -134,6 +152,66 @@ const COLORS_FIELDS: Array<{
     key: "jump_label_decorate_border_color",
     label: "Border",
     description: "Color of the jump label outline",
+  },
+  {
+    key: "tab_bar_decorate_fg_color",
+    label: "Text",
+    description: "Foreground color of the tab bar",
+  },
+  {
+    key: "tab_bar_decorate_bg_color",
+    label: "Background",
+    description: "Background color of the tab bar",
+  },
+  {
+    key: "tab_bar_decorate_focus_fg_color",
+    label: "Focused Text",
+    description: "Foreground color of the focused tab entry",
+  },
+  {
+    key: "tab_bar_decorate_focus_bg_color",
+    label: "Focused Background",
+    description: "Background color of the focused tab entry",
+  },
+  {
+    key: "tab_bar_decorate_border_color",
+    label: "Border",
+    description: "Color of the tab bar outline",
+  },
+  {
+    key: "title_message_bar_decorate_fg_color",
+    label: "Text",
+    description: "Foreground color of the title message bar",
+  },
+  {
+    key: "title_message_bar_decorate_bg_color",
+    label: "Background",
+    description: "Background color of the title message bar",
+  },
+  {
+    key: "title_message_bar_decorate_focus_fg_color",
+    label: "Focused Text",
+    description: "Foreground color of the focused title entry",
+  },
+  {
+    key: "title_message_bar_decorate_focus_bg_color",
+    label: "Focused Background",
+    description: "Background color of the focused title entry",
+  },
+  {
+    key: "title_message_bar_decorate_border_color",
+    label: "Border",
+    description: "Color of the title message bar outline",
+  },
+  {
+    key: "dim_focused_color",
+    label: "Dim Focused",
+    description: "Overlay color for the focused window when dimming is enabled",
+  },
+  {
+    key: "dim_unfocused_color",
+    label: "Dim Unfocused",
+    description: "Overlay color for unfocused windows when dimming is enabled",
   },
 ];
 
@@ -369,11 +447,24 @@ function useColorConfigValues() {
   const gbFocusFg = useConfigStr("group_bar_decorate_focus_fg_color");
   const gbFocusBg = useConfigStr("group_bar_decorate_focus_bg_color");
   const gbBorder = useConfigStr("group_bar_decorate_border_color");
+  const gbButton = useConfigStr("group_bar_button_color");
   const jlFg = useConfigStr("jump_label_decorate_fg_color");
   const jlBg = useConfigStr("jump_label_decorate_bg_color");
   const jlFocusFg = useConfigStr("jump_label_decorate_focus_fg_color");
   const jlFocusBg = useConfigStr("jump_label_decorate_focus_bg_color");
   const jlBorder = useConfigStr("jump_label_decorate_border_color");
+  const tbFg = useConfigStr("tab_bar_decorate_fg_color");
+  const tbBg = useConfigStr("tab_bar_decorate_bg_color");
+  const tbFocusFg = useConfigStr("tab_bar_decorate_focus_fg_color");
+  const tbFocusBg = useConfigStr("tab_bar_decorate_focus_bg_color");
+  const tbBorder = useConfigStr("tab_bar_decorate_border_color");
+  const tmbFg = useConfigStr("title_message_bar_decorate_fg_color");
+  const tmbBg = useConfigStr("title_message_bar_decorate_bg_color");
+  const tmbFocusFg = useConfigStr("title_message_bar_decorate_focus_fg_color");
+  const tmbFocusBg = useConfigStr("title_message_bar_decorate_focus_bg_color");
+  const tmbBorder = useConfigStr("title_message_bar_decorate_border_color");
+  const dimFocused = useConfigStr("dim_focused_color");
+  const dimUnfocused = useConfigStr("dim_unfocused_color");
 
   return useMemo<ColorsConfig>(
     () => ({
@@ -393,11 +484,24 @@ function useColorConfigValues() {
       group_bar_decorate_focus_fg_color: gbFocusFg,
       group_bar_decorate_focus_bg_color: gbFocusBg,
       group_bar_decorate_border_color: gbBorder,
+      group_bar_button_color: gbButton,
       jump_label_decorate_fg_color: jlFg,
       jump_label_decorate_bg_color: jlBg,
       jump_label_decorate_focus_fg_color: jlFocusFg,
       jump_label_decorate_focus_bg_color: jlFocusBg,
       jump_label_decorate_border_color: jlBorder,
+      tab_bar_decorate_fg_color: tbFg,
+      tab_bar_decorate_bg_color: tbBg,
+      tab_bar_decorate_focus_fg_color: tbFocusFg,
+      tab_bar_decorate_focus_bg_color: tbFocusBg,
+      tab_bar_decorate_border_color: tbBorder,
+      title_message_bar_decorate_fg_color: tmbFg,
+      title_message_bar_decorate_bg_color: tmbBg,
+      title_message_bar_decorate_focus_fg_color: tmbFocusFg,
+      title_message_bar_decorate_focus_bg_color: tmbFocusBg,
+      title_message_bar_decorate_border_color: tmbBorder,
+      dim_focused_color: dimFocused,
+      dim_unfocused_color: dimUnfocused,
     }),
     [
       root_color,
@@ -416,11 +520,24 @@ function useColorConfigValues() {
       gbFocusFg,
       gbFocusBg,
       gbBorder,
+      gbButton,
       jlFg,
       jlBg,
       jlFocusFg,
       jlFocusBg,
       jlBorder,
+      tbFg,
+      tbBg,
+      tbFocusFg,
+      tbFocusBg,
+      tbBorder,
+      tmbFg,
+      tmbBg,
+      tmbFocusFg,
+      tmbFocusBg,
+      tmbBorder,
+      dimFocused,
+      dimUnfocused,
     ],
   );
 }
@@ -466,8 +583,11 @@ export function ColorsPanel({ focusKey }: PanelProps) {
   }, []);
 
   const coreFields = COLORS_FIELDS.slice(0, 11);
-  const gbFields = COLORS_FIELDS.slice(11, 16);
-  const jlFields = COLORS_FIELDS.slice(16);
+  const gbFields = COLORS_FIELDS.slice(11, 17);
+  const jlFields = COLORS_FIELDS.slice(17, 22);
+  const tabFields = COLORS_FIELDS.slice(22, 27);
+  const titleFields = COLORS_FIELDS.slice(27, 32);
+  const dimFields = COLORS_FIELDS.slice(32);
 
   const modeSelector = (
     <div className="flex shrink-0 items-center rounded-lg border border-border/40 bg-muted/30 p-0.5">
@@ -567,6 +687,57 @@ export function ColorsPanel({ focusKey }: PanelProps) {
 
       <SectionCard title="Jump Labels">
         {jlFields.map((field) => (
+          <div ref={fieldRef(field.key)} key={field.key}>
+            <ColorInput
+              label={field.label}
+              description={field.description}
+              value={theme[field.key]}
+              mode={mode}
+              flipPopover={false}
+              onChange={changeHandlers[field.key]!}
+            />
+          </div>
+        ))}
+      </SectionCard>
+
+      <div className="mb-5" />
+
+      <SectionCard title="Tab Bar">
+        {tabFields.map((field) => (
+          <div ref={fieldRef(field.key)} key={field.key}>
+            <ColorInput
+              label={field.label}
+              description={field.description}
+              value={theme[field.key]}
+              mode={mode}
+              flipPopover={false}
+              onChange={changeHandlers[field.key]!}
+            />
+          </div>
+        ))}
+      </SectionCard>
+
+      <div className="mb-5" />
+
+      <SectionCard title="Title Bar">
+        {titleFields.map((field) => (
+          <div ref={fieldRef(field.key)} key={field.key}>
+            <ColorInput
+              label={field.label}
+              description={field.description}
+              value={theme[field.key]}
+              mode={mode}
+              flipPopover={false}
+              onChange={changeHandlers[field.key]!}
+            />
+          </div>
+        ))}
+      </SectionCard>
+
+      <div className="mb-5" />
+
+      <SectionCard title="Dim">
+        {dimFields.map((field) => (
           <div ref={fieldRef(field.key)} key={field.key}>
             <ColorInput
               label={field.label}

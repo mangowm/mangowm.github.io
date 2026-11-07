@@ -41,5 +41,44 @@ export const colorsMeta: SectionMeta = {
       configKey: "split_color",
     },
     { configKey: "shadows_color" },
+    {
+      configKey: "group_bar_button_color",
+    },
+    {
+      configKey: "tab_bar_decorate_fg_color",
+    },
+    {
+      configKey: "tab_bar_decorate_bg_color",
+    },
+    {
+      configKey: "tab_bar_decorate_focus_fg_color",
+    },
+    {
+      configKey: "tab_bar_decorate_focus_bg_color",
+    },
+    {
+      configKey: "tab_bar_decorate_border_color",
+    },
+    {
+      configKey: "title_message_bar_decorate_fg_color",
+    },
+    {
+      configKey: "title_message_bar_decorate_bg_color",
+    },
+    {
+      configKey: "title_message_bar_decorate_focus_fg_color",
+    },
+    {
+      configKey: "title_message_bar_decorate_focus_bg_color",
+    },
+    {
+      configKey: "title_message_bar_decorate_border_color",
+    },
+    {
+      configKey: "dim_focused_color",
+    },
+    {
+      configKey: "dim_unfocused_color",
+    },
   ],
 };
