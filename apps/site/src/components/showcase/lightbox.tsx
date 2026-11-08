@@ -218,7 +218,7 @@ export function Lightbox({
                   type="button"
                   onClick={() => setMediaIndex(mediaItemIndex)}
                   aria-label={`${item.type === "video" ? "Video" : "Screenshot"} ${mediaItemIndex + 1}`}
-                  aria-current={active}
+                  aria-current={active ? "true" : undefined}
                   className="flex h-4 items-center justify-center"
                 >
                   {item.type === "video" ? (

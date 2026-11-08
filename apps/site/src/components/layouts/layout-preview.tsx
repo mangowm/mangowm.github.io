@@ -31,6 +31,7 @@ export function LayoutPreview() {
 
   useEffect(() => {
     if (!isAutoPlaying) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const interval = setInterval(() => {
       setActiveLayout((current) => {

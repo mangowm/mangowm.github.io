@@ -73,6 +73,11 @@
       transition: none;
       animation: none;
     }
+
+    .hero-visual::before,
+    .hero-visual::after {
+      animation: none;
+    }
   }
 }
 @layer components {
