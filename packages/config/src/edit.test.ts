@@ -209,4 +209,61 @@ describe("applyChange rules", () => {
       false,
     );
   });
+
+  it("replaces a whole conf rule line", () => {
+    const document = parseConf("window_rule = app_id:firefox\nexec = foot\n");
+    const next = applyChange(document, {
+      kind: "rule-line",
+      rule: "window_rule",
+      index: 0,
+      value: "app_id:kitty,is_floating:1",
+    });
+
+    expect(next.nodes[0]).toMatchObject({
+      raw: "window_rule = app_id:kitty,is_floating:1",
+      value: "app_id:kitty,is_floating:1",
+    });
+    expect(next.nodes[1]).toMatchObject({ raw: "exec = foot" });
+  });
+
+  it("replaces a whole toml rule block", () => {
+    const document = parseToml(
+      '[[rule.window_rule]]\napp_id = "firefox"\ntags = "1"\n\n[[rule.layer_rule]]\nlayer_name = "bar"\n',
+    );
+    const next = applyChange(document, {
+      kind: "rule-line",
+      rule: "window_rule",
+      index: 0,
+      value: "app_id:kitty,is_floating:1",
+    });
+
+    expect(next.nodes.filter((node) => node.kind === "entry").map((node) => node.raw)).toEqual(
+      expect.arrayContaining(['app_id = "kitty"', "is_floating = true"]),
+    );
+    expect(next.nodes.some((node) => node.raw === 'tags = "1"')).toBe(false);
+  });
+
+  it("adds and removes a whole toml rule block", () => {
+    const document = parseToml("[global]\nanimations = true\n");
+    const added = applyChange(document, {
+      kind: "rule-line",
+      rule: "window_rule",
+      index: 0,
+      value: "app_id:kitty",
+    });
+
+    expect(added.nodes.at(-2)).toMatchObject({
+      kind: "section",
+      raw: "[[rule.window_rule]]",
+    });
+
+    const removed = applyChange(added, {
+      kind: "rule-line",
+      rule: "window_rule",
+      index: 0,
+      value: undefined,
+    });
+
+    expect(removed.nodes.some((node) => node.raw === "[[rule.window_rule]]")).toBe(false);
+  });
 });

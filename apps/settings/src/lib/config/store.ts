@@ -1,17 +1,20 @@
 import { create } from "zustand";
 import { temporal } from "zundo";
-import { applyChange, parseOption, validateText, type Change } from "@mangowm.github.io/config";
+import {
+  applyChange,
+  bindingKind,
+  bindingTrigger,
+  parseBinding,
+  parseOption,
+  validateText,
+  type Change,
+  type RuleKey,
+} from "@mangowm.github.io/config";
+import { DIRECTIVES, RULES } from "@mangowm.github.io/schema";
 import { getHost, isTauri } from "../platform";
 import type { RawConfigFile } from "../platform";
 import { type ConfigData, type FileFormat, type SourceFile, countLines } from "./types";
-import {
-  detectFormat,
-  documentLines,
-  formatDocument,
-  makeEntryLine,
-  parseDocument,
-  serializeConfig,
-} from "./parse";
+import { detectFormat, documentLines, formatDocument, parseDocument } from "./parse";
 import { cfgBool, cfgInt, cfgFloat, cfgStr } from "./helpers";
 import { convertDocument, convertFile, convertName } from "./convert";
 import { DEFAULTS } from "./defaults";
@@ -40,19 +43,113 @@ function updateDocument(file: SourceFile, change: Change): SourceFile {
 function updateScalar(file: SourceFile, key: string, value: string): SourceFile {
   const definition = GLOBAL_BY_KEY.get(key);
 
-  if (!definition) {
-    const lines = [...file.lines];
-    const index = lines.findIndex((line) => line.type === "entry" && line.key === key);
-    if (index >= 0) lines[index] = makeEntryLine(key, value);
-    else lines.push(makeEntryLine(key, value));
-    return { ...file, document: parseDocument(serializeConfig(lines), file.format), lines };
-  }
-
   return updateDocument(file, {
     kind: "option",
     key,
-    value: parseOption(value, definition),
+    value: definition ? parseOption(value, definition) : value,
   });
+}
+
+const DIRECTIVE_KEYS = new Set<string>(DIRECTIVES.map((directive) => directive.key));
+const RULE_KEYS = new Set<string>(RULES.map((rule) => rule.key));
+
+function isBindingKeyword(key: string): boolean {
+  try {
+    bindingKind(key);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function modeAt(lines: SourceFile["lines"], lineIndex: number): string {
+  let mode = "default";
+  for (let index = 0; index < lineIndex; index++) {
+    const line = lines[index];
+    if (line?.type === "entry" && line.key === "key_mode") mode = line.value;
+  }
+  return mode;
+}
+
+function lineIndexForKey(
+  lines: SourceFile["lines"],
+  key: string,
+  localIndex: number,
+): number | null {
+  let seen = -1;
+  for (let index = 0; index < lines.length; index++) {
+    const line = lines[index];
+    if (line?.type !== "entry" || line.key !== key) continue;
+    seen++;
+    if (seen === localIndex) return index;
+  }
+  return null;
+}
+
+function bindingChange(key: string, value: string, mode: string): Change {
+  const parsed = parseBinding(key, value);
+  return {
+    kind: "binding",
+    binding: parsed.kind,
+    mode,
+    flags: parsed.flags,
+    trigger: bindingTrigger(parsed),
+    actions: [parsed.action],
+  };
+}
+
+function bindingAt(
+  file: SourceFile,
+  key: string,
+  localIndex: number,
+): { mode: string; change: Change } | null {
+  const index = lineIndexForKey(file.lines, key, localIndex);
+  if (index === null) return null;
+
+  const line = file.lines[index];
+  if (line?.type !== "entry") return null;
+
+  const mode = modeAt(file.lines, index);
+  const parsed = parseBinding(key, line.value);
+  return {
+    mode,
+    change: {
+      kind: "binding",
+      binding: parsed.kind,
+      mode,
+      flags: parsed.flags,
+      trigger: bindingTrigger(parsed),
+      actions: [],
+      remove: true,
+    },
+  };
+}
+
+function addChange(file: SourceFile, key: string, value: string, data: ConfigData): Change {
+  if (DIRECTIVE_KEYS.has(key)) {
+    return { kind: "directive", key, values: [...(data[key] ?? []), value] };
+  }
+
+  if (RULE_KEYS.has(key)) {
+    return { kind: "rule-line", rule: key as RuleKey, index: countLines(file.lines, key), value };
+  }
+
+  if (isBindingKeyword(key)) {
+    return bindingChange(key, value, modeAt(file.lines, file.lines.length));
+  }
+
+  if (key === "env" || key === "var") {
+    const comma = value.indexOf(",");
+    const name = comma === -1 ? value : value.slice(0, comma);
+    return {
+      kind: "pair",
+      table: key,
+      name,
+      value: comma === -1 ? "" : value.slice(comma + 1),
+    };
+  }
+
+  return { kind: "option", key, value };
 }
 
 function mergeFileData(files: SourceFile[], prevData: ConfigData = {}): ConfigData {
@@ -133,17 +230,13 @@ interface ConfigStore {
   setValues: (entries: Record<string, string>) => void;
 
   // Multi-value list ops: use for keys where every line is a distinct entry
-  // (bind=, exec_once=, env=, …).  All mutations operate on `file.lines`
-  // only — `data` is re-derived from lines automatically.
+  // (bind=, exec_once=, env=, …). Every mutation edits `file.document`;
+  // `lines` and `data` are derived from it again.
   addEntry: (key: string, value: string) => void;
   setDirective: (key: string, values: string[]) => void;
   setPair: (table: "env" | "var", name: string, value?: string) => void;
-  /** Insert a new entry at a specific line position in a specific file. */
-  insertEntry: (
-    key: string,
-    value: string,
-    options: { fileIdx: number; afterLineIdx: number },
-  ) => void;
+  /** Insert a binding into a specific file and mode. */
+  insertEntry: (key: string, value: string, options: { fileIdx: number; mode: string }) => void;
   updateEntry: (key: string, index: number, value: string) => void;
   removeEntry: (key: string, index: number) => void;
 
@@ -345,19 +438,27 @@ export const useConfigStore = create<ConfigStore>()(
       addEntry: (key, value) =>
         set((state) => {
           const fileIdx = fileIndexForKey(state.files, key);
-          const files = state.files.map((f, i) =>
-            i === fileIdx ? { ...f, lines: [...f.lines, makeEntryLine(key, value)] } : f,
+          const file = state.files[fileIdx];
+          if (!file) return state;
+
+          const files = state.files.map((candidate, index) =>
+            index === fileIdx
+              ? updateDocument(candidate, addChange(candidate, key, value, state.data))
+              : candidate,
           );
           return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 
-      insertEntry: (key, value, { fileIdx, afterLineIdx }) =>
+      insertEntry: (key, value, { fileIdx, mode }) =>
         set((state) => {
           const file = state.files[fileIdx];
           if (!file) return state;
-          const newLines = [...file.lines];
-          newLines.splice(afterLineIdx + 1, 0, makeEntryLine(key, value));
-          const files = state.files.map((f, i) => (i === fileIdx ? { ...f, lines: newLines } : f));
+
+          const files = state.files.map((candidate, index) =>
+            index === fileIdx
+              ? updateDocument(candidate, bindingChange(key, value, mode))
+              : candidate,
+          );
           return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 
@@ -365,18 +466,33 @@ export const useConfigStore = create<ConfigStore>()(
         set((state) => {
           const target = resolveGlobalIndex(state.files, key, index);
           if (!target) return state;
-          const files = state.files.map((f, i) => {
-            if (i !== target.fileIdx) return f;
-            let count = -1;
-            const newLines = f.lines.map((l) => {
-              if (l.type === "entry" && l.key === key) {
-                count++;
-                if (count === target.localIdx) return makeEntryLine(key, value);
-              }
-              return l;
-            });
-            return { ...f, lines: newLines };
+
+          const files = state.files.map((file, fileIdx) => {
+            if (fileIdx !== target.fileIdx) return file;
+
+            if (RULE_KEYS.has(key)) {
+              return updateDocument(file, {
+                kind: "rule-line",
+                rule: key as RuleKey,
+                index: target.localIdx,
+                value,
+              });
+            }
+
+            if (isBindingKeyword(key)) {
+              const old = bindingAt(file, key, target.localIdx);
+              if (!old) return file;
+
+              const removed = applyChange(file.document, old.change);
+              return updateDocument(
+                { ...file, document: removed, lines: documentLines(removed) },
+                bindingChange(key, value, old.mode),
+              );
+            }
+
+            return updateDocument(file, { kind: "option", key, value });
           });
+
           return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 
@@ -384,18 +500,26 @@ export const useConfigStore = create<ConfigStore>()(
         set((state) => {
           const target = resolveGlobalIndex(state.files, key, index);
           if (!target) return state;
-          const files = state.files.map((f, i) => {
-            if (i !== target.fileIdx) return f;
-            let count = -1;
-            const newLines = f.lines.filter((l) => {
-              if (l.type === "entry" && l.key === key) {
-                count++;
-                return count !== target.localIdx;
-              }
-              return true;
-            });
-            return { ...f, lines: newLines };
+
+          const files = state.files.map((file, fileIdx) => {
+            if (fileIdx !== target.fileIdx) return file;
+
+            if (RULE_KEYS.has(key)) {
+              return updateDocument(file, {
+                kind: "rule-line",
+                rule: key as RuleKey,
+                index: target.localIdx,
+              });
+            }
+
+            if (isBindingKeyword(key)) {
+              const old = bindingAt(file, key, target.localIdx);
+              return old ? updateDocument(file, old.change) : file;
+            }
+
+            return file;
           });
+
           return { files, data: mergeFileData(files, state.data), dirty: true };
         }),
 

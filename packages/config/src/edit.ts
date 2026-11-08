@@ -13,6 +13,7 @@ import {
 } from "./binding";
 import { formatAction } from "./dispatch";
 import type { ConfigDocument, EntryNode, SectionNode } from "./document";
+import { parseRule } from "./rule";
 import { formatTagMask } from "./tag";
 import type { Actions, OptionValue, RuleKey, RuleRecord, SourceLocation } from "./types";
 
@@ -35,6 +36,13 @@ export type Change =
       index: number;
       field: string;
       value?: RuleRecord[string];
+    }
+  | {
+      kind: "rule-line";
+      rule: RuleKey;
+      index: number;
+      /** The whole rule value, for example `app_id:foot,is_floating:1`. */
+      value?: string;
     };
 
 const COLOR = /^0x[0-9a-fA-F]{8}$/;
@@ -562,6 +570,89 @@ function applyTomlRule(document: ConfigDocument, change: Extract<Change, { kind:
   });
 }
 
+function applyConfRuleLine(
+  document: ConfigDocument,
+  change: Extract<Change, { kind: "rule-line" }>,
+): void {
+  const entries = document.nodes.filter(
+    (node): node is EntryNode => node.kind === "entry" && node.path[0] === change.rule,
+  );
+  const existing = entries[change.index];
+
+  if (change.value === undefined || change.value.trim() === "") {
+    if (existing) document.nodes.splice(document.nodes.indexOf(existing), 1);
+    return;
+  }
+
+  if (existing) {
+    existing.value = change.value;
+    existing.raw = replaceValue(existing.raw, change.value);
+    return;
+  }
+
+  document.nodes.push({
+    kind: "entry",
+    path: [change.rule],
+    value: change.value,
+    raw: `${change.rule} = ${change.value}`,
+    at: location(document),
+  });
+}
+
+function applyTomlRuleLine(
+  document: ConfigDocument,
+  change: Extract<Change, { kind: "rule-line" }>,
+): void {
+  const headers = document.nodes.filter(
+    (node): node is SectionNode =>
+      node.kind === "section" &&
+      node.path[0] === "rule" &&
+      node.path[1] === change.rule &&
+      node.array,
+  );
+  const header = headers[change.index];
+  const start = header ? document.nodes.indexOf(header) : document.nodes.length;
+
+  if (header) {
+    let end = start + 1;
+    while (end < document.nodes.length && document.nodes[end].kind !== "section") end++;
+    document.nodes.splice(start, end - start);
+  }
+
+  if (change.value === undefined || change.value.trim() === "") return;
+
+  const definition = RULE_BY_KEY.get(change.rule);
+  if (!definition) throw new Error(`unknown rule "${change.rule}"`);
+
+  const parsed = parseRule(definition, change.value);
+  const fields = definition.fields.flatMap((field) => {
+    const value = parsed.record[field.key];
+    if (value === undefined) return [];
+    return [
+      {
+        kind: "entry" as const,
+        path: ["rule", change.rule, field.key],
+        value: String(value),
+        raw: `${field.key} = ${tomlRuleValue(field, value)}`,
+        at: location(document),
+      },
+    ];
+  });
+
+  document.nodes.splice(
+    start,
+    0,
+    {
+      kind: "section",
+      path: ["rule", change.rule],
+      array: true,
+      raw: `[[rule.${change.rule}]]`,
+      at: location(document),
+    },
+    ...fields,
+  );
+}
+
 /** Apply one structured change while keeping the rest of the document intact. */
 export function applyChange(document: ConfigDocument, change: Change): ConfigDocument {
   const next: ConfigDocument = {
@@ -586,6 +677,10 @@ export function applyChange(document: ConfigDocument, change: Change): ConfigDoc
     case "rule":
       if (next.format === "toml") applyTomlRule(next, change);
       else applyConfRule(next, change);
+      break;
+    case "rule-line":
+      if (next.format === "toml") applyTomlRuleLine(next, change);
+      else applyConfRuleLine(next, change);
       break;
   }
 

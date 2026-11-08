@@ -10,7 +10,7 @@ import {
   type ParsedBinding,
 } from "@mangowm.github.io/config";
 
-import type { ConfigData, ConfigLine, SourceFile } from "./config/types";
+import type { ConfigData, SourceFile } from "./config/types";
 import type { Keybinding, KeybindFlags, BindingType } from "./keybind-types";
 
 /** Stable hash of (keyword, type, mods, trigger, func, args, fingers). */
@@ -257,44 +257,6 @@ export function getActiveModeAtEnd(files: SourceFile[]): string {
   return mode;
 }
 
-/** Index of the last `key_mode <mode>` line, or -1. */
-export function findLastKeyModeLine(lines: ConfigLine[], mode?: string): number {
-  for (let i = lines.length - 1; i >= 0; i--) {
-    const ln = lines[i];
-    if (ln.type === "entry" && ln.key === "key_mode") {
-      if (mode === undefined || ln.value === mode) return i;
-    }
-  }
-  return -1;
-}
-
-/** Last line of the mode block starting at keyModeIdx. */
-export function findBlockEnd(lines: ConfigLine[], keyModeIdx: number): number {
-  for (let i = keyModeIdx + 1; i < lines.length; i++) {
-    const ln = lines[i];
-    if (ln.type === "entry" && ln.key === "key_mode") return i - 1;
-  }
-  return lines.length - 1;
-}
-
-/**
- * Find where to insert a binding in `targetMode`.
- * Returns null when the caller should append or create the block.
- */
-export function findInsertPosition(
-  lines: ConfigLine[],
-  targetMode: string,
-): { afterLineIdx: number } | null {
-  if (targetMode === "default") {
-    const firstKm = lines.findIndex((ln) => ln.type === "entry" && ln.key === "key_mode");
-    if (firstKm >= 0) return { afterLineIdx: firstKm - 1 };
-    return null;
-  }
-  const kmIdx = findLastKeyModeLine(lines, targetMode);
-  if (kmIdx >= 0) return { afterLineIdx: findBlockEnd(lines, kmIdx) };
-  return null;
-}
-
 /** Build a bind keyword from flags, e.g. { symOnly: true, onRelease: true } → "bindsr". */
 export function bindKeyFromFlags(flags: KeybindFlags): string {
   return bindKeyword({
@@ -376,45 +338,21 @@ function findFileForConfigKey(files: SourceFile[], key: string): number {
 }
 
 /**
- * Insert a binding respecting its mode: default-mode bindings go into the
- * leading block (before the first `key_mode=` line), named-mode bindings go
- * into their `key_mode=` block, creating it when needed.
+ * Insert a binding into the target mode. `applyChange` creates the mode block
+ * or TOML binding table when it does not exist yet.
  */
 export function insertModeAwareBinding(
   files: SourceFile[],
-  insertEntry: (
-    key: string,
-    value: string,
-    options: { fileIdx: number; afterLineIdx: number },
-  ) => void,
+  insertEntry: (key: string, value: string, options: { fileIdx: number; mode: string }) => void,
   key: string,
   value: string,
   mode: string,
   knownFileIdx?: number,
 ): void {
   const targetFileIdx = knownFileIdx ?? findFileForConfigKey(files, key);
-  const file = files[targetFileIdx];
-  if (!file) return;
+  if (!files[targetFileIdx]) return;
 
-  const pos = findInsertPosition(file.lines, mode);
-
-  if (pos) {
-    insertEntry(key, value, { fileIdx: targetFileIdx, ...pos });
-  } else if (mode !== "default") {
-    insertEntry("key_mode", mode, {
-      fileIdx: targetFileIdx,
-      afterLineIdx: file.lines.length - 1,
-    });
-    insertEntry(key, value, {
-      fileIdx: targetFileIdx,
-      afterLineIdx: file.lines.length,
-    });
-  } else {
-    insertEntry(key, value, {
-      fileIdx: targetFileIdx,
-      afterLineIdx: file.lines.length - 1,
-    });
-  }
+  insertEntry(key, value, { fileIdx: targetFileIdx, mode });
 }
 
 /** Join ["super", "ctrl"] into "super+ctrl" in canonical order. Empty → "none". */

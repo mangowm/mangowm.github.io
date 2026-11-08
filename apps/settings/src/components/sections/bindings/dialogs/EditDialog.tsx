@@ -82,11 +82,7 @@ function Card({ children }: { children: React.ReactNode }) {
 interface FormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  insertEntry: (
-    key: string,
-    value: string,
-    options: { fileIdx: number; afterLineIdx: number },
-  ) => void;
+  insertEntry: (key: string, value: string, options: { fileIdx: number; mode: string }) => void;
   updateEntry: (key: string, index: number, value: string) => void;
   removeEntry: (key: string, index: number) => void;
   files: SourceFile[];

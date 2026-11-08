@@ -11,11 +11,6 @@ export type ConfigLine =
   | { type: "comment"; text: string; raw: string }
   | { type: "blank"; raw: string };
 
-export interface ParsedConfig {
-  data: ConfigData;
-  lines: ConfigLine[];
-}
-
 export interface SourceFile {
   absPath: string;
   refPath: string;
