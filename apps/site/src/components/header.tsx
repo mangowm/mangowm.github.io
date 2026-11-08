@@ -74,7 +74,7 @@ function DesktopNav({ pathname }: { pathname: string }) {
           key={item.label}
           item={item}
           active={isCurrent(item, pathname)}
-          className="relative z-[1] inline-flex h-8 items-center rounded-full px-[0.8rem] text-sm font-medium whitespace-nowrap text-muted-foreground no-underline transition-colors duration-[180ms] hover:text-foreground aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"
+          className="relative z-[1] inline-flex h-8 items-center rounded-full border border-transparent px-[0.8rem] text-sm font-medium whitespace-nowrap text-muted-foreground no-underline transition-colors duration-[180ms] hover:text-foreground focus-visible:border-ring aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"
         />
       ))}
     </nav>
@@ -96,7 +96,7 @@ function SocialLinks() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="inline-flex size-8 flex-none items-center justify-center rounded-full text-muted-foreground transition-[color,background-color] duration-150 hover:bg-accent hover:text-foreground"
+          className="inline-flex size-8 flex-none items-center justify-center rounded-full border border-transparent text-muted-foreground transition-[color,background-color] duration-150 hover:bg-accent hover:text-foreground focus-visible:border-ring"
         >
           <Icon />
         </a>
@@ -117,7 +117,14 @@ function MobileNav({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
-        render={<Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open menu" />}
+        render={
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full lg:hidden"
+            aria-label="Open menu"
+          />
+        }
       >
         <MenuSvg />
       </SheetTrigger>
@@ -135,7 +142,7 @@ function MobileNav({
                   item={item}
                   active={isCurrent(item, pathname)}
                   onNavigate={() => setOpen(false)}
-                  className="flex items-center rounded-2xl px-3 py-2.5 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"
+                  className="flex items-center rounded-full border border-transparent px-3 py-2.5 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:border-ring aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"
                 />
               </li>
             ))}
@@ -179,7 +186,7 @@ export function Header() {
         <Link
           to="/"
           onClick={() => setMenuOpen(false)}
-          className="site-piece group inline-flex h-[var(--nav-piece-height)] flex-none items-center gap-2 rounded-full pr-4 pl-[0.85rem] font-display text-[0.95rem] font-semibold tracking-[-0.02em] text-foreground no-underline"
+          className="site-piece group inline-flex h-[var(--nav-piece-height)] flex-none items-center gap-2 rounded-full pr-4 pl-[0.85rem] font-display text-[0.95rem] font-semibold tracking-[-0.02em] text-foreground no-underline focus-visible:border-ring"
           aria-label="mangowm home"
         >
           <img

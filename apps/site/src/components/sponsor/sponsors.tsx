@@ -10,7 +10,7 @@ export function Sponsors({ className }: { className?: string }) {
             href={`https://github.com/${name}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col items-center gap-2.5"
+            className="group flex flex-col items-center gap-2.5 rounded-xl border border-transparent p-1 focus-visible:border-ring"
           >
             <img
               src={`https://unavatar.io/github/${name}`}

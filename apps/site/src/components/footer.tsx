@@ -52,7 +52,7 @@ const FOOTER_LINK_GROUPS: readonly { label: string; links: readonly FooterLink[]
 ];
 
 const LINK_CLASS =
-  "relative inline-block w-fit text-[0.8125rem] text-muted-foreground transition-colors duration-150 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-primary/80 after:transition-transform after:duration-200 after:ease-out hover:text-foreground hover:after:scale-x-100";
+  "relative inline-block w-fit text-[0.8125rem] text-muted-foreground transition-colors duration-150 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-primary/80 after:transition-transform after:duration-200 after:ease-out hover:text-foreground hover:after:scale-x-100 focus-visible:text-foreground focus-visible:after:scale-x-100";
 
 function FooterNavLink({ link }: { link: FooterLink }) {
   if (link.to) {
@@ -101,7 +101,7 @@ export function Footer() {
             <Link
               to="/"
               aria-label="mangowm home"
-              className="site-footer-signature-word footer-brand"
+              className="site-footer-signature-word footer-brand rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
             >
               <span>mang</span>
               <span className="site-footer-signature-o" style={SIGNATURE_LOGO_STYLE} />

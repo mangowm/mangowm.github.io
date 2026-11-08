@@ -43,11 +43,6 @@
     min-height: 0;
   }
 
-  :where(a, button, [role="button"]):not([data-slot]):focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
-  }
-
   .skip-link {
     position: absolute;
     top: -3.5rem;

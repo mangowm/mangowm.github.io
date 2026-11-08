@@ -28,7 +28,7 @@ export function Card({
         type="button"
         onClick={onOpen}
         aria-label={`View ${entry.username}'s setup`}
-        className="relative aspect-video w-full overflow-hidden bg-muted focus-visible:-outline-offset-2"
+        className="relative aspect-video w-full overflow-hidden border border-transparent bg-muted focus-visible:border-ring"
       >
         {screenshot ? (
           <ShowcasePicture
@@ -82,7 +82,7 @@ export function Card({
             href={`https://github.com/${entry.username}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="truncate text-sm font-semibold text-foreground transition-colors hover:text-primary-text"
+            className="truncate text-sm font-semibold text-foreground transition-colors hover:text-primary-text focus-visible:underline"
           >
             @{entry.username}
           </a>
@@ -109,7 +109,7 @@ export function Card({
             href={entry.dotfiles}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-1 rounded border border-border/60 bg-muted/40 px-2 py-0.5 text-[11px] font-medium text-muted-foreground transition-colors hover:border-border hover:bg-muted hover:text-foreground"
+            className="inline-flex shrink-0 items-center gap-1 rounded-full border border-border/60 bg-muted/40 px-2 py-0.5 text-[11px] font-medium text-muted-foreground transition-colors hover:border-border hover:bg-muted hover:text-foreground focus-visible:border-ring"
           >
             Dotfiles <ExternalLink size={8} strokeWidth={2.5} />
           </a>

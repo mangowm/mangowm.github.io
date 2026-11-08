@@ -120,7 +120,7 @@ export function SubmitDialog({ className }: { className?: string }) {
         render={
           <Button
             variant="outline"
-            className={cn("gap-2 bg-card font-medium hover:bg-accent", className)}
+            className={cn("gap-2 rounded-full bg-card font-medium hover:bg-accent", className)}
           />
         }
       >
@@ -172,7 +172,7 @@ export function SubmitDialog({ className }: { className?: string }) {
             type="button"
             onClick={handleSubmit}
             disabled={!dotfiles.trim() || status === "checking"}
-            className="gap-1.5 text-xs font-semibold"
+            className="gap-1.5 rounded-full text-xs font-semibold"
           >
             Open issue <ExternalLink size={8} strokeWidth={2.5} />
           </Button>

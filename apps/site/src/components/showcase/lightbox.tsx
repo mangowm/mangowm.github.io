@@ -154,7 +154,7 @@ export function Lightbox({
               href={`https://github.com/${entry.username}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="truncate font-semibold text-white/85 transition-colors hover:text-white"
+              className="truncate font-semibold text-white/85 transition-colors hover:text-white focus-visible:underline"
             >
               @{entry.username}
             </a>
@@ -167,7 +167,7 @@ export function Lightbox({
               href={entry.dotfiles}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center gap-1 font-medium text-white/60 transition-colors hover:text-white"
+              className="inline-flex shrink-0 items-center gap-1 font-medium text-white/60 transition-colors hover:text-white focus-visible:underline"
             >
               Dotfiles <ExternalLink size={8} strokeWidth={2.5} />
             </a>
@@ -221,7 +221,7 @@ export function Lightbox({
                   onClick={() => setMediaIndex(mediaItemIndex)}
                   aria-label={`${item.type === "video" ? "Video" : "Screenshot"} ${mediaItemIndex + 1}`}
                   aria-current={active ? "true" : undefined}
-                  className="flex h-4 items-center justify-center"
+                  className="flex h-4 items-center justify-center rounded-full border border-transparent focus-visible:border-ring"
                 >
                   {item.type === "video" ? (
                     <span

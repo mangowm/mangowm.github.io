@@ -37,7 +37,7 @@ export function SponsorPage() {
           type="button"
           onClick={() => handleCopy("qr")}
           aria-label="Copy QR code image"
-          className="group relative block aspect-square w-full max-w-[220px] cursor-pointer overflow-hidden rounded-lg border border-border bg-white p-2 transition-colors hover:border-primary sm:max-w-none"
+          className="group relative block aspect-square w-full max-w-[220px] cursor-pointer overflow-hidden rounded-lg border border-border bg-white p-2 transition-colors hover:border-primary focus-visible:border-ring sm:max-w-none"
         >
           <img
             src={SPONSOR.qrSrc}
@@ -74,7 +74,7 @@ export function SponsorPage() {
               onClick={() => handleCopy("address")}
               aria-label="Copy wallet address"
               className={cn(
-                "inline-flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-xs font-semibold transition-colors",
+                "inline-flex shrink-0 items-center gap-1.5 rounded-full border border-transparent px-2 py-1 text-xs font-semibold transition-colors focus-visible:border-ring",
                 copied === "address"
                   ? "text-success"
                   : "text-muted-foreground hover:bg-card hover:text-foreground",
@@ -97,7 +97,7 @@ export function SponsorPage() {
               href={DISCORD_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground"
+              className="font-medium text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground focus-visible:text-foreground focus-visible:decoration-foreground"
             >
               Discord
             </a>

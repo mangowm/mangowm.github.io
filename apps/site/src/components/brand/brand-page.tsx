@@ -242,7 +242,7 @@ export function BrandPage() {
                   size="lg"
                   onClick={handleDownload}
                   disabled={busy}
-                  className="h-10 w-full rounded-xl text-sm font-semibold"
+                  className="h-10 w-full rounded-full text-sm font-semibold"
                 >
                   <Download className="size-4" />
                   {busy ? "Exporting…" : `Download ${format.toUpperCase()}`}
