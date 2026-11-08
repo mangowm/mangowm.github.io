@@ -14,14 +14,20 @@
       inset: 26% -1.25rem -1.25rem;
       background: var(--color-leaf);
       transform: rotate(2.5deg);
-      animation: shape-float-alt 9s ease-in-out infinite;
+
+      @media (prefers-reduced-motion: no-preference) {
+        animation: shape-float-alt 9s ease-in-out infinite;
+      }
     }
 
     &::after {
       inset: 20% -0.75rem -0.75rem;
       background: var(--color-primary);
       transform: rotate(-2deg);
-      animation: shape-float 8s ease-in-out infinite;
+
+      @media (prefers-reduced-motion: no-preference) {
+        animation: shape-float 8s ease-in-out infinite;
+      }
     }
 
     & > * {
@@ -59,24 +65,6 @@
 
     50% {
       transform: rotate(3.1deg) translateY(-6px);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-      transition: none;
-      animation: none;
-    }
-
-    .hero-visual::before,
-    .hero-visual::after {
-      animation: none;
     }
   }
 }
@@ -199,12 +187,6 @@
     );
     background-size: 8px 8px;
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .brand-option {
-      transition: none;
-    }
-  }
 }
 
 @utility site-header {
@@ -271,7 +253,10 @@
     background-position: 0 50%;
     -webkit-background-clip: text;
     background-clip: text;
-    animation: site-footer-signature-word-wave 7s linear infinite;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: site-footer-signature-word-wave 7s linear infinite;
+    }
   }
 
   .site-footer-signature-o {
@@ -296,7 +281,10 @@
     mask-size: contain;
     background-color: currentColor;
     background-position: calc(-1 * var(--signature-logo-offset)) 50%;
-    animation: site-footer-signature-logo-wave 7s linear infinite;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: site-footer-signature-logo-wave 7s linear infinite;
+    }
   }
 
   @keyframes site-footer-signature-word-wave {
@@ -323,14 +311,6 @@
   .site-footer-wordmark[data-wave="off"] .site-footer-signature-word,
   .site-footer-wordmark[data-wave="off"] .site-footer-signature-o {
     animation-play-state: paused;
-  }
-
-  /* Reduced motion keeps the static gradient blend. */
-  @media (prefers-reduced-motion: reduce) {
-    .site-footer-signature-word,
-    .site-footer-signature-o {
-      animation: none;
-    }
   }
 
   @media (prefers-reduced-transparency: reduce) {

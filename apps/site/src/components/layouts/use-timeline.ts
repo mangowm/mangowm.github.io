@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
+import { useReducedMotion } from "@mangowm/ui/hooks/use-reduced-motion";
 import { DEFAULT_TIMELINE, timelineAt, type TimelineState } from "./timeline";
 import type { Timeline } from "./types";
 
 export interface TimelineStep extends TimelineState {
   previous: TimelineState;
-}
-
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
 }
 
 /**
@@ -18,13 +13,14 @@ function prefersReducedMotion(): boolean {
  * carries the previous step so callers can classify each change.
  */
 export function useTimeline(timeline: Timeline = DEFAULT_TIMELINE): TimelineStep {
+  const reducedMotion = useReducedMotion();
   const [state, setState] = useState<TimelineStep>(() => {
     const initial = timelineAt(0, timeline);
     return { ...initial, previous: initial };
   });
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
+    if (reducedMotion) {
       const at = timelineAt(timeline.total / 2, timeline);
       setState({ ...at, previous: at });
       return;
@@ -45,7 +41,7 @@ export function useTimeline(timeline: Timeline = DEFAULT_TIMELINE): TimelineStep
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [timeline]);
+  }, [timeline, reducedMotion]);
 
   return state;
 }

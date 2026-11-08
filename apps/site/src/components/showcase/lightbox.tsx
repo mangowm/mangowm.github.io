@@ -4,6 +4,7 @@ import { cn } from "cn";
 import { Button } from "@mangowm/ui/components/button";
 import { Dialog, DialogContent, DialogTitle } from "@mangowm/ui/components/dialog";
 import { Skeleton } from "@mangowm/ui/components/skeleton";
+import { useReducedMotion } from "@mangowm/ui/hooks/use-reduced-motion";
 import { formatDate } from "@/lib/date";
 import { entryMedia, imageSrc, type ShowcaseEntry, type ShowcaseImage } from "@/lib/showcase-data";
 import { videoMimeType } from "@/lib/showcase-media";
@@ -21,6 +22,7 @@ function MediaUnavailable() {
 
 function VideoPlayer({ url, poster }: { url: string; poster?: string }) {
   const [failed, setFailed] = useState(false);
+  const reducedMotion = useReducedMotion();
 
   if (failed) return <MediaUnavailable />;
 
@@ -28,7 +30,7 @@ function VideoPlayer({ url, poster }: { url: string; poster?: string }) {
     <div className="flex h-full w-full items-center justify-center">
       <video
         controls
-        autoPlay
+        autoPlay={!reducedMotion}
         muted
         loop
         playsInline

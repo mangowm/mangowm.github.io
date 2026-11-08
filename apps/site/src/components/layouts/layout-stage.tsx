@@ -1,3 +1,4 @@
+import { useReducedMotion } from "@mangowm/ui/hooks/use-reduced-motion";
 import { AnimatedCard } from "./animated-card";
 import type { CardAction } from "./animation";
 import { DEFAULT_LAYOUT_CONFIG, type LayoutConfig } from "./config";
@@ -18,6 +19,7 @@ export function LayoutStage({
 }: LayoutStageProps) {
   const { ref, size } = useElementSize<HTMLDivElement>();
   const { phase, phaseElapsed, previous } = useTimeline(layout.timeline);
+  const reducedMotion = useReducedMotion();
   const ready = size.width > 0 && size.height > 0;
 
   const render = (phase: number, phaseElapsed: number): LayoutFrame =>
@@ -37,7 +39,15 @@ export function LayoutStage({
       action === "leave" && previousCard
         ? { ...previousCard, visible: false, active: false }
         : card;
-    return <AnimatedCard key={index} frame={frame} label={String(index + 1)} action={action} />;
+    return (
+      <AnimatedCard
+        key={index}
+        frame={frame}
+        label={String(index + 1)}
+        action={action}
+        reducedMotion={reducedMotion}
+      />
+    );
   });
 
   return (

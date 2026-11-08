@@ -135,3 +135,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+/*
+ * Reduced-motion policy for component enter/exit animations.
+ * Unlayered on purpose: it must win over Tailwind's `utilities` layer.
+ * Loading indicators (skeleton, spinners) are intentionally not targeted.
+ */
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="dialog-overlay"],
+  [data-slot="dialog-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="dropdown-menu-sub-content"],
+  [data-slot="popover-content"],
+  [data-slot="select-content"],
+  [data-slot="tooltip-content"],
+  [data-slot="sheet-overlay"],
+  [data-slot="sheet-content"],
+  [data-slot="toast"] {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+  }
+}

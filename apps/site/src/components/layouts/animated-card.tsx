@@ -6,9 +6,10 @@ interface AnimatedCardProps {
   frame: CardFrame;
   label: string;
   action: CardAction;
+  reducedMotion: boolean;
 }
 
-export function AnimatedCard({ frame, label, action }: AnimatedCardProps) {
+export function AnimatedCard({ frame, label, action, reducedMotion }: AnimatedCardProps) {
   const { x, y, w, h, visible, active, z } = frame;
 
   return (
@@ -25,7 +26,7 @@ export function AnimatedCard({ frame, label, action }: AnimatedCardProps) {
         height: h,
         opacity: visible ? 1 : 0,
         zIndex: z,
-        transition: cardTransition(action),
+        transition: reducedMotion ? "none" : cardTransition(action),
       }}
     >
       {label}

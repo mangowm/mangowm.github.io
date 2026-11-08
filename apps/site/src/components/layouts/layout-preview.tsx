@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@mangowm/ui/components/dropdown-menu";
 import { ToggleGroup, ToggleGroupItem } from "@mangowm/ui/components/toggle-group";
+import { useReducedMotion } from "@mangowm/ui/hooks/use-reduced-motion";
 import { LayoutStage } from "./layout-stage";
 import {
   AUTO_PLAY_IDS,
@@ -21,6 +22,7 @@ import {
 import type { LayoutId, Orientation } from "./types";
 
 export function LayoutPreview() {
+  const reducedMotion = useReducedMotion();
   const [activeLayout, setActiveLayout] = useState<LayoutId>(DEFAULT_LAYOUT.id);
   const [orientation, setOrientation] = useState<Orientation>("horizontal");
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -30,8 +32,7 @@ export function LayoutPreview() {
   const supportsOrientation = activeDef.supportsOrientation;
 
   useEffect(() => {
-    if (!isAutoPlaying) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!isAutoPlaying || reducedMotion) return;
 
     const interval = setInterval(() => {
       setActiveLayout((current) => {
@@ -42,7 +43,7 @@ export function LayoutPreview() {
     }, AUTO_PLAY_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying]);
+  }, [isAutoPlaying, reducedMotion]);
 
   const selectLayout = (id: LayoutId) => {
     setActiveLayout(id);
