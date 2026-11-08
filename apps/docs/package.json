@@ -16,10 +16,10 @@
   "dependencies": {
     "@base-ui/react": "catalog:",
     "@mangowm/assets": "workspace:*",
-    "fumadocs-core": "^16.17.1",
-    "fumadocs-mdx": "^15.4.7",
-    "fumadocs-ui": "npm:@fumadocs/base-ui@^16.17.1",
-    "fumapress": "1.6.1",
+    "fumadocs-core": "^16.18.2",
+    "fumadocs-mdx": "^15.5.1",
+    "fumadocs-ui": "npm:@fumadocs/base-ui@^16.18.2",
+    "fumapress": "2.0.1",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
