@@ -95,6 +95,7 @@ function bindingChange(key: string, value: string, mode: string): Change {
     flags: parsed.flags,
     trigger: bindingTrigger(parsed),
     actions: [parsed.action],
+    append: parsed.flags.conflict,
   };
 }
 
@@ -119,7 +120,7 @@ function bindingAt(
       mode,
       flags: parsed.flags,
       trigger: bindingTrigger(parsed),
-      actions: [],
+      actions: [parsed.action],
       remove: true,
     },
   };

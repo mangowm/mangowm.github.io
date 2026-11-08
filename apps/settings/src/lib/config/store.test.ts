@@ -88,6 +88,39 @@ describe("config mutations reach the saved document", () => {
     expect(useConfigStore.getState().data.env).toEqual(["FOO,bar"]);
   });
 
+  it("tracks conflict actions independently", () => {
+    reset("", "conf");
+    useConfigStore.getState().insertEntry("bindc", "SUPER,a,centerwin", {
+      fileIdx: 0,
+      mode: "default",
+    });
+    useConfigStore.getState().insertEntry("bindc", "SUPER,a,reload_config", {
+      fileIdx: 0,
+      mode: "default",
+    });
+    expect(saved("conf")).toContain("bindc = SUPER,a,centerwin");
+    expect(saved("conf")).toContain("bindc = SUPER,a,reload_config");
+
+    useConfigStore.getState().removeEntry("bindc", 1);
+    expect(saved("conf")).toContain("bindc = SUPER,a,centerwin");
+    expect(saved("conf")).not.toContain("reload_config");
+
+    reset("", "toml");
+    useConfigStore.getState().insertEntry("bindc", "SUPER,a,centerwin", {
+      fileIdx: 0,
+      mode: "default",
+    });
+    useConfigStore.getState().insertEntry("bindc", "SUPER,a,reload_config", {
+      fileIdx: 0,
+      mode: "default",
+    });
+    expect(saved("toml")).toContain('"SUPER+a" = ["centerwin", "reload_config"]');
+
+    useConfigStore.getState().removeEntry("bindc", 1);
+    expect(saved("toml")).toContain('"SUPER+a" = ["centerwin"]');
+    expect(saved("toml")).not.toContain("reload_config");
+  });
+
   it("adds, updates, and removes a TOML binding", () => {
     reset("", "toml");
 

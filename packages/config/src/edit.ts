@@ -29,6 +29,8 @@ export type Change =
       trigger: string;
       actions: Actions;
       remove?: boolean;
+      /** Add the actions to an existing conflict binding instead of replacing it. */
+      append?: boolean;
     }
   | {
       kind: "rule";
@@ -128,7 +130,11 @@ function location(document: ConfigDocument): SourceLocation {
 }
 
 function entry(document: ConfigDocument, path: readonly string[]): EntryNode | undefined {
-  return document.nodes.find(
+  return pathEntries(document, path)[0];
+}
+
+function pathEntries(document: ConfigDocument, path: readonly string[]): EntryNode[] {
+  return document.nodes.filter(
     (node): node is EntryNode =>
       node.kind === "entry" &&
       node.path.length === path.length &&
@@ -145,14 +151,10 @@ function section(document: ConfigDocument, path: readonly string[]): SectionNode
   );
 }
 
-function insertAfter(document: ConfigDocument, anchor: number, nodes: EntryNode[]): void {
-  document.nodes.splice(anchor + 1, 0, ...nodes);
-}
-
-function insertTomlEntry(
+function insertTomlNodes(
   document: ConfigDocument,
   table: readonly string[],
-  node: EntryNode,
+  nodes: EntryNode[],
 ): void {
   const header = section(document, table);
   if (!header) {
@@ -164,7 +166,7 @@ function insertTomlEntry(
         raw: `[${table.join(".")}]`,
         at: location(document),
       },
-      node,
+      ...nodes,
     );
     return;
   }
@@ -175,7 +177,77 @@ function insertTomlEntry(
     if (document.nodes[cursor].kind === "section") break;
     anchor = cursor;
   }
-  insertAfter(document, anchor, [node]);
+  document.nodes.splice(anchor + 1, 0, ...nodes);
+}
+
+function insertTomlEntry(
+  document: ConfigDocument,
+  table: readonly string[],
+  node: EntryNode,
+): void {
+  insertTomlNodes(document, table, [node]);
+}
+
+function writeTomlBinding(
+  document: ConfigDocument,
+  table: readonly string[],
+  path: readonly string[],
+  trigger: string,
+  values: readonly string[],
+  conflict: boolean,
+): void {
+  const existing = pathEntries(document, path);
+
+  if (values.length === 0) {
+    for (const node of existing) document.nodes.splice(document.nodes.indexOf(node), 1);
+    return;
+  }
+
+  const text = conflict ? `[${values.map(quote).join(", ")}]` : quote(values[0] ?? "");
+  const first = existing[0];
+
+  if (!first) {
+    const at = location(document);
+    insertTomlNodes(document, table, [
+      {
+        kind: "entry",
+        path: [...path],
+        value: values[0] ?? "",
+        raw: `${quote(trigger)} = ${text}`,
+        at,
+      },
+      ...values.slice(1).map((value): EntryNode => ({
+        kind: "entry",
+        path: [...path],
+        value,
+        raw: "",
+        at,
+        synthetic: true,
+      })),
+    ]);
+    return;
+  }
+
+  first.value = values[0] ?? "";
+  first.raw = replaceValue(first.raw, text);
+
+  for (const node of existing.slice(1)) {
+    document.nodes.splice(document.nodes.indexOf(node), 1);
+  }
+
+  const index = document.nodes.indexOf(first);
+  document.nodes.splice(
+    index + 1,
+    0,
+    ...values.slice(1).map((value): EntryNode => ({
+      kind: "entry",
+      path: [...path],
+      value,
+      raw: "",
+      at: first.at,
+      synthetic: true,
+    })),
+  );
 }
 
 function applyOption(document: ConfigDocument, key: string, value: OptionValue): void {
@@ -317,13 +389,14 @@ function applyPair(
   });
 }
 
-function confBinding(
+function confBindings(
   document: ConfigDocument,
   binding: BindingKind,
   mode: string,
   flags: BindingFlags,
   trigger: string,
-): EntryNode | undefined {
+): { node: EntryNode; parsed: ParsedBinding }[] {
+  const matches: { node: EntryNode; parsed: ParsedBinding }[] = [];
   let currentMode = "default";
 
   for (const node of document.nodes) {
@@ -342,14 +415,14 @@ function confBinding(
         bindingTrigger(parsed) === trigger &&
         FLAGS.every((flag) => parsed.flags[flag] === flags[flag])
       ) {
-        return node;
+        matches.push({ node, parsed });
       }
     } catch {
       // Invalid binding lines are left for the normalizer to report.
     }
   }
 
-  return undefined;
+  return matches;
 }
 
 function confBindingNode(parsed: ParsedBinding): EntryNode {
@@ -368,10 +441,24 @@ function applyConfBinding(
   document: ConfigDocument,
   change: Extract<Change, { kind: "binding" }>,
 ): void {
-  const existing = confBinding(document, change.binding, change.mode, change.flags, change.trigger);
+  const existing = confBindings(
+    document,
+    change.binding,
+    change.mode,
+    change.flags,
+    change.trigger,
+  );
 
   if (change.remove) {
-    if (existing) document.nodes.splice(document.nodes.indexOf(existing), 1);
+    const target =
+      change.actions.length === 0
+        ? existing[0]
+        : existing.find((match) =>
+            change.actions.some(
+              (action) => formatAction(action) === formatAction(match.parsed.action),
+            ),
+          );
+    if (target) document.nodes.splice(document.nodes.indexOf(target.node), 1);
     return;
   }
 
@@ -387,10 +474,26 @@ function applyConfBinding(
     }),
   );
 
-  if (existing) {
-    const index = document.nodes.indexOf(existing);
-    existing.value = nodes[0]?.value ?? "";
-    existing.raw = nodes[0]?.raw ?? existing.raw;
+  if (nodes.length === 0) return;
+
+  if (change.append && existing.length > 0) {
+    const last = existing[existing.length - 1];
+    if (last) document.nodes.splice(document.nodes.indexOf(last.node) + 1, 0, ...nodes);
+    return;
+  }
+
+  if (existing.length > 0) {
+    const first = existing[0];
+    if (!first) return;
+
+    const index = document.nodes.indexOf(first.node);
+    first.node.value = nodes[0]?.value ?? "";
+    first.node.raw = nodes[0]?.raw ?? first.node.raw;
+
+    for (const match of existing.slice(1)) {
+      document.nodes.splice(document.nodes.indexOf(match.node), 1);
+    }
+
     if (nodes.length > 1) document.nodes.splice(index + 1, 0, ...nodes.slice(1));
     return;
   }
@@ -431,30 +534,22 @@ function applyTomlBinding(
     ...FLAGS.filter((flag) => change.flags[flag]),
   ];
   const path = [...table, change.trigger];
+  const existing = pathEntries(document, path);
 
   if (change.remove) {
-    const existing = entry(document, path);
-    if (existing) document.nodes.splice(document.nodes.indexOf(existing), 1);
+    const removeValues = new Set(change.actions.map(formatAction));
+    const remaining =
+      removeValues.size === 0
+        ? []
+        : existing.map((node) => node.value).filter((value) => !removeValues.has(value));
+    writeTomlBinding(document, table, path, change.trigger, remaining, change.flags.conflict);
     return;
   }
 
   const values = change.actions.map(formatAction);
-  const text = change.flags.conflict ? `[${values.map(quote).join(", ")}]` : quote(values[0] ?? "");
-  const existing = entry(document, path);
+  const next = change.append ? [...existing.map((node) => node.value), ...values] : values;
 
-  if (existing) {
-    existing.value = values.join(",");
-    existing.raw = replaceValue(existing.raw, text);
-    return;
-  }
-
-  insertTomlEntry(document, table, {
-    kind: "entry",
-    path,
-    value: values.join(","),
-    raw: `${quote(change.trigger)} = ${text}`,
-    at: location(document),
-  });
+  writeTomlBinding(document, table, path, change.trigger, next, change.flags.conflict);
 }
 
 function applyConfRule(document: ConfigDocument, change: Extract<Change, { kind: "rule" }>): void {

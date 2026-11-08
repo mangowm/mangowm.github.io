@@ -2,7 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 
 import { parseConf } from "./conf";
 import { applyChange } from "./edit";
-import { parseToml } from "./toml";
+import { formatToml, parseToml } from "./toml";
 
 describe("applyChange conf", () => {
   it("updates an option and keeps its comment", () => {
@@ -149,9 +149,63 @@ describe("applyChange bindings", () => {
       actions: [{ dispatcher: "centerwin" }, { dispatcher: "reload_config" }],
     });
 
-    expect(next.nodes.at(-1)).toMatchObject({
-      raw: '"SUPER+a" = ["centerwin", "reload_config"]',
+    expect(formatToml(next)).toContain('"SUPER+a" = ["centerwin", "reload_config"]');
+  });
+
+  it("appends a conflict action in toml", () => {
+    const document = parseToml('[bind.default.conflict]\n"SUPER+a" = ["centerwin"]\n');
+    const next = applyChange(document, {
+      kind: "binding",
+      binding: "key",
+      mode: "default",
+      flags: { ...flags, conflict: true },
+      trigger: "SUPER+a",
+      actions: [{ dispatcher: "reload_config" }],
+      append: true,
     });
+
+    expect(formatToml(next)).toContain('"SUPER+a" = ["centerwin", "reload_config"]');
+  });
+
+  it("removes one conflict action in toml", () => {
+    const conflictFlags = { ...flags, conflict: true };
+    const document = parseToml(
+      '[bind.default.conflict]\n"SUPER+a" = ["centerwin", "reload_config"]\n',
+    );
+    const next = applyChange(document, {
+      kind: "binding",
+      binding: "key",
+      mode: "default",
+      flags: conflictFlags,
+      trigger: "SUPER+a",
+      actions: [{ dispatcher: "reload_config" }],
+      remove: true,
+    });
+
+    const text = formatToml(next);
+    expect(text).toContain('"SUPER+a" = ["centerwin"]');
+    expect(text).not.toContain("reload_config");
+  });
+
+  it("removes one conflict action in conf", () => {
+    const conflictFlags = { ...flags, conflict: true };
+    const document = parseConf("bindc = SUPER,a,centerwin\nbindc = SUPER,a,reload_config\n");
+    const next = applyChange(document, {
+      kind: "binding",
+      binding: "key",
+      mode: "default",
+      flags: conflictFlags,
+      trigger: "SUPER+a",
+      actions: [{ dispatcher: "reload_config" }],
+      remove: true,
+    });
+
+    const text = next.nodes
+      .filter((node) => node.kind === "entry")
+      .map((node) => node.raw)
+      .join("\n");
+    expect(text).toContain("bindc = SUPER,a,centerwin");
+    expect(text).not.toContain("reload_config");
   });
 });
 
