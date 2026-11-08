@@ -101,7 +101,7 @@ export function Footer() {
             <Link
               to="/"
               aria-label="mangowm home"
-              className="site-footer-signature-word footer-brand rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+              className="site-footer-signature-word footer-brand"
             >
               <span>mang</span>
               <span className="site-footer-signature-o" style={SIGNATURE_LOGO_STYLE} />

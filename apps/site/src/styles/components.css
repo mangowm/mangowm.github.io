@@ -148,7 +148,8 @@
 
     &:has(.brand-option-input:focus-visible) {
       border-color: var(--ring);
-      outline: none;
+      outline: 2px solid color-mix(in oklab, var(--ring) 50%, transparent);
+      outline-offset: 0;
     }
 
     &:has(.brand-option-input[data-checked]) {
