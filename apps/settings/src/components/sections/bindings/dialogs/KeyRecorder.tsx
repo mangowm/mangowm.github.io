@@ -171,7 +171,10 @@ export function KeyRecorder({
     return (
       <div className="flex min-h-[4rem] w-full flex-wrap items-center justify-center gap-2.5">
         {activeMods.map((m) => (
-          <div key={m} className="flex animate-in items-center gap-2.5 duration-200 zoom-in">
+          <div
+            key={m}
+            className="flex animate-in items-center gap-2.5 duration-200 zoom-in motion-reduce:animate-none"
+          >
             <button
               type="button"
               onClick={(e) => {
@@ -199,7 +202,7 @@ export function KeyRecorder({
               className={cn(
                 "flex h-10 cursor-pointer items-center justify-center rounded-l-lg border-y-2 border-b-4 border-l-2 px-5 font-mono text-base font-black tracking-widest uppercase transition-all",
                 isRecording
-                  ? "animate-pulse border-solid border-primary bg-primary/10 text-primary"
+                  ? "animate-pulse border-solid border-primary bg-primary/10 text-primary motion-reduce:animate-none"
                   : isRawCode(capturedKey) && !isPicker
                     ? "border-amber-500/30 bg-amber-500/10 text-amber-600 hover:border-amber-500/50 hover:bg-amber-500/20"
                     : "border-border bg-card text-foreground hover:border-primary/50 hover:bg-muted",
@@ -213,7 +216,7 @@ export function KeyRecorder({
               className={cn(
                 "flex h-10 min-w-[7rem] cursor-pointer items-center justify-center rounded-l-lg border-y-2 border-l-2 border-dashed px-4 font-sans text-[11px] font-bold tracking-widest uppercase transition-all",
                 isRecording
-                  ? "animate-pulse border-primary/60 bg-primary/5 text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)]"
+                  ? "animate-pulse border-primary/60 bg-primary/5 text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)] motion-reduce:animate-none"
                   : "border-muted-foreground/30 bg-muted/10 text-muted-foreground/50 hover:border-primary/40 hover:bg-muted/30",
               )}
             >

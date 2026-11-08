@@ -56,7 +56,7 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
       overlayClassName="fixed inset-0 bg-black/60 backdrop-blur-sm"
       contentClassName="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]"
     >
-      <div className="w-[580px] animate-in overflow-hidden rounded-xl border border-border/50 bg-popover shadow-2xl duration-150 zoom-in-95 fade-in">
+      <div className="w-[580px] animate-in overflow-hidden rounded-xl border border-border/50 bg-popover shadow-2xl duration-150 zoom-in-95 fade-in motion-reduce:animate-none">
         <div className="flex items-center gap-2 border-b border-border/30 px-4">
           <SearchIcon className="size-4 shrink-0 text-muted-foreground/60" />
           <Command.Input

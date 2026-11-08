@@ -330,7 +330,7 @@ export function EditDialog({
               />
 
               {func && currentSchema.length > 0 && (
-                <div className="animate-in duration-300 fade-in slide-in-from-top-2">
+                <div className="animate-in duration-300 fade-in slide-in-from-top-2 motion-reduce:animate-none">
                   <div className="flex flex-col overflow-hidden rounded-xl border border-border/40 bg-card shadow-sm">
                     <div className="border-b border-border/30 bg-muted/30 px-3 py-1.5">
                       <span className="text-[10px] font-bold tracking-widest text-muted-foreground/60 uppercase">

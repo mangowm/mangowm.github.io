@@ -351,7 +351,7 @@ const ColorInput = memo(function ColorInput({
 
         {isOpen && (
           <div
-            className={`absolute left-0 z-50 min-w-[220px] animate-in rounded-xl border border-border/60 bg-popover shadow-xl duration-150 zoom-in-95 fade-in ${popoverPosition}`}
+            className={`absolute left-0 z-50 min-w-[220px] animate-in rounded-xl border border-border/60 bg-popover shadow-xl duration-150 zoom-in-95 fade-in motion-reduce:animate-none ${popoverPosition}`}
           >
             <div className="flex items-center justify-between border-b border-border/40 px-3 py-2">
               <span className="text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
