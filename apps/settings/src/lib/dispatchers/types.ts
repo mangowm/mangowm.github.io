@@ -1,4 +1,4 @@
-import { ALL_TAGS, LAYOUTS, TAG_COUNT } from "@mangowm.github.io/schema";
+import { ALL_TAGS, BINDING_DIRECTIONS, LAYOUTS, TAG_COUNT } from "@mangowm.github.io/schema";
 
 export type ArgType =
   | "none"
@@ -34,7 +34,7 @@ export interface DispatcherArg {
   required?: boolean;
 }
 
-export const DIRECTION_OPTS = ["left", "right", "up", "down"] as const;
+export const DIRECTION_OPTS = BINDING_DIRECTIONS;
 export const CIRCLE_DIR_OPTS = ["next", "prev"] as const;
 export const OVERCIRCLE_OPTS = ["next", "prev", "current_next", "current_prev"] as const;
 export const SWITCHER_OPTS = [

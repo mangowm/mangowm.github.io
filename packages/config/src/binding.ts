@@ -1,9 +1,15 @@
+import {
+  BINDING_FLAG_LETTERS,
+  BINDING_FLAGS,
+  BINDING_KEYWORDS,
+  type BindingKind,
+} from "@mangowm.github.io/schema";
+
 import { formatAction, parseAction } from "./dispatch";
 import type { Action } from "./types";
 import { ValueError } from "./value";
 
-/** The five binding families, matching the config keywords. */
-export type BindingKind = "key" | "mouse" | "axis" | "gesture" | "switch";
+export type { BindingKind };
 
 /** `bind` flags, in canonical nesting order. */
 export interface BindingFlags {
@@ -24,31 +30,14 @@ export interface ParsedBinding {
   action: Action;
 }
 
-const KEY_BIND = /^bind[slrpc]*$/;
+const BIND_FLAG_LETTERS = BINDING_FLAGS.map((flag) => BINDING_FLAG_LETTERS[flag]).join("");
+const KEY_BIND = new RegExp(`^bind[${BIND_FLAG_LETTERS}]*$`);
 
-const FLAG_BY_SUFFIX: Record<string, keyof BindingFlags> = {
-  s: "sym",
-  l: "lock",
-  r: "release",
-  p: "pass",
-  c: "conflict",
-};
+const FLAG_BY_SUFFIX = Object.fromEntries(
+  BINDING_FLAGS.map((flag) => [BINDING_FLAG_LETTERS[flag], flag]),
+) as Record<string, keyof BindingFlags>;
 
-const KEYWORD_BY_KIND: Record<BindingKind, string> = {
-  key: "bind",
-  mouse: "mousebind",
-  axis: "axisbind",
-  gesture: "gesturebind",
-  switch: "switchbind",
-};
-
-const LETTER_BY_FLAG: readonly [keyof BindingFlags, string][] = [
-  ["sym", "s"],
-  ["lock", "l"],
-  ["release", "r"],
-  ["pass", "p"],
-  ["conflict", "c"],
-];
+const LETTER_BY_FLAG = BINDING_FLAGS.map((flag) => [flag, BINDING_FLAG_LETTERS[flag]] as const);
 
 /** The `s`/`l`/`r`/`p`/`c` suffix for a set of flags. */
 export function flagLetters(flags: BindingFlags): string {
@@ -61,8 +50,8 @@ export function flagLetters(flags: BindingFlags): string {
 export function bindingKind(keyword: string): BindingKind {
   if (KEY_BIND.test(keyword)) return "key";
 
-  for (const [kind, name] of Object.entries(KEYWORD_BY_KIND)) {
-    if (name === keyword) return kind as BindingKind;
+  for (const [kind, name] of Object.entries(BINDING_KEYWORDS) as [BindingKind, string][]) {
+    if (name === keyword) return kind;
   }
 
   throw new ValueError(`unknown binding keyword "${keyword}"`);
@@ -70,13 +59,9 @@ export function bindingKind(keyword: string): BindingKind {
 
 /** Read the `s`/`l`/`r`/`p`/`c` flags from a `bind` keyword. */
 export function parseFlags(keyword: string): BindingFlags {
-  const flags: BindingFlags = {
-    sym: false,
-    lock: false,
-    release: false,
-    pass: false,
-    conflict: false,
-  };
+  const flags = Object.fromEntries(
+    BINDING_FLAGS.map((flag) => [flag, false]),
+  ) as unknown as BindingFlags;
 
   if (!KEY_BIND.test(keyword)) return flags;
 
@@ -158,12 +143,12 @@ export function splitTrigger(
 
 /** The config keyword for a parsed binding, including key flags. */
 export function bindKeyword(binding: ParsedBinding): string {
-  if (binding.kind !== "key") return KEYWORD_BY_KIND[binding.kind];
+  if (binding.kind !== "key") return BINDING_KEYWORDS[binding.kind];
 
-  const flags = binding.flags;
-  return `bind${flags.sym ? "s" : ""}${flags.lock ? "l" : ""}${flags.release ? "r" : ""}${
-    flags.pass ? "p" : ""
-  }${flags.conflict ? "c" : ""}`;
+  const letters = BINDING_FLAGS.filter((flag) => binding.flags[flag])
+    .map((flag) => BINDING_FLAG_LETTERS[flag])
+    .join("");
+  return `bind${letters}`;
 }
 
 /** Format a parsed binding back to the value after `=`. */

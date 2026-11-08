@@ -9,6 +9,7 @@ import {
   type BindingKind,
   type ParsedBinding,
 } from "@mangowm.github.io/config";
+import { MODIFIER_ORDER } from "@mangowm.github.io/schema";
 
 import type { ConfigData, SourceFile } from "./config/types";
 import type { Keybinding, KeybindFlags, BindingType } from "./keybind-types";
@@ -312,8 +313,7 @@ export function bindingsConflict(
   return (sameMode || anyCommon) && !bothAllow;
 }
 
-/** Canonical modifier order used for serialization and display. */
-export const MODIFIER_ORDER = ["super", "ctrl", "alt", "shift", "hyper"] as const;
+export { MODIFIER_ORDER };
 
 /** Split "super+ctrl" into ["super", "ctrl"]. Empty/none → []. */
 export function parseModifiers(modStr: string): string[] {

@@ -1,8 +1,9 @@
 import Type, { type TSchema } from "typebox";
 
 import { BINDING_KEY_PATTERNS, type BindingKind } from "../data/bindingKeys";
+import { BINDING_FLAGS } from "../data/bindings";
 
-const KEY_FLAGS = ["sym", "lock", "release", "pass", "conflict"] as const;
+const KEY_FLAGS = BINDING_FLAGS;
 const FLAG_DEFS: Record<(typeof KEY_FLAGS)[number], string> = {
   sym: "KeySymBindingNode",
   lock: "KeyLockBindingNode",
