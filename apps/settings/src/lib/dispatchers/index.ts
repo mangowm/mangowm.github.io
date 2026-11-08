@@ -10,6 +10,8 @@ export {
   PREV_NEXT_OPTS,
   LAYOUT_NAMES,
   MOUSE_ACTION_OPTS,
+  FORCE_OPTS,
+  ON_OFF_OPTS,
   TAG_NUMBERS,
   BOOL_FLAGS,
 } from "./types";

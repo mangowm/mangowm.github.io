@@ -1,6 +1,6 @@
 import type { DispatcherUi } from "../types";
 import { namedArg } from "../helpers";
-import { BOOL_FLAGS } from "../types";
+import { BOOL_FLAGS, ON_OFF_OPTS } from "../types";
 
 export const MONITOR_ENTRIES: DispatcherUi[] = [
   {
@@ -102,7 +102,7 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
         type: "string",
         label: "State",
         description: "on, off, or toggle (default)",
-        options: ["on", "off", "toggle"],
+        options: [...ON_OFF_OPTS],
         placeholder: "toggle",
       },
       {

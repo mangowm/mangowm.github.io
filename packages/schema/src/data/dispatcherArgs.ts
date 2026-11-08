@@ -25,6 +25,19 @@ export type DispatcherArgKind =
   | "index100"
   | "unit-float";
 
+export const DISPATCHER_ARG_OPTIONS = {
+  direction: ["left", "right", "up", "down", "alldir"],
+  circle: ["next", "prev"],
+  overcircle: ["next", "prev", "current_next", "current_prev"],
+  switcher: ["next", "prev", "all_next", "all_prev", "all_tag_next", "all_tag_prev"],
+  "prev-next": ["prev", "next"],
+  "mouse-action": ["curmove", "curresize", "curnormal", "curpressed"],
+  force: ["force", "unforce"],
+  "on-off": ["on", "off", "toggle"],
+  bool: ["0", "1"],
+  layout: [...LAYOUTS],
+} as const satisfies Partial<Record<DispatcherArgKind, readonly string[]>>;
+
 function ci(value: string): string {
   return value
     .split("")
@@ -32,18 +45,18 @@ function ci(value: string): string {
     .join("");
 }
 
-const DIRECTION = `(?:${[ci("left"), ci("right"), ci("up"), ci("down"), ci("alldir")].join("|")})`;
-const CIRCLE = `(?:${[ci("next"), ci("prev")].join("|")})`;
-const OVERCIRCLE = `(?:${[ci("next"), ci("prev"), ci("current_next"), ci("current_prev")].join(
-  "|",
-)})`;
-const MOUSE_ACTION = `(?:${[ci("curmove"), ci("curresize"), ci("curnormal"), ci("curpressed")].join(
-  "|",
-)})`;
-const FORCE = `(?:${[ci("force"), ci("unforce")].join("|")})`;
-const SWITCHER = "(?:next|prev|all_next|all_prev|all_tag_next|all_tag_prev)";
-const ON_OFF = "(?:on|off|toggle)";
-const PREV_NEXT = "(?:prev|next)";
+function optionPattern(values: readonly string[], insensitive = false): string {
+  return `(?:${values.map(insensitive ? ci : (value) => value).join("|")})`;
+}
+
+const DIRECTION = optionPattern(DISPATCHER_ARG_OPTIONS.direction, true);
+const CIRCLE = optionPattern(DISPATCHER_ARG_OPTIONS.circle, true);
+const OVERCIRCLE = optionPattern(DISPATCHER_ARG_OPTIONS.overcircle, true);
+const MOUSE_ACTION = optionPattern(DISPATCHER_ARG_OPTIONS["mouse-action"], true);
+const FORCE = optionPattern(DISPATCHER_ARG_OPTIONS.force, true);
+const SWITCHER = optionPattern(DISPATCHER_ARG_OPTIONS.switcher);
+const ON_OFF = optionPattern(DISPATCHER_ARG_OPTIONS["on-off"]);
+const PREV_NEXT = optionPattern(DISPATCHER_ARG_OPTIONS["prev-next"]);
 const MONITOR_VALUE = "(?:(?!&&)[^,])+";
 const MONITOR_FIELD = `(?:name|make|model|serial):${MONITOR_VALUE}`;
 const MONITOR_SPEC = `(?:${MONITOR_FIELD}(?:&&${MONITOR_FIELD})*|${VARIABLE_PATTERN}(?:&&${MONITOR_FIELD})*|[^,:&]+)`;
@@ -81,9 +94,9 @@ const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
   overcircle: withVariablePattern(OVERCIRCLE),
   int: withVariablePattern("[+-]?[0-9]+"),
   float: withVariablePattern("[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?"),
-  bool: withVariablePattern("[01]"),
+  bool: withVariablePattern(`[${DISPATCHER_ARG_OPTIONS.bool.join("")}]`),
   "tag-mask": withVariablePattern(TAG_MASK_PATTERN),
-  layout: withVariablePattern(`(?:${LAYOUTS.join("|")})`),
+  layout: withVariablePattern(optionPattern(DISPATCHER_ARG_OPTIONS.layout)),
   monitor: MONITOR_SPEC,
   option: withVariablePattern(OPTION_NAME),
   string: "[^,]+",

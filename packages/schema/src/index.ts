@@ -1,5 +1,6 @@
 export { schema, type SchemaDocument } from "./schema";
 export {
+  DISPATCHER_ARG_OPTIONS,
   DISPATCHER_ARGS,
   DISPATCHERS,
   type DispatcherArgKind,
