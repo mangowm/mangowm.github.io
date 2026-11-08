@@ -26,7 +26,6 @@
   --nav-gutter: 0.5rem;
   --nav-piece-height: 3rem;
   --nav-height: calc(var(--nav-piece-height) + 2 * var(--nav-gutter));
-  --focus-ring: oklch(0.62 0.14 150);
 }
 
 .dark {
@@ -36,5 +35,4 @@
   --color-primary-text: oklch(0.8 0.15 80);
   --color-primary-hover: oklch(0.84 0.16 82);
   --color-backdrop: oklch(0.08 0.012 74 / 0.7);
-  --focus-ring: oklch(0.78 0.15 150);
 }
