@@ -2,6 +2,7 @@
 import { VARIABLE_PATTERN } from "../core";
 import { GLOBALS } from "./globals";
 import { LAYOUTS } from "./layouts";
+import { TAG_MASK_PATTERN } from "./tags";
 
 export type DispatcherArgKind =
   | "direction"
@@ -43,8 +44,6 @@ const FORCE = `(?:${[ci("force"), ci("unforce")].join("|")})`;
 const SWITCHER = "(?:next|prev|all_next|all_prev|all_tag_next|all_tag_prev)";
 const ON_OFF = "(?:on|off|toggle)";
 const PREV_NEXT = "(?:prev|next)";
-const TAG_NUMBER = "(?:-1|00|[0-9]|[12][0-9]|3[01])";
-const TAG_MASK = `${TAG_NUMBER}(?:\\s*\\|\\s*${TAG_NUMBER})*`;
 const MONITOR_VALUE = "(?:(?!&&)[^,])+";
 const MONITOR_FIELD = `(?:name|make|model|serial):${MONITOR_VALUE}`;
 const MONITOR_SPEC = `(?:${MONITOR_FIELD}(?:&&${MONITOR_FIELD})*|${VARIABLE_PATTERN}(?:&&${MONITOR_FIELD})*|[^,:&]+)`;
@@ -83,7 +82,7 @@ const ARG_PATTERNS: Record<DispatcherArgKind, string> = {
   int: withVariablePattern("[+-]?[0-9]+"),
   float: withVariablePattern("[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?"),
   bool: withVariablePattern("[01]"),
-  "tag-mask": withVariablePattern(TAG_MASK),
+  "tag-mask": withVariablePattern(TAG_MASK_PATTERN),
   layout: withVariablePattern(`(?:${LAYOUTS.join("|")})`),
   monitor: MONITOR_SPEC,
   option: withVariablePattern(OPTION_NAME),

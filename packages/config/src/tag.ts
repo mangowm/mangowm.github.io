@@ -1,7 +1,8 @@
+import { ALL_TAGS, TAG_COUNT } from "@mangowm.github.io/schema";
+
 import { ValueError, isVariable, parseInteger } from "./value";
 
-/** Every tag number the compositor supports. */
-export const ALL_TAGS: readonly number[] = Array.from({ length: 31 }, (_, index) => index + 1);
+export { ALL_TAGS };
 
 /** A parsed rule tag id: a number, `*`, or an unresolved variable. */
 export type TagId = number | string;
@@ -26,7 +27,7 @@ export function parseTagMask(text: string): number[] | string {
     const tag = parseInteger(part);
     // Tag 0 is the special workspace and is exclusive.
     if (tag === 0) return [0];
-    if (tag < 1 || tag > 31) {
+    if (tag < 1 || tag > TAG_COUNT) {
       throw new ValueError(`tag ${tag} is out of range`);
     }
     tags.add(tag);
@@ -51,7 +52,7 @@ export function parseTagId(text: string): TagId {
   if (isVariable(value)) return value;
 
   const tag = parseInteger(value);
-  if (tag < 0 || tag > 31) {
+  if (tag < 0 || tag > TAG_COUNT) {
     throw new ValueError(`tag id ${tag} is out of range`);
   }
   return tag;

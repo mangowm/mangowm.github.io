@@ -1,4 +1,4 @@
-import { LAYOUTS } from "@mangowm.github.io/schema";
+import { ALL_TAGS, LAYOUTS, TAG_COUNT } from "@mangowm.github.io/schema";
 
 export type ArgType =
   | "none"
@@ -48,10 +48,8 @@ export const SWITCHER_OPTS = [
 export const PREV_NEXT_OPTS = ["prev", "next"] as const;
 export const LAYOUT_NAMES = LAYOUTS;
 export const MOUSE_ACTION_OPTS = ["curmove", "curresize", "curnormal", "curpressed"] as const;
-export const TAG_COUNT_MAX = 31;
-export const TAG_NUMBERS: readonly string[] = Array.from({ length: TAG_COUNT_MAX }, (_, i) =>
-  String(i + 1),
-);
+export const TAG_COUNT_MAX = TAG_COUNT;
+export const TAG_NUMBERS: readonly string[] = ALL_TAGS.map(String);
 export const BOOL_FLAGS = ["0", "1"] as const;
 
 export type DispatcherCategory =

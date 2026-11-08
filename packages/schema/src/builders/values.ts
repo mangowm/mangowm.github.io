@@ -7,6 +7,7 @@ import { DIRECTIVES } from "../data/directives";
 import { GLOBALS } from "../data/globals";
 import { LAYOUTS } from "../data/layouts";
 import { RULES } from "../data/rules";
+import { TAG_COUNT } from "../data/tags";
 import type { GlobalDef, RuleDef, RuleFieldDef } from "../data/types";
 import { bindingMap } from "./bindings";
 
@@ -153,7 +154,7 @@ function globalSchema(): TSchema {
 function tagIdSchema(metadata: Metadata): TSchema {
   return Type.Union(
     [
-      Type.Integer({ minimum: 0, maximum: 31 }),
+      Type.Integer({ minimum: 0, maximum: TAG_COUNT }),
       Type.Unsafe<TSchema>({ type: "string", const: "*" }),
       VariableString,
     ],
@@ -165,7 +166,7 @@ function tagMaskSchema(metadata: Metadata): TSchema {
   return Type.Union(
     [
       Type.Unsafe<TSchema>({ const: [0] }),
-      Type.Array(Type.Integer({ minimum: 1, maximum: 31 }), {
+      Type.Array(Type.Integer({ minimum: 1, maximum: TAG_COUNT }), {
         minItems: 1,
         uniqueItems: true,
       }),

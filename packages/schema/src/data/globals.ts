@@ -1,3 +1,4 @@
+import { TAG_COUNT } from "./tags";
 import type { GlobalDef } from "./types";
 
 export const GLOBALS: readonly GlobalDef[] = [
@@ -880,9 +881,9 @@ export const GLOBALS: readonly GlobalDef[] = [
     type: "int",
     default: 9,
     label: "Number of Tags",
-    description: "Number of tags/workspaces (1-31).",
+    description: `Number of tags/workspaces (1-${TAG_COUNT}).`,
     min: 1,
-    max: 31,
+    max: TAG_COUNT,
   },
   {
     key: "tag_gather",
