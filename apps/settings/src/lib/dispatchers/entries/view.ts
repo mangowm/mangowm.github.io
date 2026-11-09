@@ -5,7 +5,6 @@ import { TAG_NUMBERS, BOOL_FLAGS, PREV_NEXT_OPTS } from "../types";
 export const VIEW_ENTRIES: DispatcherUi[] = [
   {
     name: "view",
-    category: "view",
     args: [
       {
         name: "tag",
@@ -28,7 +27,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "viewtoleft",
-    category: "view",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
@@ -36,7 +34,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "viewtoright",
-    category: "view",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
@@ -44,7 +41,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "viewtoleft_have_client",
-    category: "view",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
@@ -53,7 +49,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "viewtoright_have_client",
-    category: "view",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
@@ -61,7 +56,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "viewcrossmon",
-    category: "view",
     args: [
       {
         name: "tag",
@@ -83,7 +77,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "toggleview",
-    category: "view",
     args: namedArg("tag", "tag", "Toggle Tag", "Tag whose visibility to toggle (1-9)", {
       options: [...TAG_NUMBERS],
       required: true,
@@ -92,7 +85,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "comboview",
-    category: "view",
     args: namedArg("tag", "tag", "Combo Tag", "Tag number (1-9) for combo-key navigation", {
       options: [...TAG_NUMBERS],
       required: true,
@@ -101,7 +93,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "view_insert",
-    category: "view",
     args: oneArg("prev-next", "Direction", "Insert before or after the current tag", {
       options: [...PREV_NEXT_OPTS],
     }),
@@ -109,7 +100,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "viewnext_have_client",
-    category: "view",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
@@ -117,7 +107,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "viewprev_have_client",
-    category: "view",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),

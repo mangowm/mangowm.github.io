@@ -4,7 +4,8 @@ import { cn } from "cn";
 import { useShallow } from "zustand/react/shallow";
 import { useConfigStore } from "@/lib/config/store";
 import { parseModifiers, serializeModifiers, bindingsConflict } from "@/lib/keybind-parse";
-import { DISPATCHER_MAP } from "@/lib/dispatchers";
+import { DISPATCHER_MAP, categoryLabel } from "@/lib/dispatchers";
+import { DISPATCHER_CATEGORY_ORDER } from "@mangowm.github.io/config/catalog";
 import type { Keybinding } from "@/lib/keybind-types";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
@@ -62,7 +63,11 @@ export function BindingsPanel({ focusKey }: PanelProps) {
     categoriesSet.add(DISPATCHER_MAP.get(e.func)?.category ?? "other");
     modesSet.add(e.mode);
   });
-  const cats = ["All", ...Array.from(categoriesSet).sort()];
+  const knownCats = DISPATCHER_CATEGORY_ORDER.filter((category) => categoriesSet.has(category));
+  const otherCats = Array.from(categoriesSet)
+    .filter((category) => !(DISPATCHER_CATEGORY_ORDER as readonly string[]).includes(category))
+    .sort();
+  const cats = ["All", ...knownCats, ...otherCats];
   const modes = ["All", ...Array.from(modesSet).sort()];
 
   useEffect(() => {
@@ -210,7 +215,7 @@ export function BindingsPanel({ focusKey }: PanelProps) {
           {cats.map((cat) => (
             <FilterPill
               key={cat}
-              label={cat}
+              label={cat === "All" ? cat : categoryLabel(cat)}
               active={activeCategory === cat}
               onClick={() => setActiveCategory(cat)}
             />
@@ -269,10 +274,10 @@ export function BindingsPanel({ focusKey }: PanelProps) {
             </div>
 
             {[...grouped.entries()].map(([category, items]) => (
-              <section key={category} aria-label={category}>
+              <section key={category} aria-label={categoryLabel(category)}>
                 <div className="mb-2 flex items-center gap-2 px-1">
                   <h3 className="text-[12px] font-semibold tracking-widest text-muted-foreground/70 uppercase">
-                    {category}
+                    {categoryLabel(category)}
                   </h3>
                   <div className="ml-2 h-px flex-1 bg-border/40" />
                 </div>

@@ -5,14 +5,12 @@ import { BOOL_FLAGS, SWITCHER_OPTS } from "../types";
 export const SYSTEM_ENTRIES: DispatcherUi[] = [
   {
     name: "reload_config",
-    category: "system",
     args: [],
     description: "Hot-reload the configuration file at runtime",
   },
-  { name: "quit", category: "system", args: [], description: "Exit mangowm" },
+  { name: "quit", args: [], description: "Exit mangowm" },
   {
     name: "load_config_file",
-    category: "system",
     args: namedArg("path", "string", "Config Path", "Absolute path to the config file to load", {
       placeholder: "/home/user/.config/mango/alt.conf",
       required: true,
@@ -21,7 +19,6 @@ export const SYSTEM_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "toggleoverview",
-    category: "system",
     args: namedArg("tabmode", "bool-flag", "Tab Mode", "1 = tab overview, 0 = grid overview", {
       options: [...BOOL_FLAGS],
     }),
@@ -29,7 +26,6 @@ export const SYSTEM_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "create_virtual_output",
-    category: "system",
     args: namedArg("name", "string", "Name", "Virtual output name", {
       placeholder: "e.g. HEADLESS-1",
       required: true,
@@ -38,19 +34,16 @@ export const SYSTEM_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "destroy_all_virtual_output",
-    category: "system",
     args: [],
     description: "Destroy all headless virtual monitors",
   },
   {
     name: "toggle_trackpad_enable",
-    category: "system",
     args: [],
     description: "Toggle the trackpad on and off",
   },
   {
     name: "setkeymode",
-    category: "system",
     args: namedArg("mode", "string", "Mode Name", "Target keybinding mode (submap)", {
       placeholder: "resize",
       required: true,
@@ -59,7 +52,6 @@ export const SYSTEM_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "switch_keyboard_layout",
-    category: "system",
     args: namedArg("index", "uint", "Layout Index", "Keyboard layout index (0, 1, 2…)", {
       min: 0,
       max: 100,
@@ -69,7 +61,6 @@ export const SYSTEM_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "setoption",
-    category: "system",
     args: [
       {
         name: "key",
@@ -92,7 +83,6 @@ export const SYSTEM_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "chvt",
-    category: "system",
     args: namedArg("vt", "uint", "VT Number", "Virtual terminal number", {
       min: 1,
       max: 12,
@@ -103,19 +93,16 @@ export const SYSTEM_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "enteroverview",
-    category: "system",
     args: [],
     description: "Enter overview mode",
   },
   {
     name: "leaveoverview",
-    category: "system",
     args: [],
     description: "Leave overview mode",
   },
   {
     name: "switcher",
-    category: "system",
     args: oneArg("switcher", "Direction", "Switcher direction", {
       options: [...SWITCHER_OPTS],
     }),

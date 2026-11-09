@@ -7,13 +7,16 @@ import {
   Tag,
   LayoutGrid,
   Layers,
-  Eye,
   MousePointer2,
   Settings,
   AppWindow,
   Navigation,
   Search,
   Zap,
+  Keyboard,
+  Palette,
+  Play,
+  Shield,
 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@mangowm/ui/components/popover";
 import {
@@ -25,7 +28,7 @@ import {
   CommandList,
 } from "@mangowm/ui/components/command";
 import { cn } from "cn";
-import { getDispatchersByCategory } from "@/lib/dispatchers";
+import { categoryLabel, getDispatchersByCategory } from "@/lib/dispatchers";
 import type { DispatcherInfo, DispatcherCategory } from "@/lib/dispatchers";
 
 interface ActionSelectorProps {
@@ -70,15 +73,24 @@ const CategoryIcon = ({
 }) => {
   const icons: Record<string, React.ElementType> = {
     window: AppWindow,
+    focus: Navigation,
+    floating: MousePointer2,
+    group: Layers,
     scratchpad: Layers,
-    navigation: Navigation,
-    view: Eye,
     tag: Tag,
     monitor: Monitor,
     layout: LayoutGrid,
-    floating: MousePointer2,
-    spawn: Terminal,
+    input: Keyboard,
+    bindings: Settings,
+    appearance: Palette,
+    animation: Play,
+    behaviour: Settings,
+    geometry: LayoutGrid,
+    rules: Settings,
+    autostart: Terminal,
+    environment: Terminal,
     system: Settings,
+    security: Shield,
   };
   const Icon = icons[category] || Zap;
   return <Icon className={className} />;
@@ -221,7 +233,7 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
                   <div className="flex items-center gap-1.5 text-muted-foreground/50">
                     <CategoryIcon category={category} className="size-3.5" />
                     <span className="text-[10px] font-bold tracking-widest uppercase">
-                      {category}
+                      {categoryLabel(category)}
                     </span>
                   </div>
                 }

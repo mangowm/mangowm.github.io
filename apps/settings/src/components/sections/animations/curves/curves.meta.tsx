@@ -36,7 +36,7 @@ export const curvesMeta: SectionMeta = {
     },
     {
       configKey: "animation_curve_tag",
-      aliases: ["tag easing", "tag bezier", "tag control points", "workspace curve"],
+      aliases: ["tag easing", "tag bezier", "tag control points", "tag curve"],
     },
     {
       configKey: "animation_curve_focus",

@@ -5,7 +5,6 @@ import { BOOL_FLAGS, ON_OFF_OPTS } from "../types";
 export const MONITOR_ENTRIES: DispatcherUi[] = [
   {
     name: "focusmon",
-    category: "monitor",
     args: [
       {
         name: "target",
@@ -19,7 +18,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "tagmon",
-    category: "monitor",
     args: [
       {
         name: "target",
@@ -41,7 +39,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "disable_monitor",
-    category: "monitor",
     args: namedArg("monitor", "monitor", "Monitor", "Monitor name (e.g. DP-1)", {
       placeholder: "e.g. DP-1",
       required: true,
@@ -50,7 +47,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "enable_monitor",
-    category: "monitor",
     args: namedArg("monitor", "monitor", "Monitor", "Monitor name (e.g. DP-1)", {
       placeholder: "e.g. DP-1",
       required: true,
@@ -59,7 +55,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "toggle_monitor",
-    category: "monitor",
     args: namedArg("monitor", "monitor", "Monitor", "Monitor name (e.g. DP-1)", {
       placeholder: "e.g. DP-1",
       required: true,
@@ -68,7 +63,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "sleep_monitor",
-    category: "monitor",
     args: namedArg("monitor", "monitor", "Monitor", "Monitor name (e.g. DP-1)", {
       placeholder: "e.g. DP-1",
       required: true,
@@ -77,7 +71,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "wakeup_monitor",
-    category: "monitor",
     args: namedArg("monitor", "monitor", "Monitor", "Monitor name (e.g. DP-1)", {
       placeholder: "e.g. DP-1",
       required: true,
@@ -86,7 +79,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "sleep_toggle_monitor",
-    category: "monitor",
     args: namedArg("monitor", "monitor", "Monitor", "Monitor name (e.g. DP-1)", {
       placeholder: "e.g. DP-1",
       required: true,
@@ -95,7 +87,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "togglehdr",
-    category: "monitor",
     args: [
       {
         name: "state",

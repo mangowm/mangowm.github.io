@@ -12,7 +12,7 @@ export const tagsMeta: SectionMeta = {
   fields: [
     {
       configKey: "tag_num",
-      aliases: ["tag count", "workspace count", "number of tags", "tags count"],
+      aliases: ["tag count", "tag count", "number of tags", "tags count"],
     },
     {
       configKey: "tag_gather",

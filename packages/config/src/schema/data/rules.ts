@@ -81,7 +81,7 @@ const WINDOW_RULE_FIELDS: readonly RuleFieldDef[] = [
     key: "tags",
     type: "tag-mask",
     label: "Tags",
-    description: "Assign to one tag, several tags separated by |, or the special workspace with 0.",
+    description: "Assign to one tag, several tags separated by |, or the special tag with 0.",
     examples: [[1, 3]],
   },
   {
@@ -591,8 +591,7 @@ export const RULES: readonly RuleDef[] = [
         key: "id",
         type: "tag-id",
         label: "Tag ID",
-        description:
-          "Tag id to match; 0 targets the special workspace (tag 0). Use * for all tags.",
+        description: "Tag id to match; 0 targets the special tag (tag 0). Use * for all tags.",
         examples: [1],
       },
       {

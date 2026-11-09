@@ -1,5 +1,6 @@
 export * from "./bindings";
 export * from "./bindingKeys";
+export * from "./categories";
 export * from "./directives";
 export * from "./dispatcherArgs";
 export * from "./globals";

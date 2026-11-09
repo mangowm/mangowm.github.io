@@ -42,6 +42,13 @@ https://mangowm.github.io/config/0.18.4/schema.json
 https://mangowm.github.io/config/0.18.4/catalog.json
 ```
 
+Categories are shared catalog identities. Their labels live in `CATEGORIES`,
+and each collection defines its own category order:
+
+```ts
+import { CATEGORIES, DISPATCHER_CATEGORY_ORDER } from "@mangowm.github.io/config/catalog";
+```
+
 ## Layers
 
 ```text

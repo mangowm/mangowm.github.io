@@ -57,7 +57,7 @@ export const generalMeta: SectionMeta = {
     },
     {
       configKey: "tag_animation_direction",
-      aliases: ["tag switch", "tag direction", "workspace switch"],
+      aliases: ["tag switch", "tag direction", "tag switch"],
     },
     {
       configKey: "zoom_initial_ratio",

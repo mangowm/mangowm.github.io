@@ -30,7 +30,7 @@ const CURVE_FIELDS: { key: string; label: string; description: string }[] = [
   {
     key: "animation_curve_tag",
     label: "Tag Switch",
-    description: "Bezier curve for tag-switch (workspace) animations.",
+    description: "Bezier curve for tag-switch animations.",
   },
   {
     key: "animation_curve_focus",

@@ -3,25 +3,21 @@ import type { DispatcherUi } from "../types";
 export const SCRATCHPAD_ENTRIES: DispatcherUi[] = [
   {
     name: "minimized",
-    category: "scratchpad",
     args: [],
     description: "Minimize window to scratchpad",
   },
   {
     name: "restore_minimized",
-    category: "scratchpad",
     args: [],
     description: "Restore the most recently minimized window from scratchpad",
   },
   {
     name: "toggle_scratchpad",
-    category: "scratchpad",
     args: [],
     description: "Toggle the global scratchpad window",
   },
   {
     name: "toggle_named_scratchpad",
-    category: "scratchpad",
     args: [
       {
         name: "id",

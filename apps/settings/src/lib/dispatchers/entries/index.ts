@@ -1,6 +1,7 @@
 import {
   DISPATCHERS,
   DISPATCHER_ARGS,
+  DISPATCHER_CATEGORIES,
   type DispatcherArgKind,
 } from "@mangowm.github.io/config/catalog";
 
@@ -135,7 +136,7 @@ export const MANGO_DISPATCHERS: DispatcherInfo[] = DISPATCHERS.map((name) => {
 
   return {
     name,
-    category: ui?.category ?? "system",
+    category: DISPATCHER_CATEGORIES[name],
     description: ui?.description ?? "",
     args: kinds.map((kind, index) => mergeArg(kind, index, ui?.args?.[index])),
   };

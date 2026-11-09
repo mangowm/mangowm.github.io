@@ -1,4 +1,9 @@
-import { ALL_TAGS, DISPATCHER_ARG_OPTIONS, TAG_COUNT } from "@mangowm.github.io/config/catalog";
+import {
+  ALL_TAGS,
+  DISPATCHER_ARG_OPTIONS,
+  TAG_COUNT,
+  type CategoryId,
+} from "@mangowm.github.io/config/catalog";
 
 export type ArgType =
   | "none"
@@ -47,17 +52,7 @@ export const TAG_COUNT_MAX = TAG_COUNT;
 export const TAG_NUMBERS: readonly string[] = ALL_TAGS.map(String);
 export const BOOL_FLAGS = DISPATCHER_ARG_OPTIONS.bool;
 
-export type DispatcherCategory =
-  | "window"
-  | "scratchpad"
-  | "navigation"
-  | "view"
-  | "tag"
-  | "monitor"
-  | "layout"
-  | "floating"
-  | "spawn"
-  | "system";
+export type DispatcherCategory = CategoryId;
 
 export interface DispatcherInfo {
   name: string;
@@ -69,7 +64,6 @@ export interface DispatcherInfo {
 /** UI-only metadata keyed by dispatcher name. Argument signatures come from schema. */
 export interface DispatcherUi {
   name: string;
-  category: DispatcherCategory;
   description: string;
   args?: Partial<DispatcherArg>[];
 }

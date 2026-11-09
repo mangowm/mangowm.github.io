@@ -4975,7 +4975,7 @@
             }
           ],
           "title": "Tag Switch Duration",
-          "description": "Duration of tag-switch (workspace) animations in milliseconds (0-50000).",
+          "description": "Duration of tag-switch animations in milliseconds (0-50000).",
           "default": 300
         },
         "animation_duration_close": {
@@ -6279,7 +6279,7 @@
             }
           ],
           "title": "Number of Tags",
-          "description": "Number of tags/workspaces (1-31).",
+          "description": "Number of tags (1-31).",
           "default": 9
         },
         "tag_gather": {
@@ -8260,8 +8260,8 @@
               "pattern": "^(?:\\$(?:[A-Za-z_][A-Za-z0-9_]*|\\{[A-Za-z_][A-Za-z0-9_]*\\}))$"
             }
           ],
-          "title": "Special Workspace Dim",
-          "description": "Background dim level while the special workspace is active.",
+          "title": "Special Tag Dim",
+          "description": "Background dim level while the special tag is active.",
           "default": 0.5
         },
         "special_gap_inner_horizontal": {
@@ -8277,7 +8277,7 @@
             }
           ],
           "title": "Special Inner Gap Horizontal",
-          "description": "Horizontal inner gap for windows on the special workspace.",
+          "description": "Horizontal inner gap for windows on the special tag.",
           "default": 10
         },
         "special_gap_inner_vertical": {
@@ -8293,7 +8293,7 @@
             }
           ],
           "title": "Special Inner Gap Vertical",
-          "description": "Vertical inner gap for windows on the special workspace.",
+          "description": "Vertical inner gap for windows on the special tag.",
           "default": 10
         },
         "special_gap_outer_horizontal": {
@@ -8309,7 +8309,7 @@
             }
           ],
           "title": "Special Outer Gap Horizontal",
-          "description": "Horizontal outer gap for windows on the special workspace.",
+          "description": "Horizontal outer gap for windows on the special tag.",
           "default": 20
         },
         "special_gap_outer_vertical": {
@@ -8325,7 +8325,7 @@
             }
           ],
           "title": "Special Outer Gap Vertical",
-          "description": "Vertical outer gap for windows on the special workspace.",
+          "description": "Vertical outer gap for windows on the special tag.",
           "default": 20
         },
         "border_px": {
@@ -9258,7 +9258,7 @@
                   }
                 ],
                 "title": "Tag ID",
-                "description": "Tag id to match; 0 targets the special workspace (tag 0). Use * for all tags.",
+                "description": "Tag id to match; 0 targets the special tag (tag 0). Use * for all tags.",
                 "examples": [
                   1
                 ]
@@ -9846,7 +9846,7 @@
                   }
                 ],
                 "title": "Tags",
-                "description": "Assign to one tag, several tags separated by |, or the special workspace with 0.",
+                "description": "Assign to one tag, several tags separated by |, or the special tag with 0.",
                 "examples": [
                   [
                     1,
@@ -10624,7 +10624,7 @@
                   }
                 ],
                 "title": "Tags",
-                "description": "Assign to one tag, several tags separated by |, or the special workspace with 0.",
+                "description": "Assign to one tag, several tags separated by |, or the special tag with 0.",
                 "examples": [
                   [
                     1,

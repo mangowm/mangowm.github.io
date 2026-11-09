@@ -1,6 +1,107 @@
 {
   "mangoVersion": "0.18.4",
   "schema": "https://mangowm.github.io/config/0.18.4/schema.json",
+  "categories": {
+    "window": {
+      "label": "Window Management"
+    },
+    "focus": {
+      "label": "Focus & Movement"
+    },
+    "floating": {
+      "label": "Floating Windows"
+    },
+    "group": {
+      "label": "Window Groups"
+    },
+    "scratchpad": {
+      "label": "Scratchpad"
+    },
+    "tag": {
+      "label": "Tags"
+    },
+    "monitor": {
+      "label": "Monitors"
+    },
+    "layout": {
+      "label": "Layouts"
+    },
+    "input": {
+      "label": "Input"
+    },
+    "bindings": {
+      "label": "Bindings"
+    },
+    "appearance": {
+      "label": "Appearance"
+    },
+    "animation": {
+      "label": "Animations"
+    },
+    "behaviour": {
+      "label": "Behaviour"
+    },
+    "geometry": {
+      "label": "Geometry"
+    },
+    "rules": {
+      "label": "Rules"
+    },
+    "autostart": {
+      "label": "Autostart"
+    },
+    "environment": {
+      "label": "Environment"
+    },
+    "system": {
+      "label": "System"
+    },
+    "security": {
+      "label": "Security"
+    }
+  },
+  "dispatcherCategoryOrder": [
+    "window",
+    "scratchpad",
+    "focus",
+    "floating",
+    "group",
+    "tag",
+    "monitor",
+    "layout",
+    "input",
+    "bindings",
+    "appearance",
+    "system"
+  ],
+  "ruleCategoryOrder": [
+    "appearance",
+    "behaviour",
+    "window",
+    "floating",
+    "geometry",
+    "animation",
+    "input",
+    "tag",
+    "monitor",
+    "layout",
+    "scratchpad",
+    "security"
+  ],
+  "globalCategoryOrder": [
+    "appearance",
+    "animation",
+    "layout",
+    "behaviour",
+    "input",
+    "tag",
+    "monitor",
+    "rules",
+    "autostart",
+    "environment",
+    "system",
+    "security"
+  ],
   "globals": {
     "animations": {
       "key": "animations",
@@ -226,7 +327,7 @@
       "type": "int",
       "default": 300,
       "label": "Tag Switch Duration",
-      "description": "Duration of tag-switch (workspace) animations in milliseconds (0-50000).",
+      "description": "Duration of tag-switch animations in milliseconds (0-50000).",
       "min": 0,
       "max": 50000
     },
@@ -930,7 +1031,7 @@
       "type": "int",
       "default": 9,
       "label": "Number of Tags",
-      "description": "Number of tags/workspaces (1-31).",
+      "description": "Number of tags (1-31).",
       "min": 1,
       "max": 31
     },
@@ -2032,8 +2133,8 @@
       "key": "special_dim",
       "type": "float",
       "default": 0.5,
-      "label": "Special Workspace Dim",
-      "description": "Background dim level while the special workspace is active.",
+      "label": "Special Tag Dim",
+      "description": "Background dim level while the special tag is active.",
       "min": 0,
       "max": 1
     },
@@ -2042,7 +2143,7 @@
       "type": "int",
       "default": 10,
       "label": "Special Inner Gap Horizontal",
-      "description": "Horizontal inner gap for windows on the special workspace.",
+      "description": "Horizontal inner gap for windows on the special tag.",
       "min": 0,
       "max": 1000
     },
@@ -2051,7 +2152,7 @@
       "type": "int",
       "default": 10,
       "label": "Special Inner Gap Vertical",
-      "description": "Vertical inner gap for windows on the special workspace.",
+      "description": "Vertical inner gap for windows on the special tag.",
       "min": 0,
       "max": 1000
     },
@@ -2060,7 +2161,7 @@
       "type": "int",
       "default": 20,
       "label": "Special Outer Gap Horizontal",
-      "description": "Horizontal outer gap for windows on the special workspace.",
+      "description": "Horizontal outer gap for windows on the special tag.",
       "min": 0,
       "max": 1000
     },
@@ -2069,7 +2170,7 @@
       "type": "int",
       "default": 20,
       "label": "Special Outer Gap Vertical",
-      "description": "Vertical outer gap for windows on the special workspace.",
+      "description": "Vertical outer gap for windows on the special tag.",
       "min": 0,
       "max": 1000
     },
@@ -2470,7 +2571,7 @@
           "key": "id",
           "type": "tag-id",
           "label": "Tag ID",
-          "description": "Tag id to match; 0 targets the special workspace (tag 0). Use * for all tags.",
+          "description": "Tag id to match; 0 targets the special tag (tag 0). Use * for all tags.",
           "examples": [
             1
           ]
@@ -2827,7 +2928,7 @@
           "key": "tags",
           "type": "tag-mask",
           "label": "Tags",
-          "description": "Assign to one tag, several tags separated by |, or the special workspace with 0.",
+          "description": "Assign to one tag, several tags separated by |, or the special tag with 0.",
           "examples": [
             [
               1,
@@ -3235,7 +3336,7 @@
           "key": "tags",
           "type": "tag-mask",
           "label": "Tags",
-          "description": "Assign to one tag, several tags separated by |, or the special workspace with 0.",
+          "description": "Assign to one tag, several tags separated by |, or the special tag with 0.",
           "examples": [
             [
               1,
@@ -3850,328 +3951,403 @@
   },
   "dispatchers": {
     "centerwin": {
+      "category": "window",
       "args": []
     },
     "chvt": {
+      "category": "system",
       "args": [
         "int"
       ]
     },
     "comboview": {
+      "category": "tag",
       "args": [
         "tag-mask"
       ]
     },
     "create_virtual_output": {
+      "category": "system",
       "args": [
         "string"
       ]
     },
     "destroy_all_virtual_output": {
+      "category": "system",
       "args": []
     },
     "disable_monitor": {
+      "category": "monitor",
       "args": [
         "monitor"
       ]
     },
     "dwindle_split_horizontal": {
+      "category": "layout",
       "args": []
     },
     "dwindle_split_vertical": {
+      "category": "layout",
       "args": []
     },
     "dwindle_toggle_current_split": {
+      "category": "layout",
       "args": []
     },
     "dwindle_toggle_split_direction": {
+      "category": "layout",
       "args": []
     },
     "enable_monitor": {
+      "category": "monitor",
       "args": [
         "monitor"
       ]
     },
     "enteroverview": {
+      "category": "layout",
       "args": []
     },
     "exchange_client": {
+      "category": "focus",
       "args": [
         "direction"
       ]
     },
     "exchange_stack_client": {
+      "category": "focus",
       "args": [
         "circle"
       ]
     },
     "focusdir": {
+      "category": "focus",
       "args": [
         "direction"
       ]
     },
     "focusid": {
+      "category": "focus",
       "args": []
     },
     "focuslast": {
+      "category": "focus",
       "args": []
     },
     "focusmon": {
+      "category": "monitor",
       "args": [
         "monitor"
       ]
     },
     "focusstack": {
+      "category": "focus",
       "args": [
         "circle"
       ]
     },
     "focus_window_or_workspace": {
+      "category": "focus",
       "args": [
         "direction"
       ]
     },
     "groupfocus": {
+      "category": "group",
       "args": [
         "circle"
       ]
     },
     "groupjoin": {
+      "category": "group",
       "args": [
         "direction"
       ]
     },
     "groupleave": {
+      "category": "group",
       "args": []
     },
     "incgaps": {
+      "category": "appearance",
       "args": [
         "int"
       ]
     },
     "incnmaster": {
+      "category": "layout",
       "args": [
         "int"
       ]
     },
     "killclient": {
+      "category": "window",
       "args": [
         "force"
       ]
     },
     "leaveoverview": {
+      "category": "layout",
       "args": []
     },
     "load_config_file": {
+      "category": "system",
       "args": [
         "string"
       ]
     },
     "minimized": {
+      "category": "scratchpad",
       "args": []
     },
     "move_client": {
+      "category": "focus",
       "args": [
         "direction"
       ]
     },
     "moveresize": {
+      "category": "floating",
       "args": [
         "mouse-action"
       ]
     },
     "movewin": {
+      "category": "floating",
       "args": [
         "int",
         "int"
       ]
     },
     "overcircle": {
+      "category": "layout",
       "args": [
         "overcircle"
       ]
     },
     "quit": {
+      "category": "system",
       "args": []
     },
     "reload_config": {
+      "category": "system",
       "args": []
     },
     "resizewin": {
+      "category": "floating",
       "args": [
         "int",
         "int"
       ]
     },
     "restore_minimized": {
+      "category": "scratchpad",
       "args": []
     },
     "scroller_stack": {
+      "category": "layout",
       "args": [
         "direction"
       ]
     },
     "setkeymode": {
+      "category": "bindings",
       "args": [
         "string"
       ]
     },
     "setlayout": {
+      "category": "layout",
       "args": [
         "layout"
       ]
     },
     "setmfact": {
+      "category": "layout",
       "args": [
         "float"
       ]
     },
     "setoption": {
+      "category": "system",
       "args": [
         "option",
         "free"
       ]
     },
     "set_proportion": {
+      "category": "layout",
       "args": [
         "unit-float"
       ]
     },
     "sleep_monitor": {
+      "category": "monitor",
       "args": [
         "monitor"
       ]
     },
     "sleep_toggle_monitor": {
+      "category": "monitor",
       "args": [
         "monitor"
       ]
     },
     "smartkillclient": {
+      "category": "window",
       "args": []
     },
     "smartmovewin": {
+      "category": "floating",
       "args": [
         "direction"
       ]
     },
     "smartresizewin": {
+      "category": "floating",
       "args": [
         "direction"
       ]
     },
     "spawn": {
+      "category": "system",
       "args": [
         "free"
       ]
     },
     "spawn_on_empty": {
+      "category": "system",
       "args": [
         "string",
         "tag-mask"
       ]
     },
     "spawn_shell": {
+      "category": "system",
       "args": [
         "free"
       ]
     },
     "switcher": {
+      "category": "focus",
       "args": [
         "switcher"
       ]
     },
     "switch_keyboard_layout": {
+      "category": "input",
       "args": [
         "index100"
       ]
     },
     "switch_layout": {
+      "category": "layout",
       "args": []
     },
     "switch_proportion_preset": {
+      "category": "layout",
       "args": [
         "circle"
       ]
     },
     "tag": {
+      "category": "tag",
       "args": [
         "tag-mask",
         "bool"
       ]
     },
     "tagcrossmon": {
+      "category": "tag",
       "args": [
         "tag-mask",
         "monitor"
       ]
     },
     "tagmon": {
+      "category": "monitor",
       "args": [
         "monitor",
         "bool"
       ]
     },
     "tagsilent": {
+      "category": "tag",
       "args": [
         "tag-mask"
       ]
     },
     "tag_special_silent": {
+      "category": "tag",
       "args": []
     },
     "tag_special_tag": {
+      "category": "tag",
       "args": []
     },
     "tagtoleft": {
+      "category": "tag",
       "args": [
         "bool"
       ]
     },
     "tagtoright": {
+      "category": "tag",
       "args": [
         "bool"
       ]
     },
     "toggle_all_floating": {
+      "category": "window",
       "args": []
     },
     "togglefakefullscreen": {
+      "category": "window",
       "args": []
     },
     "togglefloating": {
+      "category": "window",
       "args": []
     },
     "togglefullscreen": {
+      "category": "window",
       "args": []
     },
     "togglegaps": {
+      "category": "appearance",
       "args": []
     },
     "toggleglobal": {
+      "category": "window",
       "args": []
     },
     "togglegroupbar": {
+      "category": "group",
       "args": []
     },
     "togglehdr": {
+      "category": "monitor",
       "args": [
         "on-off",
         "monitor"
       ]
     },
     "togglejump": {
+      "category": "layout",
       "args": []
     },
     "togglemaximizescreen": {
+      "category": "window",
       "args": []
     },
     "toggle_monitor": {
+      "category": "monitor",
       "args": [
         "monitor"
       ]
     },
     "toggle_named_scratchpad": {
+      "category": "scratchpad",
       "args": [
         "string",
         "string",
@@ -4179,88 +4355,107 @@
       ]
     },
     "toggleoverlay": {
+      "category": "window",
       "args": []
     },
     "toggleoverview": {
+      "category": "layout",
       "args": [
         "bool"
       ]
     },
     "toggle_render_border": {
+      "category": "appearance",
       "args": []
     },
     "toggle_scratchpad": {
+      "category": "scratchpad",
       "args": []
     },
     "toggle_special_tag": {
+      "category": "tag",
       "args": []
     },
     "toggletag": {
+      "category": "tag",
       "args": [
         "tag-mask"
       ]
     },
     "toggle_trackpad_enable": {
+      "category": "input",
       "args": []
     },
     "toggleview": {
+      "category": "tag",
       "args": [
         "tag-mask"
       ]
     },
     "view": {
+      "category": "tag",
       "args": [
         "tag-mask",
         "bool"
       ]
     },
     "viewcrossmon": {
+      "category": "tag",
       "args": [
         "tag-mask",
         "monitor"
       ]
     },
     "view_insert": {
+      "category": "tag",
       "args": [
         "prev-next"
       ]
     },
     "viewnext_have_client": {
+      "category": "tag",
       "args": [
         "bool"
       ]
     },
     "viewprev_have_client": {
+      "category": "tag",
       "args": [
         "bool"
       ]
     },
     "viewtoleft": {
+      "category": "tag",
       "args": [
         "bool"
       ]
     },
     "viewtoleft_have_client": {
+      "category": "tag",
       "args": [
         "bool"
       ]
     },
     "viewtoright": {
+      "category": "tag",
       "args": [
         "bool"
       ]
     },
     "viewtoright_have_client": {
+      "category": "tag",
       "args": [
         "bool"
       ]
     },
     "wakeup_monitor": {
+      "category": "monitor",
       "args": [
         "monitor"
       ]
     },
     "zoom": {
+      "category": "focus",
       "args": []
     }
   },

@@ -5,7 +5,6 @@ import { TAG_NUMBERS, BOOL_FLAGS } from "../types";
 export const TAG_ENTRIES: DispatcherUi[] = [
   {
     name: "tag",
-    category: "tag",
     args: [
       {
         name: "tag",
@@ -28,7 +27,6 @@ export const TAG_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "tagsilent",
-    category: "tag",
     args: namedArg("tag", "tag", "Target Tag", "Tag number (1-9)", {
       options: [...TAG_NUMBERS],
       required: true,
@@ -37,7 +35,6 @@ export const TAG_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "tagtoleft",
-    category: "tag",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
@@ -45,7 +42,6 @@ export const TAG_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "tagtoright",
-    category: "tag",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
@@ -53,7 +49,6 @@ export const TAG_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "tagcrossmon",
-    category: "tag",
     args: [
       {
         name: "tag",
@@ -75,7 +70,6 @@ export const TAG_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "toggletag",
-    category: "tag",
     args: namedArg("tag", "tag", "Toggle Tag", "Tag to toggle on the focused window (1-9)", {
       options: [...TAG_NUMBERS],
       required: true,
@@ -84,20 +78,17 @@ export const TAG_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "tag_special_silent",
-    category: "tag",
     args: [],
-    description: "Move the focused window to or from the special workspace without focusing it",
+    description: "Move the focused window to or from the special tag without focusing it",
   },
   {
     name: "tag_special_tag",
-    category: "tag",
     args: [],
-    description: "Move the focused window to or from the special workspace",
+    description: "Move the focused window to or from the special tag",
   },
   {
     name: "toggle_special_tag",
-    category: "tag",
     args: [],
-    description: "Toggle the special workspace overlay",
+    description: "Toggle the special tag overlay",
   },
 ];

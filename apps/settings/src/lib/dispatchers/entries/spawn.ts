@@ -5,7 +5,6 @@ import { TAG_NUMBERS } from "../types";
 export const SPAWN_ENTRIES: DispatcherUi[] = [
   {
     name: "spawn",
-    category: "spawn",
     args: namedArg("command", "command", "Command", "Command to execute", {
       placeholder: "foot --class myclass",
       required: true,
@@ -14,7 +13,6 @@ export const SPAWN_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "spawn_shell",
-    category: "spawn",
     args: namedArg("command", "command", "Command", "Shell command", {
       placeholder: "sh -c 'notify-send Hello'",
       required: true,
@@ -23,7 +21,6 @@ export const SPAWN_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "spawn_on_empty",
-    category: "spawn",
     args: [
       {
         name: "command",

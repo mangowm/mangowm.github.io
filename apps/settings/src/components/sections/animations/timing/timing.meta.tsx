@@ -37,7 +37,7 @@ export const timingMeta: SectionMeta = {
     },
     {
       configKey: "animation_duration_tag",
-      aliases: ["tag speed", "tag time", "tag ms", "workspace switch"],
+      aliases: ["tag speed", "tag time", "tag ms", "tag switch"],
     },
     {
       configKey: "animation_duration_focus",

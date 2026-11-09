@@ -5,21 +5,18 @@ import { DIRECTION_OPTS, MOUSE_ACTION_OPTS } from "../types";
 export const FLOATING_ENTRIES: DispatcherUi[] = [
   {
     name: "smartmovewin",
-    category: "floating",
     args: oneArg("direction", "Direction", "Snap direction", { options: [...DIRECTION_OPTS] }),
     description:
       "Move the floating window by the snap distance in a direction (left/right/up/down)",
   },
   {
     name: "smartresizewin",
-    category: "floating",
     args: oneArg("direction", "Direction", "Resize direction", { options: [...DIRECTION_OPTS] }),
     description:
       "Resize the floating window by the snap distance in a direction (left/right/up/down)",
   },
   {
     name: "movewin",
-    category: "floating",
     args: [
       {
         name: "x",
@@ -42,7 +39,6 @@ export const FLOATING_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "resizewin",
-    category: "floating",
     args: [
       {
         name: "w",
@@ -65,7 +61,6 @@ export const FLOATING_ENTRIES: DispatcherUi[] = [
   },
   {
     name: "moveresize",
-    category: "floating",
     args: namedArg("action", "mouse-action", "Action", "Mouse action (curmove/curresize)", {
       options: [...MOUSE_ACTION_OPTS],
     }),
