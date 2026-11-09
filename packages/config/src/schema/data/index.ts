@@ -3,6 +3,7 @@ export * from "./bindingKeys";
 export * from "./categories";
 export * from "./directives";
 export * from "./dispatcherArgs";
+export * from "./dispatcherMeta";
 export * from "./globals";
 export * from "./layouts";
 export * from "./rules";

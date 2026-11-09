@@ -6,14 +6,10 @@ export const FLOATING_ENTRIES: DispatcherUi[] = [
   {
     name: "smartmovewin",
     args: oneArg("direction", "Direction", "Snap direction", { options: [...DIRECTION_OPTS] }),
-    description:
-      "Move the floating window by the snap distance in a direction (left/right/up/down)",
   },
   {
     name: "smartresizewin",
     args: oneArg("direction", "Direction", "Resize direction", { options: [...DIRECTION_OPTS] }),
-    description:
-      "Resize the floating window by the snap distance in a direction (left/right/up/down)",
   },
   {
     name: "movewin",
@@ -35,7 +31,6 @@ export const FLOATING_ENTRIES: DispatcherUi[] = [
         required: true,
       },
     ],
-    description: "Move the floating window by absolute or relative offset (+/-x,+/-y)",
   },
   {
     name: "resizewin",
@@ -57,14 +52,11 @@ export const FLOATING_ENTRIES: DispatcherUi[] = [
         required: true,
       },
     ],
-    description: "Resize the window by absolute or relative width/height (+/-w,+/-h)",
   },
   {
     name: "moveresize",
     args: namedArg("action", "mouse-action", "Action", "Mouse action (curmove/curresize)", {
       options: [...MOUSE_ACTION_OPTS],
     }),
-    description:
-      "Initiate interactive mouse-driven move or resize (curmove/curresize). Used with mousebind",
   },
 ];

@@ -12,6 +12,7 @@ import {
   DISPATCHER_ARGS,
   DISPATCHER_CATEGORIES,
   DISPATCHER_CATEGORY_ORDER,
+  DISPATCHER_DESCRIPTIONS,
   DISPATCHERS,
   GLOBAL_CATEGORY_ORDER,
   GLOBALS,
@@ -41,6 +42,7 @@ export function buildCatalog() {
         name,
         {
           category: DISPATCHER_CATEGORIES[name],
+          description: DISPATCHER_DESCRIPTIONS[name],
           args: DISPATCHER_ARGS[name],
         },
       ]),

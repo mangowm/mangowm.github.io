@@ -64,6 +64,5 @@ export interface DispatcherInfo {
 /** UI-only metadata keyed by dispatcher name. Argument signatures come from schema. */
 export interface DispatcherUi {
   name: string;
-  description: string;
   args?: Partial<DispatcherArg>[];
 }

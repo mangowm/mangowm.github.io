@@ -3952,168 +3952,200 @@
   "dispatchers": {
     "centerwin": {
       "category": "window",
+      "description": "Center the floating window on screen",
       "args": []
     },
     "chvt": {
       "category": "system",
+      "description": "Switch to a virtual terminal by number",
       "args": [
         "int"
       ]
     },
     "comboview": {
       "category": "tag",
+      "description": "View multiple tags pressed simultaneously (combo-key style navigation)",
       "args": [
         "tag-mask"
       ]
     },
     "create_virtual_output": {
       "category": "system",
+      "description": "Create a headless virtual monitor (for VNC or Sunshine streaming)",
       "args": [
         "string"
       ]
     },
     "destroy_all_virtual_output": {
       "category": "system",
+      "description": "Destroy all headless virtual monitors",
       "args": []
     },
     "disable_monitor": {
       "category": "monitor",
+      "description": "Power off / shutdown a monitor by monitor spec",
       "args": [
         "monitor"
       ]
     },
     "dwindle_split_horizontal": {
       "category": "layout",
+      "description": "Set the split window direction to horizontal in dwindle layout",
       "args": []
     },
     "dwindle_split_vertical": {
       "category": "layout",
+      "description": "Set the split window direction to vertical in dwindle layout",
       "args": []
     },
     "dwindle_toggle_current_split": {
       "category": "layout",
+      "description": "Toggle the split direction of the currently focused window in dwindle layout",
       "args": []
     },
     "dwindle_toggle_split_direction": {
       "category": "layout",
+      "description": "Toggle the split direction in dwindle layout (manual split mode)",
       "args": []
     },
     "enable_monitor": {
       "category": "monitor",
+      "description": "Power on a monitor by monitor spec",
       "args": [
         "monitor"
       ]
     },
     "enteroverview": {
       "category": "layout",
+      "description": "Enter overview mode",
       "args": []
     },
     "exchange_client": {
       "category": "focus",
+      "description": "Swap the focused window with its neighbour in a direction (left/right/up/down)",
       "args": [
         "direction"
       ]
     },
     "exchange_stack_client": {
       "category": "focus",
+      "description": "Exchange the focused window's position in the stacking order (next/prev)",
       "args": [
         "circle"
       ]
     },
     "focusdir": {
       "category": "focus",
+      "description": "Focus the nearest window in a direction (left/right/up/down)",
       "args": [
         "direction"
       ]
     },
     "focusid": {
       "category": "focus",
+      "description": "Focus a specific window by its client ID",
       "args": []
     },
     "focuslast": {
       "category": "focus",
+      "description": "Focus the previously active window",
       "args": []
     },
     "focusmon": {
       "category": "monitor",
+      "description": "Focus a monitor by direction or monitor name",
       "args": [
         "monitor"
       ]
     },
     "focusstack": {
       "category": "focus",
+      "description": "Cycle focus within the stacking order (next/prev)",
       "args": [
         "circle"
       ]
     },
     "focus_window_or_workspace": {
       "category": "focus",
+      "description": "Focus the window in a direction, falling back to the tag",
       "args": [
         "direction"
       ]
     },
     "groupfocus": {
       "category": "group",
+      "description": "Cycle focus within a window group (next/prev)",
       "args": [
         "circle"
       ]
     },
     "groupjoin": {
       "category": "group",
+      "description": "Join the adjacent window's group in a direction (left/right/up/down)",
       "args": [
         "direction"
       ]
     },
     "groupleave": {
       "category": "group",
+      "description": "Leave the current window group",
       "args": []
     },
     "incgaps": {
       "category": "appearance",
+      "description": "Adjust the gap size by a relative value (+/-N)",
       "args": [
         "int"
       ]
     },
     "incnmaster": {
       "category": "layout",
+      "description": "Increase or decrease the number of master windows (+1/-1)",
       "args": [
         "int"
       ]
     },
     "killclient": {
       "category": "window",
+      "description": "Close the focused window",
       "args": [
         "force"
       ]
     },
     "leaveoverview": {
       "category": "layout",
+      "description": "Leave overview mode",
       "args": []
     },
     "load_config_file": {
       "category": "system",
+      "description": "Load and apply a config file by absolute path",
       "args": [
         "string"
       ]
     },
     "minimized": {
       "category": "scratchpad",
+      "description": "Minimize window to scratchpad",
       "args": []
     },
     "move_client": {
       "category": "focus",
+      "description": "Move the focused window in a direction",
       "args": [
         "direction"
       ]
     },
     "moveresize": {
       "category": "floating",
+      "description": "Initiate interactive mouse-driven move or resize (curmove/curresize). Used with mousebind",
       "args": [
         "mouse-action"
       ]
     },
     "movewin": {
       "category": "floating",
+      "description": "Move the floating window by absolute or relative offset (+/-x,+/-y)",
       "args": [
         "int",
         "int"
@@ -4121,20 +4153,24 @@
     },
     "overcircle": {
       "category": "layout",
+      "description": "Cycle focus in the overview grid",
       "args": [
         "overcircle"
       ]
     },
     "quit": {
       "category": "system",
+      "description": "Exit mangowm",
       "args": []
     },
     "reload_config": {
       "category": "system",
+      "description": "Hot-reload the configuration file at runtime",
       "args": []
     },
     "resizewin": {
       "category": "floating",
+      "description": "Resize the window by absolute or relative width/height (+/-w,+/-h)",
       "args": [
         "int",
         "int"
@@ -4142,34 +4178,40 @@
     },
     "restore_minimized": {
       "category": "scratchpad",
+      "description": "Restore the most recently minimized window from scratchpad",
       "args": []
     },
     "scroller_stack": {
       "category": "layout",
+      "description": "Move a window into or out of the scroller stack by direction (left/right/up/down)",
       "args": [
         "direction"
       ]
     },
     "setkeymode": {
       "category": "bindings",
+      "description": "Switch the active keybinding mode (submap)",
       "args": [
         "string"
       ]
     },
     "setlayout": {
       "category": "layout",
+      "description": "Switch to a specific layout by name (tile, scroller, grid, deck, monocle, center_tile, vertical_tile, vertical_scroller)",
       "args": [
         "layout"
       ]
     },
     "setmfact": {
       "category": "layout",
+      "description": "Increase or decrease the master area size ratio (e.g. +0.05)",
       "args": [
         "float"
       ]
     },
     "setoption": {
       "category": "system",
+      "description": "Temporarily set a configuration option at runtime (key, value)",
       "args": [
         "option",
         "free"
@@ -4177,46 +4219,54 @@
     },
     "set_proportion": {
       "category": "layout",
+      "description": "Set the scroller layout window proportion (0.0–1.0)",
       "args": [
         "unit-float"
       ]
     },
     "sleep_monitor": {
       "category": "monitor",
+      "description": "Put a monitor into sleep / standby by monitor spec",
       "args": [
         "monitor"
       ]
     },
     "sleep_toggle_monitor": {
       "category": "monitor",
+      "description": "Toggle sleep / standby state on a monitor by monitor spec",
       "args": [
         "monitor"
       ]
     },
     "smartkillclient": {
       "category": "window",
+      "description": "Remove the focused window from the current tags, or close it if it is only there",
       "args": []
     },
     "smartmovewin": {
       "category": "floating",
+      "description": "Move the floating window by the snap distance in a direction (left/right/up/down)",
       "args": [
         "direction"
       ]
     },
     "smartresizewin": {
       "category": "floating",
+      "description": "Resize the floating window by the snap distance in a direction (left/right/up/down)",
       "args": [
         "direction"
       ]
     },
     "spawn": {
       "category": "system",
+      "description": "Execute a command (args are joined with spaces)",
       "args": [
         "free"
       ]
     },
     "spawn_on_empty": {
       "category": "system",
+      "description": "Execute a command only if the specified tag (1-9) is empty",
       "args": [
         "string",
         "tag-mask"
@@ -4224,34 +4274,40 @@
     },
     "spawn_shell": {
       "category": "system",
+      "description": "Execute a shell command, supports pipes and shell operators (|, &&, ;)",
       "args": [
         "free"
       ]
     },
     "switcher": {
       "category": "focus",
+      "description": "Switch between windows using the switcher",
       "args": [
         "switcher"
       ]
     },
     "switch_keyboard_layout": {
       "category": "input",
+      "description": "Switch the keyboard layout. Optional index (0, 1, 2…) selects a specific layout",
       "args": [
         "index100"
       ]
     },
     "switch_layout": {
       "category": "layout",
+      "description": "Cycle through layouts. The circle_layout option (settable per-binding in the edit dialog) restricts which layouts are cycled.",
       "args": []
     },
     "switch_proportion_preset": {
       "category": "layout",
+      "description": "Cycle through scroller proportion presets (next/prev)",
       "args": [
         "circle"
       ]
     },
     "tag": {
       "category": "tag",
+      "description": "Move the focused window to a tag (1-9). Optional synctag flag (0/1) syncs across monitors",
       "args": [
         "tag-mask",
         "bool"
@@ -4259,6 +4315,7 @@
     },
     "tagcrossmon": {
       "category": "tag",
+      "description": "Move the focused window to the specified tag on the specified monitor",
       "args": [
         "tag-mask",
         "monitor"
@@ -4266,6 +4323,7 @@
     },
     "tagmon": {
       "category": "monitor",
+      "description": "Move the focused window to a monitor by direction or monitor name. Optional keeptag flag (0/1)",
       "args": [
         "monitor",
         "bool"
@@ -4273,60 +4331,73 @@
     },
     "tagsilent": {
       "category": "tag",
+      "description": "Move the focused window to a tag (1-9) without switching focus to it",
       "args": [
         "tag-mask"
       ]
     },
     "tag_special_silent": {
       "category": "tag",
+      "description": "Move the focused window to or from the special tag without focusing it",
       "args": []
     },
     "tag_special_tag": {
       "category": "tag",
+      "description": "Move the focused window to or from the special tag",
       "args": []
     },
     "tagtoleft": {
       "category": "tag",
+      "description": "Move the focused window to the previous tag. Optional synctag flag",
       "args": [
         "bool"
       ]
     },
     "tagtoright": {
       "category": "tag",
+      "description": "Move the focused window to the next tag. Optional synctag flag",
       "args": [
         "bool"
       ]
     },
     "toggle_all_floating": {
       "category": "window",
+      "description": "Toggle floating state for all visible clients",
       "args": []
     },
     "togglefakefullscreen": {
       "category": "window",
+      "description": "Toggle fake fullscreen (window stays constrained to monitor)",
       "args": []
     },
     "togglefloating": {
       "category": "window",
+      "description": "Toggle floating state of the focused window",
       "args": []
     },
     "togglefullscreen": {
       "category": "window",
+      "description": "Toggle fullscreen mode",
       "args": []
     },
     "togglegaps": {
       "category": "appearance",
+      "description": "Toggle gaps on and off",
       "args": []
     },
     "toggleglobal": {
       "category": "window",
+      "description": "Pin window to all tags (stick across tag switches)",
       "args": []
     },
     "togglegroupbar": {
       "category": "group",
+      "description": "Toggle the group bar on every tiled window",
       "args": []
     },
     "togglehdr": {
       "category": "monitor",
+      "description": "Enable, disable, or toggle HDR on a monitor by monitor spec",
       "args": [
         "on-off",
         "monitor"
@@ -4334,20 +4405,24 @@
     },
     "togglejump": {
       "category": "layout",
+      "description": "Toggle the jump-label overlay for quick window selection",
       "args": []
     },
     "togglemaximizescreen": {
       "category": "window",
+      "description": "Maximize window while keeping decorations and status bar visible",
       "args": []
     },
     "toggle_monitor": {
       "category": "monitor",
+      "description": "Toggle a monitor's power state by monitor spec",
       "args": [
         "monitor"
       ]
     },
     "toggle_named_scratchpad": {
       "category": "scratchpad",
+      "description": "Toggle a named scratchpad — launches app if not running, otherwise shows/hides it",
       "args": [
         "string",
         "string",
@@ -4356,44 +4431,53 @@
     },
     "toggleoverlay": {
       "category": "window",
+      "description": "Toggle the overlay state for the focused window (always-on-top layer)",
       "args": []
     },
     "toggleoverview": {
       "category": "layout",
+      "description": "Toggle the overview/tab mode for window switching",
       "args": [
         "bool"
       ]
     },
     "toggle_render_border": {
       "category": "appearance",
+      "description": "Toggle border rendering for the focused window",
       "args": []
     },
     "toggle_scratchpad": {
       "category": "scratchpad",
+      "description": "Toggle the global scratchpad window",
       "args": []
     },
     "toggle_special_tag": {
       "category": "tag",
+      "description": "Toggle the special tag overlay",
       "args": []
     },
     "toggletag": {
       "category": "tag",
+      "description": "Toggle a tag (1-9) on the focused window",
       "args": [
         "tag-mask"
       ]
     },
     "toggle_trackpad_enable": {
       "category": "input",
+      "description": "Toggle the trackpad on and off",
       "args": []
     },
     "toggleview": {
       "category": "tag",
+      "description": "Toggle a tag's visibility (1-9) in the current view",
       "args": [
         "tag-mask"
       ]
     },
     "view": {
       "category": "tag",
+      "description": "Switch to a tag by number (1-9), mask (e.g. 1|3|5), or special values (-1=previous, 0=all). Optional synctag flag",
       "args": [
         "tag-mask",
         "bool"
@@ -4401,6 +4485,7 @@
     },
     "viewcrossmon": {
       "category": "tag",
+      "description": "View the specified tag on the specified monitor",
       "args": [
         "tag-mask",
         "monitor"
@@ -4408,54 +4493,63 @@
     },
     "view_insert": {
       "category": "tag",
+      "description": "Insert an empty tag before or after the current one",
       "args": [
         "prev-next"
       ]
     },
     "viewnext_have_client": {
       "category": "tag",
+      "description": "View the next tag if it has a client, otherwise the current tag",
       "args": [
         "bool"
       ]
     },
     "viewprev_have_client": {
       "category": "tag",
+      "description": "View the previous tag if it has a client, otherwise the current tag",
       "args": [
         "bool"
       ]
     },
     "viewtoleft": {
       "category": "tag",
+      "description": "View the previous tag. Optional synctag flag (0/1) syncs across monitors",
       "args": [
         "bool"
       ]
     },
     "viewtoleft_have_client": {
       "category": "tag",
+      "description": "View the previous tag and focus a client if one is present. Optional synctag flag",
       "args": [
         "bool"
       ]
     },
     "viewtoright": {
       "category": "tag",
+      "description": "View the next tag. Optional synctag flag (0/1) syncs across monitors",
       "args": [
         "bool"
       ]
     },
     "viewtoright_have_client": {
       "category": "tag",
+      "description": "View the next tag and focus a client if one is present. Optional synctag flag",
       "args": [
         "bool"
       ]
     },
     "wakeup_monitor": {
       "category": "monitor",
+      "description": "Wake up a sleeping monitor by monitor spec",
       "args": [
         "monitor"
       ]
     },
     "zoom": {
       "category": "focus",
+      "description": "Swap the focused window with the master window",
       "args": []
     }
   },

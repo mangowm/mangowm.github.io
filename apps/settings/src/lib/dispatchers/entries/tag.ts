@@ -22,8 +22,6 @@ export const TAG_ENTRIES: DispatcherUi[] = [
         options: [...BOOL_FLAGS],
       },
     ],
-    description:
-      "Move the focused window to a tag (1-9). Optional synctag flag (0/1) syncs across monitors",
   },
   {
     name: "tagsilent",
@@ -31,21 +29,18 @@ export const TAG_ENTRIES: DispatcherUi[] = [
       options: [...TAG_NUMBERS],
       required: true,
     }),
-    description: "Move the focused window to a tag (1-9) without switching focus to it",
   },
   {
     name: "tagtoleft",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
-    description: "Move the focused window to the previous tag. Optional synctag flag",
   },
   {
     name: "tagtoright",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
-    description: "Move the focused window to the next tag. Optional synctag flag",
   },
   {
     name: "tagcrossmon",
@@ -66,7 +61,6 @@ export const TAG_ENTRIES: DispatcherUi[] = [
         placeholder: "Monitor name",
       },
     ],
-    description: "Move the focused window to the specified tag on the specified monitor",
   },
   {
     name: "toggletag",
@@ -74,21 +68,17 @@ export const TAG_ENTRIES: DispatcherUi[] = [
       options: [...TAG_NUMBERS],
       required: true,
     }),
-    description: "Toggle a tag (1-9) on the focused window",
   },
   {
     name: "tag_special_silent",
     args: [],
-    description: "Move the focused window to or from the special tag without focusing it",
   },
   {
     name: "tag_special_tag",
     args: [],
-    description: "Move the focused window to or from the special tag",
   },
   {
     name: "toggle_special_tag",
     args: [],
-    description: "Toggle the special tag overlay",
   },
 ];

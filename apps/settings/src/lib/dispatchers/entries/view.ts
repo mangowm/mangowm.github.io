@@ -22,37 +22,30 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
         options: [...BOOL_FLAGS],
       },
     ],
-    description:
-      "Switch to a tag by number (1-9), mask (e.g. 1|3|5), or special values (-1=previous, 0=all). Optional synctag flag",
   },
   {
     name: "viewtoleft",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
-    description: "View the previous tag. Optional synctag flag (0/1) syncs across monitors",
   },
   {
     name: "viewtoright",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
-    description: "View the next tag. Optional synctag flag (0/1) syncs across monitors",
   },
   {
     name: "viewtoleft_have_client",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
-    description:
-      "View the previous tag and focus a client if one is present. Optional synctag flag",
   },
   {
     name: "viewtoright_have_client",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
-    description: "View the next tag and focus a client if one is present. Optional synctag flag",
   },
   {
     name: "viewcrossmon",
@@ -73,7 +66,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
         placeholder: "Monitor name",
       },
     ],
-    description: "View the specified tag on the specified monitor",
   },
   {
     name: "toggleview",
@@ -81,7 +73,6 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
       options: [...TAG_NUMBERS],
       required: true,
     }),
-    description: "Toggle a tag's visibility (1-9) in the current view",
   },
   {
     name: "comboview",
@@ -89,27 +80,23 @@ export const VIEW_ENTRIES: DispatcherUi[] = [
       options: [...TAG_NUMBERS],
       required: true,
     }),
-    description: "View multiple tags pressed simultaneously (combo-key style navigation)",
   },
   {
     name: "view_insert",
     args: oneArg("prev-next", "Direction", "Insert before or after the current tag", {
       options: [...PREV_NEXT_OPTS],
     }),
-    description: "Insert an empty tag before or after the current one",
   },
   {
     name: "viewnext_have_client",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
-    description: "View the next tag if it has a client, otherwise the current tag",
   },
   {
     name: "viewprev_have_client",
     args: namedArg("synctag", "bool-flag", "Sync Across Monitors", "Apply to all monitors (0/1)", {
       options: [...BOOL_FLAGS],
     }),
-    description: "View the previous tag if it has a client, otherwise the current tag",
   },
 ];

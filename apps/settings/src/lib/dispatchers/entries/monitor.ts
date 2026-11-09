@@ -14,7 +14,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
         placeholder: "left or DP-1",
       },
     ],
-    description: "Focus a monitor by direction or monitor name",
   },
   {
     name: "tagmon",
@@ -34,8 +33,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
         options: [...BOOL_FLAGS],
       },
     ],
-    description:
-      "Move the focused window to a monitor by direction or monitor name. Optional keeptag flag (0/1)",
   },
   {
     name: "disable_monitor",
@@ -43,7 +40,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
       placeholder: "e.g. DP-1",
       required: true,
     }),
-    description: "Power off / shutdown a monitor by monitor spec",
   },
   {
     name: "enable_monitor",
@@ -51,7 +47,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
       placeholder: "e.g. DP-1",
       required: true,
     }),
-    description: "Power on a monitor by monitor spec",
   },
   {
     name: "toggle_monitor",
@@ -59,7 +54,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
       placeholder: "e.g. DP-1",
       required: true,
     }),
-    description: "Toggle a monitor's power state by monitor spec",
   },
   {
     name: "sleep_monitor",
@@ -67,7 +61,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
       placeholder: "e.g. DP-1",
       required: true,
     }),
-    description: "Put a monitor into sleep / standby by monitor spec",
   },
   {
     name: "wakeup_monitor",
@@ -75,7 +68,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
       placeholder: "e.g. DP-1",
       required: true,
     }),
-    description: "Wake up a sleeping monitor by monitor spec",
   },
   {
     name: "sleep_toggle_monitor",
@@ -83,7 +75,6 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
       placeholder: "e.g. DP-1",
       required: true,
     }),
-    description: "Toggle sleep / standby state on a monitor by monitor spec",
   },
   {
     name: "togglehdr",
@@ -104,6 +95,5 @@ export const MONITOR_ENTRIES: DispatcherUi[] = [
         placeholder: "e.g. DP-1",
       },
     ],
-    description: "Enable, disable, or toggle HDR on a monitor by monitor spec",
   },
 ];

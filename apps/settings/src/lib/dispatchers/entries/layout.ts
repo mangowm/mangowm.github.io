@@ -9,14 +9,10 @@ export const LAYOUT_ENTRIES: DispatcherUi[] = [
       options: [...LAYOUT_NAMES],
       required: true,
     }),
-    description:
-      "Switch to a specific layout by name (tile, scroller, grid, deck, monocle, center_tile, vertical_tile, vertical_scroller)",
   },
   {
     name: "switch_layout",
     args: [],
-    description:
-      "Cycle through layouts. The circle_layout option (settable per-binding in the edit dialog) restricts which layouts are cycled.",
   },
   {
     name: "incnmaster",
@@ -24,7 +20,6 @@ export const LAYOUT_ENTRIES: DispatcherUi[] = [
       placeholder: "+1",
       required: true,
     }),
-    description: "Increase or decrease the number of master windows (+1/-1)",
   },
   {
     name: "setmfact",
@@ -35,7 +30,6 @@ export const LAYOUT_ENTRIES: DispatcherUi[] = [
       placeholder: "+0.05",
       required: true,
     }),
-    description: "Increase or decrease the master area size ratio (e.g. +0.05)",
   },
   {
     name: "set_proportion",
@@ -46,22 +40,18 @@ export const LAYOUT_ENTRIES: DispatcherUi[] = [
       placeholder: "0.5",
       required: true,
     }),
-    description: "Set the scroller layout window proportion (0.0–1.0)",
   },
   {
     name: "switch_proportion_preset",
     args: oneArg("circle-dir", "Direction", "Cycle through presets", {
       options: [...CIRCLE_DIR_OPTS],
     }),
-    description: "Cycle through scroller proportion presets (next/prev)",
   },
   {
     name: "scroller_stack",
     args: oneArg("direction", "Direction", "Move window in scroller stack", {
       options: [...DIRECTION_OPTS],
     }),
-    description:
-      "Move a window into or out of the scroller stack by direction (left/right/up/down)",
   },
   {
     name: "incgaps",
@@ -69,27 +59,22 @@ export const LAYOUT_ENTRIES: DispatcherUi[] = [
       placeholder: "+5",
       required: true,
     }),
-    description: "Adjust the gap size by a relative value (+/-N)",
   },
-  { name: "togglegaps", args: [], description: "Toggle gaps on and off" },
+  { name: "togglegaps", args: [] },
   {
     name: "dwindle_toggle_split_direction",
     args: [],
-    description: "Toggle the split direction in dwindle layout (manual split mode)",
   },
   {
     name: "dwindle_split_horizontal",
     args: [],
-    description: "Set the split window direction to horizontal in dwindle layout",
   },
   {
     name: "dwindle_split_vertical",
     args: [],
-    description: "Set the split window direction to vertical in dwindle layout",
   },
   {
     name: "dwindle_toggle_current_split",
     args: [],
-    description: "Toggle the split direction of the currently focused window in dwindle layout",
   },
 ];

@@ -4,17 +4,14 @@ export const SCRATCHPAD_ENTRIES: DispatcherUi[] = [
   {
     name: "minimized",
     args: [],
-    description: "Minimize window to scratchpad",
   },
   {
     name: "restore_minimized",
     args: [],
-    description: "Restore the most recently minimized window from scratchpad",
   },
   {
     name: "toggle_scratchpad",
     args: [],
-    description: "Toggle the global scratchpad window",
   },
   {
     name: "toggle_named_scratchpad",
@@ -42,7 +39,5 @@ export const SCRATCHPAD_ENTRIES: DispatcherUi[] = [
         placeholder: "e.g. foot",
       },
     ],
-    description:
-      "Toggle a named scratchpad — launches app if not running, otherwise shows/hides it",
   },
 ];

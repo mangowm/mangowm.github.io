@@ -9,7 +9,6 @@ export const SPAWN_ENTRIES: DispatcherUi[] = [
       placeholder: "foot --class myclass",
       required: true,
     }),
-    description: "Execute a command (args are joined with spaces)",
   },
   {
     name: "spawn_shell",
@@ -17,7 +16,6 @@ export const SPAWN_ENTRIES: DispatcherUi[] = [
       placeholder: "sh -c 'notify-send Hello'",
       required: true,
     }),
-    description: "Execute a shell command, supports pipes and shell operators (|, &&, ;)",
   },
   {
     name: "spawn_on_empty",
@@ -39,6 +37,5 @@ export const SPAWN_ENTRIES: DispatcherUi[] = [
         required: true,
       },
     ],
-    description: "Execute a command only if the specified tag (1-9) is empty",
   },
 ];
