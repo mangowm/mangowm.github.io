@@ -1,4 +1,8 @@
-import { DISPATCHERS, DISPATCHER_ARGS, type DispatcherArgKind } from "@mangowm.github.io/schema";
+import {
+  DISPATCHERS,
+  DISPATCHER_ARGS,
+  type DispatcherArgKind,
+} from "@mangowm.github.io/config/catalog";
 
 import {
   BOOL_FLAGS,

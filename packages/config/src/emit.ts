@@ -1,4 +1,4 @@
-import { DIRECTIVES, GLOBALS, RULES } from "@mangowm.github.io/schema";
+import { DIRECTIVES, GLOBALS, RULES } from "./schema/data";
 
 import type { AnnotatedBlank, AnnotatedComment, AnnotatedConfig, CommentAnchor } from "./annotate";
 import { anchorKey } from "./annotate";

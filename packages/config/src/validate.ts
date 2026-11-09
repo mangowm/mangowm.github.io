@@ -1,4 +1,4 @@
-import { RULES } from "@mangowm.github.io/schema";
+import { RULES } from "./schema/data";
 
 import { parseConf, stripComment } from "./conf";
 import type { ConfigDocument } from "./document";

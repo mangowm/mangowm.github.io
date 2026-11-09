@@ -1,4 +1,4 @@
-import { RULES } from "@mangowm.github.io/schema";
+import { RULES } from "./schema/data";
 import { describe, expect, it } from "vite-plus/test";
 
 import { parseRule, parseRuleField } from "./rule";

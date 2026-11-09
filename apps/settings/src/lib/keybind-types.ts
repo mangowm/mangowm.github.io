@@ -1,4 +1,8 @@
-import { BINDING_DIRECTIONS, BINDING_FOLD_STATES, MOUSE_BUTTONS } from "@mangowm.github.io/schema";
+import {
+  BINDING_DIRECTIONS,
+  BINDING_FOLD_STATES,
+  MOUSE_BUTTONS,
+} from "@mangowm.github.io/config/catalog";
 
 /** `s` forces keysym matching, `l` works while locked, `r` fires on release, `p` passes through, `c` allows conflicts */
 export interface KeybindFlags {

@@ -1,4 +1,4 @@
-import { LAYOUTS, type GlobalDef } from "@mangowm.github.io/schema";
+import { LAYOUTS, type GlobalDef } from "./schema/data";
 
 import type { OptionValue } from "./types";
 

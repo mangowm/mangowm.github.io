@@ -1,4 +1,4 @@
-import { RULES, type RuleDef, type RuleFieldDef } from "@mangowm.github.io/schema";
+import { RULES, type RuleDef, type RuleFieldDef } from "./schema/data";
 
 import {
   bindKeyword,

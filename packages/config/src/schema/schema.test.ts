@@ -2,20 +2,16 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vite-plus/test";
 import Value from "typebox/value";
 
+import { DIRECTIVES as exportedDirectives, GLOBALS as exportedGlobals } from "./data";
 import { DISPATCHER_ARGS, DISPATCHERS, type DispatcherArgKind } from "./data/dispatcherArgs";
 import { GLOBALS } from "./data/globals";
-import {
-  DIRECTIVES as exportedDirectives,
-  GLOBALS as exportedGlobals,
-  MANGO_VERSION as exportedVersion,
-  schema as packageSchema,
-} from "./index";
+import { schema as packageSchema } from "./index";
 import { RULES } from "./data/rules";
 import { schema } from "./schema";
-import { MANGO_VERSION } from "./version";
+import { MANGO_VERSION, MANGO_VERSION as exportedVersion } from "./version";
 
 const exportedSchema = JSON.parse(
-  readFileSync(new URL(`../schemas/${MANGO_VERSION}/schema.json`, import.meta.url), "utf8"),
+  readFileSync(new URL(`../../schemas/${MANGO_VERSION}/schema.json`, import.meta.url), "utf8"),
 );
 
 const config = {
@@ -44,7 +40,7 @@ const config = {
 describe("schema", () => {
   it("uses the expected dialect and URL", () => {
     expect(schema.$schema).toBe("https://json-schema.org/draft/2020-12/schema");
-    expect(schema.$id).toBe(`https://mangowm.github.io/schema/${MANGO_VERSION}/schema.json`);
+    expect(schema.$id).toBe(`https://mangowm.github.io/config/${MANGO_VERSION}/schema.json`);
   });
 
   it("exports the schema and source data", () => {

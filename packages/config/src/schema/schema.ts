@@ -15,7 +15,7 @@ export interface SchemaDocument {
 
 export const schema: SchemaDocument = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
-  $id: `https://mangowm.github.io/schema/${MANGO_VERSION}/schema.json`,
+  $id: `https://mangowm.github.io/config/${MANGO_VERSION}/schema.json`,
   $defs: {
     ...actionDefs(),
     ...bindingDefs(),

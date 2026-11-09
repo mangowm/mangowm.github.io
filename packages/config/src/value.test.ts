@@ -1,4 +1,4 @@
-import type { GlobalDef } from "@mangowm.github.io/schema";
+import type { GlobalDef } from "./schema/data";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

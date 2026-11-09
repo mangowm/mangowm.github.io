@@ -1,5 +1,5 @@
 import MiniSearch from "minisearch";
-import { DIRECTIVES, GLOBALS } from "@mangowm.github.io/schema";
+import { DIRECTIVES, GLOBALS } from "@mangowm.github.io/config/catalog";
 import { useRef, useEffect, useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useConfigStore } from "./config/store";

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mangowm.github.io/schema/0.18.4/schema.json",
+  "$id": "https://mangowm.github.io/config/0.18.4/schema.json",
   "$defs": {
     "Action": {
       "title": "Action",

@@ -3,7 +3,7 @@ import {
   BINDING_FLAGS,
   BINDING_KEYWORDS,
   type BindingKind,
-} from "@mangowm.github.io/schema";
+} from "./schema/data";
 
 import { formatAction, parseAction } from "./dispatch";
 import type { Action } from "./types";

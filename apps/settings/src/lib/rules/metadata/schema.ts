@@ -1,4 +1,4 @@
-import { LAYOUTS, RULES, type RuleDef, type RuleFieldDef } from "@mangowm.github.io/schema";
+import { LAYOUTS, RULES, type RuleDef, type RuleFieldDef } from "@mangowm.github.io/config/catalog";
 
 import { TAG_NUMBERS } from "../../dispatchers/types";
 import type { OverrideMeta, OverrideValueType, RuleType } from "../types";

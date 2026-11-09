@@ -1,4 +1,4 @@
-import { DIRECTIVES, RULES } from "@mangowm.github.io/schema";
+import { DIRECTIVES, RULES } from "@mangowm.github.io/config/catalog";
 
 import { ALL_BIND_VARIANTS, NON_KEYBOARD_KEYS } from "@/lib/keybind-parse";
 import { SECTIONS } from "./sections";

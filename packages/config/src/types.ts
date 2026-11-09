@@ -1,4 +1,4 @@
-import { RULES } from "@mangowm.github.io/schema";
+import { RULES } from "./schema/data";
 
 /** Config text format supported by this package. */
 export type ConfigFormat = "conf" | "toml";

@@ -1,9 +1,9 @@
 # mango config
 
-Converts mango configuration text to the canonical object described by
-[`@mangowm.github.io/schema`](../schema) and back. It has no React, DOM, Tauri,
-or filesystem dependencies, so it can be used by the settings app, the docs, or
-a command-line converter.
+Converts mango configuration text to the canonical object and back, and ships
+the versioned JSON Schema and catalog for that object. It has no React, DOM,
+Tauri, or filesystem dependencies, so it can be used by the settings app, the
+docs, or a command-line converter.
 
 ```ts
 import {
@@ -19,6 +19,29 @@ const toml = serializeToml(config);
 const conf = serializeConf(config);
 ```
 
+## Package layers
+
+```text
+@mangowm.github.io/config
+  .               parser, normalizer, serializer, validator
+  ./schema        schema object and schema types
+  ./catalog       config definitions, constants, and reference metadata
+  ./schema.json   generated validation artifact
+  ./catalog.json  generated reference artifact
+```
+
+```ts
+import { schema } from "@mangowm.github.io/config/schema";
+import { GLOBALS, RULES, DISPATCHERS } from "@mangowm.github.io/config/catalog";
+```
+
+The artifacts are versioned by mango release:
+
+```text
+https://mangowm.github.io/config/0.18.4/schema.json
+https://mangowm.github.io/config/0.18.4/catalog.json
+```
+
 ## Layers
 
 ```text
@@ -32,7 +55,7 @@ config text      generated .conf or TOML
 ```
 
 The document model is per format and keeps untouched lines verbatim. The
-canonical model is shared and follows the schema package exactly.
+canonical model matches the generated schema exactly.
 
 ## Formats
 
@@ -81,7 +104,7 @@ Warnings cover unknown options, unknown dispatchers, malformed rules, duplicate
 bindings, invalid values, and clamped values. A warning never stops the parse.
 
 Values are checked against `GLOBALS`, `RULES`, `DISPATCHERS`, `DISPATCHER_ARGS`,
-and `LAYOUTS` from the schema package, so there is no second copy of the
+and `LAYOUTS` from the catalog data, so there is no second copy of the
 metadata.
 
 ### Rules
@@ -113,5 +136,6 @@ The canonical model describes one file. `source` and `source_optional` stay in
 the object and includes are not merged. Resolving the final configuration is a
 separate step.
 
-This package does not validate text syntax, read files, or render UI. Use the
-schema package for validation metadata and the caller for I/O.
+This package does not read files or render UI. It validates text with
+`validateText`, exposes the canonical schema at `./schema`, and exposes the
+config definitions at `./catalog`. File I/O belongs to the caller.

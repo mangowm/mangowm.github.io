@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { RULES } from "@mangowm.github.io/schema";
+import { RULES } from "@mangowm.github.io/config/catalog";
 
 import type { RuleType } from "../types";
 import { OVERRIDE_REGISTRY, RULE_MATCHERS } from "./schema";

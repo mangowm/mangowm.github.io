@@ -1,4 +1,4 @@
-import { GLOBALS, type GlobalDef } from "@mangowm.github.io/schema";
+import { GLOBALS, type GlobalDef } from "@mangowm.github.io/config/catalog";
 
 export const GLOBAL_META: ReadonlyMap<string, GlobalDef> = new Map(
   GLOBALS.map((option) => [option.key, option]),

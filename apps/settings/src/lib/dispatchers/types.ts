@@ -1,4 +1,4 @@
-import { ALL_TAGS, DISPATCHER_ARG_OPTIONS, TAG_COUNT } from "@mangowm.github.io/schema";
+import { ALL_TAGS, DISPATCHER_ARG_OPTIONS, TAG_COUNT } from "@mangowm.github.io/config/catalog";
 
 export type ArgType =
   | "none"

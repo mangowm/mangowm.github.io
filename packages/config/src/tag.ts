@@ -1,4 +1,4 @@
-import { ALL_TAGS, TAG_COUNT } from "@mangowm.github.io/schema";
+import { ALL_TAGS, TAG_COUNT } from "./schema/data";
 
 import { ValueError, isVariable, parseInteger } from "./value";
 

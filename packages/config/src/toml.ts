@@ -1,4 +1,4 @@
-import { GLOBALS, RULES } from "@mangowm.github.io/schema";
+import { GLOBALS, RULES } from "./schema/data";
 
 import { flagLetters, type BindingFlags, type BindingKind } from "./binding";
 import { formatAction } from "./dispatch";

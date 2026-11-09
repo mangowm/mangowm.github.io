@@ -1,4 +1,4 @@
-import { schema } from "@mangowm.github.io/schema";
+import { schema } from "./schema";
 import Value from "typebox/value";
 import { describe, expect, it } from "vite-plus/test";
 

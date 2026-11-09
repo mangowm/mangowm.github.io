@@ -1,5 +1,5 @@
 import { serializeConf, type OptionValue } from "@mangowm.github.io/config";
-import { GLOBALS } from "@mangowm.github.io/schema";
+import { GLOBALS } from "@mangowm.github.io/config/catalog";
 
 const global: Record<string, OptionValue> = {};
 

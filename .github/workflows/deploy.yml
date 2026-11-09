@@ -28,11 +28,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          mkdir -p dist/docs dist/settings dist/schema
+          mkdir -p dist/docs dist/settings dist/config
           cp -r apps/site/.output/public/. dist/
           cp -r apps/docs/dist/public/.   dist/docs/
           cp -r apps/settings/dist/.      dist/settings/
-          cp -r packages/schema/schemas/. dist/schema/
+          cp -r packages/config/schemas/. dist/config/
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist

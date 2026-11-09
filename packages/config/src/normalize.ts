@@ -1,4 +1,4 @@
-import { GLOBALS, RULES, type GlobalDef, type RuleDef } from "@mangowm.github.io/schema";
+import { GLOBALS, RULES, type GlobalDef, type RuleDef } from "./schema/data";
 
 import {
   bindingTrigger,

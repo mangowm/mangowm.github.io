@@ -1,4 +1,4 @@
-import { DIRECTIVES, RULES } from "@mangowm.github.io/schema";
+import { DIRECTIVES, RULES } from "./schema/data";
 
 import { bindingKind, bindingTrigger, parseBinding, type BindingKind } from "./binding";
 import type { ConfigDocument, EntryNode } from "./document";

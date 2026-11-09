@@ -9,7 +9,7 @@ import {
   type BindingKind,
   type ParsedBinding,
 } from "@mangowm.github.io/config";
-import { MODIFIER_ORDER } from "@mangowm.github.io/schema";
+import { MODIFIER_ORDER } from "@mangowm.github.io/config/catalog";
 
 import type { ConfigData, SourceFile } from "./config/types";
 import type { Keybinding, KeybindFlags, BindingType } from "./keybind-types";

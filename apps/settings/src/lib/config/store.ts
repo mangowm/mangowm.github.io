@@ -10,7 +10,7 @@ import {
   type Change,
   type RuleKey,
 } from "@mangowm.github.io/config";
-import { DIRECTIVES, RULES } from "@mangowm.github.io/schema";
+import { DIRECTIVES, RULES } from "@mangowm.github.io/config/catalog";
 import { getHost, isTauri } from "../platform";
 import type { RawConfigFile } from "../platform";
 import { type ConfigData, type FileFormat, type SourceFile, countLines } from "./types";

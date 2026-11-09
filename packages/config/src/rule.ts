@@ -1,4 +1,4 @@
-import type { RuleDef, RuleFieldDef } from "@mangowm.github.io/schema";
+import type { RuleDef, RuleFieldDef } from "./schema/data";
 
 import { parseTagId, parseTagMask } from "./tag";
 import type { RuleKey, RuleRecord } from "./types";

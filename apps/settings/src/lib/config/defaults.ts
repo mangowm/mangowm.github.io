@@ -1,4 +1,4 @@
-import { GLOBALS } from "@mangowm.github.io/schema";
+import { GLOBALS } from "@mangowm.github.io/config/catalog";
 
 import type { ConfigData } from "./types";
 

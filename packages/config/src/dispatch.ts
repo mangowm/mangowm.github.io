@@ -1,4 +1,4 @@
-import { DISPATCHERS } from "@mangowm.github.io/schema";
+import { DISPATCHERS } from "./schema/data";
 
 import type { Action } from "./types";
 import { ValueError, variableName } from "./value";
