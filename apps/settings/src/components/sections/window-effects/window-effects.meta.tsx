@@ -21,11 +21,9 @@ export const windowEffectsMeta: SectionMeta = {
     },
     {
       configKey: "blur_params_num_passes",
-      aliases: ["iterations", "quality"],
     },
     {
       configKey: "blur_params_radius",
-      aliases: ["size", "spread"],
     },
     {
       configKey: "blur_params_noise",
@@ -41,15 +39,12 @@ export const windowEffectsMeta: SectionMeta = {
     },
     {
       configKey: "border_radius",
-      aliases: ["rounded", "corners", "rounding"],
     },
     {
       configKey: "focused_opacity",
-      aliases: ["transparency", "alpha"],
     },
     {
       configKey: "unfocused_opacity",
-      aliases: ["transparency", "alpha"],
     },
     {
       configKey: "shadows",
@@ -65,7 +60,6 @@ export const windowEffectsMeta: SectionMeta = {
     },
     {
       configKey: "shadows_blur",
-      aliases: ["feather"],
     },
     {
       configKey: "shadows_position_x",

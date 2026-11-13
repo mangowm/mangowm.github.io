@@ -12,11 +12,9 @@ export const securityMeta: SectionMeta = {
   fields: [
     {
       configKey: "allow_shortcuts_inhibit",
-      aliases: ["inhibit shortcuts", "grab", "keyboard grab", "protocol"],
     },
     {
       configKey: "allow_lock_transparent",
-      aliases: ["transparent lock", "lockscreen transparency", "lockscreen"],
     },
   ],
 };

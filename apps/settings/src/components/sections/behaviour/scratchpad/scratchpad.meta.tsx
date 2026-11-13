@@ -12,19 +12,15 @@ export const scratchpadMeta: SectionMeta = {
   fields: [
     {
       configKey: "scratchpad_cross_monitor",
-      aliases: ["scratchpad across monitors"],
     },
     {
       configKey: "single_scratchpad",
-      aliases: ["scratchpad single"],
     },
     {
       configKey: "scratchpad_width_ratio",
-      aliases: ["scratchpad width", "scratchpad size"],
     },
     {
       configKey: "scratchpad_height_ratio",
-      aliases: ["scratchpad height", "scratchpad size"],
     },
   ],
 };

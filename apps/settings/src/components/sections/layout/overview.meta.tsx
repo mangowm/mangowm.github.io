@@ -12,23 +12,18 @@ export const overviewMeta: SectionMeta = {
   fields: [
     {
       configKey: "enable_hotarea",
-      aliases: ["hot corner", "corner action", "overview hot corner"],
     },
     {
       configKey: "hotarea_size",
-      aliases: ["corner size", "activation zone", "hot corner size"],
     },
     {
       configKey: "hotarea_corner",
-      aliases: ["corner", "hot corner position", "activation corner"],
     },
     {
       configKey: "overview_gap_inner",
-      aliases: ["overview inner gap", "grid gap", "overview spacing"],
     },
     {
       configKey: "overview_gap_outer",
-      aliases: ["overview outer gap", "grid margin", "overview margin"],
     },
   ],
 };

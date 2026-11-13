@@ -12,11 +12,9 @@ export const touchMeta: SectionMeta = {
   fields: [
     {
       configKey: "touch_enable",
-      aliases: ["touchscreen", "enable touch"],
     },
     {
       configKey: "touch_enable_mouse_emulation",
-      aliases: ["touch mouse", "emulate mouse", "touch clicks"],
     },
   ],
 };

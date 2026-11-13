@@ -12,11 +12,9 @@ export const cursorMeta: SectionMeta = {
   fields: [
     {
       configKey: "cursor_theme",
-      aliases: ["pointer", "icon", "style"],
     },
     {
       configKey: "cursor_size",
-      aliases: ["pointer", "scale", "dimensions"],
     },
   ],
 };

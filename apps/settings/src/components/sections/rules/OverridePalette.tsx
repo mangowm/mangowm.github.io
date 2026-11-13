@@ -9,6 +9,7 @@ import {
   CommandList,
 } from "@mangowm/ui/components/command";
 import { cn } from "cn";
+import { categoryLabel } from "@/lib/dispatchers";
 import { getOverridesForRuleType } from "@/lib/rules/metadata";
 import type { RuleType, OverrideMeta } from "@/lib/rules/types";
 
@@ -35,7 +36,7 @@ export function OverridePalette({ ruleType, usedKeys, onSelect, onClose }: Overr
       })
     : allAvailable;
 
-  const grouped = groupBy(filtered, (m) => m.category);
+  const grouped = groupBy(filtered, (m) => categoryLabel(m.category));
 
   const handleSelect = useCallback(
     (meta: OverrideMeta) => {

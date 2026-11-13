@@ -9,6 +9,8 @@ import {
   type CategoryId,
 } from "./data/categories";
 import { DISPATCHERS } from "./data/dispatcherArgs";
+import { GLOBAL_META } from "./data/globalMeta";
+import { RULE_CATEGORIES, RULE_FIELD_META } from "./data/ruleMeta";
 
 const categoryIds = Object.keys(CATEGORIES) as CategoryId[];
 
@@ -48,5 +50,24 @@ describe("categories", () => {
 
     for (const category of used) expect(ordered).toContain(category);
     for (const category of ordered) expect(used).toContain(category);
+  });
+
+  it("covers rule categories in the rule order", () => {
+    const ordered = new Set(RULE_CATEGORY_ORDER);
+    const used = new Set([
+      ...Object.values(RULE_CATEGORIES),
+      ...Object.values(RULE_FIELD_META).flatMap((fields) =>
+        Object.values(fields).map((field) => field.category),
+      ),
+    ]);
+
+    for (const category of used) expect(ordered).toContain(category);
+  });
+
+  it("covers global categories in the global order", () => {
+    const ordered = new Set(GLOBAL_CATEGORY_ORDER);
+    const used = new Set(Object.values(GLOBAL_META).map((meta) => meta.category));
+
+    for (const category of used) expect(ordered).toContain(category);
   });
 });

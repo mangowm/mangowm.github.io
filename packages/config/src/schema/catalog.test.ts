@@ -7,6 +7,13 @@ import {
   DISPATCHER_DESCRIPTIONS,
   DISPATCHER_EXAMPLES,
 } from "./data/dispatcherMeta";
+import { GLOBAL_META } from "./data/globalMeta";
+import {
+  RULE_CATEGORIES,
+  RULE_FIELD_META,
+  RULE_MATCHERS,
+  RULE_MATCHER_META,
+} from "./data/ruleMeta";
 import { schema } from "./schema";
 
 const catalog = buildCatalog();
@@ -23,8 +30,23 @@ describe("catalog consistency", () => {
     );
   });
 
+  it("includes global metadata", () => {
+    for (const [key, meta] of Object.entries(GLOBAL_META)) {
+      expect(catalog.globals[key]?.category).toBe(meta.category);
+      expect(catalog.globals[key]?.aliases ?? []).toEqual(meta.aliases ?? []);
+    }
+  });
+
   it("covers every schema rule", () => {
     expect(Object.keys(catalog.rules).sort()).toEqual(propertiesOf("rule").sort());
+
+    for (const [key, rule] of Object.entries(catalog.rules)) {
+      const ruleKey = key as keyof typeof RULE_CATEGORIES;
+      expect(rule.category).toBe(RULE_CATEGORIES[ruleKey]);
+      expect(rule.matchers).toEqual(RULE_MATCHERS[ruleKey]);
+      expect(rule.fieldMeta).toEqual(RULE_FIELD_META[ruleKey]);
+      expect(rule.matcherMeta).toEqual(RULE_MATCHER_META[ruleKey]);
+    }
   });
 
   it("covers every dispatcher and its argument signature", () => {

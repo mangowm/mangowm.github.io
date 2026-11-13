@@ -12,19 +12,15 @@ export const tagsMeta: SectionMeta = {
   fields: [
     {
       configKey: "tag_num",
-      aliases: ["tag count", "tag count", "number of tags", "tags count"],
     },
     {
       configKey: "tag_gather",
-      aliases: ["compact tags", "remove gaps", "tag compaction"],
     },
     {
       configKey: "tag_carousel",
-      aliases: ["wrap tags", "tag wrap", "carousel"],
     },
     {
       configKey: "view_current_to_back",
-      aliases: ["send to back", "background", "tag back"],
     },
   ],
 };

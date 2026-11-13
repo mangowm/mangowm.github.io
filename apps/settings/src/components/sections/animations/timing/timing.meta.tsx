@@ -25,23 +25,18 @@ export const timingMeta: SectionMeta = {
   fields: [
     {
       configKey: "animation_duration_move",
-      aliases: ["move speed", "move time", "move ms"],
     },
     {
       configKey: "animation_duration_open",
-      aliases: ["open speed", "open time", "open ms"],
     },
     {
       configKey: "animation_duration_close",
-      aliases: ["close speed", "close time", "close ms"],
     },
     {
       configKey: "animation_duration_tag",
-      aliases: ["tag speed", "tag time", "tag ms", "tag switch"],
     },
     {
       configKey: "animation_duration_focus",
-      aliases: ["focus speed", "focus time", "focus ms"],
     },
   ],
 };

@@ -4,7 +4,6 @@ import type { ConfigData } from "../config/types";
 export interface FieldDef {
   /** Config file key, e.g. "blur_radius" */
   configKey: string;
-  aliases?: string[];
 }
 
 export interface SectionMeta {

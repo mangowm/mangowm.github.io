@@ -79,13 +79,16 @@
     "behaviour",
     "window",
     "floating",
+    "focus",
     "geometry",
     "animation",
     "input",
+    "bindings",
     "tag",
     "monitor",
     "layout",
     "scratchpad",
+    "rules",
     "security"
   ],
   "globalCategoryOrder": [
@@ -93,7 +96,11 @@
     "animation",
     "layout",
     "behaviour",
+    "focus",
     "input",
+    "window",
+    "floating",
+    "scratchpad",
     "tag",
     "monitor",
     "rules",
@@ -108,14 +115,26 @@
       "type": "bool",
       "default": true,
       "label": "Enable Animations",
-      "description": "Toggle window animations. Gesture transitions still animate when this is off."
+      "description": "Toggle window animations. Gesture transitions still animate when this is off.",
+      "category": "animation",
+      "aliases": [
+        "animate",
+        "animation master",
+        "toggle animations"
+      ]
     },
     "layer_animations": {
       "key": "layer_animations",
       "type": "bool",
       "default": false,
       "label": "Layer Animations",
-      "description": "Animate layer-shell surfaces such as panels and notifications. Requires animations."
+      "description": "Animate layer-shell surfaces such as panels and notifications. Requires animations.",
+      "category": "animation",
+      "aliases": [
+        "layer animate",
+        "panel animations",
+        "notification animations"
+      ]
     },
     "animation_type_open": {
       "key": "animation_type_open",
@@ -144,6 +163,12 @@
           "value": "zoom",
           "label": "Zoom"
         }
+      ],
+      "category": "animation",
+      "aliases": [
+        "open animation",
+        "window open",
+        "appear animation"
       ]
     },
     "animation_type_close": {
@@ -173,6 +198,12 @@
           "value": "zoom",
           "label": "Zoom"
         }
+      ],
+      "category": "animation",
+      "aliases": [
+        "close animation",
+        "window close",
+        "disappear animation"
       ]
     },
     "layer_animation_type_open": {
@@ -202,6 +233,12 @@
           "value": "zoom",
           "label": "Zoom"
         }
+      ],
+      "category": "animation",
+      "aliases": [
+        "layer open",
+        "panel appear",
+        "notification open"
       ]
     },
     "layer_animation_type_close": {
@@ -231,6 +268,12 @@
           "value": "zoom",
           "label": "Zoom"
         }
+      ],
+      "category": "animation",
+      "aliases": [
+        "layer close",
+        "panel disappear",
+        "notification close"
       ]
     },
     "animation_fade_in": {
@@ -238,14 +281,24 @@
       "type": "bool",
       "default": true,
       "label": "Fade In",
-      "description": "Fade windows in when they appear."
+      "description": "Fade windows in when they appear.",
+      "category": "animation",
+      "aliases": [
+        "fade on open",
+        "fade appear"
+      ]
     },
     "animation_fade_out": {
       "key": "animation_fade_out",
       "type": "bool",
       "default": true,
       "label": "Fade Out",
-      "description": "Fade windows out when they close."
+      "description": "Fade windows out when they close.",
+      "category": "animation",
+      "aliases": [
+        "fade on close",
+        "fade disappear"
+      ]
     },
     "tag_animation_direction": {
       "key": "tag_animation_direction",
@@ -263,7 +316,12 @@
           "label": "Vertical"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "animation",
+      "aliases": [
+        "tag switch",
+        "tag direction"
+      ]
     },
     "zoom_initial_ratio": {
       "key": "zoom_initial_ratio",
@@ -272,7 +330,13 @@
       "label": "Zoom Initial Ratio",
       "description": "Initial scale for zoom animations (0.1-1.0).",
       "min": 0.1,
-      "max": 1
+      "max": 1,
+      "category": "animation",
+      "aliases": [
+        "zoom start",
+        "zoom begin",
+        "initial zoom"
+      ]
     },
     "zoom_end_ratio": {
       "key": "zoom_end_ratio",
@@ -281,7 +345,13 @@
       "label": "Zoom End Ratio",
       "description": "Final scale for zoom animations (0.1-1.0).",
       "min": 0.1,
-      "max": 1
+      "max": 1,
+      "category": "animation",
+      "aliases": [
+        "zoom finish",
+        "zoom target",
+        "final zoom"
+      ]
     },
     "fade_in_begin_opacity": {
       "key": "fade_in_begin_opacity",
@@ -290,7 +360,13 @@
       "label": "Fade In Start Opacity",
       "description": "Initial opacity for fade-in animations (0.0-1.0).",
       "min": 0,
-      "max": 1
+      "max": 1,
+      "category": "animation",
+      "aliases": [
+        "fade in begin",
+        "fade start",
+        "opacity start"
+      ]
     },
     "fade_out_begin_opacity": {
       "key": "fade_out_begin_opacity",
@@ -299,7 +375,13 @@
       "label": "Fade Out Start Opacity",
       "description": "Initial opacity for fade-out animations (0.0-1.0).",
       "min": 0,
-      "max": 1
+      "max": 1,
+      "category": "animation",
+      "aliases": [
+        "fade out begin",
+        "fade end",
+        "opacity end"
+      ]
     },
     "animation_duration_move": {
       "key": "animation_duration_move",
@@ -308,7 +390,13 @@
       "label": "Move Duration",
       "description": "Duration of window move/resize animations in milliseconds (0-50000).",
       "min": 0,
-      "max": 50000
+      "max": 50000,
+      "category": "animation",
+      "aliases": [
+        "move speed",
+        "move time",
+        "move ms"
+      ]
     },
     "animation_duration_open": {
       "key": "animation_duration_open",
@@ -320,6 +408,12 @@
       "max": 50000,
       "examples": [
         400
+      ],
+      "category": "animation",
+      "aliases": [
+        "open speed",
+        "open time",
+        "open ms"
       ]
     },
     "animation_duration_tag": {
@@ -329,7 +423,14 @@
       "label": "Tag Switch Duration",
       "description": "Duration of tag-switch animations in milliseconds (0-50000).",
       "min": 0,
-      "max": 50000
+      "max": 50000,
+      "category": "animation",
+      "aliases": [
+        "tag speed",
+        "tag time",
+        "tag ms",
+        "tag switch"
+      ]
     },
     "animation_duration_close": {
       "key": "animation_duration_close",
@@ -338,7 +439,13 @@
       "label": "Close Duration",
       "description": "Duration of window close animations in milliseconds (0-50000).",
       "min": 0,
-      "max": 50000
+      "max": 50000,
+      "category": "animation",
+      "aliases": [
+        "close speed",
+        "close time",
+        "close ms"
+      ]
     },
     "animation_duration_focus": {
       "key": "animation_duration_focus",
@@ -347,7 +454,13 @@
       "label": "Focus Duration",
       "description": "Opacity transition duration when focus changes, in milliseconds (0-50000).",
       "min": 0,
-      "max": 50000
+      "max": 50000,
+      "category": "animation",
+      "aliases": [
+        "focus speed",
+        "focus time",
+        "focus ms"
+      ]
     },
     "animation_curve_move": {
       "key": "animation_curve_move",
@@ -359,7 +472,13 @@
         0.99
       ],
       "label": "Move Curve",
-      "description": "Cubic bezier curve for move/resize animations (x1,y1,x2,y2)."
+      "description": "Cubic bezier curve for move/resize animations (x1,y1,x2,y2).",
+      "category": "animation",
+      "aliases": [
+        "move easing",
+        "move bezier",
+        "move control points"
+      ]
     },
     "animation_curve_open": {
       "key": "animation_curve_open",
@@ -379,6 +498,12 @@
           0.29,
           1
         ]
+      ],
+      "category": "animation",
+      "aliases": [
+        "open easing",
+        "open bezier",
+        "open control points"
       ]
     },
     "animation_curve_tag": {
@@ -391,7 +516,14 @@
         0.99
       ],
       "label": "Tag Switch Curve",
-      "description": "Cubic bezier curve for tag-switch animations (x1,y1,x2,y2)."
+      "description": "Cubic bezier curve for tag-switch animations (x1,y1,x2,y2).",
+      "category": "animation",
+      "aliases": [
+        "tag easing",
+        "tag bezier",
+        "tag control points",
+        "tag curve"
+      ]
     },
     "animation_curve_close": {
       "key": "animation_curve_close",
@@ -403,7 +535,13 @@
         0.99
       ],
       "label": "Close Curve",
-      "description": "Cubic bezier curve for window close animations (x1,y1,x2,y2)."
+      "description": "Cubic bezier curve for window close animations (x1,y1,x2,y2).",
+      "category": "animation",
+      "aliases": [
+        "close easing",
+        "close bezier",
+        "close control points"
+      ]
     },
     "animation_curve_focus": {
       "key": "animation_curve_focus",
@@ -415,7 +553,13 @@
         0.99
       ],
       "label": "Focus Curve",
-      "description": "Bezier curve for the focus opacity transition (x1,y1,x2,y2)."
+      "description": "Bezier curve for the focus opacity transition (x1,y1,x2,y2).",
+      "category": "animation",
+      "aliases": [
+        "focus easing",
+        "focus bezier",
+        "focus control points"
+      ]
     },
     "animation_curve_opacity_fade_in": {
       "key": "animation_curve_opacity_fade_in",
@@ -427,7 +571,13 @@
         0.99
       ],
       "label": "Fade In Curve",
-      "description": "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2)."
+      "description": "Cubic bezier curve for fade-in opacity animations (x1,y1,x2,y2).",
+      "category": "animation",
+      "aliases": [
+        "fade in easing",
+        "fade in bezier",
+        "fade in control points"
+      ]
     },
     "animation_curve_opacity_fade_out": {
       "key": "animation_curve_opacity_fade_out",
@@ -439,7 +589,13 @@
         0.5
       ],
       "label": "Fade Out Curve",
-      "description": "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2)."
+      "description": "Cubic bezier curve for fade-out opacity animations (x1,y1,x2,y2).",
+      "category": "animation",
+      "aliases": [
+        "fade out easing",
+        "fade out bezier",
+        "fade out control points"
+      ]
     },
     "scroller_structs": {
       "key": "scroller_structs",
@@ -448,7 +604,8 @@
       "label": "Scroller Side Margin",
       "description": "Pixels reserved on each side of the scroller area (0-1000).",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "layout"
     },
     "scroller_default_proportion": {
       "key": "scroller_default_proportion",
@@ -457,7 +614,8 @@
       "label": "Default Proportion",
       "description": "Default width proportion for new windows in the scroller layout.",
       "min": 0.1,
-      "max": 1
+      "max": 1,
+      "category": "layout"
     },
     "scroller_default_proportion_single": {
       "key": "scroller_default_proportion_single",
@@ -466,42 +624,48 @@
       "label": "Single Window Proportion",
       "description": "Width proportion for a tag with one window. Requires scroller_ignore_proportion_single=0.",
       "min": 0.1,
-      "max": 1
+      "max": 1,
+      "category": "layout"
     },
     "scroller_ignore_proportion_single": {
       "key": "scroller_ignore_proportion_single",
       "type": "bool",
       "default": true,
       "label": "Ignore Single-Window Proportion",
-      "description": "Ignore scroller_default_proportion_single when the tag has one window."
+      "description": "Ignore scroller_default_proportion_single when the tag has one window.",
+      "category": "layout"
     },
     "scroller_focus_center": {
       "key": "scroller_focus_center",
       "type": "bool",
       "default": false,
       "label": "Scroller Focus Center",
-      "description": "Always center the focused window in the scroller viewport."
+      "description": "Always center the focused window in the scroller viewport.",
+      "category": "layout"
     },
     "scroller_prefer_center": {
       "key": "scroller_prefer_center",
       "type": "bool",
       "default": false,
       "label": "Scroller Prefer Center",
-      "description": "Center the focused window only when it was outside the viewport."
+      "description": "Center the focused window only when it was outside the viewport.",
+      "category": "layout"
     },
     "scroller_prefer_overspread": {
       "key": "scroller_prefer_overspread",
       "type": "bool",
       "default": true,
       "label": "Prefer Overspread",
-      "description": "Focused edge window fills unused space. Overrides scroller_focus_center and scroller_prefer_center."
+      "description": "Focused edge window fills unused space. Overrides scroller_focus_center and scroller_prefer_center.",
+      "category": "layout"
     },
     "edge_scroller_pointer_focus": {
       "key": "edge_scroller_pointer_focus",
       "type": "bool",
       "default": true,
       "label": "Edge Pointer Focus",
-      "description": "Focus scroller windows that are partly off-screen."
+      "description": "Focus scroller windows that are partly off-screen.",
+      "category": "layout"
     },
     "edge_scroller_focus_allow_speed": {
       "key": "edge_scroller_focus_allow_speed",
@@ -510,70 +674,100 @@
       "label": "Edge Focus Speed",
       "description": "Minimum pointer speed required before edge focus triggers (0-1000).",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "layout"
     },
     "focus_cross_monitor": {
       "key": "focus_cross_monitor",
       "type": "bool",
       "default": false,
       "label": "Cross-Monitor Focus",
-      "description": "Let directional focus cross monitor boundaries."
+      "description": "Let directional focus cross monitor boundaries.",
+      "category": "behaviour",
+      "aliases": [
+        "multi-monitor focus",
+        "across monitors"
+      ]
     },
     "focus_direction_only_zone_overlap": {
       "key": "focus_direction_only_zone_overlap",
       "type": "bool",
       "default": true,
       "label": "Focus Direction Zone Overlap",
-      "description": "Directional focus only picks windows overlapping the current window on the perpendicular axis."
+      "description": "Directional focus only picks windows overlapping the current window on the perpendicular axis.",
+      "category": "focus"
     },
     "exchange_cross_monitor": {
       "key": "exchange_cross_monitor",
       "type": "bool",
       "default": false,
       "label": "Cross-Monitor Exchange",
-      "description": "Let exchange_client and move_client cross monitor boundaries."
+      "description": "Let exchange_client and move_client cross monitor boundaries.",
+      "category": "behaviour",
+      "aliases": [
+        "swap across monitors",
+        "exchange"
+      ]
     },
     "scratchpad_cross_monitor": {
       "key": "scratchpad_cross_monitor",
       "type": "bool",
       "default": false,
       "label": "Scratchpad Cross Monitor",
-      "description": "Share the scratchpad pool across all monitors."
+      "description": "Share the scratchpad pool across all monitors.",
+      "category": "scratchpad",
+      "aliases": [
+        "scratchpad across monitors"
+      ]
     },
     "focus_cross_tag": {
       "key": "focus_cross_tag",
       "type": "bool",
       "default": false,
       "label": "Cross-Tag Focus",
-      "description": "Let directional focus cross tag boundaries."
+      "description": "Let directional focus cross tag boundaries.",
+      "category": "behaviour",
+      "aliases": [
+        "across tags",
+        "tag crossing"
+      ]
     },
     "view_current_to_back": {
       "key": "view_current_to_back",
       "type": "bool",
       "default": false,
       "label": "View Current to Back",
-      "description": "Viewing the current tag switches to the previously viewed tag."
+      "description": "Viewing the current tag switches to the previously viewed tag.",
+      "category": "tag",
+      "aliases": [
+        "send to back",
+        "background",
+        "tag back"
+      ]
     },
     "blur": {
       "key": "blur",
       "type": "bool",
       "default": false,
       "label": "Enable Blur",
-      "description": "Toggle background blur behind windows."
+      "description": "Toggle background blur behind windows.",
+      "category": "appearance"
     },
     "blur_layer": {
       "key": "blur_layer",
       "type": "bool",
       "default": false,
       "label": "Blur Layer Surfaces",
-      "description": "Apply blur to layer-shell surfaces (panels, notifications). Requires blur."
+      "description": "Apply blur to layer-shell surfaces (panels, notifications). Requires blur.",
+      "category": "appearance"
     },
     "blur_optimized": {
       "key": "blur_optimized",
       "type": "bool",
       "default": true,
       "label": "Optimized Blur",
-      "description": "Cache the wallpaper and background for faster blur."
+      "description": "Cache the wallpaper and background for faster blur.",
+      "category": "appearance"
     },
     "border_radius": {
       "key": "border_radius",
@@ -582,7 +776,13 @@
       "label": "Border Radius",
       "description": "Corner radius in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "rounded",
+        "corners",
+        "rounding"
+      ]
     },
     "blur_params_num_passes": {
       "key": "blur_params_num_passes",
@@ -591,7 +791,12 @@
       "label": "Blur Passes",
       "description": "Number of blur iterations.",
       "min": 0,
-      "max": 10
+      "max": 10,
+      "category": "appearance",
+      "aliases": [
+        "iterations",
+        "quality"
+      ]
     },
     "blur_params_radius": {
       "key": "blur_params_radius",
@@ -600,7 +805,12 @@
       "label": "Blur Radius",
       "description": "Pixel radius of the blur kernel.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "size",
+        "spread"
+      ]
     },
     "blur_params_noise": {
       "key": "blur_params_noise",
@@ -609,7 +819,8 @@
       "label": "Blur Noise",
       "description": "Noise level added to the blur.",
       "min": 0,
-      "max": 1
+      "max": 1,
+      "category": "appearance"
     },
     "blur_params_brightness": {
       "key": "blur_params_brightness",
@@ -618,7 +829,8 @@
       "label": "Blur Brightness",
       "description": "Brightness multiplier for the blurred layer.",
       "min": 0,
-      "max": 1
+      "max": 1,
+      "category": "appearance"
     },
     "blur_params_contrast": {
       "key": "blur_params_contrast",
@@ -627,7 +839,8 @@
       "label": "Blur Contrast",
       "description": "Contrast multiplier for the blurred layer.",
       "min": 0,
-      "max": 1
+      "max": 1,
+      "category": "appearance"
     },
     "blur_params_saturation": {
       "key": "blur_params_saturation",
@@ -636,28 +849,32 @@
       "label": "Blur Saturation",
       "description": "Saturation multiplier for the blurred layer. Mango clamps the effective value to 0-1.",
       "min": 0,
-      "max": 1
+      "max": 1,
+      "category": "appearance"
     },
     "shadows": {
       "key": "shadows",
       "type": "bool",
       "default": false,
       "label": "Enable Shadows",
-      "description": "Render drop shadows behind windows."
+      "description": "Render drop shadows behind windows.",
+      "category": "appearance"
     },
     "shadow_only_floating": {
       "key": "shadow_only_floating",
       "type": "bool",
       "default": true,
       "label": "Floating Shadows Only",
-      "description": "Only draw shadows for floating windows."
+      "description": "Only draw shadows for floating windows.",
+      "category": "appearance"
     },
     "layer_shadows": {
       "key": "layer_shadows",
       "type": "bool",
       "default": false,
       "label": "Layer Shadows",
-      "description": "Draw shadows under layer-shell surfaces. Requires shadows."
+      "description": "Draw shadows under layer-shell surfaces. Requires shadows.",
+      "category": "appearance"
     },
     "shadows_size": {
       "key": "shadows_size",
@@ -666,7 +883,8 @@
       "label": "Shadow Size",
       "description": "How far the shadow extends beyond window edges.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance"
     },
     "shadows_blur": {
       "key": "shadows_blur",
@@ -675,7 +893,11 @@
       "label": "Shadow Softness",
       "description": "Gaussian blur sigma for softer shadows.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "feather"
+      ]
     },
     "shadows_position_x": {
       "key": "shadows_position_x",
@@ -684,7 +906,8 @@
       "label": "Shadow Offset X",
       "description": "Horizontal shadow offset.",
       "min": -1000,
-      "max": 1000
+      "max": 1000,
+      "category": "appearance"
     },
     "shadows_position_y": {
       "key": "shadows_position_y",
@@ -693,42 +916,74 @@
       "label": "Shadow Offset Y",
       "description": "Vertical shadow offset.",
       "min": -1000,
-      "max": 1000
+      "max": 1000,
+      "category": "appearance"
     },
     "single_scratchpad": {
       "key": "single_scratchpad",
       "type": "bool",
       "default": true,
       "label": "Single Scratchpad",
-      "description": "Show only one scratchpad window (named or standard) at a time."
+      "description": "Show only one scratchpad window (named or standard) at a time.",
+      "category": "scratchpad",
+      "aliases": [
+        "scratchpad single"
+      ]
     },
     "xwayland_persistence": {
       "key": "xwayland_persistence",
       "type": "bool",
       "default": true,
       "label": "XWayland Persistence",
-      "description": "Keep XWayland running even when no X11 clients are active."
+      "description": "Keep XWayland running even when no X11 clients are active.",
+      "category": "behaviour",
+      "aliases": [
+        "xwayland",
+        "x11",
+        "compat",
+        "keep alive"
+      ]
     },
     "xwayland_ignore_scale": {
       "key": "xwayland_ignore_scale",
       "type": "bool",
       "default": false,
       "label": "Ignore XWayland Scale",
-      "description": "Make XWayland use physical pixels instead of the output scale."
+      "description": "Make XWayland use physical pixels instead of the output scale.",
+      "category": "behaviour",
+      "aliases": [
+        "ignore scaling",
+        "x11 scale",
+        "integer scaling"
+      ]
     },
     "sync_obj_enable": {
       "key": "sync_obj_enable",
       "type": "bool",
       "default": true,
       "label": "Sync Objects",
-      "description": "Use DRM sync object timelines. Requires a restart."
+      "description": "Use DRM sync object timelines. Requires a restart.",
+      "category": "behaviour",
+      "aliases": [
+        "sync",
+        "drm",
+        "timeline",
+        "syncobj",
+        "gpu"
+      ]
     },
     "tag_carousel": {
       "key": "tag_carousel",
       "type": "bool",
       "default": false,
       "label": "Tag Carousel",
-      "description": "Tags wrap around in a carousel."
+      "description": "Tags wrap around in a carousel.",
+      "category": "tag",
+      "aliases": [
+        "wrap tags",
+        "tag wrap",
+        "carousel"
+      ]
     },
     "allow_tearing": {
       "key": "allow_tearing",
@@ -750,7 +1005,15 @@
           "label": "Fullscreen only"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "behaviour",
+      "aliases": [
+        "tearing",
+        "tear",
+        "vsync",
+        "async",
+        "page flip"
+      ]
     },
     "hdr_depth": {
       "key": "hdr_depth",
@@ -772,70 +1035,97 @@
           "label": "10-bit"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "behaviour",
+      "aliases": [
+        "hdr",
+        "bit depth",
+        "high dynamic range",
+        "color depth"
+      ]
     },
     "allow_shortcuts_inhibit": {
       "key": "allow_shortcuts_inhibit",
       "type": "bool",
       "default": true,
       "label": "Allow Shortcut Inhibition",
-      "description": "Let apps suspend compositor keybindings."
+      "description": "Let apps suspend compositor keybindings.",
+      "category": "security",
+      "aliases": [
+        "inhibit shortcuts",
+        "grab",
+        "keyboard grab",
+        "protocol"
+      ]
     },
     "disable_middle_paste": {
       "key": "disable_middle_paste",
       "type": "bool",
       "default": false,
       "label": "Disable Middle Paste",
-      "description": "Disable middle-click paste by turning off primary selection for Wayland apps."
+      "description": "Disable middle-click paste by turning off primary selection for Wayland apps.",
+      "category": "input"
     },
     "allow_lock_transparent": {
       "key": "allow_lock_transparent",
       "type": "bool",
       "default": false,
       "label": "Allow Lock Transparent",
-      "description": "Permit transparent/translucent lockscreens."
+      "description": "Permit transparent/translucent lockscreens.",
+      "category": "security",
+      "aliases": [
+        "transparent lock",
+        "lockscreen transparency",
+        "lockscreen"
+      ]
     },
     "auto_reload_config": {
       "key": "auto_reload_config",
       "type": "bool",
       "default": true,
       "label": "Auto Reload Config",
-      "description": "Reload when the main config or a sourced file changes."
+      "description": "Reload when the main config or a sourced file changes.",
+      "category": "system"
     },
     "no_border_when_single": {
       "key": "no_border_when_single",
       "type": "bool",
       "default": false,
       "label": "No Border When Single",
-      "description": "Remove borders when only one window is visible."
+      "description": "Remove borders when only one window is visible.",
+      "category": "appearance"
     },
     "no_radius_when_single": {
       "key": "no_radius_when_single",
       "type": "bool",
       "default": false,
       "label": "No Corner Radius When Single",
-      "description": "Remove corner radius when only one window is visible."
+      "description": "Remove corner radius when only one window is visible.",
+      "category": "appearance"
     },
     "monocle_no_border": {
       "key": "monocle_no_border",
       "type": "bool",
       "default": false,
       "label": "Monocle No Border",
-      "description": "Remove borders in monocle layout."
+      "description": "Remove borders in monocle layout.",
+      "category": "layout"
     },
     "monocle_no_gap": {
       "key": "monocle_no_gap",
       "type": "bool",
       "default": false,
       "label": "Monocle No Gap",
-      "description": "Remove gaps in monocle layout."
+      "description": "Remove gaps in monocle layout.",
+      "category": "layout"
     },
     "monocle_no_radius": {
       "key": "monocle_no_radius",
       "type": "bool",
       "default": false,
       "label": "Monocle No Radius",
-      "description": "Remove corner radius in monocle layout."
+      "description": "Remove corner radius in monocle layout.",
+      "category": "layout"
     },
     "snap_distance": {
       "key": "snap_distance",
@@ -847,6 +1137,12 @@
       "max": 99999,
       "examples": [
         10
+      ],
+      "category": "behaviour",
+      "aliases": [
+        "snapping",
+        "snap threshold",
+        "edge snap"
       ]
     },
     "enable_floating_snap": {
@@ -854,28 +1150,47 @@
       "type": "bool",
       "default": false,
       "label": "Floating Snap",
-      "description": "Snap floating windows to screen edges and other visible floating windows."
+      "description": "Snap floating windows to screen edges and other visible floating windows.",
+      "category": "behaviour",
+      "aliases": [
+        "snap",
+        "floating snap",
+        "window snap"
+      ]
     },
     "float_full_to_top": {
       "key": "float_full_to_top",
       "type": "bool",
       "default": false,
       "label": "Shared Top Layer",
-      "description": "One layer for fullscreen, floating, and layer-shell top windows. The last raised window is on top."
+      "description": "One layer for fullscreen, floating, and layer-shell top windows. The last raised window is on top.",
+      "category": "floating"
     },
     "drag_tile_to_tile": {
       "key": "drag_tile_to_tile",
       "type": "bool",
       "default": true,
       "label": "Tile-to-Tile Drag",
-      "description": "Reorder tiled windows by dragging."
+      "description": "Reorder tiled windows by dragging.",
+      "category": "behaviour",
+      "aliases": [
+        "tile drag",
+        "reorder",
+        "swap tiles"
+      ]
     },
     "drag_tile_small": {
       "key": "drag_tile_small",
       "type": "bool",
       "default": true,
       "label": "Small Tile Preview",
-      "description": "Shrink dragged tile to a small thumbnail."
+      "description": "Shrink dragged tile to a small thumbnail.",
+      "category": "behaviour",
+      "aliases": [
+        "tile thumbnail",
+        "drag preview",
+        "mini tile"
+      ]
     },
     "swipe_min_threshold": {
       "key": "swipe_min_threshold",
@@ -884,14 +1199,21 @@
       "label": "Swipe Minimum Threshold",
       "description": "Minimum distance in pixels to trigger a swipe gesture (1-1000).",
       "min": 1,
-      "max": 1000
+      "max": 1000,
+      "category": "input",
+      "aliases": [
+        "swipe",
+        "gesture threshold",
+        "swipe sensitivity"
+      ]
     },
     "gesture_live": {
       "key": "gesture_live",
       "type": "bool",
       "default": true,
       "label": "Live Gestures",
-      "description": "Update tag, focus, and overview transitions while fingers move, not only after release."
+      "description": "Update tag, focus, and overview transitions while fingers move, not only after release.",
+      "category": "input"
     },
     "gesture_swipe_distance": {
       "key": "gesture_swipe_distance",
@@ -900,7 +1222,8 @@
       "label": "Swipe Distance",
       "description": "Finger travel (px) that corresponds to one full page transition.",
       "min": 32,
-      "max": 4096
+      "max": 4096,
+      "category": "input"
     },
     "gesture_swipe_cancel_ratio": {
       "key": "gesture_swipe_cancel_ratio",
@@ -909,7 +1232,8 @@
       "label": "Swipe Cancel Ratio",
       "description": "Fraction of the last page to drag before release commits the swipe.",
       "min": 0.05,
-      "max": 0.95
+      "max": 0.95,
+      "category": "input"
     },
     "gesture_swipe_min_speed_to_force": {
       "key": "gesture_swipe_min_speed_to_force",
@@ -917,7 +1241,8 @@
       "default": 10,
       "label": "Swipe Force Speed",
       "description": "Average speed per event (px) that commits the swipe below the cancel ratio.",
-      "min": 0
+      "min": 0,
+      "category": "input"
     },
     "focused_opacity": {
       "key": "focused_opacity",
@@ -929,6 +1254,11 @@
       "max": 1,
       "examples": [
         0.9
+      ],
+      "category": "appearance",
+      "aliases": [
+        "transparency",
+        "alpha"
       ]
     },
     "unfocused_opacity": {
@@ -938,42 +1268,52 @@
       "label": "Unfocused Opacity",
       "description": "Opacity of unfocused windows.",
       "min": 0,
-      "max": 1
+      "max": 1,
+      "category": "appearance",
+      "aliases": [
+        "transparency",
+        "alpha"
+      ]
     },
     "xkb_rules_rules": {
       "key": "xkb_rules_rules",
       "type": "string",
       "default": "",
       "label": "XKB Rules",
-      "description": "XKB rules file."
+      "description": "XKB rules file.",
+      "category": "input"
     },
     "xkb_rules_model": {
       "key": "xkb_rules_model",
       "type": "string",
       "default": "",
       "label": "XKB Model",
-      "description": "Keyboard model for XKB."
+      "description": "Keyboard model for XKB.",
+      "category": "input"
     },
     "xkb_rules_layout": {
       "key": "xkb_rules_layout",
       "type": "string",
       "default": "",
       "label": "XKB Layout",
-      "description": "Keyboard layout codes, for example 'us' or 'us,ru'."
+      "description": "Keyboard layout codes, for example 'us' or 'us,ru'.",
+      "category": "input"
     },
     "xkb_rules_variant": {
       "key": "xkb_rules_variant",
       "type": "string",
       "default": "",
       "label": "XKB Variant",
-      "description": "Keyboard layout variant."
+      "description": "Keyboard layout variant.",
+      "category": "input"
     },
     "xkb_rules_options": {
       "key": "xkb_rules_options",
       "type": "string",
       "default": "",
       "label": "XKB Options",
-      "description": "XKB options, for example 'ctrl:nocaps'."
+      "description": "XKB options, for example 'ctrl:nocaps'.",
+      "category": "input"
     },
     "scroller_proportion_preset": {
       "key": "scroller_proportion_preset",
@@ -986,6 +1326,12 @@
           0.5,
           0.9
         ]
+      ],
+      "category": "layout",
+      "aliases": [
+        "preset",
+        "proportion list",
+        "quick proportion"
       ]
     },
     "circle_layout": {
@@ -999,14 +1345,16 @@
           "tile",
           "scroller"
         ]
-      ]
+      ],
+      "category": "layout"
     },
     "new_is_master": {
       "key": "new_is_master",
       "type": "bool",
       "default": true,
       "label": "New Windows as Master",
-      "description": "New windows open in the master area instead of the stack."
+      "description": "New windows open in the master area instead of the stack.",
+      "category": "layout"
     },
     "default_master_factor": {
       "key": "default_master_factor",
@@ -1015,7 +1363,8 @@
       "label": "Master Area Factor",
       "description": "Master area size: width in horizontal layouts, height in vertical layouts (0.1-0.9).",
       "min": 0.1,
-      "max": 0.9
+      "max": 0.9,
+      "category": "layout"
     },
     "default_master_count": {
       "key": "default_master_count",
@@ -1024,7 +1373,8 @@
       "label": "Number of Masters",
       "description": "Number of windows in the master area.",
       "min": 1,
-      "max": 1000
+      "max": 1000,
+      "category": "layout"
     },
     "tag_num": {
       "key": "tag_num",
@@ -1033,28 +1383,42 @@
       "label": "Number of Tags",
       "description": "Number of tags (1-31).",
       "min": 1,
-      "max": 31
+      "max": 31,
+      "category": "tag",
+      "aliases": [
+        "tag count",
+        "number of tags",
+        "tags count"
+      ]
     },
     "tag_gather": {
       "key": "tag_gather",
       "type": "bool",
       "default": false,
       "label": "Gather Tags",
-      "description": "Compact occupied tags to consecutive numbers starting at 1. The current view follows."
+      "description": "Compact occupied tags to consecutive numbers starting at 1. The current view follows.",
+      "category": "tag",
+      "aliases": [
+        "compact tags",
+        "remove gaps",
+        "tag compaction"
+      ]
     },
     "center_master_overspread": {
       "key": "center_master_overspread",
       "type": "bool",
       "default": false,
       "label": "Center Master Overspread",
-      "description": "In center_tile, let the master area fill the screen when there are no stack windows."
+      "description": "In center_tile, let the master area fill the screen when there are no stack windows.",
+      "category": "layout"
     },
     "center_when_single_stack": {
       "key": "center_when_single_stack",
       "type": "bool",
       "default": true,
       "label": "Center Master With One Stack Window",
-      "description": "Center the master when the stack has only one window."
+      "description": "Center the master when the stack has only one window.",
+      "category": "layout"
     },
     "dwindle_vertical_split": {
       "key": "dwindle_vertical_split",
@@ -1076,7 +1440,8 @@
           "label": "Above"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "layout"
     },
     "dwindle_horizontal_split": {
       "key": "dwindle_horizontal_split",
@@ -1098,42 +1463,48 @@
           "label": "Left"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "layout"
     },
     "dwindle_preserve_split": {
       "key": "dwindle_preserve_split",
       "type": "bool",
       "default": false,
       "label": "Dwindle Preserve Split",
-      "description": "Keep the sibling split geometry when a window closes."
+      "description": "Keep the sibling split geometry when a window closes.",
+      "category": "layout"
     },
     "dwindle_smart_split": {
       "key": "dwindle_smart_split",
       "type": "bool",
       "default": false,
       "label": "Dwindle Smart Split",
-      "description": "Choose the split direction from the cursor position inside the focused window."
+      "description": "Choose the split direction from the cursor position inside the focused window.",
+      "category": "layout"
     },
     "dwindle_smart_resize": {
       "key": "dwindle_smart_resize",
       "type": "bool",
       "default": false,
       "label": "Smart Resize",
-      "description": "When dragging a split, move it toward the cursor regardless of which side was grabbed."
+      "description": "When dragging a split, move it toward the cursor regardless of which side was grabbed.",
+      "category": "layout"
     },
     "dwindle_drop_simple_split": {
       "key": "dwindle_drop_simple_split",
       "type": "bool",
       "default": true,
       "label": "Dwindle Drop Simple Split",
-      "description": "Use a 2-zone drop preview that follows dwindle_split_ratio instead of four quadrants."
+      "description": "Use a 2-zone drop preview that follows dwindle_split_ratio instead of four quadrants.",
+      "category": "layout"
     },
     "dwindle_manual_split": {
       "key": "dwindle_manual_split",
       "type": "bool",
       "default": false,
       "label": "Manual Split",
-      "description": "Use the direction set by dwindle_toggle_split_direction for new splits."
+      "description": "Use the direction set by dwindle_toggle_split_direction for new splits.",
+      "category": "layout"
     },
     "dwindle_split_ratio": {
       "key": "dwindle_split_ratio",
@@ -1142,7 +1513,8 @@
       "label": "Split Ratio",
       "description": "Proportion of space for the first child when splitting.",
       "min": 0.05,
-      "max": 0.95
+      "max": 0.95,
+      "category": "layout"
     },
     "hotarea_size": {
       "key": "hotarea_size",
@@ -1151,7 +1523,13 @@
       "label": "Hotarea Size",
       "description": "Size of the corner activation zone in pixels (1-1000).",
       "min": 1,
-      "max": 1000
+      "max": 1000,
+      "category": "layout",
+      "aliases": [
+        "corner size",
+        "activation zone",
+        "hot corner size"
+      ]
     },
     "hotarea_corner": {
       "key": "hotarea_corner",
@@ -1177,21 +1555,34 @@
           "label": "Bottom Right"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "layout",
+      "aliases": [
+        "corner",
+        "hot corner position",
+        "activation corner"
+      ]
     },
     "enable_hotarea": {
       "key": "enable_hotarea",
       "type": "bool",
       "default": false,
       "label": "Enable Hotarea",
-      "description": "Activate overview by moving the cursor to a screen corner."
+      "description": "Activate overview by moving the cursor to a screen corner.",
+      "category": "layout",
+      "aliases": [
+        "hot corner",
+        "corner action",
+        "overview hot corner"
+      ]
     },
     "hotarea_disable_on_fullscreen": {
       "key": "hotarea_disable_on_fullscreen",
       "type": "bool",
       "default": true,
       "label": "Hotarea Disable On Fullscreen",
-      "description": "Do not trigger the hot area while a fullscreen window is focused."
+      "description": "Do not trigger the hot area while a fullscreen window is focused.",
+      "category": "layout"
     },
     "overview_gap_inner": {
       "key": "overview_gap_inner",
@@ -1200,7 +1591,13 @@
       "label": "Overview Inner Gap",
       "description": "Gap between overview cards (0-1000).",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "layout",
+      "aliases": [
+        "overview inner gap",
+        "grid gap",
+        "overview spacing"
+      ]
     },
     "overview_gap_outer": {
       "key": "overview_gap_outer",
@@ -1209,7 +1606,13 @@
       "label": "Overview Outer Gap",
       "description": "Gap around the overview layout (0-1000).",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "layout",
+      "aliases": [
+        "overview outer gap",
+        "grid margin",
+        "overview margin"
+      ]
     },
     "overcircle_center_ratio": {
       "key": "overcircle_center_ratio",
@@ -1218,14 +1621,22 @@
       "label": "Overcircle Center Ratio",
       "description": "Focused window width as a fraction of usable screen width (0.1-0.9).",
       "min": 0.1,
-      "max": 0.9
+      "max": 0.9,
+      "category": "layout"
     },
     "jump_labels": {
       "key": "jump_labels",
       "type": "string",
       "default": "HJKLASDFGQWERTYUIOPZXCVBNM",
       "label": "Jump Label Characters",
-      "description": "Characters used to label windows in jump label mode, in order."
+      "description": "Characters used to label windows in jump label mode, in order.",
+      "category": "appearance",
+      "aliases": [
+        "character set",
+        "letters",
+        "hint keys",
+        "selection keys"
+      ]
     },
     "cursor_hide_timeout": {
       "key": "cursor_hide_timeout",
@@ -1234,14 +1645,26 @@
       "label": "Cursor Hide Timeout",
       "description": "Seconds of inactivity before auto-hiding the cursor (0 = never).",
       "min": 0,
-      "max": 36000
+      "max": 36000,
+      "category": "behaviour",
+      "aliases": [
+        "hide cursor",
+        "cursor auto-hide",
+        "cursor timeout"
+      ]
     },
     "cursor_hide_on_keypress": {
       "key": "cursor_hide_on_keypress",
       "type": "bool",
       "default": false,
       "label": "Hide Cursor on Keypress",
-      "description": "Auto-hide the cursor whenever any keyboard key is pressed."
+      "description": "Auto-hide the cursor whenever any keyboard key is pressed.",
+      "category": "behaviour",
+      "aliases": [
+        "keypress hide",
+        "hide on keypress",
+        "typing hide"
+      ]
     },
     "axis_bind_apply_timeout": {
       "key": "axis_bind_apply_timeout",
@@ -1250,49 +1673,81 @@
       "label": "Axis Bind Apply Timeout",
       "description": "Minimum milliseconds between axis binding calls (0-1000). Closer scroll events are ignored.",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "input",
+      "aliases": [
+        "scroll bind",
+        "axis bind",
+        "scroll timeout"
+      ]
     },
     "focus_on_activate": {
       "key": "focus_on_activate",
       "type": "bool",
       "default": true,
       "label": "Focus on Activate",
-      "description": "Focus windows immediately when they request activation."
+      "description": "Focus windows immediately when they request activation.",
+      "category": "behaviour",
+      "aliases": [
+        "urgency focus",
+        "activate",
+        "demand attention"
+      ]
     },
     "numlock_on": {
       "key": "numlock_on",
       "type": "bool",
       "default": false,
       "label": "NumLock on Startup",
-      "description": "Turn on NumLock at startup."
+      "description": "Turn on NumLock at startup.",
+      "category": "input"
     },
     "idle_inhibit_ignore_visible": {
       "key": "idle_inhibit_ignore_visible",
       "type": "bool",
       "default": false,
       "label": "Allow Hidden Clients to Inhibit Idle",
-      "description": "Let clients that are not visible inhibit idle."
+      "description": "Let clients that are not visible inhibit idle.",
+      "category": "behaviour",
+      "aliases": [
+        "inhibit",
+        "idle",
+        "dpms",
+        "screen blank",
+        "power save"
+      ]
     },
     "idle_inhibit_when_fullscreen": {
       "key": "idle_inhibit_when_fullscreen",
       "type": "bool",
       "default": false,
       "label": "Inhibit Idle When Fullscreen",
-      "description": "Keep idle inhibited while a fullscreen window is focused."
+      "description": "Keep idle inhibited while a fullscreen window is focused.",
+      "category": "behaviour"
     },
     "sloppy_focus": {
       "key": "sloppy_focus",
       "type": "bool",
       "default": true,
       "label": "Sloppy Focus",
-      "description": "Focus follows the mouse pointer."
+      "description": "Focus follows the mouse pointer.",
+      "category": "behaviour",
+      "aliases": [
+        "focus follows mouse",
+        "mouse focus"
+      ]
     },
     "warp_cursor": {
       "key": "warp_cursor",
       "type": "bool",
       "default": true,
       "label": "Warp Cursor",
-      "description": "Warp the pointer to the center of the focused window when focus changes by keybinding."
+      "description": "Warp the pointer to the center of the focused window when focus changes by keybinding.",
+      "category": "behaviour",
+      "aliases": [
+        "cursor warp",
+        "jump cursor"
+      ]
     },
     "drag_corner": {
       "key": "drag_corner",
@@ -1301,21 +1756,33 @@
       "label": "Resize Corner",
       "description": "Floating window resize corner: 0 top-left, 1 top-right, 2 bottom-left, 3 bottom-right, 4 nearest.",
       "min": 0,
-      "max": 4
+      "max": 4,
+      "category": "behaviour",
+      "aliases": [
+        "resize handle",
+        "drag edge",
+        "corner resize"
+      ]
     },
     "drag_warp_cursor": {
       "key": "drag_warp_cursor",
       "type": "bool",
       "default": true,
       "label": "Warp Cursor on Drag Resize",
-      "description": "Warp the pointer to the chosen corner when a resize starts from the window body."
+      "description": "Warp the pointer to the chosen corner when a resize starts from the window body.",
+      "category": "behaviour",
+      "aliases": [
+        "cursor warp resize",
+        "drag warp"
+      ]
     },
     "enable_border_resize": {
       "key": "enable_border_resize",
       "type": "bool",
       "default": true,
       "label": "Enable Border Resize",
-      "description": "Drag a window border with the left mouse button to resize. Tiled windows show only shared edges."
+      "description": "Drag a window border with the left mouse button to resize. Tiled windows show only shared edges.",
+      "category": "window"
     },
     "border_resize_size": {
       "key": "border_resize_size",
@@ -1324,35 +1791,40 @@
       "label": "Border Resize Hitbox",
       "description": "Thickness in pixels of the resize grab strip. 0 uses the border width.",
       "min": 0,
-      "max": 50
+      "max": 50,
+      "category": "window"
     },
     "smart_gaps": {
       "key": "smart_gaps",
       "type": "bool",
       "default": false,
       "label": "Smart Gaps",
-      "description": "Disable gaps when only one tiling window is visible."
+      "description": "Disable gaps when only one tiling window is visible.",
+      "category": "appearance"
     },
     "monocle_tab_mode": {
       "key": "monocle_tab_mode",
       "type": "bool",
       "default": true,
       "label": "Monocle Tab Mode",
-      "description": "Merge stacked windows into tabs in monocle layout."
+      "description": "Merge stacked windows into tabs in monocle layout.",
+      "category": "layout"
     },
     "monocle_right_button_close": {
       "key": "monocle_right_button_close",
       "type": "bool",
       "default": false,
       "label": "Right Click to Close",
-      "description": "Right click on the tab bar closes that window."
+      "description": "Right click on the tab bar closes that window.",
+      "category": "layout"
     },
     "deck_tab_mode": {
       "key": "deck_tab_mode",
       "type": "bool",
       "default": true,
       "label": "Deck Tab Mode",
-      "description": "Merge the deck layout's stack windows into a tab."
+      "description": "Merge the deck layout's stack windows into a tab.",
+      "category": "layout"
     },
     "repeat_rate": {
       "key": "repeat_rate",
@@ -1361,7 +1833,8 @@
       "label": "Repeat Rate",
       "description": "Keyboard repeat rate in key presses per second.",
       "min": 1,
-      "max": 1000
+      "max": 1000,
+      "category": "input"
     },
     "repeat_delay": {
       "key": "repeat_delay",
@@ -1370,63 +1843,81 @@
       "label": "Repeat Delay",
       "description": "Delay before key repeat starts, in milliseconds.",
       "min": 1,
-      "max": 20000
+      "max": 20000,
+      "category": "input"
     },
     "disable_trackpad": {
       "key": "disable_trackpad",
       "type": "bool",
       "default": false,
       "label": "Disable Trackpad",
-      "description": "Disable all trackpad devices."
+      "description": "Disable all trackpad devices.",
+      "category": "input"
     },
     "touch_enable": {
       "key": "touch_enable",
       "type": "bool",
       "default": true,
       "label": "Enable Touch",
-      "description": "Turn on touchscreen input."
+      "description": "Turn on touchscreen input.",
+      "category": "input",
+      "aliases": [
+        "touchscreen",
+        "enable touch"
+      ]
     },
     "touch_enable_mouse_emulation": {
       "key": "touch_enable_mouse_emulation",
       "type": "bool",
       "default": false,
       "label": "Touch Mouse Emulation",
-      "description": "Emulate left-button clicks and drags on surfaces that do not accept touch."
+      "description": "Emulate left-button clicks and drags on surfaces that do not accept touch.",
+      "category": "input",
+      "aliases": [
+        "touch mouse",
+        "emulate mouse",
+        "touch clicks"
+      ]
     },
     "tap_to_click": {
       "key": "tap_to_click",
       "type": "bool",
       "default": true,
       "label": "Tap to Click",
-      "description": "Tap the trackpad to click."
+      "description": "Tap the trackpad to click.",
+      "category": "input"
     },
     "tap_and_drag": {
       "key": "tap_and_drag",
       "type": "bool",
       "default": true,
       "label": "Tap and Drag",
-      "description": "Tap and hold to drag items."
+      "description": "Tap and hold to drag items.",
+      "category": "input"
     },
     "drag_lock": {
       "key": "drag_lock",
       "type": "bool",
       "default": true,
       "label": "Drag Lock",
-      "description": "Keep dragging after lifting the finger."
+      "description": "Keep dragging after lifting the finger.",
+      "category": "input"
     },
     "mouse_natural_scrolling": {
       "key": "mouse_natural_scrolling",
       "type": "bool",
       "default": false,
       "label": "Mouse Natural Scrolling",
-      "description": "Invert mouse scroll direction."
+      "description": "Invert mouse scroll direction.",
+      "category": "input"
     },
     "trackpad_natural_scrolling": {
       "key": "trackpad_natural_scrolling",
       "type": "bool",
       "default": false,
       "label": "Trackpad Natural Scrolling",
-      "description": "Invert trackpad scroll direction."
+      "description": "Invert trackpad scroll direction.",
+      "category": "input"
     },
     "cursor_size": {
       "key": "cursor_size",
@@ -1435,7 +1926,13 @@
       "label": "Cursor Size",
       "description": "XCursor size in pixels.",
       "min": 4,
-      "max": 512
+      "max": 512,
+      "category": "appearance",
+      "aliases": [
+        "pointer",
+        "scale",
+        "dimensions"
+      ]
     },
     "cursor_theme": {
       "key": "cursor_theme",
@@ -1445,6 +1942,12 @@
       "description": "XCursor theme name. Empty uses the system XCursor theme.",
       "examples": [
         "Adwaita"
+      ],
+      "category": "appearance",
+      "aliases": [
+        "pointer",
+        "icon",
+        "style"
       ]
     },
     "group_bar_decorate_font_desc": {
@@ -1452,42 +1955,74 @@
       "type": "string",
       "default": "monospace Bold 13",
       "label": "Group Bar Font",
-      "description": "Pango font description for the group bar."
+      "description": "Pango font description for the group bar.",
+      "category": "appearance",
+      "aliases": [
+        "typeface",
+        "text",
+        "family"
+      ]
     },
     "group_bar_decorate_fg_color": {
       "key": "group_bar_decorate_fg_color",
       "type": "color",
       "default": "0xc0caf5ff",
       "label": "Group Bar Text Color",
-      "description": "Text color of the group bar."
+      "description": "Text color of the group bar.",
+      "category": "appearance",
+      "aliases": [
+        "foreground",
+        "text color",
+        "front"
+      ]
     },
     "group_bar_decorate_bg_color": {
       "key": "group_bar_decorate_bg_color",
       "type": "color",
       "default": "0x1d2021ff",
       "label": "Group Bar Background",
-      "description": "Background color of the group bar."
+      "description": "Background color of the group bar.",
+      "category": "appearance",
+      "aliases": [
+        "back",
+        "behind"
+      ]
     },
     "group_bar_decorate_focus_fg_color": {
       "key": "group_bar_decorate_focus_fg_color",
       "type": "color",
       "default": "0x9ece6aff",
       "label": "Group Bar Focus Text Color",
-      "description": "Text color of the focused group bar entry."
+      "description": "Text color of the focused group bar entry.",
+      "category": "appearance",
+      "aliases": [
+        "focus foreground",
+        "active text"
+      ]
     },
     "group_bar_decorate_focus_bg_color": {
       "key": "group_bar_decorate_focus_bg_color",
       "type": "color",
       "default": "0x3c3836ff",
       "label": "Group Bar Focus Background",
-      "description": "Background color of the focused group bar entry."
+      "description": "Background color of the focused group bar entry.",
+      "category": "appearance",
+      "aliases": [
+        "focus back",
+        "active background"
+      ]
     },
     "group_bar_decorate_border_color": {
       "key": "group_bar_decorate_border_color",
       "type": "color",
       "default": "0x3b4261ff",
       "label": "Group Bar Border Color",
-      "description": "Border color of the group bar."
+      "description": "Border color of the group bar.",
+      "category": "appearance",
+      "aliases": [
+        "stroke",
+        "edge"
+      ]
     },
     "group_bar_decorate_border_width": {
       "key": "group_bar_decorate_border_width",
@@ -1496,7 +2031,12 @@
       "label": "Group Bar Border Width",
       "description": "Border width of the group bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "stroke width",
+        "thickness"
+      ]
     },
     "group_bar_decorate_corner_radius": {
       "key": "group_bar_decorate_corner_radius",
@@ -1505,7 +2045,13 @@
       "label": "Group Bar Corner Radius",
       "description": "Corner radius of the group bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "rounding",
+        "rounded",
+        "curves"
+      ]
     },
     "group_bar_decorate_padding_x": {
       "key": "group_bar_decorate_padding_x",
@@ -1514,7 +2060,14 @@
       "label": "Group Bar Horizontal Padding",
       "description": "Horizontal padding inside the group bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "spacing",
+        "inner",
+        "left",
+        "right"
+      ]
     },
     "group_bar_decorate_padding_y": {
       "key": "group_bar_decorate_padding_y",
@@ -1523,49 +2076,62 @@
       "label": "Group Bar Vertical Padding",
       "description": "Vertical padding inside the group bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "spacing",
+        "inner",
+        "top",
+        "bottom"
+      ]
     },
     "title_message_bar_decorate_font_desc": {
       "key": "title_message_bar_decorate_font_desc",
       "type": "string",
       "default": "monospace Bold 13",
       "label": "Title Bar Font",
-      "description": "Pango font description for the title message bar."
+      "description": "Pango font description for the title message bar.",
+      "category": "appearance"
     },
     "title_message_bar_decorate_fg_color": {
       "key": "title_message_bar_decorate_fg_color",
       "type": "color",
       "default": "0xc0caf5ff",
       "label": "Title Bar Text Color",
-      "description": "Text color of the title message bar."
+      "description": "Text color of the title message bar.",
+      "category": "appearance"
     },
     "title_message_bar_decorate_bg_color": {
       "key": "title_message_bar_decorate_bg_color",
       "type": "color",
       "default": "0x1d2021ff",
       "label": "Title Bar Background",
-      "description": "Background color of the title message bar."
+      "description": "Background color of the title message bar.",
+      "category": "appearance"
     },
     "title_message_bar_decorate_focus_fg_color": {
       "key": "title_message_bar_decorate_focus_fg_color",
       "type": "color",
       "default": "0x9ece6aff",
       "label": "Title Bar Focus Text Color",
-      "description": "Text color of the focused title message bar entry."
+      "description": "Text color of the focused title message bar entry.",
+      "category": "appearance"
     },
     "title_message_bar_decorate_focus_bg_color": {
       "key": "title_message_bar_decorate_focus_bg_color",
       "type": "color",
       "default": "0x3c3836ff",
       "label": "Title Bar Focus Background",
-      "description": "Background color of the focused title message bar entry."
+      "description": "Background color of the focused title message bar entry.",
+      "category": "appearance"
     },
     "title_message_bar_decorate_border_color": {
       "key": "title_message_bar_decorate_border_color",
       "type": "color",
       "default": "0x3b4261ff",
       "label": "Title Bar Border Color",
-      "description": "Border color of the title message bar."
+      "description": "Border color of the title message bar.",
+      "category": "appearance"
     },
     "title_message_bar_decorate_border_width": {
       "key": "title_message_bar_decorate_border_width",
@@ -1574,7 +2140,8 @@
       "label": "Title Bar Border Width",
       "description": "Border width of the title message bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance"
     },
     "title_message_bar_decorate_corner_radius": {
       "key": "title_message_bar_decorate_corner_radius",
@@ -1583,7 +2150,8 @@
       "label": "Title Bar Corner Radius",
       "description": "Corner radius of the title message bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance"
     },
     "title_message_bar_decorate_padding_x": {
       "key": "title_message_bar_decorate_padding_x",
@@ -1592,7 +2160,8 @@
       "label": "Title Bar Horizontal Padding",
       "description": "Horizontal padding inside the title message bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance"
     },
     "title_message_bar_decorate_padding_y": {
       "key": "title_message_bar_decorate_padding_y",
@@ -1601,49 +2170,56 @@
       "label": "Title Bar Vertical Padding",
       "description": "Vertical padding inside the title message bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance"
     },
     "tab_bar_decorate_font_desc": {
       "key": "tab_bar_decorate_font_desc",
       "type": "string",
       "default": "monospace Bold 13",
       "label": "Tab Bar Font",
-      "description": "Pango font description for the tab bar."
+      "description": "Pango font description for the tab bar.",
+      "category": "appearance"
     },
     "tab_bar_decorate_fg_color": {
       "key": "tab_bar_decorate_fg_color",
       "type": "color",
       "default": "0xc0caf5ff",
       "label": "Tab Bar Text Color",
-      "description": "Text color of the tab bar."
+      "description": "Text color of the tab bar.",
+      "category": "appearance"
     },
     "tab_bar_decorate_bg_color": {
       "key": "tab_bar_decorate_bg_color",
       "type": "color",
       "default": "0x1d2021ff",
       "label": "Tab Bar Background",
-      "description": "Background color of the tab bar."
+      "description": "Background color of the tab bar.",
+      "category": "appearance"
     },
     "tab_bar_decorate_focus_fg_color": {
       "key": "tab_bar_decorate_focus_fg_color",
       "type": "color",
       "default": "0x7aa2f7ff",
       "label": "Tab Bar Focus Text Color",
-      "description": "Text color of the focused tab bar entry."
+      "description": "Text color of the focused tab bar entry.",
+      "category": "appearance"
     },
     "tab_bar_decorate_focus_bg_color": {
       "key": "tab_bar_decorate_focus_bg_color",
       "type": "color",
       "default": "0x3c3836ff",
       "label": "Tab Bar Focus Background",
-      "description": "Background color of the focused tab bar entry."
+      "description": "Background color of the focused tab bar entry.",
+      "category": "appearance"
     },
     "tab_bar_decorate_border_color": {
       "key": "tab_bar_decorate_border_color",
       "type": "color",
       "default": "0x3b4261ff",
       "label": "Tab Bar Border Color",
-      "description": "Border color of the tab bar."
+      "description": "Border color of the tab bar.",
+      "category": "appearance"
     },
     "tab_bar_decorate_border_width": {
       "key": "tab_bar_decorate_border_width",
@@ -1652,7 +2228,8 @@
       "label": "Tab Bar Border Width",
       "description": "Border width of the tab bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance"
     },
     "tab_bar_decorate_corner_radius": {
       "key": "tab_bar_decorate_corner_radius",
@@ -1661,7 +2238,8 @@
       "label": "Tab Bar Corner Radius",
       "description": "Corner radius of the tab bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance"
     },
     "tab_bar_decorate_padding_x": {
       "key": "tab_bar_decorate_padding_x",
@@ -1670,7 +2248,8 @@
       "label": "Tab Bar Horizontal Padding",
       "description": "Horizontal padding inside the tab bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance"
     },
     "tab_bar_decorate_padding_y": {
       "key": "tab_bar_decorate_padding_y",
@@ -1679,49 +2258,82 @@
       "label": "Tab Bar Vertical Padding",
       "description": "Vertical padding inside the tab bar in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance"
     },
     "jump_label_decorate_font_desc": {
       "key": "jump_label_decorate_font_desc",
       "type": "string",
       "default": "monospace Bold 16",
       "label": "Jump Label Font",
-      "description": "Pango font description for the jump label."
+      "description": "Pango font description for the jump label.",
+      "category": "appearance",
+      "aliases": [
+        "typeface",
+        "text",
+        "family"
+      ]
     },
     "jump_label_decorate_fg_color": {
       "key": "jump_label_decorate_fg_color",
       "type": "color",
       "default": "0xc4939dff",
       "label": "Jump Label Text Color",
-      "description": "Text color of the jump label."
+      "description": "Text color of the jump label.",
+      "category": "appearance",
+      "aliases": [
+        "foreground",
+        "text color",
+        "front"
+      ]
     },
     "jump_label_decorate_bg_color": {
       "key": "jump_label_decorate_bg_color",
       "type": "color",
       "default": "0x323232ff",
       "label": "Jump Label Background",
-      "description": "Background color of the jump label."
+      "description": "Background color of the jump label.",
+      "category": "appearance",
+      "aliases": [
+        "back",
+        "behind"
+      ]
     },
     "jump_label_decorate_focus_fg_color": {
       "key": "jump_label_decorate_focus_fg_color",
       "type": "color",
       "default": "0xeda6b4ff",
       "label": "Jump Label Focus Text Color",
-      "description": "Text color of the focused jump label entry."
+      "description": "Text color of the focused jump label entry.",
+      "category": "appearance",
+      "aliases": [
+        "focus foreground",
+        "active text"
+      ]
     },
     "jump_label_decorate_focus_bg_color": {
       "key": "jump_label_decorate_focus_bg_color",
       "type": "color",
       "default": "0x4e453cff",
       "label": "Jump Label Focus Background",
-      "description": "Background color of the focused jump label entry."
+      "description": "Background color of the focused jump label entry.",
+      "category": "appearance",
+      "aliases": [
+        "focus back",
+        "active background"
+      ]
     },
     "jump_label_decorate_border_color": {
       "key": "jump_label_decorate_border_color",
       "type": "color",
       "default": "0x8baa9bff",
       "label": "Jump Label Border Color",
-      "description": "Border color of the jump label."
+      "description": "Border color of the jump label.",
+      "category": "appearance",
+      "aliases": [
+        "stroke",
+        "edge"
+      ]
     },
     "jump_label_decorate_border_width": {
       "key": "jump_label_decorate_border_width",
@@ -1730,7 +2342,12 @@
       "label": "Jump Label Border Width",
       "description": "Border width of the jump label in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "stroke width",
+        "thickness"
+      ]
     },
     "jump_label_decorate_corner_radius": {
       "key": "jump_label_decorate_corner_radius",
@@ -1739,7 +2356,13 @@
       "label": "Jump Label Corner Radius",
       "description": "Corner radius of the jump label in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "rounding",
+        "rounded",
+        "curves"
+      ]
     },
     "jump_label_decorate_padding_x": {
       "key": "jump_label_decorate_padding_x",
@@ -1748,7 +2371,14 @@
       "label": "Jump Label Horizontal Padding",
       "description": "Horizontal padding inside the jump label in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "spacing",
+        "inner",
+        "left",
+        "right"
+      ]
     },
     "jump_label_decorate_padding_y": {
       "key": "jump_label_decorate_padding_y",
@@ -1757,7 +2387,14 @@
       "label": "Jump Label Vertical Padding",
       "description": "Vertical padding inside the jump label in pixels.",
       "min": 0,
-      "max": 100
+      "max": 100,
+      "category": "appearance",
+      "aliases": [
+        "spacing",
+        "inner",
+        "top",
+        "bottom"
+      ]
     },
     "mouse_accel_profile": {
       "key": "mouse_accel_profile",
@@ -1779,7 +2416,8 @@
           "label": "Adaptive"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "input"
     },
     "mouse_accel_speed": {
       "key": "mouse_accel_speed",
@@ -1788,7 +2426,8 @@
       "label": "Mouse Acceleration Speed",
       "description": "Mouse acceleration speed from -1.0 to 1.0.",
       "min": -1,
-      "max": 1
+      "max": 1,
+      "category": "input"
     },
     "trackpad_accel_profile": {
       "key": "trackpad_accel_profile",
@@ -1810,7 +2449,8 @@
           "label": "Adaptive"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "input"
     },
     "trackpad_accel_speed": {
       "key": "trackpad_accel_speed",
@@ -1819,21 +2459,24 @@
       "label": "Trackpad Acceleration Speed",
       "description": "Trackpad acceleration speed from -1.0 to 1.0.",
       "min": -1,
-      "max": 1
+      "max": 1,
+      "category": "input"
     },
     "mouse_left_handed": {
       "key": "mouse_left_handed",
       "type": "bool",
       "default": false,
       "label": "Mouse Left Handed",
-      "description": "Swap left and right mouse buttons."
+      "description": "Swap left and right mouse buttons.",
+      "category": "input"
     },
     "mouse_middle_button_emulation": {
       "key": "mouse_middle_button_emulation",
       "type": "bool",
       "default": false,
       "label": "Mouse Middle Button Emulation",
-      "description": "Emit a middle click when both buttons are pressed together."
+      "description": "Emit a middle click when both buttons are pressed together.",
+      "category": "input"
     },
     "mouse_scroll_method": {
       "key": "mouse_scroll_method",
@@ -1859,7 +2502,8 @@
           "label": "Button"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "input"
     },
     "mouse_scroll_button": {
       "key": "mouse_scroll_button",
@@ -1868,7 +2512,8 @@
       "label": "Mouse Scroll Button",
       "description": "Button used for button scrolling on the mouse (272-279).",
       "min": 272,
-      "max": 279
+      "max": 279,
+      "category": "input"
     },
     "mouse_click_method": {
       "key": "mouse_click_method",
@@ -1890,7 +2535,8 @@
           "label": "Clickfinger"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "input"
     },
     "mouse_send_events_mode": {
       "key": "mouse_send_events_mode",
@@ -1912,28 +2558,32 @@
           "label": "Disabled with external pointer"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "input"
     },
     "trackpad_left_handed": {
       "key": "trackpad_left_handed",
       "type": "bool",
       "default": false,
       "label": "Trackpad Left Handed",
-      "description": "Swap left and right trackpad buttons."
+      "description": "Swap left and right trackpad buttons.",
+      "category": "input"
     },
     "trackpad_middle_button_emulation": {
       "key": "trackpad_middle_button_emulation",
       "type": "bool",
       "default": false,
       "label": "Trackpad Middle Button Emulation",
-      "description": "Emit a middle click when both buttons are pressed together."
+      "description": "Emit a middle click when both buttons are pressed together.",
+      "category": "input"
     },
     "trackpad_disable_while_typing": {
       "key": "trackpad_disable_while_typing",
       "type": "bool",
       "default": true,
       "label": "Disable While Typing",
-      "description": "Temporarily disable the trackpad while typing."
+      "description": "Temporarily disable the trackpad while typing.",
+      "category": "input"
     },
     "trackpad_scroll_method": {
       "key": "trackpad_scroll_method",
@@ -1959,7 +2609,8 @@
           "label": "Button"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "input"
     },
     "trackpad_scroll_button": {
       "key": "trackpad_scroll_button",
@@ -1968,7 +2619,8 @@
       "label": "Trackpad Scroll Button",
       "description": "Button used for button scrolling on the trackpad (272-279).",
       "min": 272,
-      "max": 279
+      "max": 279,
+      "category": "input"
     },
     "trackpad_click_method": {
       "key": "trackpad_click_method",
@@ -1990,7 +2642,8 @@
           "label": "Clickfinger"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "input"
     },
     "trackpad_send_events_mode": {
       "key": "trackpad_send_events_mode",
@@ -2012,7 +2665,8 @@
           "label": "Disabled with external pointer"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "input"
     },
     "send_events_mode": {
       "key": "send_events_mode",
@@ -2034,7 +2688,8 @@
           "label": "Disabled with external pointer"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "input"
     },
     "button_map": {
       "key": "button_map",
@@ -2052,7 +2707,8 @@
           "label": "Left / middle / right"
         }
       ],
-      "numeric": true
+      "numeric": true,
+      "category": "input"
     },
     "axis_scroll_factor": {
       "key": "axis_scroll_factor",
@@ -2061,7 +2717,8 @@
       "label": "Axis Scroll Factor",
       "description": "Multiplier for axis (wheel) scroll speed (0.1-10.0).",
       "min": 0.1,
-      "max": 10
+      "max": 10,
+      "category": "input"
     },
     "trackpad_scroll_factor": {
       "key": "trackpad_scroll_factor",
@@ -2070,7 +2727,8 @@
       "label": "Trackpad Scroll Factor",
       "description": "Multiplier for trackpad scroll speed (0.1-10.0).",
       "min": 0.1,
-      "max": 10
+      "max": 10,
+      "category": "input"
     },
     "gap_inner_horizontal": {
       "key": "gap_inner_horizontal",
@@ -2082,7 +2740,8 @@
       "max": 1000,
       "examples": [
         5
-      ]
+      ],
+      "category": "appearance"
     },
     "gap_inner_vertical": {
       "key": "gap_inner_vertical",
@@ -2091,7 +2750,8 @@
       "label": "Inner Gap Vertical",
       "description": "Vertical gap between tiled windows.",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "appearance"
     },
     "gap_outer_horizontal": {
       "key": "gap_outer_horizontal",
@@ -2100,7 +2760,8 @@
       "label": "Outer Gap Horizontal",
       "description": "Horizontal gap between windows and screen edges.",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "appearance"
     },
     "gap_outer_vertical": {
       "key": "gap_outer_vertical",
@@ -2109,7 +2770,8 @@
       "label": "Outer Gap Vertical",
       "description": "Vertical gap between windows and screen edges.",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "appearance"
     },
     "scratchpad_width_ratio": {
       "key": "scratchpad_width_ratio",
@@ -2118,7 +2780,12 @@
       "label": "Scratchpad Width Ratio",
       "description": "Scratchpad width as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
       "min": 0.1,
-      "max": 1
+      "max": 1,
+      "category": "scratchpad",
+      "aliases": [
+        "scratchpad width",
+        "scratchpad size"
+      ]
     },
     "scratchpad_height_ratio": {
       "key": "scratchpad_height_ratio",
@@ -2127,7 +2794,12 @@
       "label": "Scratchpad Height Ratio",
       "description": "Scratchpad height as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
       "min": 0.1,
-      "max": 1
+      "max": 1,
+      "category": "scratchpad",
+      "aliases": [
+        "scratchpad height",
+        "scratchpad size"
+      ]
     },
     "special_dim": {
       "key": "special_dim",
@@ -2136,7 +2808,8 @@
       "label": "Special Tag Dim",
       "description": "Background dim level while the special tag is active.",
       "min": 0,
-      "max": 1
+      "max": 1,
+      "category": "tag"
     },
     "special_gap_inner_horizontal": {
       "key": "special_gap_inner_horizontal",
@@ -2145,7 +2818,8 @@
       "label": "Special Inner Gap Horizontal",
       "description": "Horizontal inner gap for windows on the special tag.",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "tag"
     },
     "special_gap_inner_vertical": {
       "key": "special_gap_inner_vertical",
@@ -2154,7 +2828,8 @@
       "label": "Special Inner Gap Vertical",
       "description": "Vertical inner gap for windows on the special tag.",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "tag"
     },
     "special_gap_outer_horizontal": {
       "key": "special_gap_outer_horizontal",
@@ -2163,7 +2838,8 @@
       "label": "Special Outer Gap Horizontal",
       "description": "Horizontal outer gap for windows on the special tag.",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "tag"
     },
     "special_gap_outer_vertical": {
       "key": "special_gap_outer_vertical",
@@ -2172,7 +2848,8 @@
       "label": "Special Outer Gap Vertical",
       "description": "Vertical outer gap for windows on the special tag.",
       "min": 0,
-      "max": 1000
+      "max": 1000,
+      "category": "tag"
     },
     "border_px": {
       "key": "border_px",
@@ -2181,7 +2858,8 @@
       "label": "Border Width",
       "description": "Thickness of window borders in pixels.",
       "min": 0,
-      "max": 200
+      "max": 200,
+      "category": "appearance"
     },
     "group_bar_height": {
       "key": "group_bar_height",
@@ -2190,7 +2868,12 @@
       "label": "Group Bar Height",
       "description": "Height of the per-window group bar in pixels.",
       "min": 0,
-      "max": 500
+      "max": 500,
+      "category": "appearance",
+      "aliases": [
+        "size",
+        "thickness"
+      ]
     },
     "tab_bar_height": {
       "key": "tab_bar_height",
@@ -2199,7 +2882,8 @@
       "label": "Tab Bar Height",
       "description": "Height of the tab bar in pixels.",
       "min": 0,
-      "max": 500
+      "max": 500,
+      "category": "appearance"
     },
     "title_message_bar_height": {
       "key": "title_message_bar_height",
@@ -2208,7 +2892,8 @@
       "label": "Title Message Bar Height",
       "description": "Height of the title message bar in overcircle and the switcher. 0 hides it.",
       "min": 0,
-      "max": 500
+      "max": 500,
+      "category": "appearance"
     },
     "title_message_bar_gap": {
       "key": "title_message_bar_gap",
@@ -2217,21 +2902,24 @@
       "label": "Title Message Bar Gap",
       "description": "Gap between the title message bar and the focused overview card or switcher panel.",
       "min": 0,
-      "max": 500
+      "max": 500,
+      "category": "appearance"
     },
     "always_show_group_bar": {
       "key": "always_show_group_bar",
       "type": "bool",
       "default": false,
       "label": "Always Show Group Bar",
-      "description": "Show the group bar on every window."
+      "description": "Show the group bar on every window.",
+      "category": "appearance"
     },
     "group_bar_close_button_enable": {
       "key": "group_bar_close_button_enable",
       "type": "bool",
       "default": false,
       "label": "Group Bar Close Button",
-      "description": "Show a close button on the group bar."
+      "description": "Show a close button on the group bar.",
+      "category": "appearance"
     },
     "group_bar_button_size": {
       "key": "group_bar_button_size",
@@ -2240,7 +2928,8 @@
       "label": "Close Button Size",
       "description": "Close button size in px.",
       "min": 4,
-      "max": 64
+      "max": 64,
+      "category": "appearance"
     },
     "group_bar_button_margin": {
       "key": "group_bar_button_margin",
@@ -2249,14 +2938,16 @@
       "label": "Close Button Margin",
       "description": "Close button inset from the right edge in px.",
       "min": 0,
-      "max": 50
+      "max": 50,
+      "category": "appearance"
     },
     "group_bar_button_color": {
       "key": "group_bar_button_color",
       "type": "color",
       "default": "0xad401fff",
       "label": "Close Button Color",
-      "description": "Close button color."
+      "description": "Close button color.",
+      "category": "appearance"
     },
     "root_color": {
       "key": "root_color",
@@ -2266,98 +2957,112 @@
       "description": "Desktop background behind all windows.",
       "examples": [
         "0x323232ff"
-      ]
+      ],
+      "category": "appearance"
     },
     "shadows_color": {
       "key": "shadows_color",
       "type": "color",
       "default": "0x000000ff",
       "label": "Shadow Color",
-      "description": "Drop shadow color for windows."
+      "description": "Drop shadow color for windows.",
+      "category": "appearance"
     },
     "dim_enable": {
       "key": "dim_enable",
       "type": "bool",
       "default": false,
       "label": "Dim Enable",
-      "description": "Enable the dim overlay on windows."
+      "description": "Enable the dim overlay on windows.",
+      "category": "appearance"
     },
     "dim_focused_color": {
       "key": "dim_focused_color",
       "type": "color",
       "default": "0x00000000",
       "label": "Dim Focused Color",
-      "description": "Dim color of the focused window."
+      "description": "Dim color of the focused window.",
+      "category": "appearance"
     },
     "dim_unfocused_color": {
       "key": "dim_unfocused_color",
       "type": "color",
       "default": "0x00000055",
       "label": "Dim Unfocused Color",
-      "description": "Dim color for unfocused windows."
+      "description": "Dim color for unfocused windows.",
+      "category": "appearance"
     },
     "border_color": {
       "key": "border_color",
       "type": "color",
       "default": "0x444444ff",
       "label": "Inactive Border Color",
-      "description": "Border color for unfocused windows."
+      "description": "Border color for unfocused windows.",
+      "category": "appearance"
     },
     "drop_color": {
       "key": "drop_color",
       "type": "color",
       "default": "0xd5899d80",
       "label": "Drop Target Color",
-      "description": "Color of the drop target rectangle shown while dragging a tiled window."
+      "description": "Color of the drop target rectangle shown while dragging a tiled window.",
+      "category": "appearance"
     },
     "split_color": {
       "key": "split_color",
       "type": "color",
       "default": "0xeb441eff",
       "label": "Split Indicator",
-      "description": "Color of the dwindle manual split guide line."
+      "description": "Color of the dwindle manual split guide line.",
+      "category": "appearance"
     },
     "focus_color": {
       "key": "focus_color",
       "type": "color",
       "default": "0xc66b25ff",
       "label": "Active Border Color",
-      "description": "Border color of the focused window on the selected monitor."
+      "description": "Border color of the focused window on the selected monitor.",
+      "category": "appearance"
     },
     "maximized_screen_color": {
       "key": "maximized_screen_color",
       "type": "color",
       "default": "0x89aa61ff",
       "label": "Maximized Border",
-      "description": "Border color for a focused maximized window."
+      "description": "Border color for a focused maximized window.",
+      "category": "appearance"
     },
     "urgent_color": {
       "key": "urgent_color",
       "type": "color",
       "default": "0xad401fff",
       "label": "Urgent Border Color",
-      "description": "Border color for urgent windows."
+      "description": "Border color for urgent windows.",
+      "category": "appearance"
     },
     "scratchpad_color": {
       "key": "scratchpad_color",
       "type": "color",
       "default": "0x516c93ff",
       "label": "Scratchpad Border Color",
-      "description": "Border color for a focused scratchpad window."
+      "description": "Border color for a focused scratchpad window.",
+      "category": "appearance"
     },
     "global_color": {
       "key": "global_color",
       "type": "color",
       "default": "0xb153a7ff",
       "label": "Global Border Color",
-      "description": "Border color for a focused global window."
+      "description": "Border color for a focused global window.",
+      "category": "appearance"
     },
     "overlay_color": {
       "key": "overlay_color",
       "type": "color",
       "default": "0x14a57cff",
       "label": "Overlay Color",
-      "description": "Border color for overlay windows."
+      "description": "Border color for overlay windows.",
+      "category": "appearance"
     }
   },
   "rules": {
@@ -2560,7 +3265,132 @@
           "x": 0,
           "y": 0
         }
-      ]
+      ],
+      "category": "rules",
+      "matchers": [
+        "name",
+        "make",
+        "model",
+        "serial"
+      ],
+      "fieldMeta": {
+        "rr": {
+          "category": "monitor"
+        },
+        "scale": {
+          "category": "monitor",
+          "step": 0.25,
+          "unit": "×"
+        },
+        "x": {
+          "category": "monitor",
+          "unit": "px"
+        },
+        "y": {
+          "category": "monitor",
+          "unit": "px"
+        },
+        "width": {
+          "category": "monitor",
+          "unit": "px"
+        },
+        "height": {
+          "category": "monitor",
+          "unit": "px"
+        },
+        "refresh": {
+          "category": "monitor",
+          "step": 0.5,
+          "unit": "Hz"
+        },
+        "vrr": {
+          "category": "monitor",
+          "aliases": [
+            "freesync",
+            "gsync",
+            "adaptive sync"
+          ]
+        },
+        "hdr": {
+          "category": "monitor",
+          "aliases": [
+            "high dynamic range",
+            "hdr mode"
+          ]
+        },
+        "hdr_min_lum": {
+          "category": "monitor",
+          "step": 50,
+          "unit": "cd/m²",
+          "aliases": [
+            "hdr min luminance",
+            "hdr minimum brightness",
+            "mastering black"
+          ]
+        },
+        "hdr_max_lum": {
+          "category": "monitor",
+          "step": 100,
+          "unit": "cd/m²",
+          "aliases": [
+            "hdr max luminance",
+            "hdr maximum brightness",
+            "max cll",
+            "peak brightness"
+          ]
+        },
+        "hdr_max_avg_lum": {
+          "category": "monitor",
+          "step": 100,
+          "unit": "cd/m²",
+          "aliases": [
+            "hdr average luminance",
+            "max fll",
+            "frame average brightness"
+          ]
+        },
+        "hdr_force": {
+          "category": "monitor",
+          "aliases": [
+            "force hdr",
+            "bypass edid hdr"
+          ]
+        },
+        "icc": {
+          "category": "monitor"
+        },
+        "disable": {
+          "category": "monitor",
+          "aliases": [
+            "off",
+            "disabled"
+          ]
+        },
+        "primary": {
+          "category": "monitor"
+        },
+        "custom": {
+          "category": "monitor"
+        }
+      },
+      "matcherMeta": {
+        "name": {
+          "label": "Monitor Name",
+          "placeholder": "e.g. DP-1, eDP-1"
+        },
+        "make": {
+          "label": "Monitor Make",
+          "placeholder": "e.g. Dell Inc."
+        },
+        "model": {
+          "label": "Monitor Model",
+          "placeholder": "e.g. DELL U2723QE"
+        },
+        "serial": {
+          "label": "Monitor Serial",
+          "placeholder": "e.g. ABC123"
+        }
+      }
     },
     "tag_rule": {
       "key": "tag_rule",
@@ -2735,7 +3565,259 @@
           "id": 1,
           "layout_name": "tile"
         }
-      ]
+      ],
+      "category": "rules",
+      "matchers": [
+        "id",
+        "layout_name",
+        "monitor_name",
+        "monitor_make",
+        "monitor_model",
+        "monitor_serial"
+      ],
+      "fieldMeta": {
+        "no_render_border": {
+          "category": "tag"
+        },
+        "open_as_floating": {
+          "category": "tag"
+        },
+        "no_hide": {
+          "category": "tag"
+        },
+        "master_count": {
+          "category": "tag"
+        },
+        "master_factor": {
+          "category": "tag",
+          "step": 0.05
+        },
+        "scroller_default_proportion": {
+          "category": "tag",
+          "step": 0.05
+        },
+        "scroller_default_proportion_single": {
+          "category": "tag",
+          "step": 0.05
+        },
+        "scroller_ignore_proportion_single": {
+          "category": "tag"
+        }
+      },
+      "matcherMeta": {
+        "id": {
+          "label": "Tag ID",
+          "placeholder": "Tag 1-31 (or * for all)",
+          "options": [
+            {
+              "value": "1",
+              "label": "1"
+            },
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "3",
+              "label": "3"
+            },
+            {
+              "value": "4",
+              "label": "4"
+            },
+            {
+              "value": "5",
+              "label": "5"
+            },
+            {
+              "value": "6",
+              "label": "6"
+            },
+            {
+              "value": "7",
+              "label": "7"
+            },
+            {
+              "value": "8",
+              "label": "8"
+            },
+            {
+              "value": "9",
+              "label": "9"
+            },
+            {
+              "value": "10",
+              "label": "10"
+            },
+            {
+              "value": "11",
+              "label": "11"
+            },
+            {
+              "value": "12",
+              "label": "12"
+            },
+            {
+              "value": "13",
+              "label": "13"
+            },
+            {
+              "value": "14",
+              "label": "14"
+            },
+            {
+              "value": "15",
+              "label": "15"
+            },
+            {
+              "value": "16",
+              "label": "16"
+            },
+            {
+              "value": "17",
+              "label": "17"
+            },
+            {
+              "value": "18",
+              "label": "18"
+            },
+            {
+              "value": "19",
+              "label": "19"
+            },
+            {
+              "value": "20",
+              "label": "20"
+            },
+            {
+              "value": "21",
+              "label": "21"
+            },
+            {
+              "value": "22",
+              "label": "22"
+            },
+            {
+              "value": "23",
+              "label": "23"
+            },
+            {
+              "value": "24",
+              "label": "24"
+            },
+            {
+              "value": "25",
+              "label": "25"
+            },
+            {
+              "value": "26",
+              "label": "26"
+            },
+            {
+              "value": "27",
+              "label": "27"
+            },
+            {
+              "value": "28",
+              "label": "28"
+            },
+            {
+              "value": "29",
+              "label": "29"
+            },
+            {
+              "value": "30",
+              "label": "30"
+            },
+            {
+              "value": "31",
+              "label": "31"
+            },
+            {
+              "value": "*",
+              "label": "All (wildcard)"
+            }
+          ]
+        },
+        "layout_name": {
+          "label": "Layout Name",
+          "placeholder": "e.g. dwindle, scroller",
+          "options": [
+            {
+              "value": "tile",
+              "label": "tile"
+            },
+            {
+              "value": "scroller",
+              "label": "scroller"
+            },
+            {
+              "value": "grid",
+              "label": "grid"
+            },
+            {
+              "value": "monocle",
+              "label": "monocle"
+            },
+            {
+              "value": "deck",
+              "label": "deck"
+            },
+            {
+              "value": "center_tile",
+              "label": "center_tile"
+            },
+            {
+              "value": "right_tile",
+              "label": "right_tile"
+            },
+            {
+              "value": "vertical_scroller",
+              "label": "vertical_scroller"
+            },
+            {
+              "value": "vertical_tile",
+              "label": "vertical_tile"
+            },
+            {
+              "value": "vertical_grid",
+              "label": "vertical_grid"
+            },
+            {
+              "value": "vertical_deck",
+              "label": "vertical_deck"
+            },
+            {
+              "value": "dwindle",
+              "label": "dwindle"
+            },
+            {
+              "value": "fair",
+              "label": "fair"
+            },
+            {
+              "value": "vertical_fair",
+              "label": "vertical_fair"
+            }
+          ]
+        },
+        "monitor_name": {
+          "label": "Monitor Name",
+          "placeholder": "e.g. DP-1"
+        },
+        "monitor_make": {
+          "label": "Monitor Make",
+          "placeholder": "e.g. Dell Inc."
+        },
+        "monitor_model": {
+          "label": "Monitor Model",
+          "placeholder": "e.g. DELL U2723QE"
+        },
+        "monitor_serial": {
+          "label": "Monitor Serial",
+          "placeholder": "e.g. ABC123"
+        }
+      }
     },
     "layer_rule": {
       "key": "layer_rule",
@@ -2837,7 +3919,42 @@
           "layer_name": "rofi",
           "animation_type_open": "zoom"
         }
-      ]
+      ],
+      "category": "rules",
+      "matchers": [
+        "layer_name"
+      ],
+      "fieldMeta": {
+        "animation_type_open": {
+          "category": "animation"
+        },
+        "animation_type_close": {
+          "category": "animation"
+        },
+        "shield_when_capture": {
+          "category": "security",
+          "aliases": [
+            "shield capture",
+            "hide when recording",
+            "privacy shield"
+          ]
+        },
+        "no_blur": {
+          "category": "appearance"
+        },
+        "no_animation": {
+          "category": "animation"
+        },
+        "no_shadow": {
+          "category": "animation"
+        }
+      },
+      "matcherMeta": {
+        "layer_name": {
+          "label": "Layer Name",
+          "placeholder": "e.g. gtk-layer-shell, wlr-wallpaper"
+        }
+      }
     },
     "window_rule": {
       "key": "window_rule",
@@ -3245,7 +4362,351 @@
           "app_id": "firefox",
           "is_floating": true
         }
-      ]
+      ],
+      "category": "rules",
+      "matchers": [
+        "app_id",
+        "title"
+      ],
+      "fieldMeta": {
+        "is_floating": {
+          "category": "appearance",
+          "aliases": [
+            "float",
+            "tiled",
+            "floating mode"
+          ],
+          "inheritable": true
+        },
+        "animation_type_open": {
+          "category": "animation",
+          "aliases": [
+            "open anim",
+            "show animation"
+          ]
+        },
+        "animation_type_close": {
+          "category": "animation",
+          "aliases": [
+            "close anim",
+            "hide animation"
+          ]
+        },
+        "tags": {
+          "category": "tag",
+          "aliases": [
+            "tag assignment",
+            "move to tag"
+          ]
+        },
+        "monitor": {
+          "category": "monitor",
+          "aliases": [
+            "send to monitor",
+            "output"
+          ]
+        },
+        "offset_x": {
+          "category": "geometry",
+          "unit": "%"
+        },
+        "offset_y": {
+          "category": "geometry",
+          "unit": "%"
+        },
+        "no_focus": {
+          "category": "behaviour",
+          "inheritable": true
+        },
+        "no_fade_in": {
+          "category": "behaviour",
+          "inheritable": true
+        },
+        "no_fade_out": {
+          "category": "behaviour",
+          "inheritable": true
+        },
+        "no_force_center": {
+          "category": "behaviour",
+          "inheritable": true
+        },
+        "width": {
+          "category": "geometry",
+          "step": 0.05,
+          "aliases": [
+            "window width"
+          ]
+        },
+        "height": {
+          "category": "geometry",
+          "step": 0.05,
+          "aliases": [
+            "window height"
+          ]
+        },
+        "no_border": {
+          "category": "appearance",
+          "aliases": [
+            "borderless",
+            "hide border"
+          ],
+          "inheritable": true
+        },
+        "no_shadow": {
+          "category": "appearance",
+          "aliases": [
+            "hide shadow"
+          ],
+          "inheritable": true
+        },
+        "no_radius": {
+          "category": "appearance",
+          "aliases": [
+            "square",
+            "no radius",
+            "sharp corners"
+          ],
+          "inheritable": true
+        },
+        "no_animation": {
+          "category": "behaviour",
+          "aliases": [
+            "no animation",
+            "disable animation"
+          ],
+          "inheritable": true
+        },
+        "is_open_silent": {
+          "category": "behaviour",
+          "aliases": [
+            "silent open",
+            "no focus on open"
+          ],
+          "inheritable": true
+        },
+        "is_tag_silent": {
+          "category": "behaviour",
+          "aliases": [
+            "silent tag"
+          ],
+          "inheritable": true
+        },
+        "is_named_scratchpad": {
+          "category": "scratchpad",
+          "aliases": [
+            "scratchpad",
+            "named scratchpad"
+          ],
+          "inheritable": true
+        },
+        "is_unmanaged_global": {
+          "category": "scratchpad",
+          "inheritable": true
+        },
+        "is_global": {
+          "category": "scratchpad",
+          "aliases": [
+            "show on all tags",
+            "sticky"
+          ],
+          "inheritable": true
+        },
+        "scroller_proportion_single": {
+          "category": "appearance",
+          "step": 0.05
+        },
+        "unfocused_opacity": {
+          "category": "appearance",
+          "step": 0.05,
+          "aliases": [
+            "blur opacity",
+            "inactive opacity"
+          ]
+        },
+        "focused_opacity": {
+          "category": "appearance",
+          "step": 0.05,
+          "aliases": [
+            "focus opacity",
+            "opacity focus"
+          ]
+        },
+        "is_overlay": {
+          "category": "scratchpad",
+          "aliases": [
+            "always on top",
+            "overlay layer"
+          ],
+          "inheritable": true
+        },
+        "shield_when_capture": {
+          "category": "behaviour",
+          "aliases": [
+            "shield capture",
+            "hide when recording",
+            "privacy shield"
+          ],
+          "inheritable": true
+        },
+        "allow_shortcuts_inhibit": {
+          "category": "bindings",
+          "aliases": [
+            "shortcuts inhibit",
+            "inhibit shortcuts"
+          ],
+          "inheritable": true
+        },
+        "ignore_maximize": {
+          "category": "behaviour",
+          "aliases": [
+            "no maximize"
+          ],
+          "inheritable": true
+        },
+        "ignore_minimize": {
+          "category": "behaviour",
+          "aliases": [
+            "no minimize",
+            "no iconify"
+          ],
+          "inheritable": true
+        },
+        "no_size_hint": {
+          "category": "behaviour",
+          "aliases": [
+            "no size hint",
+            "ignore size"
+          ],
+          "inheritable": true
+        },
+        "idle_inhibit_when_focus": {
+          "category": "behaviour",
+          "aliases": [
+            "idle inhibit",
+            "inhibit idle"
+          ],
+          "inheritable": true
+        },
+        "vrr_only_fullscreen": {
+          "category": "appearance",
+          "aliases": [
+            "vrr fullscreen only",
+            "freesync fullscreen only"
+          ],
+          "inheritable": true
+        },
+        "force_render": {
+          "category": "behaviour",
+          "aliases": [
+            "always render",
+            "force redraw",
+            "render while hidden"
+          ],
+          "inheritable": true
+        },
+        "activation_bypass": {
+          "category": "behaviour",
+          "aliases": [
+            "bypass activation",
+            "ignore activation",
+            "no activation"
+          ],
+          "inheritable": true
+        },
+        "is_term": {
+          "category": "appearance",
+          "aliases": [
+            "terminal",
+            "is terminal"
+          ],
+          "inheritable": true
+        },
+        "allow_csd": {
+          "category": "appearance",
+          "aliases": [
+            "csd",
+            "client side decoration",
+            "no csd"
+          ],
+          "inheritable": true
+        },
+        "force_fake_maximize": {
+          "category": "appearance",
+          "aliases": [
+            "fake maximize"
+          ],
+          "inheritable": true
+        },
+        "force_tiled_state": {
+          "category": "appearance",
+          "inheritable": true
+        },
+        "force_tearing": {
+          "category": "appearance",
+          "aliases": [
+            "tearing",
+            "allow tearing"
+          ]
+        },
+        "no_swallow": {
+          "category": "behaviour",
+          "aliases": [
+            "no swallow",
+            "prevent swallow"
+          ],
+          "inheritable": true
+        },
+        "confine_pointer": {
+          "category": "behaviour",
+          "inheritable": true
+        },
+        "no_blur": {
+          "category": "behaviour",
+          "aliases": [
+            "disable blur"
+          ],
+          "inheritable": true
+        },
+        "scroller_proportion": {
+          "category": "appearance",
+          "step": 0.05
+        },
+        "is_fullscreen": {
+          "category": "appearance",
+          "aliases": [
+            "full screen"
+          ],
+          "inheritable": true
+        },
+        "is_fake_fullscreen": {
+          "category": "appearance",
+          "aliases": [
+            "fake full screen",
+            "borderless"
+          ],
+          "inheritable": true
+        },
+        "global_key_binding": {
+          "category": "bindings",
+          "aliases": [
+            "global shortcut",
+            "keyboard shortcut",
+            "global bind"
+          ],
+          "pattern": "^[A-Za-z0-9_+]+-[a-zA-Z]+$",
+          "patternError": "Must match format Modifier-Keysym (e.g. Super_L-Escape). Keysym must be alpha-only (no digits)."
+        }
+      },
+      "matcherMeta": {
+        "app_id": {
+          "label": "App ID",
+          "placeholder": "e.g. foot, firefox, kitty"
+        },
+        "title": {
+          "label": "Window Title",
+          "placeholder": "e.g. Mozilla Firefox"
+        }
+      }
     },
     "window_rule_once": {
       "key": "window_rule_once",
@@ -3653,7 +5114,351 @@
           "title": "Picture-in-Picture",
           "is_floating": true
         }
-      ]
+      ],
+      "category": "rules",
+      "matchers": [
+        "app_id",
+        "title"
+      ],
+      "fieldMeta": {
+        "is_floating": {
+          "category": "appearance",
+          "aliases": [
+            "float",
+            "tiled",
+            "floating mode"
+          ],
+          "inheritable": true
+        },
+        "animation_type_open": {
+          "category": "animation",
+          "aliases": [
+            "open anim",
+            "show animation"
+          ]
+        },
+        "animation_type_close": {
+          "category": "animation",
+          "aliases": [
+            "close anim",
+            "hide animation"
+          ]
+        },
+        "tags": {
+          "category": "tag",
+          "aliases": [
+            "tag assignment",
+            "move to tag"
+          ]
+        },
+        "monitor": {
+          "category": "monitor",
+          "aliases": [
+            "send to monitor",
+            "output"
+          ]
+        },
+        "offset_x": {
+          "category": "geometry",
+          "unit": "%"
+        },
+        "offset_y": {
+          "category": "geometry",
+          "unit": "%"
+        },
+        "no_focus": {
+          "category": "behaviour",
+          "inheritable": true
+        },
+        "no_fade_in": {
+          "category": "behaviour",
+          "inheritable": true
+        },
+        "no_fade_out": {
+          "category": "behaviour",
+          "inheritable": true
+        },
+        "no_force_center": {
+          "category": "behaviour",
+          "inheritable": true
+        },
+        "width": {
+          "category": "geometry",
+          "step": 0.05,
+          "aliases": [
+            "window width"
+          ]
+        },
+        "height": {
+          "category": "geometry",
+          "step": 0.05,
+          "aliases": [
+            "window height"
+          ]
+        },
+        "no_border": {
+          "category": "appearance",
+          "aliases": [
+            "borderless",
+            "hide border"
+          ],
+          "inheritable": true
+        },
+        "no_shadow": {
+          "category": "appearance",
+          "aliases": [
+            "hide shadow"
+          ],
+          "inheritable": true
+        },
+        "no_radius": {
+          "category": "appearance",
+          "aliases": [
+            "square",
+            "no radius",
+            "sharp corners"
+          ],
+          "inheritable": true
+        },
+        "no_animation": {
+          "category": "behaviour",
+          "aliases": [
+            "no animation",
+            "disable animation"
+          ],
+          "inheritable": true
+        },
+        "is_open_silent": {
+          "category": "behaviour",
+          "aliases": [
+            "silent open",
+            "no focus on open"
+          ],
+          "inheritable": true
+        },
+        "is_tag_silent": {
+          "category": "behaviour",
+          "aliases": [
+            "silent tag"
+          ],
+          "inheritable": true
+        },
+        "is_named_scratchpad": {
+          "category": "scratchpad",
+          "aliases": [
+            "scratchpad",
+            "named scratchpad"
+          ],
+          "inheritable": true
+        },
+        "is_unmanaged_global": {
+          "category": "scratchpad",
+          "inheritable": true
+        },
+        "is_global": {
+          "category": "scratchpad",
+          "aliases": [
+            "show on all tags",
+            "sticky"
+          ],
+          "inheritable": true
+        },
+        "scroller_proportion_single": {
+          "category": "appearance",
+          "step": 0.05
+        },
+        "unfocused_opacity": {
+          "category": "appearance",
+          "step": 0.05,
+          "aliases": [
+            "blur opacity",
+            "inactive opacity"
+          ]
+        },
+        "focused_opacity": {
+          "category": "appearance",
+          "step": 0.05,
+          "aliases": [
+            "focus opacity",
+            "opacity focus"
+          ]
+        },
+        "is_overlay": {
+          "category": "scratchpad",
+          "aliases": [
+            "always on top",
+            "overlay layer"
+          ],
+          "inheritable": true
+        },
+        "shield_when_capture": {
+          "category": "behaviour",
+          "aliases": [
+            "shield capture",
+            "hide when recording",
+            "privacy shield"
+          ],
+          "inheritable": true
+        },
+        "allow_shortcuts_inhibit": {
+          "category": "bindings",
+          "aliases": [
+            "shortcuts inhibit",
+            "inhibit shortcuts"
+          ],
+          "inheritable": true
+        },
+        "ignore_maximize": {
+          "category": "behaviour",
+          "aliases": [
+            "no maximize"
+          ],
+          "inheritable": true
+        },
+        "ignore_minimize": {
+          "category": "behaviour",
+          "aliases": [
+            "no minimize",
+            "no iconify"
+          ],
+          "inheritable": true
+        },
+        "no_size_hint": {
+          "category": "behaviour",
+          "aliases": [
+            "no size hint",
+            "ignore size"
+          ],
+          "inheritable": true
+        },
+        "idle_inhibit_when_focus": {
+          "category": "behaviour",
+          "aliases": [
+            "idle inhibit",
+            "inhibit idle"
+          ],
+          "inheritable": true
+        },
+        "vrr_only_fullscreen": {
+          "category": "appearance",
+          "aliases": [
+            "vrr fullscreen only",
+            "freesync fullscreen only"
+          ],
+          "inheritable": true
+        },
+        "force_render": {
+          "category": "behaviour",
+          "aliases": [
+            "always render",
+            "force redraw",
+            "render while hidden"
+          ],
+          "inheritable": true
+        },
+        "activation_bypass": {
+          "category": "behaviour",
+          "aliases": [
+            "bypass activation",
+            "ignore activation",
+            "no activation"
+          ],
+          "inheritable": true
+        },
+        "is_term": {
+          "category": "appearance",
+          "aliases": [
+            "terminal",
+            "is terminal"
+          ],
+          "inheritable": true
+        },
+        "allow_csd": {
+          "category": "appearance",
+          "aliases": [
+            "csd",
+            "client side decoration",
+            "no csd"
+          ],
+          "inheritable": true
+        },
+        "force_fake_maximize": {
+          "category": "appearance",
+          "aliases": [
+            "fake maximize"
+          ],
+          "inheritable": true
+        },
+        "force_tiled_state": {
+          "category": "appearance",
+          "inheritable": true
+        },
+        "force_tearing": {
+          "category": "appearance",
+          "aliases": [
+            "tearing",
+            "allow tearing"
+          ]
+        },
+        "no_swallow": {
+          "category": "behaviour",
+          "aliases": [
+            "no swallow",
+            "prevent swallow"
+          ],
+          "inheritable": true
+        },
+        "confine_pointer": {
+          "category": "behaviour",
+          "inheritable": true
+        },
+        "no_blur": {
+          "category": "behaviour",
+          "aliases": [
+            "disable blur"
+          ],
+          "inheritable": true
+        },
+        "scroller_proportion": {
+          "category": "appearance",
+          "step": 0.05
+        },
+        "is_fullscreen": {
+          "category": "appearance",
+          "aliases": [
+            "full screen"
+          ],
+          "inheritable": true
+        },
+        "is_fake_fullscreen": {
+          "category": "appearance",
+          "aliases": [
+            "fake full screen",
+            "borderless"
+          ],
+          "inheritable": true
+        },
+        "global_key_binding": {
+          "category": "bindings",
+          "aliases": [
+            "global shortcut",
+            "keyboard shortcut",
+            "global bind"
+          ],
+          "pattern": "^[A-Za-z0-9_+]+-[a-zA-Z]+$",
+          "patternError": "Must match format Modifier-Keysym (e.g. Super_L-Escape). Keysym must be alpha-only (no digits)."
+        }
+      },
+      "matcherMeta": {
+        "app_id": {
+          "label": "App ID",
+          "placeholder": "e.g. foot, firefox, kitty"
+        },
+        "title": {
+          "label": "Window Title",
+          "placeholder": "e.g. Mozilla Firefox"
+        }
+      }
     },
     "device_rule": {
       "key": "device_rule",
@@ -3946,7 +5751,92 @@
           "name": "AT Translated Set 2 keyboard",
           "kb_layout": "us"
         }
-      ]
+      ],
+      "category": "rules",
+      "matchers": [
+        "name",
+        "type"
+      ],
+      "fieldMeta": {
+        "repeat_rate": {
+          "category": "input"
+        },
+        "repeat_delay": {
+          "category": "input"
+        },
+        "kb_rules": {
+          "category": "input"
+        },
+        "kb_model": {
+          "category": "input"
+        },
+        "kb_layout": {
+          "category": "input"
+        },
+        "kb_variant": {
+          "category": "input"
+        },
+        "kb_options": {
+          "category": "input"
+        },
+        "natural_scrolling": {
+          "category": "input"
+        },
+        "accel_profile": {
+          "category": "input"
+        },
+        "accel_speed": {
+          "category": "input"
+        },
+        "left_handed": {
+          "category": "input"
+        },
+        "middle_button_emulation": {
+          "category": "input"
+        },
+        "scroll_method": {
+          "category": "input"
+        },
+        "scroll_button": {
+          "category": "input"
+        },
+        "click_method": {
+          "category": "input"
+        },
+        "send_events_mode": {
+          "category": "input"
+        },
+        "tap_to_click": {
+          "category": "input"
+        },
+        "tap_and_drag": {
+          "category": "input"
+        },
+        "drag_lock": {
+          "category": "input"
+        },
+        "button_map": {
+          "category": "input"
+        },
+        "disable_while_typing": {
+          "category": "input"
+        },
+        "monitor": {
+          "category": "input"
+        },
+        "map_focus_monitor": {
+          "category": "input"
+        }
+      },
+      "matcherMeta": {
+        "name": {
+          "label": "Monitor Name",
+          "placeholder": "e.g. DP-1, eDP-1"
+        },
+        "type": {
+          "label": "Device Type"
+        }
+      }
     }
   },
   "dispatchers": {

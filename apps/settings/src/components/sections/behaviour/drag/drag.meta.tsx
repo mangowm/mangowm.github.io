@@ -12,27 +12,21 @@ export const dragMeta: SectionMeta = {
   fields: [
     {
       configKey: "drag_corner",
-      aliases: ["resize handle", "drag edge", "corner resize"],
     },
     {
       configKey: "drag_warp_cursor",
-      aliases: ["cursor warp resize", "drag warp"],
     },
     {
       configKey: "drag_tile_to_tile",
-      aliases: ["tile drag", "reorder", "swap tiles"],
     },
     {
       configKey: "drag_tile_small",
-      aliases: ["tile thumbnail", "drag preview", "mini tile"],
     },
     {
       configKey: "snap_distance",
-      aliases: ["snapping", "snap threshold", "edge snap"],
     },
     {
       configKey: "enable_floating_snap",
-      aliases: ["snap", "floating snap", "window snap"],
     },
   ],
 };

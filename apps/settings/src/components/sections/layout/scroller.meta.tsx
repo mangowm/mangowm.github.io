@@ -39,7 +39,6 @@ export const scrollerMeta: SectionMeta = {
     },
     {
       configKey: "scroller_proportion_preset",
-      aliases: ["preset", "proportion list", "quick proportion"],
     },
   ],
 };

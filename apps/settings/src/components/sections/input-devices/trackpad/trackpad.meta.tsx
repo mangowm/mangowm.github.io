@@ -39,7 +39,6 @@ export const trackpadMeta: SectionMeta = {
     },
     {
       configKey: "swipe_min_threshold",
-      aliases: ["swipe", "gesture threshold", "swipe sensitivity"],
     },
   ],
 };

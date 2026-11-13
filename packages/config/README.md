@@ -53,6 +53,10 @@ Dispatcher catalog arguments carry `kind`, `name`, `label`, `description`,
 `placeholder`, `required`, and range/step overrides. Their permitted values come
 from `dispatcherArgOptions[kind]`.
 
+Rule metadata adds categories, matchers, and field UI overrides. Global metadata
+adds categories and aliases. Validation types, defaults, ranges, and enums stay
+in the schema-derived data.
+
 ## Layers
 
 ```text

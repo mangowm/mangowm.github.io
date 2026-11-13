@@ -1,5 +1,5 @@
 import MiniSearch from "minisearch";
-import { DIRECTIVES, GLOBALS } from "@mangowm.github.io/config/catalog";
+import { DIRECTIVES, GLOBAL_META, GLOBALS } from "@mangowm.github.io/config/catalog";
 import { useRef, useEffect, useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useConfigStore } from "./config/store";
@@ -12,6 +12,9 @@ import { getOverridesForRuleType, RULE_CONFIG_KEY, RULE_LABELS } from "./rules/m
 import { parseRuleString } from "@/lib/rules/parser";
 
 const FIELD_META = new Map(GLOBALS.map((option) => [option.key, option]));
+const GLOBAL_ALIASES = new Map(
+  Object.entries(GLOBAL_META).map(([key, meta]) => [key, meta.aliases?.join(" ") ?? ""]),
+);
 
 const EXTRA_FIELD_META: Record<string, { label: string; description: string }> = {
   env: {
@@ -84,7 +87,7 @@ const staticDocs: SearchDocument[] = SECTIONS.flatMap((section) => {
       description: meta?.description ?? "",
       configKey: field.configKey,
       sectionKeywords,
-      aliases: field.aliases?.join(" ") ?? "",
+      aliases: GLOBAL_ALIASES.get(field.configKey) ?? "",
       sectionId: section.id,
       sectionLabel: section.label,
       tier: "static",

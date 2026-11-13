@@ -55,7 +55,6 @@ export const pointerMeta: SectionMeta = {
     },
     {
       configKey: "axis_bind_apply_timeout",
-      aliases: ["scroll bind", "axis bind", "scroll timeout"],
     },
   ],
 };

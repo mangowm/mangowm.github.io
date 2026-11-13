@@ -17,12 +17,17 @@ import {
   DISPATCHER_EXAMPLES,
   DISPATCHERS,
   GLOBAL_CATEGORY_ORDER,
+  GLOBAL_META,
   GLOBALS,
   LAYOUTS,
   MODIFIER_ORDER,
   MOUSE_BUTTONS,
   RULES,
+  RULE_CATEGORIES,
   RULE_CATEGORY_ORDER,
+  RULE_FIELD_META,
+  RULE_MATCHERS,
+  RULE_MATCHER_META,
   TAG_COUNT,
   TAG_MASK_PATTERN,
   TAG_NUMBER_PATTERN,
@@ -37,8 +42,32 @@ export function buildCatalog() {
     dispatcherCategoryOrder: DISPATCHER_CATEGORY_ORDER,
     ruleCategoryOrder: RULE_CATEGORY_ORDER,
     globalCategoryOrder: GLOBAL_CATEGORY_ORDER,
-    globals: Object.fromEntries(GLOBALS.map((item) => [item.key, item])),
-    rules: Object.fromEntries(RULES.map((item) => [item.key, item])),
+    globals: Object.fromEntries(
+      GLOBALS.map((item) => {
+        const meta = GLOBAL_META[item.key];
+        return [
+          item.key,
+          {
+            ...item,
+            category: meta?.category ?? "system",
+            ...(meta?.aliases ? { aliases: meta.aliases } : {}),
+            ...(meta?.ui ? { ui: meta.ui } : {}),
+          },
+        ];
+      }),
+    ),
+    rules: Object.fromEntries(
+      RULES.map((item) => [
+        item.key,
+        {
+          ...item,
+          category: RULE_CATEGORIES[item.key],
+          matchers: RULE_MATCHERS[item.key],
+          fieldMeta: RULE_FIELD_META[item.key],
+          matcherMeta: RULE_MATCHER_META[item.key],
+        },
+      ]),
+    ),
     dispatchers: Object.fromEntries(
       DISPATCHERS.map((name) => [
         name,
