@@ -1,4 +1,4 @@
-import type { DispatcherName } from "./dispatcherArgs";
+import type { DispatcherArgKind, DispatcherName } from "./dispatcherArgs";
 
 export const DISPATCHER_DESCRIPTIONS: Record<DispatcherName, string> = {
   smartmovewin: "Move the floating window by the snap distance in a direction (left/right/up/down)",
@@ -108,4 +108,720 @@ export const DISPATCHER_DESCRIPTIONS: Record<DispatcherName, string> = {
   smartkillclient:
     "Remove the focused window from the current tags, or close it if it is only there",
   togglegroupbar: "Toggle the group bar on every tiled window",
+};
+export interface DispatcherArgMeta {
+  kind: DispatcherArgKind;
+  name: string;
+  label: string;
+  description: string;
+  placeholder?: string;
+  required: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
+}
+
+export const DISPATCHER_ARG_META: Record<DispatcherName, readonly DispatcherArgMeta[]> = {
+  centerwin: [],
+  chvt: [
+    {
+      kind: "int",
+      name: "vt",
+      label: "VT Number",
+      description: "Virtual terminal number",
+      placeholder: "2",
+      required: true,
+      min: 1,
+      max: 12,
+    },
+  ],
+  comboview: [
+    {
+      kind: "tag-mask",
+      name: "tag",
+      label: "Combo Tag",
+      description: "Tag number (1-9) for combo-key navigation",
+      required: true,
+    },
+  ],
+  create_virtual_output: [
+    {
+      kind: "string",
+      name: "name",
+      label: "Name",
+      description: "Virtual output name",
+      placeholder: "e.g. HEADLESS-1",
+      required: true,
+    },
+  ],
+  destroy_all_virtual_output: [],
+  disable_monitor: [
+    {
+      kind: "monitor",
+      name: "monitor",
+      label: "Monitor",
+      description: "Monitor name (e.g. DP-1)",
+      placeholder: "e.g. DP-1",
+      required: true,
+    },
+  ],
+  dwindle_split_horizontal: [],
+  dwindle_split_vertical: [],
+  dwindle_toggle_current_split: [],
+  dwindle_toggle_split_direction: [],
+  enable_monitor: [
+    {
+      kind: "monitor",
+      name: "monitor",
+      label: "Monitor",
+      description: "Monitor name (e.g. DP-1)",
+      placeholder: "e.g. DP-1",
+      required: true,
+    },
+  ],
+  enteroverview: [],
+  exchange_client: [
+    {
+      kind: "direction",
+      name: "direction",
+      label: "Direction",
+      description: "Swap with neighbour in this direction",
+      required: false,
+    },
+  ],
+  exchange_stack_client: [
+    {
+      kind: "circle",
+      name: "circle-dir",
+      label: "Direction",
+      description: "Move in stacking order",
+      required: false,
+    },
+  ],
+  focusdir: [
+    {
+      kind: "direction",
+      name: "direction",
+      label: "Direction",
+      description: "Nearest window in this direction",
+      required: false,
+    },
+  ],
+  focusid: [],
+  focuslast: [],
+  focusmon: [
+    {
+      kind: "monitor",
+      name: "target",
+      label: "Monitor",
+      description: "Direction (left/right/up/down) or monitor name (e.g. DP-1)",
+      placeholder: "left or DP-1",
+      required: false,
+    },
+  ],
+  focusstack: [
+    {
+      kind: "circle",
+      name: "circle-dir",
+      label: "Direction",
+      description: "Cycle focus in stacking order",
+      required: false,
+    },
+  ],
+  focus_window_or_workspace: [
+    {
+      kind: "direction",
+      name: "direction",
+      label: "Direction",
+      description: "Focus the window in this direction",
+      required: false,
+    },
+  ],
+  groupfocus: [
+    {
+      kind: "circle",
+      name: "circle-dir",
+      label: "Direction",
+      description: "Cycle focus within the window group",
+      required: false,
+    },
+  ],
+  groupjoin: [
+    {
+      kind: "direction",
+      name: "direction",
+      label: "Direction",
+      description: "Join the window group in this direction",
+      required: false,
+    },
+  ],
+  groupleave: [],
+  incgaps: [
+    {
+      kind: "int",
+      name: "delta",
+      label: "Delta",
+      description: "Gap size delta (±N)",
+      placeholder: "+5",
+      required: true,
+    },
+  ],
+  incnmaster: [
+    {
+      kind: "int",
+      name: "delta",
+      label: "Delta",
+      description: "Number of masters to add (+1) or remove (-1)",
+      placeholder: "+1",
+      required: true,
+    },
+  ],
+  killclient: [
+    {
+      kind: "force",
+      name: "force",
+      label: "Force",
+      description: "Close the window even if it resists",
+      required: false,
+    },
+  ],
+  leaveoverview: [],
+  load_config_file: [
+    {
+      kind: "string",
+      name: "path",
+      label: "Config Path",
+      description: "Absolute path to the config file to load",
+      placeholder: "/home/user/.config/mango/alt.conf",
+      required: true,
+    },
+  ],
+  minimized: [],
+  move_client: [
+    {
+      kind: "direction",
+      name: "direction",
+      label: "Direction",
+      description: "Move the focused window in this direction",
+      required: false,
+    },
+  ],
+  moveresize: [
+    {
+      kind: "mouse-action",
+      name: "action",
+      label: "Action",
+      description: "Mouse action (curmove/curresize)",
+      required: false,
+    },
+  ],
+  movewin: [
+    {
+      kind: "int",
+      name: "x",
+      label: "X Offset",
+      description: "Absolute (100) or relative (+50/-25)",
+      placeholder: "+50",
+      required: true,
+    },
+    {
+      kind: "int",
+      name: "y",
+      label: "Y Offset",
+      description: "Absolute (100) or relative (+50/-25)",
+      placeholder: "+100",
+      required: true,
+    },
+  ],
+  overcircle: [
+    {
+      kind: "overcircle",
+      name: "overcircle",
+      label: "Direction",
+      description: "Cycle focus in the overview grid",
+      required: false,
+    },
+  ],
+  quit: [],
+  reload_config: [],
+  resizewin: [
+    {
+      kind: "int",
+      name: "w",
+      label: "Width",
+      description: "Absolute (200) or relative (+50/-25)",
+      placeholder: "+50",
+      required: true,
+    },
+    {
+      kind: "int",
+      name: "h",
+      label: "Height",
+      description: "Absolute (200) or relative (+50/-25)",
+      placeholder: "+100",
+      required: true,
+    },
+  ],
+  restore_minimized: [],
+  scroller_stack: [
+    {
+      kind: "direction",
+      name: "direction",
+      label: "Direction",
+      description: "Move window in scroller stack",
+      required: false,
+    },
+  ],
+  setkeymode: [
+    {
+      kind: "string",
+      name: "mode",
+      label: "Mode Name",
+      description: "Target keybinding mode (submap)",
+      placeholder: "resize",
+      required: true,
+    },
+  ],
+  setlayout: [
+    {
+      kind: "layout",
+      name: "layout",
+      label: "Layout",
+      description: "Target layout name",
+      required: true,
+    },
+  ],
+  setmfact: [
+    {
+      kind: "float",
+      name: "ratio",
+      label: "Ratio",
+      description: "Master area ratio change (±0.05)",
+      placeholder: "+0.05",
+      required: true,
+      min: -0.9,
+      max: 0.9,
+      step: 0.01,
+    },
+  ],
+  setoption: [
+    {
+      kind: "option",
+      name: "key",
+      label: "Option Key",
+      description: "Config key to change",
+      placeholder: "gappih",
+      required: true,
+    },
+    {
+      kind: "free",
+      name: "value",
+      label: "Value",
+      description: "New value",
+      placeholder: "10",
+      required: true,
+    },
+  ],
+  set_proportion: [
+    {
+      kind: "unit-float",
+      name: "proportion",
+      label: "Proportion",
+      description: "Window proportion (0.0–1.0)",
+      placeholder: "0.5",
+      required: true,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+  ],
+  sleep_monitor: [
+    {
+      kind: "monitor",
+      name: "monitor",
+      label: "Monitor",
+      description: "Monitor name (e.g. DP-1)",
+      placeholder: "e.g. DP-1",
+      required: true,
+    },
+  ],
+  sleep_toggle_monitor: [
+    {
+      kind: "monitor",
+      name: "monitor",
+      label: "Monitor",
+      description: "Monitor name (e.g. DP-1)",
+      placeholder: "e.g. DP-1",
+      required: true,
+    },
+  ],
+  smartkillclient: [],
+  smartmovewin: [
+    {
+      kind: "direction",
+      name: "direction",
+      label: "Direction",
+      description: "Snap direction",
+      required: false,
+    },
+  ],
+  smartresizewin: [
+    {
+      kind: "direction",
+      name: "direction",
+      label: "Direction",
+      description: "Resize direction",
+      required: false,
+    },
+  ],
+  spawn: [
+    {
+      kind: "free",
+      name: "command",
+      label: "Command",
+      description: "Command to execute",
+      placeholder: "foot --class myclass",
+      required: true,
+    },
+  ],
+  spawn_on_empty: [
+    {
+      kind: "string",
+      name: "command",
+      label: "Command",
+      description: "Command to spawn",
+      placeholder: "foot",
+      required: true,
+    },
+    {
+      kind: "tag-mask",
+      name: "tag",
+      label: "Target Tag",
+      description: "Only spawn if tag is empty (1-9)",
+      required: true,
+    },
+  ],
+  spawn_shell: [
+    {
+      kind: "free",
+      name: "command",
+      label: "Command",
+      description: "Shell command",
+      placeholder: "sh -c 'notify-send Hello'",
+      required: true,
+    },
+  ],
+  switcher: [
+    {
+      kind: "switcher",
+      name: "switcher",
+      label: "Direction",
+      description: "Switcher direction",
+      required: false,
+    },
+  ],
+  switch_keyboard_layout: [
+    {
+      kind: "index100",
+      name: "index",
+      label: "Layout Index",
+      description: "Keyboard layout index (0, 1, 2…)",
+      placeholder: "0",
+      required: false,
+      min: 0,
+      max: 100,
+    },
+  ],
+  switch_layout: [],
+  switch_proportion_preset: [
+    {
+      kind: "circle",
+      name: "circle-dir",
+      label: "Direction",
+      description: "Cycle through presets",
+      required: false,
+    },
+  ],
+  tag: [
+    {
+      kind: "tag-mask",
+      name: "tag",
+      label: "Target Tag",
+      description: "Tag number (1-9)",
+      required: true,
+    },
+    {
+      kind: "bool",
+      name: "synctag",
+      label: "Sync Across Monitors",
+      description: "Apply to all monitors",
+      required: false,
+    },
+  ],
+  tagcrossmon: [
+    {
+      kind: "tag-mask",
+      name: "tag",
+      label: "Target Tag",
+      description: "Tag number (1-9)",
+      required: true,
+    },
+    {
+      kind: "monitor",
+      name: "monitor",
+      label: "Monitor",
+      description: "Monitor name (e.g. DP-1)",
+      placeholder: "Monitor name",
+      required: false,
+    },
+  ],
+  tagmon: [
+    {
+      kind: "monitor",
+      name: "target",
+      label: "Target Monitor",
+      description: "Direction (left/right/up/down) or monitor name (e.g. DP-1)",
+      placeholder: "left or DP-1",
+      required: false,
+    },
+    {
+      kind: "bool",
+      name: "keeptag",
+      label: "Keep Tag",
+      description: "Keep window's current tag (0/1)",
+      required: false,
+    },
+  ],
+  tagsilent: [
+    {
+      kind: "tag-mask",
+      name: "tag",
+      label: "Target Tag",
+      description: "Tag number (1-9)",
+      required: true,
+    },
+  ],
+  tag_special_silent: [],
+  tag_special_tag: [],
+  tagtoleft: [
+    {
+      kind: "bool",
+      name: "synctag",
+      label: "Sync Across Monitors",
+      description: "Apply to all monitors (0/1)",
+      required: false,
+    },
+  ],
+  tagtoright: [
+    {
+      kind: "bool",
+      name: "synctag",
+      label: "Sync Across Monitors",
+      description: "Apply to all monitors (0/1)",
+      required: false,
+    },
+  ],
+  toggle_all_floating: [],
+  togglefakefullscreen: [],
+  togglefloating: [],
+  togglefullscreen: [],
+  togglegaps: [],
+  toggleglobal: [],
+  togglegroupbar: [],
+  togglehdr: [
+    {
+      kind: "on-off",
+      name: "state",
+      label: "State",
+      description: "on, off, or toggle (default)",
+      placeholder: "toggle",
+      required: false,
+    },
+    {
+      kind: "monitor",
+      name: "monitor",
+      label: "Monitor",
+      description: "Monitor name (e.g. DP-1). Applies to all monitors when empty",
+      placeholder: "e.g. DP-1",
+      required: false,
+    },
+  ],
+  togglejump: [],
+  togglemaximizescreen: [],
+  toggle_monitor: [
+    {
+      kind: "monitor",
+      name: "monitor",
+      label: "Monitor",
+      description: "Monitor name (e.g. DP-1)",
+      placeholder: "e.g. DP-1",
+      required: true,
+    },
+  ],
+  toggle_named_scratchpad: [
+    {
+      kind: "string",
+      name: "id",
+      label: "Identifier",
+      description: "Unique scratchpad ID",
+      placeholder: "e.g. term-scratch",
+      required: true,
+    },
+    {
+      kind: "string",
+      name: "title",
+      label: "Window Title",
+      description: "Match window by title (optional)",
+      placeholder: "e.g. Terminal",
+      required: false,
+    },
+    {
+      kind: "string",
+      name: "spawn",
+      label: "Command",
+      description: "Launch this command if no window matches",
+      placeholder: "e.g. foot",
+      required: false,
+    },
+  ],
+  toggleoverlay: [],
+  toggleoverview: [
+    {
+      kind: "bool",
+      name: "tabmode",
+      label: "Tab Mode",
+      description: "1 = tab overview, 0 = grid overview",
+      required: false,
+    },
+  ],
+  toggle_render_border: [],
+  toggle_scratchpad: [],
+  toggle_special_tag: [],
+  toggletag: [
+    {
+      kind: "tag-mask",
+      name: "tag",
+      label: "Toggle Tag",
+      description: "Tag to toggle on the focused window (1-9)",
+      required: true,
+    },
+  ],
+  toggle_trackpad_enable: [],
+  toggleview: [
+    {
+      kind: "tag-mask",
+      name: "tag",
+      label: "Toggle Tag",
+      description: "Tag whose visibility to toggle (1-9)",
+      required: true,
+    },
+  ],
+  view: [
+    {
+      kind: "tag-mask",
+      name: "tag",
+      label: "Tag(s)",
+      description: "Tag number (1-9), mask (1|3|5), -1 = previous, 0 = all",
+      placeholder: "e.g. 1 or 1|3|5",
+      required: true,
+    },
+    {
+      kind: "bool",
+      name: "synctag",
+      label: "Sync Across Monitors",
+      description: "Apply to all monitors",
+      required: false,
+    },
+  ],
+  viewcrossmon: [
+    {
+      kind: "tag-mask",
+      name: "tag",
+      label: "Target Tag",
+      description: "Tag number (1-9)",
+      required: true,
+    },
+    {
+      kind: "monitor",
+      name: "monitor",
+      label: "Monitor",
+      description: "Monitor name (e.g. DP-1)",
+      placeholder: "Monitor name",
+      required: false,
+    },
+  ],
+  view_insert: [
+    {
+      kind: "prev-next",
+      name: "prev-next",
+      label: "Direction",
+      description: "Insert before or after the current tag",
+      required: false,
+    },
+  ],
+  viewnext_have_client: [
+    {
+      kind: "bool",
+      name: "synctag",
+      label: "Sync Across Monitors",
+      description: "Apply to all monitors (0/1)",
+      required: false,
+    },
+  ],
+  viewprev_have_client: [
+    {
+      kind: "bool",
+      name: "synctag",
+      label: "Sync Across Monitors",
+      description: "Apply to all monitors (0/1)",
+      required: false,
+    },
+  ],
+  viewtoleft: [
+    {
+      kind: "bool",
+      name: "synctag",
+      label: "Sync Across Monitors",
+      description: "Apply to all monitors (0/1)",
+      required: false,
+    },
+  ],
+  viewtoleft_have_client: [
+    {
+      kind: "bool",
+      name: "synctag",
+      label: "Sync Across Monitors",
+      description: "Apply to all monitors (0/1)",
+      required: false,
+    },
+  ],
+  viewtoright: [
+    {
+      kind: "bool",
+      name: "synctag",
+      label: "Sync Across Monitors",
+      description: "Apply to all monitors (0/1)",
+      required: false,
+    },
+  ],
+  viewtoright_have_client: [
+    {
+      kind: "bool",
+      name: "synctag",
+      label: "Sync Across Monitors",
+      description: "Apply to all monitors (0/1)",
+      required: false,
+    },
+  ],
+  wakeup_monitor: [
+    {
+      kind: "monitor",
+      name: "monitor",
+      label: "Monitor",
+      description: "Monitor name (e.g. DP-1)",
+      placeholder: "e.g. DP-1",
+      required: true,
+    },
+  ],
+  zoom: [],
 };

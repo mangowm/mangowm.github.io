@@ -2,7 +2,7 @@
 import { VARIABLE_PATTERN } from "../core";
 import { GLOBALS } from "./globals";
 import { LAYOUTS } from "./layouts";
-import { TAG_MASK_PATTERN } from "./tags";
+import { ALL_TAGS, TAG_MASK_PATTERN } from "./tags";
 
 export type DispatcherArgKind =
   | "direction"
@@ -35,6 +35,7 @@ export const DISPATCHER_ARG_OPTIONS = {
   force: ["force", "unforce"],
   "on-off": ["on", "off", "toggle"],
   bool: ["0", "1"],
+  "tag-mask": ALL_TAGS.map(String),
   layout: [...LAYOUTS],
 } as const satisfies Partial<Record<DispatcherArgKind, readonly string[]>>;
 

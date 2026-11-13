@@ -49,6 +49,10 @@ and each collection defines its own category order:
 import { CATEGORIES, DISPATCHER_CATEGORY_ORDER } from "@mangowm.github.io/config/catalog";
 ```
 
+Dispatcher catalog arguments carry `kind`, `name`, `label`, `description`,
+`placeholder`, `required`, and range/step overrides. Their permitted values come
+from `dispatcherArgOptions[kind]`.
+
 ## Layers
 
 ```text

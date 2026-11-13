@@ -27,7 +27,9 @@ describe("catalog consistency", () => {
     expect(Object.keys(catalog.dispatchers).sort()).toEqual([...DISPATCHERS].sort());
 
     for (const dispatcher of DISPATCHERS) {
-      expect(catalog.dispatchers[dispatcher].args).toEqual(DISPATCHER_ARGS[dispatcher]);
+      expect(catalog.dispatchers[dispatcher].args.map((arg) => arg.kind)).toEqual(
+        DISPATCHER_ARGS[dispatcher],
+      );
       expect(catalog.dispatchers[dispatcher].description).toBe(DISPATCHER_DESCRIPTIONS[dispatcher]);
     }
   });

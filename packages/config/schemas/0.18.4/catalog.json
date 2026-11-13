@@ -3959,21 +3959,43 @@
       "category": "system",
       "description": "Switch to a virtual terminal by number",
       "args": [
-        "int"
+        {
+          "kind": "int",
+          "name": "vt",
+          "label": "VT Number",
+          "description": "Virtual terminal number",
+          "placeholder": "2",
+          "required": true,
+          "min": 1,
+          "max": 12
+        }
       ]
     },
     "comboview": {
       "category": "tag",
       "description": "View multiple tags pressed simultaneously (combo-key style navigation)",
       "args": [
-        "tag-mask"
+        {
+          "kind": "tag-mask",
+          "name": "tag",
+          "label": "Combo Tag",
+          "description": "Tag number (1-9) for combo-key navigation",
+          "required": true
+        }
       ]
     },
     "create_virtual_output": {
       "category": "system",
       "description": "Create a headless virtual monitor (for VNC or Sunshine streaming)",
       "args": [
-        "string"
+        {
+          "kind": "string",
+          "name": "name",
+          "label": "Name",
+          "description": "Virtual output name",
+          "placeholder": "e.g. HEADLESS-1",
+          "required": true
+        }
       ]
     },
     "destroy_all_virtual_output": {
@@ -3985,7 +4007,14 @@
       "category": "monitor",
       "description": "Power off / shutdown a monitor by monitor spec",
       "args": [
-        "monitor"
+        {
+          "kind": "monitor",
+          "name": "monitor",
+          "label": "Monitor",
+          "description": "Monitor name (e.g. DP-1)",
+          "placeholder": "e.g. DP-1",
+          "required": true
+        }
       ]
     },
     "dwindle_split_horizontal": {
@@ -4012,7 +4041,14 @@
       "category": "monitor",
       "description": "Power on a monitor by monitor spec",
       "args": [
-        "monitor"
+        {
+          "kind": "monitor",
+          "name": "monitor",
+          "label": "Monitor",
+          "description": "Monitor name (e.g. DP-1)",
+          "placeholder": "e.g. DP-1",
+          "required": true
+        }
       ]
     },
     "enteroverview": {
@@ -4024,21 +4060,39 @@
       "category": "focus",
       "description": "Swap the focused window with its neighbour in a direction (left/right/up/down)",
       "args": [
-        "direction"
+        {
+          "kind": "direction",
+          "name": "direction",
+          "label": "Direction",
+          "description": "Swap with neighbour in this direction",
+          "required": false
+        }
       ]
     },
     "exchange_stack_client": {
       "category": "focus",
       "description": "Exchange the focused window's position in the stacking order (next/prev)",
       "args": [
-        "circle"
+        {
+          "kind": "circle",
+          "name": "circle-dir",
+          "label": "Direction",
+          "description": "Move in stacking order",
+          "required": false
+        }
       ]
     },
     "focusdir": {
       "category": "focus",
       "description": "Focus the nearest window in a direction (left/right/up/down)",
       "args": [
-        "direction"
+        {
+          "kind": "direction",
+          "name": "direction",
+          "label": "Direction",
+          "description": "Nearest window in this direction",
+          "required": false
+        }
       ]
     },
     "focusid": {
@@ -4055,35 +4109,66 @@
       "category": "monitor",
       "description": "Focus a monitor by direction or monitor name",
       "args": [
-        "monitor"
+        {
+          "kind": "monitor",
+          "name": "target",
+          "label": "Monitor",
+          "description": "Direction (left/right/up/down) or monitor name (e.g. DP-1)",
+          "placeholder": "left or DP-1",
+          "required": false
+        }
       ]
     },
     "focusstack": {
       "category": "focus",
       "description": "Cycle focus within the stacking order (next/prev)",
       "args": [
-        "circle"
+        {
+          "kind": "circle",
+          "name": "circle-dir",
+          "label": "Direction",
+          "description": "Cycle focus in stacking order",
+          "required": false
+        }
       ]
     },
     "focus_window_or_workspace": {
       "category": "focus",
       "description": "Focus the window in a direction, falling back to the tag",
       "args": [
-        "direction"
+        {
+          "kind": "direction",
+          "name": "direction",
+          "label": "Direction",
+          "description": "Focus the window in this direction",
+          "required": false
+        }
       ]
     },
     "groupfocus": {
       "category": "group",
       "description": "Cycle focus within a window group (next/prev)",
       "args": [
-        "circle"
+        {
+          "kind": "circle",
+          "name": "circle-dir",
+          "label": "Direction",
+          "description": "Cycle focus within the window group",
+          "required": false
+        }
       ]
     },
     "groupjoin": {
       "category": "group",
       "description": "Join the adjacent window's group in a direction (left/right/up/down)",
       "args": [
-        "direction"
+        {
+          "kind": "direction",
+          "name": "direction",
+          "label": "Direction",
+          "description": "Join the window group in this direction",
+          "required": false
+        }
       ]
     },
     "groupleave": {
@@ -4095,21 +4180,41 @@
       "category": "appearance",
       "description": "Adjust the gap size by a relative value (+/-N)",
       "args": [
-        "int"
+        {
+          "kind": "int",
+          "name": "delta",
+          "label": "Delta",
+          "description": "Gap size delta (±N)",
+          "placeholder": "+5",
+          "required": true
+        }
       ]
     },
     "incnmaster": {
       "category": "layout",
       "description": "Increase or decrease the number of master windows (+1/-1)",
       "args": [
-        "int"
+        {
+          "kind": "int",
+          "name": "delta",
+          "label": "Delta",
+          "description": "Number of masters to add (+1) or remove (-1)",
+          "placeholder": "+1",
+          "required": true
+        }
       ]
     },
     "killclient": {
       "category": "window",
       "description": "Close the focused window",
       "args": [
-        "force"
+        {
+          "kind": "force",
+          "name": "force",
+          "label": "Force",
+          "description": "Close the window even if it resists",
+          "required": false
+        }
       ]
     },
     "leaveoverview": {
@@ -4121,7 +4226,14 @@
       "category": "system",
       "description": "Load and apply a config file by absolute path",
       "args": [
-        "string"
+        {
+          "kind": "string",
+          "name": "path",
+          "label": "Config Path",
+          "description": "Absolute path to the config file to load",
+          "placeholder": "/home/user/.config/mango/alt.conf",
+          "required": true
+        }
       ]
     },
     "minimized": {
@@ -4133,29 +4245,61 @@
       "category": "focus",
       "description": "Move the focused window in a direction",
       "args": [
-        "direction"
+        {
+          "kind": "direction",
+          "name": "direction",
+          "label": "Direction",
+          "description": "Move the focused window in this direction",
+          "required": false
+        }
       ]
     },
     "moveresize": {
       "category": "floating",
       "description": "Initiate interactive mouse-driven move or resize (curmove/curresize). Used with mousebind",
       "args": [
-        "mouse-action"
+        {
+          "kind": "mouse-action",
+          "name": "action",
+          "label": "Action",
+          "description": "Mouse action (curmove/curresize)",
+          "required": false
+        }
       ]
     },
     "movewin": {
       "category": "floating",
       "description": "Move the floating window by absolute or relative offset (+/-x,+/-y)",
       "args": [
-        "int",
-        "int"
+        {
+          "kind": "int",
+          "name": "x",
+          "label": "X Offset",
+          "description": "Absolute (100) or relative (+50/-25)",
+          "placeholder": "+50",
+          "required": true
+        },
+        {
+          "kind": "int",
+          "name": "y",
+          "label": "Y Offset",
+          "description": "Absolute (100) or relative (+50/-25)",
+          "placeholder": "+100",
+          "required": true
+        }
       ]
     },
     "overcircle": {
       "category": "layout",
       "description": "Cycle focus in the overview grid",
       "args": [
-        "overcircle"
+        {
+          "kind": "overcircle",
+          "name": "overcircle",
+          "label": "Direction",
+          "description": "Cycle focus in the overview grid",
+          "required": false
+        }
       ]
     },
     "quit": {
@@ -4172,8 +4316,22 @@
       "category": "floating",
       "description": "Resize the window by absolute or relative width/height (+/-w,+/-h)",
       "args": [
-        "int",
-        "int"
+        {
+          "kind": "int",
+          "name": "w",
+          "label": "Width",
+          "description": "Absolute (200) or relative (+50/-25)",
+          "placeholder": "+50",
+          "required": true
+        },
+        {
+          "kind": "int",
+          "name": "h",
+          "label": "Height",
+          "description": "Absolute (200) or relative (+50/-25)",
+          "placeholder": "+100",
+          "required": true
+        }
       ]
     },
     "restore_minimized": {
@@ -4185,57 +4343,124 @@
       "category": "layout",
       "description": "Move a window into or out of the scroller stack by direction (left/right/up/down)",
       "args": [
-        "direction"
+        {
+          "kind": "direction",
+          "name": "direction",
+          "label": "Direction",
+          "description": "Move window in scroller stack",
+          "required": false
+        }
       ]
     },
     "setkeymode": {
       "category": "bindings",
       "description": "Switch the active keybinding mode (submap)",
       "args": [
-        "string"
+        {
+          "kind": "string",
+          "name": "mode",
+          "label": "Mode Name",
+          "description": "Target keybinding mode (submap)",
+          "placeholder": "resize",
+          "required": true
+        }
       ]
     },
     "setlayout": {
       "category": "layout",
       "description": "Switch to a specific layout by name (tile, scroller, grid, deck, monocle, center_tile, vertical_tile, vertical_scroller)",
       "args": [
-        "layout"
+        {
+          "kind": "layout",
+          "name": "layout",
+          "label": "Layout",
+          "description": "Target layout name",
+          "required": true
+        }
       ]
     },
     "setmfact": {
       "category": "layout",
       "description": "Increase or decrease the master area size ratio (e.g. +0.05)",
       "args": [
-        "float"
+        {
+          "kind": "float",
+          "name": "ratio",
+          "label": "Ratio",
+          "description": "Master area ratio change (±0.05)",
+          "placeholder": "+0.05",
+          "required": true,
+          "min": -0.9,
+          "max": 0.9,
+          "step": 0.01
+        }
       ]
     },
     "setoption": {
       "category": "system",
       "description": "Temporarily set a configuration option at runtime (key, value)",
       "args": [
-        "option",
-        "free"
+        {
+          "kind": "option",
+          "name": "key",
+          "label": "Option Key",
+          "description": "Config key to change",
+          "placeholder": "gappih",
+          "required": true
+        },
+        {
+          "kind": "free",
+          "name": "value",
+          "label": "Value",
+          "description": "New value",
+          "placeholder": "10",
+          "required": true
+        }
       ]
     },
     "set_proportion": {
       "category": "layout",
       "description": "Set the scroller layout window proportion (0.0–1.0)",
       "args": [
-        "unit-float"
+        {
+          "kind": "unit-float",
+          "name": "proportion",
+          "label": "Proportion",
+          "description": "Window proportion (0.0–1.0)",
+          "placeholder": "0.5",
+          "required": true,
+          "min": 0,
+          "max": 1,
+          "step": 0.01
+        }
       ]
     },
     "sleep_monitor": {
       "category": "monitor",
       "description": "Put a monitor into sleep / standby by monitor spec",
       "args": [
-        "monitor"
+        {
+          "kind": "monitor",
+          "name": "monitor",
+          "label": "Monitor",
+          "description": "Monitor name (e.g. DP-1)",
+          "placeholder": "e.g. DP-1",
+          "required": true
+        }
       ]
     },
     "sleep_toggle_monitor": {
       "category": "monitor",
       "description": "Toggle sleep / standby state on a monitor by monitor spec",
       "args": [
-        "monitor"
+        {
+          "kind": "monitor",
+          "name": "monitor",
+          "label": "Monitor",
+          "description": "Monitor name (e.g. DP-1)",
+          "placeholder": "e.g. DP-1",
+          "required": true
+        }
       ]
     },
     "smartkillclient": {
@@ -4247,50 +4472,104 @@
       "category": "floating",
       "description": "Move the floating window by the snap distance in a direction (left/right/up/down)",
       "args": [
-        "direction"
+        {
+          "kind": "direction",
+          "name": "direction",
+          "label": "Direction",
+          "description": "Snap direction",
+          "required": false
+        }
       ]
     },
     "smartresizewin": {
       "category": "floating",
       "description": "Resize the floating window by the snap distance in a direction (left/right/up/down)",
       "args": [
-        "direction"
+        {
+          "kind": "direction",
+          "name": "direction",
+          "label": "Direction",
+          "description": "Resize direction",
+          "required": false
+        }
       ]
     },
     "spawn": {
       "category": "system",
       "description": "Execute a command (args are joined with spaces)",
       "args": [
-        "free"
+        {
+          "kind": "free",
+          "name": "command",
+          "label": "Command",
+          "description": "Command to execute",
+          "placeholder": "foot --class myclass",
+          "required": true
+        }
       ]
     },
     "spawn_on_empty": {
       "category": "system",
       "description": "Execute a command only if the specified tag (1-9) is empty",
       "args": [
-        "string",
-        "tag-mask"
+        {
+          "kind": "string",
+          "name": "command",
+          "label": "Command",
+          "description": "Command to spawn",
+          "placeholder": "foot",
+          "required": true
+        },
+        {
+          "kind": "tag-mask",
+          "name": "tag",
+          "label": "Target Tag",
+          "description": "Only spawn if tag is empty (1-9)",
+          "required": true
+        }
       ]
     },
     "spawn_shell": {
       "category": "system",
       "description": "Execute a shell command, supports pipes and shell operators (|, &&, ;)",
       "args": [
-        "free"
+        {
+          "kind": "free",
+          "name": "command",
+          "label": "Command",
+          "description": "Shell command",
+          "placeholder": "sh -c 'notify-send Hello'",
+          "required": true
+        }
       ]
     },
     "switcher": {
       "category": "focus",
       "description": "Switch between windows using the switcher",
       "args": [
-        "switcher"
+        {
+          "kind": "switcher",
+          "name": "switcher",
+          "label": "Direction",
+          "description": "Switcher direction",
+          "required": false
+        }
       ]
     },
     "switch_keyboard_layout": {
       "category": "input",
       "description": "Switch the keyboard layout. Optional index (0, 1, 2…) selects a specific layout",
       "args": [
-        "index100"
+        {
+          "kind": "index100",
+          "name": "index",
+          "label": "Layout Index",
+          "description": "Keyboard layout index (0, 1, 2…)",
+          "placeholder": "0",
+          "required": false,
+          "min": 0,
+          "max": 100
+        }
       ]
     },
     "switch_layout": {
@@ -4302,38 +4581,88 @@
       "category": "layout",
       "description": "Cycle through scroller proportion presets (next/prev)",
       "args": [
-        "circle"
+        {
+          "kind": "circle",
+          "name": "circle-dir",
+          "label": "Direction",
+          "description": "Cycle through presets",
+          "required": false
+        }
       ]
     },
     "tag": {
       "category": "tag",
       "description": "Move the focused window to a tag (1-9). Optional synctag flag (0/1) syncs across monitors",
       "args": [
-        "tag-mask",
-        "bool"
+        {
+          "kind": "tag-mask",
+          "name": "tag",
+          "label": "Target Tag",
+          "description": "Tag number (1-9)",
+          "required": true
+        },
+        {
+          "kind": "bool",
+          "name": "synctag",
+          "label": "Sync Across Monitors",
+          "description": "Apply to all monitors",
+          "required": false
+        }
       ]
     },
     "tagcrossmon": {
       "category": "tag",
       "description": "Move the focused window to the specified tag on the specified monitor",
       "args": [
-        "tag-mask",
-        "monitor"
+        {
+          "kind": "tag-mask",
+          "name": "tag",
+          "label": "Target Tag",
+          "description": "Tag number (1-9)",
+          "required": true
+        },
+        {
+          "kind": "monitor",
+          "name": "monitor",
+          "label": "Monitor",
+          "description": "Monitor name (e.g. DP-1)",
+          "placeholder": "Monitor name",
+          "required": false
+        }
       ]
     },
     "tagmon": {
       "category": "monitor",
       "description": "Move the focused window to a monitor by direction or monitor name. Optional keeptag flag (0/1)",
       "args": [
-        "monitor",
-        "bool"
+        {
+          "kind": "monitor",
+          "name": "target",
+          "label": "Target Monitor",
+          "description": "Direction (left/right/up/down) or monitor name (e.g. DP-1)",
+          "placeholder": "left or DP-1",
+          "required": false
+        },
+        {
+          "kind": "bool",
+          "name": "keeptag",
+          "label": "Keep Tag",
+          "description": "Keep window's current tag (0/1)",
+          "required": false
+        }
       ]
     },
     "tagsilent": {
       "category": "tag",
       "description": "Move the focused window to a tag (1-9) without switching focus to it",
       "args": [
-        "tag-mask"
+        {
+          "kind": "tag-mask",
+          "name": "tag",
+          "label": "Target Tag",
+          "description": "Tag number (1-9)",
+          "required": true
+        }
       ]
     },
     "tag_special_silent": {
@@ -4350,14 +4679,26 @@
       "category": "tag",
       "description": "Move the focused window to the previous tag. Optional synctag flag",
       "args": [
-        "bool"
+        {
+          "kind": "bool",
+          "name": "synctag",
+          "label": "Sync Across Monitors",
+          "description": "Apply to all monitors (0/1)",
+          "required": false
+        }
       ]
     },
     "tagtoright": {
       "category": "tag",
       "description": "Move the focused window to the next tag. Optional synctag flag",
       "args": [
-        "bool"
+        {
+          "kind": "bool",
+          "name": "synctag",
+          "label": "Sync Across Monitors",
+          "description": "Apply to all monitors (0/1)",
+          "required": false
+        }
       ]
     },
     "toggle_all_floating": {
@@ -4399,8 +4740,22 @@
       "category": "monitor",
       "description": "Enable, disable, or toggle HDR on a monitor by monitor spec",
       "args": [
-        "on-off",
-        "monitor"
+        {
+          "kind": "on-off",
+          "name": "state",
+          "label": "State",
+          "description": "on, off, or toggle (default)",
+          "placeholder": "toggle",
+          "required": false
+        },
+        {
+          "kind": "monitor",
+          "name": "monitor",
+          "label": "Monitor",
+          "description": "Monitor name (e.g. DP-1). Applies to all monitors when empty",
+          "placeholder": "e.g. DP-1",
+          "required": false
+        }
       ]
     },
     "togglejump": {
@@ -4417,16 +4772,44 @@
       "category": "monitor",
       "description": "Toggle a monitor's power state by monitor spec",
       "args": [
-        "monitor"
+        {
+          "kind": "monitor",
+          "name": "monitor",
+          "label": "Monitor",
+          "description": "Monitor name (e.g. DP-1)",
+          "placeholder": "e.g. DP-1",
+          "required": true
+        }
       ]
     },
     "toggle_named_scratchpad": {
       "category": "scratchpad",
       "description": "Toggle a named scratchpad — launches app if not running, otherwise shows/hides it",
       "args": [
-        "string",
-        "string",
-        "string"
+        {
+          "kind": "string",
+          "name": "id",
+          "label": "Identifier",
+          "description": "Unique scratchpad ID",
+          "placeholder": "e.g. term-scratch",
+          "required": true
+        },
+        {
+          "kind": "string",
+          "name": "title",
+          "label": "Window Title",
+          "description": "Match window by title (optional)",
+          "placeholder": "e.g. Terminal",
+          "required": false
+        },
+        {
+          "kind": "string",
+          "name": "spawn",
+          "label": "Command",
+          "description": "Launch this command if no window matches",
+          "placeholder": "e.g. foot",
+          "required": false
+        }
       ]
     },
     "toggleoverlay": {
@@ -4438,7 +4821,13 @@
       "category": "layout",
       "description": "Toggle the overview/tab mode for window switching",
       "args": [
-        "bool"
+        {
+          "kind": "bool",
+          "name": "tabmode",
+          "label": "Tab Mode",
+          "description": "1 = tab overview, 0 = grid overview",
+          "required": false
+        }
       ]
     },
     "toggle_render_border": {
@@ -4460,7 +4849,13 @@
       "category": "tag",
       "description": "Toggle a tag (1-9) on the focused window",
       "args": [
-        "tag-mask"
+        {
+          "kind": "tag-mask",
+          "name": "tag",
+          "label": "Toggle Tag",
+          "description": "Tag to toggle on the focused window (1-9)",
+          "required": true
+        }
       ]
     },
     "toggle_trackpad_enable": {
@@ -4472,79 +4867,160 @@
       "category": "tag",
       "description": "Toggle a tag's visibility (1-9) in the current view",
       "args": [
-        "tag-mask"
+        {
+          "kind": "tag-mask",
+          "name": "tag",
+          "label": "Toggle Tag",
+          "description": "Tag whose visibility to toggle (1-9)",
+          "required": true
+        }
       ]
     },
     "view": {
       "category": "tag",
       "description": "Switch to a tag by number (1-9), mask (e.g. 1|3|5), or special values (-1=previous, 0=all). Optional synctag flag",
       "args": [
-        "tag-mask",
-        "bool"
+        {
+          "kind": "tag-mask",
+          "name": "tag",
+          "label": "Tag(s)",
+          "description": "Tag number (1-9), mask (1|3|5), -1 = previous, 0 = all",
+          "placeholder": "e.g. 1 or 1|3|5",
+          "required": true
+        },
+        {
+          "kind": "bool",
+          "name": "synctag",
+          "label": "Sync Across Monitors",
+          "description": "Apply to all monitors",
+          "required": false
+        }
       ]
     },
     "viewcrossmon": {
       "category": "tag",
       "description": "View the specified tag on the specified monitor",
       "args": [
-        "tag-mask",
-        "monitor"
+        {
+          "kind": "tag-mask",
+          "name": "tag",
+          "label": "Target Tag",
+          "description": "Tag number (1-9)",
+          "required": true
+        },
+        {
+          "kind": "monitor",
+          "name": "monitor",
+          "label": "Monitor",
+          "description": "Monitor name (e.g. DP-1)",
+          "placeholder": "Monitor name",
+          "required": false
+        }
       ]
     },
     "view_insert": {
       "category": "tag",
       "description": "Insert an empty tag before or after the current one",
       "args": [
-        "prev-next"
+        {
+          "kind": "prev-next",
+          "name": "prev-next",
+          "label": "Direction",
+          "description": "Insert before or after the current tag",
+          "required": false
+        }
       ]
     },
     "viewnext_have_client": {
       "category": "tag",
       "description": "View the next tag if it has a client, otherwise the current tag",
       "args": [
-        "bool"
+        {
+          "kind": "bool",
+          "name": "synctag",
+          "label": "Sync Across Monitors",
+          "description": "Apply to all monitors (0/1)",
+          "required": false
+        }
       ]
     },
     "viewprev_have_client": {
       "category": "tag",
       "description": "View the previous tag if it has a client, otherwise the current tag",
       "args": [
-        "bool"
+        {
+          "kind": "bool",
+          "name": "synctag",
+          "label": "Sync Across Monitors",
+          "description": "Apply to all monitors (0/1)",
+          "required": false
+        }
       ]
     },
     "viewtoleft": {
       "category": "tag",
       "description": "View the previous tag. Optional synctag flag (0/1) syncs across monitors",
       "args": [
-        "bool"
+        {
+          "kind": "bool",
+          "name": "synctag",
+          "label": "Sync Across Monitors",
+          "description": "Apply to all monitors (0/1)",
+          "required": false
+        }
       ]
     },
     "viewtoleft_have_client": {
       "category": "tag",
       "description": "View the previous tag and focus a client if one is present. Optional synctag flag",
       "args": [
-        "bool"
+        {
+          "kind": "bool",
+          "name": "synctag",
+          "label": "Sync Across Monitors",
+          "description": "Apply to all monitors (0/1)",
+          "required": false
+        }
       ]
     },
     "viewtoright": {
       "category": "tag",
       "description": "View the next tag. Optional synctag flag (0/1) syncs across monitors",
       "args": [
-        "bool"
+        {
+          "kind": "bool",
+          "name": "synctag",
+          "label": "Sync Across Monitors",
+          "description": "Apply to all monitors (0/1)",
+          "required": false
+        }
       ]
     },
     "viewtoright_have_client": {
       "category": "tag",
       "description": "View the next tag and focus a client if one is present. Optional synctag flag",
       "args": [
-        "bool"
+        {
+          "kind": "bool",
+          "name": "synctag",
+          "label": "Sync Across Monitors",
+          "description": "Apply to all monitors (0/1)",
+          "required": false
+        }
       ]
     },
     "wakeup_monitor": {
       "category": "monitor",
       "description": "Wake up a sleeping monitor by monitor spec",
       "args": [
-        "monitor"
+        {
+          "kind": "monitor",
+          "name": "monitor",
+          "label": "Monitor",
+          "description": "Monitor name (e.g. DP-1)",
+          "placeholder": "e.g. DP-1",
+          "required": true
+        }
       ]
     },
     "zoom": {
@@ -4601,6 +5077,39 @@
     "bool": [
       "0",
       "1"
+    ],
+    "tag-mask": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "31"
     ],
     "layout": [
       "tile",

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import { DISPATCHERS, DISPATCHER_ARGS } from "@mangowm.github.io/config/catalog";
 
-import { DIRECTION_OPTS } from "../types";
+import { DIRECTION_OPTS } from "./types";
 import { MANGO_DISPATCHERS } from "./index";
 
 describe("dispatcher metadata", () => {

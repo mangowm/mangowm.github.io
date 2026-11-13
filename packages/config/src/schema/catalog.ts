@@ -8,8 +8,8 @@ import {
   BINDING_KINDS,
   CATEGORIES,
   DIRECTIVES,
+  DISPATCHER_ARG_META,
   DISPATCHER_ARG_OPTIONS,
-  DISPATCHER_ARGS,
   DISPATCHER_CATEGORIES,
   DISPATCHER_CATEGORY_ORDER,
   DISPATCHER_DESCRIPTIONS,
@@ -43,7 +43,7 @@ export function buildCatalog() {
         {
           category: DISPATCHER_CATEGORIES[name],
           description: DISPATCHER_DESCRIPTIONS[name],
-          args: DISPATCHER_ARGS[name],
+          args: DISPATCHER_ARG_META[name],
         },
       ]),
     ),
