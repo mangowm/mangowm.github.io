@@ -58,5 +58,7 @@ export interface DispatcherInfo {
   name: string;
   category: DispatcherCategory;
   description: string;
+  aliases: readonly string[];
+  examples: readonly string[];
   args: DispatcherArg[];
 }

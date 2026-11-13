@@ -3953,11 +3953,17 @@
     "centerwin": {
       "category": "window",
       "description": "Center the floating window on screen",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "chvt": {
       "category": "system",
       "description": "Switch to a virtual terminal by number",
+      "aliases": [],
+      "examples": [
+        "2"
+      ],
       "args": [
         {
           "kind": "int",
@@ -3974,6 +3980,13 @@
     "comboview": {
       "category": "tag",
       "description": "View multiple tags pressed simultaneously (combo-key style navigation)",
+      "aliases": [
+        "combo view",
+        "multi tag view"
+      ],
+      "examples": [
+        "1|3"
+      ],
       "args": [
         {
           "kind": "tag-mask",
@@ -3987,6 +4000,8 @@
     "create_virtual_output": {
       "category": "system",
       "description": "Create a headless virtual monitor (for VNC or Sunshine streaming)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "string",
@@ -4001,11 +4016,15 @@
     "destroy_all_virtual_output": {
       "category": "system",
       "description": "Destroy all headless virtual monitors",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "disable_monitor": {
       "category": "monitor",
       "description": "Power off / shutdown a monitor by monitor spec",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "monitor",
@@ -4020,26 +4039,36 @@
     "dwindle_split_horizontal": {
       "category": "layout",
       "description": "Set the split window direction to horizontal in dwindle layout",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "dwindle_split_vertical": {
       "category": "layout",
       "description": "Set the split window direction to vertical in dwindle layout",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "dwindle_toggle_current_split": {
       "category": "layout",
       "description": "Toggle the split direction of the currently focused window in dwindle layout",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "dwindle_toggle_split_direction": {
       "category": "layout",
       "description": "Toggle the split direction in dwindle layout (manual split mode)",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "enable_monitor": {
       "category": "monitor",
       "description": "Power on a monitor by monitor spec",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "monitor",
@@ -4054,11 +4083,15 @@
     "enteroverview": {
       "category": "layout",
       "description": "Enter overview mode",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "exchange_client": {
       "category": "focus",
       "description": "Swap the focused window with its neighbour in a direction (left/right/up/down)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "direction",
@@ -4072,6 +4105,8 @@
     "exchange_stack_client": {
       "category": "focus",
       "description": "Exchange the focused window's position in the stacking order (next/prev)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "circle",
@@ -4085,6 +4120,18 @@
     "focusdir": {
       "category": "focus",
       "description": "Focus the nearest window in a direction (left/right/up/down)",
+      "aliases": [
+        "directional focus",
+        "focus left",
+        "focus right"
+      ],
+      "examples": [
+        "left",
+        "right",
+        "up",
+        "down",
+        "alldir"
+      ],
       "args": [
         {
           "kind": "direction",
@@ -4098,16 +4145,29 @@
     "focusid": {
       "category": "focus",
       "description": "Focus a specific window by its client ID",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "focuslast": {
       "category": "focus",
       "description": "Focus the previously active window",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "focusmon": {
       "category": "monitor",
       "description": "Focus a monitor by direction or monitor name",
+      "aliases": [
+        "monitor focus",
+        "switch monitor"
+      ],
+      "examples": [
+        "left",
+        "next",
+        "eDP-1"
+      ],
       "args": [
         {
           "kind": "monitor",
@@ -4122,6 +4182,13 @@
     "focusstack": {
       "category": "focus",
       "description": "Cycle focus within the stacking order (next/prev)",
+      "aliases": [
+        "cycle focus"
+      ],
+      "examples": [
+        "next",
+        "prev"
+      ],
       "args": [
         {
           "kind": "circle",
@@ -4135,6 +4202,14 @@
     "focus_window_or_workspace": {
       "category": "focus",
       "description": "Focus the window in a direction, falling back to the tag",
+      "aliases": [
+        "focus window or tag",
+        "directional focus"
+      ],
+      "examples": [
+        "left",
+        "right"
+      ],
       "args": [
         {
           "kind": "direction",
@@ -4148,6 +4223,8 @@
     "groupfocus": {
       "category": "group",
       "description": "Cycle focus within a window group (next/prev)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "circle",
@@ -4161,6 +4238,8 @@
     "groupjoin": {
       "category": "group",
       "description": "Join the adjacent window's group in a direction (left/right/up/down)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "direction",
@@ -4174,11 +4253,15 @@
     "groupleave": {
       "category": "group",
       "description": "Leave the current window group",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "incgaps": {
       "category": "appearance",
       "description": "Adjust the gap size by a relative value (+/-N)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "int",
@@ -4193,6 +4276,8 @@
     "incnmaster": {
       "category": "layout",
       "description": "Increase or decrease the number of master windows (+1/-1)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "int",
@@ -4207,6 +4292,14 @@
     "killclient": {
       "category": "window",
       "description": "Close the focused window",
+      "aliases": [
+        "close window",
+        "kill window"
+      ],
+      "examples": [
+        "force",
+        "unforce"
+      ],
       "args": [
         {
           "kind": "force",
@@ -4220,11 +4313,15 @@
     "leaveoverview": {
       "category": "layout",
       "description": "Leave overview mode",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "load_config_file": {
       "category": "system",
       "description": "Load and apply a config file by absolute path",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "string",
@@ -4239,11 +4336,15 @@
     "minimized": {
       "category": "scratchpad",
       "description": "Minimize window to scratchpad",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "move_client": {
       "category": "focus",
       "description": "Move the focused window in a direction",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "direction",
@@ -4257,6 +4358,14 @@
     "moveresize": {
       "category": "floating",
       "description": "Initiate interactive mouse-driven move or resize (curmove/curresize). Used with mousebind",
+      "aliases": [
+        "move resize",
+        "mouse move resize"
+      ],
+      "examples": [
+        "curmove",
+        "curresize"
+      ],
       "args": [
         {
           "kind": "mouse-action",
@@ -4270,6 +4379,8 @@
     "movewin": {
       "category": "floating",
       "description": "Move the floating window by absolute or relative offset (+/-x,+/-y)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "int",
@@ -4292,6 +4403,8 @@
     "overcircle": {
       "category": "layout",
       "description": "Cycle focus in the overview grid",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "overcircle",
@@ -4305,16 +4418,26 @@
     "quit": {
       "category": "system",
       "description": "Exit mangowm",
+      "aliases": [
+        "exit"
+      ],
+      "examples": [],
       "args": []
     },
     "reload_config": {
       "category": "system",
       "description": "Hot-reload the configuration file at runtime",
+      "aliases": [
+        "reload"
+      ],
+      "examples": [],
       "args": []
     },
     "resizewin": {
       "category": "floating",
       "description": "Resize the window by absolute or relative width/height (+/-w,+/-h)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "int",
@@ -4337,11 +4460,15 @@
     "restore_minimized": {
       "category": "scratchpad",
       "description": "Restore the most recently minimized window from scratchpad",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "scroller_stack": {
       "category": "layout",
       "description": "Move a window into or out of the scroller stack by direction (left/right/up/down)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "direction",
@@ -4355,6 +4482,13 @@
     "setkeymode": {
       "category": "bindings",
       "description": "Switch the active keybinding mode (submap)",
+      "aliases": [
+        "key mode",
+        "submap"
+      ],
+      "examples": [
+        "resize"
+      ],
       "args": [
         {
           "kind": "string",
@@ -4369,6 +4503,15 @@
     "setlayout": {
       "category": "layout",
       "description": "Switch to a specific layout by name (tile, scroller, grid, deck, monocle, center_tile, vertical_tile, vertical_scroller)",
+      "aliases": [
+        "switch layout",
+        "change layout"
+      ],
+      "examples": [
+        "tile",
+        "scroller",
+        "dwindle"
+      ],
       "args": [
         {
           "kind": "layout",
@@ -4382,6 +4525,13 @@
     "setmfact": {
       "category": "layout",
       "description": "Increase or decrease the master area size ratio (e.g. +0.05)",
+      "aliases": [
+        "master factor"
+      ],
+      "examples": [
+        "+0.05",
+        "-0.05"
+      ],
       "args": [
         {
           "kind": "float",
@@ -4399,6 +4549,13 @@
     "setoption": {
       "category": "system",
       "description": "Temporarily set a configuration option at runtime (key, value)",
+      "aliases": [
+        "set option"
+      ],
+      "examples": [
+        "blur,1",
+        "blur_params_radius,3"
+      ],
       "args": [
         {
           "kind": "option",
@@ -4421,6 +4578,14 @@
     "set_proportion": {
       "category": "layout",
       "description": "Set the scroller layout window proportion (0.0–1.0)",
+      "aliases": [
+        "window proportion",
+        "scroller proportion"
+      ],
+      "examples": [
+        "0.5",
+        "1"
+      ],
       "args": [
         {
           "kind": "unit-float",
@@ -4438,6 +4603,8 @@
     "sleep_monitor": {
       "category": "monitor",
       "description": "Put a monitor into sleep / standby by monitor spec",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "monitor",
@@ -4452,6 +4619,8 @@
     "sleep_toggle_monitor": {
       "category": "monitor",
       "description": "Toggle sleep / standby state on a monitor by monitor spec",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "monitor",
@@ -4466,11 +4635,18 @@
     "smartkillclient": {
       "category": "window",
       "description": "Remove the focused window from the current tags, or close it if it is only there",
+      "aliases": [
+        "smart close",
+        "remove window"
+      ],
+      "examples": [],
       "args": []
     },
     "smartmovewin": {
       "category": "floating",
       "description": "Move the floating window by the snap distance in a direction (left/right/up/down)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "direction",
@@ -4484,6 +4660,8 @@
     "smartresizewin": {
       "category": "floating",
       "description": "Resize the floating window by the snap distance in a direction (left/right/up/down)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "direction",
@@ -4497,6 +4675,15 @@
     "spawn": {
       "category": "system",
       "description": "Execute a command (args are joined with spaces)",
+      "aliases": [
+        "launch",
+        "run",
+        "execute"
+      ],
+      "examples": [
+        "foot",
+        "kitty"
+      ],
       "args": [
         {
           "kind": "free",
@@ -4511,6 +4698,10 @@
     "spawn_on_empty": {
       "category": "system",
       "description": "Execute a command only if the specified tag (1-9) is empty",
+      "aliases": [],
+      "examples": [
+        "foot,1"
+      ],
       "args": [
         {
           "kind": "string",
@@ -4532,6 +4723,13 @@
     "spawn_shell": {
       "category": "system",
       "description": "Execute a shell command, supports pipes and shell operators (|, &&, ;)",
+      "aliases": [
+        "launch shell",
+        "run shell"
+      ],
+      "examples": [
+        "sh -c 'echo hello'"
+      ],
       "args": [
         {
           "kind": "free",
@@ -4546,6 +4744,11 @@
     "switcher": {
       "category": "focus",
       "description": "Switch between windows using the switcher",
+      "aliases": [],
+      "examples": [
+        "all_next",
+        "next"
+      ],
       "args": [
         {
           "kind": "switcher",
@@ -4559,6 +4762,14 @@
     "switch_keyboard_layout": {
       "category": "input",
       "description": "Switch the keyboard layout. Optional index (0, 1, 2…) selects a specific layout",
+      "aliases": [
+        "keyboard layout",
+        "layout index"
+      ],
+      "examples": [
+        "0",
+        "2"
+      ],
       "args": [
         {
           "kind": "index100",
@@ -4575,11 +4786,18 @@
     "switch_layout": {
       "category": "layout",
       "description": "Cycle through layouts. The circle_layout option (settable per-binding in the edit dialog) restricts which layouts are cycled.",
+      "aliases": [
+        "cycle layout",
+        "next layout"
+      ],
+      "examples": [],
       "args": []
     },
     "switch_proportion_preset": {
       "category": "layout",
       "description": "Cycle through scroller proportion presets (next/prev)",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "circle",
@@ -4593,6 +4811,14 @@
     "tag": {
       "category": "tag",
       "description": "Move the focused window to a tag (1-9). Optional synctag flag (0/1) syncs across monitors",
+      "aliases": [
+        "move to tag",
+        "send to tag"
+      ],
+      "examples": [
+        "1",
+        "1|3"
+      ],
       "args": [
         {
           "kind": "tag-mask",
@@ -4613,6 +4839,12 @@
     "tagcrossmon": {
       "category": "tag",
       "description": "Move the focused window to the specified tag on the specified monitor",
+      "aliases": [
+        "move to tag on monitor"
+      ],
+      "examples": [
+        "1,eDP-1"
+      ],
       "args": [
         {
           "kind": "tag-mask",
@@ -4634,6 +4866,13 @@
     "tagmon": {
       "category": "monitor",
       "description": "Move the focused window to a monitor by direction or monitor name. Optional keeptag flag (0/1)",
+      "aliases": [
+        "move to monitor",
+        "send to monitor"
+      ],
+      "examples": [
+        "eDP-1,1"
+      ],
       "args": [
         {
           "kind": "monitor",
@@ -4655,6 +4894,8 @@
     "tagsilent": {
       "category": "tag",
       "description": "Move the focused window to a tag (1-9) without switching focus to it",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "tag-mask",
@@ -4668,16 +4909,22 @@
     "tag_special_silent": {
       "category": "tag",
       "description": "Move the focused window to or from the special tag without focusing it",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "tag_special_tag": {
       "category": "tag",
       "description": "Move the focused window to or from the special tag",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "tagtoleft": {
       "category": "tag",
       "description": "Move the focused window to the previous tag. Optional synctag flag",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "bool",
@@ -4691,6 +4938,8 @@
     "tagtoright": {
       "category": "tag",
       "description": "Move the focused window to the next tag. Optional synctag flag",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "bool",
@@ -4704,41 +4953,70 @@
     "toggle_all_floating": {
       "category": "window",
       "description": "Toggle floating state for all visible clients",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "togglefakefullscreen": {
       "category": "window",
       "description": "Toggle fake fullscreen (window stays constrained to monitor)",
+      "aliases": [
+        "fake fullscreen",
+        "borderless fullscreen"
+      ],
+      "examples": [],
       "args": []
     },
     "togglefloating": {
       "category": "window",
       "description": "Toggle floating state of the focused window",
+      "aliases": [
+        "float window",
+        "floating"
+      ],
+      "examples": [],
       "args": []
     },
     "togglefullscreen": {
       "category": "window",
       "description": "Toggle fullscreen mode",
+      "aliases": [
+        "fullscreen"
+      ],
+      "examples": [],
       "args": []
     },
     "togglegaps": {
       "category": "appearance",
       "description": "Toggle gaps on and off",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "toggleglobal": {
       "category": "window",
       "description": "Pin window to all tags (stick across tag switches)",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "togglegroupbar": {
       "category": "group",
       "description": "Toggle the group bar on every tiled window",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "togglehdr": {
       "category": "monitor",
       "description": "Enable, disable, or toggle HDR on a monitor by monitor spec",
+      "aliases": [
+        "hdr"
+      ],
+      "examples": [
+        "on,eDP-1",
+        "off,DP-1"
+      ],
       "args": [
         {
           "kind": "on-off",
@@ -4761,16 +5039,22 @@
     "togglejump": {
       "category": "layout",
       "description": "Toggle the jump-label overlay for quick window selection",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "togglemaximizescreen": {
       "category": "window",
       "description": "Maximize window while keeping decorations and status bar visible",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "toggle_monitor": {
       "category": "monitor",
       "description": "Toggle a monitor's power state by monitor spec",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "monitor",
@@ -4785,6 +5069,12 @@
     "toggle_named_scratchpad": {
       "category": "scratchpad",
       "description": "Toggle a named scratchpad — launches app if not running, otherwise shows/hides it",
+      "aliases": [
+        "named scratchpad"
+      ],
+      "examples": [
+        "term,^term$,foot"
+      ],
       "args": [
         {
           "kind": "string",
@@ -4815,11 +5105,17 @@
     "toggleoverlay": {
       "category": "window",
       "description": "Toggle the overlay state for the focused window (always-on-top layer)",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "toggleoverview": {
       "category": "layout",
       "description": "Toggle the overview/tab mode for window switching",
+      "aliases": [],
+      "examples": [
+        "1"
+      ],
       "args": [
         {
           "kind": "bool",
@@ -4833,21 +5129,35 @@
     "toggle_render_border": {
       "category": "appearance",
       "description": "Toggle border rendering for the focused window",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "toggle_scratchpad": {
       "category": "scratchpad",
       "description": "Toggle the global scratchpad window",
+      "aliases": [
+        "scratchpad"
+      ],
+      "examples": [],
       "args": []
     },
     "toggle_special_tag": {
       "category": "tag",
       "description": "Toggle the special tag overlay",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "toggletag": {
       "category": "tag",
       "description": "Toggle a tag (1-9) on the focused window",
+      "aliases": [
+        "toggle tag"
+      ],
+      "examples": [
+        "1"
+      ],
       "args": [
         {
           "kind": "tag-mask",
@@ -4861,11 +5171,19 @@
     "toggle_trackpad_enable": {
       "category": "input",
       "description": "Toggle the trackpad on and off",
+      "aliases": [],
+      "examples": [],
       "args": []
     },
     "toggleview": {
       "category": "tag",
       "description": "Toggle a tag's visibility (1-9) in the current view",
+      "aliases": [
+        "toggle tag view"
+      ],
+      "examples": [
+        "1"
+      ],
       "args": [
         {
           "kind": "tag-mask",
@@ -4879,6 +5197,16 @@
     "view": {
       "category": "tag",
       "description": "Switch to a tag by number (1-9), mask (e.g. 1|3|5), or special values (-1=previous, 0=all). Optional synctag flag",
+      "aliases": [
+        "switch tag",
+        "change tag",
+        "view tag"
+      ],
+      "examples": [
+        "1",
+        "1|3",
+        "00"
+      ],
       "args": [
         {
           "kind": "tag-mask",
@@ -4900,6 +5228,12 @@
     "viewcrossmon": {
       "category": "tag",
       "description": "View the specified tag on the specified monitor",
+      "aliases": [
+        "view tag on monitor"
+      ],
+      "examples": [
+        "1,eDP-1"
+      ],
       "args": [
         {
           "kind": "tag-mask",
@@ -4921,6 +5255,8 @@
     "view_insert": {
       "category": "tag",
       "description": "Insert an empty tag before or after the current one",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "prev-next",
@@ -4934,6 +5270,8 @@
     "viewnext_have_client": {
       "category": "tag",
       "description": "View the next tag if it has a client, otherwise the current tag",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "bool",
@@ -4947,6 +5285,8 @@
     "viewprev_have_client": {
       "category": "tag",
       "description": "View the previous tag if it has a client, otherwise the current tag",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "bool",
@@ -4960,6 +5300,8 @@
     "viewtoleft": {
       "category": "tag",
       "description": "View the previous tag. Optional synctag flag (0/1) syncs across monitors",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "bool",
@@ -4973,6 +5315,8 @@
     "viewtoleft_have_client": {
       "category": "tag",
       "description": "View the previous tag and focus a client if one is present. Optional synctag flag",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "bool",
@@ -4986,6 +5330,8 @@
     "viewtoright": {
       "category": "tag",
       "description": "View the next tag. Optional synctag flag (0/1) syncs across monitors",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "bool",
@@ -4999,6 +5345,8 @@
     "viewtoright_have_client": {
       "category": "tag",
       "description": "View the next tag and focus a client if one is present. Optional synctag flag",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "bool",
@@ -5012,6 +5360,8 @@
     "wakeup_monitor": {
       "category": "monitor",
       "description": "Wake up a sleeping monitor by monitor spec",
+      "aliases": [],
+      "examples": [],
       "args": [
         {
           "kind": "monitor",
@@ -5026,6 +5376,8 @@
     "zoom": {
       "category": "focus",
       "description": "Swap the focused window with the master window",
+      "aliases": [],
+      "examples": [],
       "args": []
     }
   },

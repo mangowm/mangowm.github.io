@@ -18,10 +18,13 @@ export function useFilterBindings(
       // Mode filter applies to every binding type
       if (mode !== "All" && e.mode !== mode) return false;
       if (!q) return true;
-      const desc = DISPATCHER_MAP.get(e.func)?.description ?? "";
+      const info = DISPATCHER_MAP.get(e.func);
+      const desc = info?.description ?? "";
+      const aliases = info?.aliases.join(" ") ?? "";
       return (
         e.func.toLowerCase().includes(q) ||
         desc.toLowerCase().includes(q) ||
+        aliases.toLowerCase().includes(q) ||
         e.key.toLowerCase().includes(q) ||
         e.mods.toLowerCase().includes(q) ||
         e.mode.toLowerCase().includes(q) ||

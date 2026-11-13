@@ -141,7 +141,8 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
       for (const d of items) {
         const nameLower = d.name.toLowerCase();
         const descLower = d.description.toLowerCase();
-        if (nameLower.includes(q) || descLower.includes(q)) {
+        const aliasLower = d.aliases.join(" ").toLowerCase();
+        if (nameLower.includes(q) || descLower.includes(q) || aliasLower.includes(q)) {
           let score = 0;
           if (nameLower === q) score = 4;
           else if (nameLower.startsWith(q)) score = 3;

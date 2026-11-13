@@ -20,11 +20,13 @@ export { validateArgValue, validateAllArgs } from "./validate";
 
 import {
   CATEGORIES,
+  DISPATCHER_ALIASES,
   DISPATCHER_ARG_META,
   DISPATCHER_ARG_OPTIONS,
   DISPATCHER_CATEGORIES,
   DISPATCHER_CATEGORY_ORDER,
   DISPATCHER_DESCRIPTIONS,
+  DISPATCHER_EXAMPLES,
   DISPATCHERS,
   type DispatcherArgKind,
 } from "@mangowm.github.io/config/catalog";
@@ -78,6 +80,8 @@ export const MANGO_DISPATCHERS: DispatcherInfo[] = DISPATCHERS.map((name) => ({
   name,
   category: DISPATCHER_CATEGORIES[name],
   description: DISPATCHER_DESCRIPTIONS[name],
+  aliases: DISPATCHER_ALIASES[name] ?? [],
+  examples: DISPATCHER_EXAMPLES[name] ?? [],
   args: DISPATCHER_ARG_META[name].map(dispatcherArg),
 }));
 

@@ -162,7 +162,10 @@ const DYNAMIC_SOURCES: DynamicIndexSource[] = [
         return {
           id: `${prefix}:${i}`,
           label: `${b.func} (${b.type === "switch" ? b.key : `${b.mods || "none"} + ${b.key}`})`,
-          description: DISPATCHER_MAP.get(b.func)?.description ?? b.func,
+          description: (() => {
+            const info = DISPATCHER_MAP.get(b.func);
+            return [info?.description ?? b.func, ...(info?.aliases ?? [])].join(" ");
+          })(),
           sectionLabel: "Bindings",
           sectionId: "bindings",
           configKey: b.id,

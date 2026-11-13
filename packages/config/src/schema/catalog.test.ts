@@ -2,7 +2,11 @@ import { describe, expect, it } from "vite-plus/test";
 
 import { buildCatalog } from "./catalog";
 import { DISPATCHER_ARGS, DISPATCHERS } from "./data/dispatcherArgs";
-import { DISPATCHER_DESCRIPTIONS } from "./data/dispatcherMeta";
+import {
+  DISPATCHER_ALIASES,
+  DISPATCHER_DESCRIPTIONS,
+  DISPATCHER_EXAMPLES,
+} from "./data/dispatcherMeta";
 import { schema } from "./schema";
 
 const catalog = buildCatalog();
@@ -31,6 +35,10 @@ describe("catalog consistency", () => {
         DISPATCHER_ARGS[dispatcher],
       );
       expect(catalog.dispatchers[dispatcher].description).toBe(DISPATCHER_DESCRIPTIONS[dispatcher]);
+      expect(catalog.dispatchers[dispatcher].aliases).toEqual(DISPATCHER_ALIASES[dispatcher] ?? []);
+      expect(catalog.dispatchers[dispatcher].examples).toEqual(
+        DISPATCHER_EXAMPLES[dispatcher] ?? [],
+      );
     }
   });
 
