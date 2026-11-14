@@ -1,5 +1,6 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { cn } from "cn";
+import { Button } from "@mangowm/ui/components/button";
 import { getOverrideMeta, RULE_MATCHER_LABELS } from "@/lib/rules/metadata";
 import type { RuleType, ParsedRule } from "@/lib/rules/parser";
 
@@ -29,20 +30,24 @@ export function RuleCard({ rule, ruleType, index, onEdit, onDelete }: RuleCardPr
     >
       {/* Action Bar - Hidden until hover for a cleaner default state */}
       <div className="absolute top-2 right-2 z-10 flex items-center gap-0.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-        <button
+        <Button
+          variant="ghost"
+          size="icon-sm"
           onClick={() => onEdit(index)}
-          className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
           aria-label="Edit rule"
+          className="size-7 text-muted-foreground hover:bg-primary/10 hover:text-primary"
         >
           <Pencil className="size-3.5" />
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon-sm"
           onClick={() => onDelete(index)}
-          className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-destructive/15 hover:text-destructive"
           aria-label="Delete rule"
+          className="size-7 text-muted-foreground hover:bg-destructive/15 hover:text-destructive"
         >
           <Trash2 className="size-3.5" />
-        </button>
+        </Button>
       </div>
 
       {/* Matchers Header Section */}

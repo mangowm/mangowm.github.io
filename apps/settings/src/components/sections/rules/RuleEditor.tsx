@@ -184,7 +184,7 @@ function MatcherInput({
               {options.find((o) => o.value === currentValue)?.label ?? currentValue}
             </SelectValue>
           </SelectTrigger>
-          <SelectContent className="rounded-xl shadow-lg">
+          <SelectContent className="rounded-lg shadow-lg">
             {options.map((opt) => (
               <SelectItem key={opt.value} value={opt.value} className="text-[12px] font-medium">
                 {opt.label}

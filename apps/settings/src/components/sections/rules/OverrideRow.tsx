@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@mangowm/ui/components/select";
 import { Button } from "@mangowm/ui/components/button";
+import { ToggleGroup, ToggleGroupItem } from "@mangowm/ui/components/toggle-group";
 import { getOverrideMeta } from "@/lib/rules/metadata";
 import type { OverrideMeta, RuleType } from "@/lib/rules/types";
 
@@ -96,7 +97,15 @@ function OverrideInput({
       const current = opts.find((o) => o.value === value) ?? opts[isInheritMode ? 0 : 0];
 
       return (
-        <div className="flex shrink-0 overflow-hidden rounded-lg border border-border/40 bg-muted/30 p-1 shadow-inner">
+        <ToggleGroup
+          value={[current.value]}
+          onValueChange={(next) => {
+            const nextValue = next[0];
+            if (nextValue) onChange(nextValue);
+          }}
+          spacing={0}
+          className="shrink-0 rounded-lg border border-border/40 bg-muted/30 p-1 shadow-inner"
+        >
           {opts.map((opt) => {
             const isActive = opt.value === current.value;
 
@@ -108,10 +117,9 @@ function OverrideInput({
                   : "bg-background text-foreground border-border/50 shadow-sm";
 
             return (
-              <button
+              <ToggleGroupItem
                 key={opt.value}
-                type="button"
-                onClick={() => onChange(opt.value)}
+                value={opt.value}
                 className={cn(
                   "cursor-pointer rounded-md border border-transparent px-3 py-1 text-[11px] font-semibold tracking-wide transition-all duration-200",
                   isActive
@@ -120,10 +128,10 @@ function OverrideInput({
                 )}
               >
                 {opt.label}
-              </button>
+              </ToggleGroupItem>
             );
           })}
-        </div>
+        </ToggleGroup>
       );
     }
 
@@ -193,7 +201,7 @@ function OverrideInput({
               {(val) => meta.options?.find((o) => o.value === val)?.label ?? String(val)}
             </SelectValue>
           </SelectTrigger>
-          <SelectContent className="rounded-xl shadow-lg">
+          <SelectContent className="rounded-lg shadow-lg">
             {meta.options?.map((opt) => (
               <SelectItem key={opt.value} value={opt.value} className="text-[12px] font-medium">
                 {opt.label}
