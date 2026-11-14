@@ -1,17 +1,32 @@
+import { useMemo } from "react";
 import { MultiFileDiff } from "@pierre/diffs/react";
+import type { FileDiffOptions } from "@pierre/diffs";
+
+import type { ConfigDiffModel } from "@/lib/config/diff";
+
+const DIFF_OPTIONS: FileDiffOptions<undefined, undefined> = {
+  diffStyle: "unified",
+  disableFileHeader: true,
+  overflow: "wrap",
+  themeType: "dark",
+  theme: "pierre-dark",
+};
 
 export interface ConfigDiffProps {
-  name: string;
-  oldContents: string;
-  newContents: string;
+  diff: ConfigDiffModel;
 }
 
-function languageOf(name: string): "ini" | "toml" {
-  return name.endsWith(".toml") ? "toml" : "ini";
-}
+export function ConfigDiff({ diff }: ConfigDiffProps) {
+  const oldFile = useMemo(
+    () => ({ name: diff.name, contents: diff.oldText, lang: diff.language }),
+    [diff.name, diff.oldText, diff.language],
+  );
+  const newFile = useMemo(
+    () => ({ name: diff.name, contents: diff.newText, lang: diff.language }),
+    [diff.name, diff.newText, diff.language],
+  );
 
-export function ConfigDiff({ name, oldContents, newContents }: ConfigDiffProps) {
-  if (oldContents === newContents) {
+  if (!diff.changed) {
     return (
       <div className="flex h-full items-center justify-center text-sm text-muted-foreground/40">
         No changes
@@ -20,16 +35,6 @@ export function ConfigDiff({ name, oldContents, newContents }: ConfigDiffProps) 
   }
 
   return (
-    <MultiFileDiff
-      oldFile={{ name, contents: oldContents, lang: languageOf(name) }}
-      newFile={{ name, contents: newContents, lang: languageOf(name) }}
-      options={{
-        diffStyle: "unified",
-        disableFileHeader: true,
-        overflow: "wrap",
-        themeType: "dark",
-      }}
-      className="h-full"
-    />
+    <MultiFileDiff oldFile={oldFile} newFile={newFile} options={DIFF_OPTIONS} className="h-full" />
   );
 }
