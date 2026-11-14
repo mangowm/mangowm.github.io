@@ -356,9 +356,6 @@ importers:
       babel-plugin-react-compiler:
         specifier: 'catalog:'
         version: 1.0.0
-      cmdk:
-        specifier: ^1.1.1
-        version: 1.1.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       cn:
         specifier: 'catalog:'
         version: 0.4.0
