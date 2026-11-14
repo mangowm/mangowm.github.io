@@ -1,6 +1,14 @@
 import { FilePlus2, FolderOpen, Upload } from "lucide-react";
 
 import { Button } from "@mangowm/ui/components/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@mangowm/ui/components/empty";
 import { useConfigStore } from "@/lib/config/store";
 
 export function EmptyConfig() {
@@ -11,38 +19,37 @@ export function EmptyConfig() {
   const error = useConfigStore((state) => state.error);
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-6 py-16 text-center">
-      <div className="flex size-14 items-center justify-center rounded-full border border-border/50 bg-muted/20 text-muted-foreground/50">
-        <FilePlus2 className="size-6" />
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">
-          No configuration found
-        </h2>
-        <p className="max-w-sm text-sm text-muted-foreground">
+    <Empty className="mx-auto w-full max-w-xl flex-1 py-16">
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <FilePlus2 />
+        </EmptyMedia>
+        <EmptyTitle>No configuration found</EmptyTitle>
+        <EmptyDescription>
           Create a default mango configuration, or import an existing config folder.
-        </p>
-      </div>
+        </EmptyDescription>
+      </EmptyHeader>
 
       {error && <p className="text-sm text-destructive">{error}</p>}
 
-      <div className="flex flex-wrap items-center justify-center gap-2">
-        <Button onClick={() => void createDefault()}>
-          <FilePlus2 className="mr-1.5 size-4" />
-          Create default config
-        </Button>
-        <Button variant="secondary" onClick={() => void importConfig()}>
-          <Upload className="mr-1.5 size-4" />
-          Import folder
-        </Button>
-        {isTauri && (
-          <Button variant="ghost" onClick={() => void openConfigFolder()}>
-            <FolderOpen className="mr-1.5 size-4" />
-            Open config folder
+      <EmptyContent>
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <Button onClick={() => void createDefault()}>
+            <FilePlus2 className="mr-1.5 size-4" />
+            Create default config
           </Button>
-        )}
-      </div>
-    </div>
+          <Button variant="secondary" onClick={() => void importConfig()}>
+            <Upload className="mr-1.5 size-4" />
+            Import folder
+          </Button>
+          {isTauri && (
+            <Button variant="ghost" onClick={() => void openConfigFolder()}>
+              <FolderOpen className="mr-1.5 size-4" />
+              Open config folder
+            </Button>
+          )}
+        </div>
+      </EmptyContent>
+    </Empty>
   );
 }

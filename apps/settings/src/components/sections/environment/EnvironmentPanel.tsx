@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import { useConfigStore, useConfigValues } from "@/lib/config/store";
 import { Button } from "@mangowm/ui/components/button";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@mangowm/ui/components/input-group";
+import { Input } from "@mangowm/ui/components/input";
 import { Trash2, Plus } from "lucide-react";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
@@ -42,26 +44,26 @@ function EnvRow({
   return (
     <div className="group relative flex items-center justify-between gap-3 rounded-lg border border-transparent px-3 py-1.5 transition-colors focus-within:border-border/50 focus-within:bg-muted/30 hover:bg-muted/30">
       <div className="flex w-full flex-1 items-center gap-3">
-        <input
+        <Input
           value={localKey}
           onChange={(e) => setLocalKey(sanitizeKey(e.target.value))}
           onBlur={commitChanges}
           onKeyDown={(e) => {
             if (e.key === "Enter") e.currentTarget.blur();
           }}
-          className="w-1/3 rounded bg-transparent px-2 py-1 font-mono text-[13px] font-medium text-foreground transition-all outline-none placeholder:text-muted-foreground/30 focus:bg-background focus:ring-1 focus:ring-ring/40"
+          className="h-auto w-1/3 rounded-md border-0 bg-transparent px-2 py-1 font-mono text-[13px] font-medium text-foreground shadow-none transition-all placeholder:text-muted-foreground/30 focus-visible:bg-background focus-visible:ring-1 focus-visible:ring-ring/40 dark:bg-transparent"
           placeholder="KEY"
           spellCheck={false}
         />
         <span className="font-mono text-muted-foreground/40 select-none">=</span>
-        <input
+        <Input
           value={localValue}
           onChange={(e) => setLocalValue(e.target.value)}
           onBlur={commitChanges}
           onKeyDown={(e) => {
             if (e.key === "Enter") e.currentTarget.blur();
           }}
-          className="flex-1 rounded bg-transparent px-2 py-1 font-mono text-[13px] text-muted-foreground transition-all outline-none placeholder:text-muted-foreground/30 focus:bg-background focus:text-foreground focus:ring-1 focus:ring-ring/40"
+          className="h-auto flex-1 rounded-md border-0 bg-transparent px-2 py-1 font-mono text-[13px] text-muted-foreground shadow-none transition-all placeholder:text-muted-foreground/30 focus-visible:bg-background focus-visible:text-foreground focus-visible:ring-1 focus-visible:ring-ring/40 dark:bg-transparent"
           placeholder="value"
           spellCheck={false}
         />
@@ -129,34 +131,34 @@ export function EnvironmentPanel({ focusKey }: PanelProps) {
           onSubmit={handleAdd}
           className="flex flex-col items-center gap-2 rounded-lg bg-muted/10 p-2 sm:flex-row"
         >
-          <div className="flex w-full flex-1 items-center gap-2 rounded-md border border-border/40 bg-background/50 px-3 py-2 transition-all focus-within:border-ring/50 focus-within:bg-background focus-within:ring-2 focus-within:ring-ring/20">
-            <span className="shrink-0 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase select-none">
+          <InputGroup className="w-full flex-1 border-border/40 bg-background/50">
+            <InputGroupAddon className="text-[11px] font-semibold tracking-wider uppercase">
               Key
-            </span>
-            <input
+            </InputGroupAddon>
+            <InputGroupInput
               ref={keyInputRef}
               value={newKey}
               onChange={(e) => setNewKey(sanitizeKey(e.target.value))}
               onPaste={handleSmartPaste}
               placeholder="QT_QPA_PLATFORMTHEME"
-              className="w-full bg-transparent font-mono text-sm outline-none placeholder:text-muted-foreground/30"
+              className="font-mono text-sm"
               spellCheck={false}
             />
-          </div>
+          </InputGroup>
 
-          <div className="flex w-full flex-1 items-center gap-2 rounded-md border border-border/40 bg-background/50 px-3 py-2 transition-all focus-within:border-ring/50 focus-within:bg-background focus-within:ring-2 focus-within:ring-ring/20">
-            <span className="shrink-0 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase select-none">
+          <InputGroup className="w-full flex-1 border-border/40 bg-background/50">
+            <InputGroupAddon className="text-[11px] font-semibold tracking-wider uppercase">
               Value
-            </span>
-            <input
+            </InputGroupAddon>
+            <InputGroupInput
               ref={valueInputRef}
               value={newValue}
               onChange={(e) => setNewValue(e.target.value)}
               placeholder="qt6ct"
-              className="w-full bg-transparent font-mono text-sm outline-none placeholder:text-muted-foreground/30"
+              className="font-mono text-sm"
               spellCheck={false}
             />
-          </div>
+          </InputGroup>
 
           <Button
             type="submit"

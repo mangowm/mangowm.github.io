@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Plus, TerminalSquare, Trash2 } from "lucide-react";
 
 import { Button } from "@mangowm/ui/components/button";
+import { Input } from "@mangowm/ui/components/input";
 import { useConfigStore, useConfigValues } from "@/lib/config/store";
 import { useFocusField } from "@/lib/use-focus-field";
 import type { PanelProps } from "@/lib/presentation/section-types";
@@ -60,10 +61,10 @@ function CommandSection({
             className="group flex items-center gap-3 px-4 py-2 transition-colors focus-within:bg-accent/50 hover:bg-accent/50"
           >
             <span className="mt-0.5 font-mono text-sm text-muted-foreground/30 select-none">$</span>
-            <input
+            <Input
               value={command}
               onChange={(event) => update(index, event.target.value)}
-              className="flex-1 bg-transparent py-1 font-mono text-[13px] text-foreground outline-none placeholder:text-muted-foreground/40"
+              className="h-auto flex-1 rounded-none border-0 bg-transparent px-0 py-1 font-mono text-[13px] text-foreground shadow-none placeholder:text-muted-foreground/40 focus-visible:ring-0 dark:bg-transparent"
               spellCheck={false}
             />
             <Button
@@ -79,14 +80,14 @@ function CommandSection({
           </div>
         ))}
 
-        <div className="flex items-center gap-3 bg-muted/30 px-4 py-2.5">
+        <div className="flex items-center gap-3 border-t border-border/20 px-4 py-2">
           <span className="mt-0.5 font-mono text-sm text-muted-foreground/30 select-none">$</span>
-          <input
+          <Input
             ref={inputRef}
             value={newCommand}
             onChange={(event) => setNewCommand(event.target.value)}
             placeholder={placeholder}
-            className="flex-1 bg-transparent py-1 font-mono text-[13px] text-foreground outline-none placeholder:text-muted-foreground/40"
+            className="h-auto flex-1 rounded-none border-0 bg-transparent px-0 py-1 font-mono text-[13px] text-foreground shadow-none placeholder:text-muted-foreground/40 focus-visible:ring-0 dark:bg-transparent"
             spellCheck={false}
             onKeyDown={(event) => {
               if (event.key === "Enter") {

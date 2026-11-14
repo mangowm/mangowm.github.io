@@ -34,8 +34,10 @@ export function ConfigFile({ name, contents, onCommit, onIssues }: ConfigFilePro
   const timer = useRef<number | null>(null);
   const rootRef = useRef<HTMLDivElement | null>(null);
 
-  commitRef.current = onCommit;
-  issuesRef.current = onIssues;
+  useEffect(() => {
+    commitRef.current = onCommit;
+    issuesRef.current = onIssues;
+  });
 
   const flush = useCallback(() => {
     if (timer.current !== null) {
@@ -96,7 +98,7 @@ export function ConfigFile({ name, contents, onCommit, onIssues }: ConfigFilePro
           options={{
             disableFileHeader: true,
             overflow: "wrap",
-            themeType: "system",
+            themeType: "dark",
           }}
           className="h-full"
         />

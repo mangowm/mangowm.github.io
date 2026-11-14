@@ -38,7 +38,7 @@ export function SettingsSidebar({
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="data-[slot=sidebar-menu-button]:p-1.5!">
+            <SidebarMenuButton render={<div />} className="data-[slot=sidebar-menu-button]:p-1.5!">
               <img src={logo} alt="mangowm" className="size-5 shrink-0" />
               <div className="flex min-w-0 flex-col">
                 <span className="text-base leading-none font-semibold">mangowm settings</span>

@@ -3,6 +3,7 @@ import { useConfigStore, useConfigStr } from "@/lib/config/store";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import { PanelShell, PanelHeader, SectionCard } from "@/components/primitives/section-ui";
+import { Input } from "@mangowm/ui/components/input";
 import { parseCurve, serializeCurve } from "@/lib/curve";
 import type { BezierValue } from "@/lib/curve";
 import { EASING_PRESETS } from "@/lib/easings";
@@ -90,7 +91,7 @@ function NumberField({
       <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
         {label}
       </span>
-      <input
+      <Input
         type="text"
         inputMode="decimal"
         value={draft}
@@ -101,7 +102,7 @@ function NumberField({
           if (e.key === "Enter") commit();
         }}
         aria-label={label}
-        className="w-full rounded-md border border-border/50 bg-background/50 px-2 py-1 text-center font-mono text-[12px] text-foreground transition-colors outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/30"
+        className="w-full rounded-lg border-border/50 bg-background/50 px-2 py-1 text-center font-mono text-[12px] text-foreground transition-colors focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/30"
       />
     </div>
   );
@@ -163,7 +164,7 @@ export function CurvesPanel({ focusKey }: PanelProps) {
           </span>
           <div className="h-px flex-1 bg-border/20" />
         </div>
-        <div className="flex scrollbar-thin gap-2 overflow-x-auto pb-1">
+        <div className="flex scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent gap-2 overflow-x-auto pb-1">
           {EASING_PRESETS.map((preset) => {
             const isActive = activePreset === preset.name;
             return (

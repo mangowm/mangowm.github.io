@@ -27,7 +27,7 @@ export function ConfigDiff({ name, oldContents, newContents }: ConfigDiffProps) 
         diffStyle: "unified",
         disableFileHeader: true,
         overflow: "wrap",
-        themeType: "system",
+        themeType: "dark",
       }}
       className="h-full"
     />
