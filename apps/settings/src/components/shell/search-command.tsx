@@ -1,6 +1,14 @@
-import { useEffect, useRef, useCallback, useState } from "react";
-import { Command } from "cmdk";
-import { SearchIcon, SettingsIcon, TerminalSquareIcon } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { SettingsIcon, TerminalSquareIcon } from "lucide-react";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@mangowm/ui/components/command";
 import { useSearch, type SearchResult } from "@/lib/search-engine";
 
 export interface SearchSelection {
@@ -45,38 +53,27 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
   }, []);
 
   return (
-    <Command.Dialog
+    <CommandDialog
       open={open}
-      onOpenChange={(o) => {
-        onOpenChange(o);
-        if (!o) setQuery("");
+      onOpenChange={(nextOpen) => {
+        onOpenChange(nextOpen);
+        if (!nextOpen) setQuery("");
       }}
-      label="Search settings"
-      shouldFilter={false}
-      overlayClassName="fixed inset-0 bg-black/60 backdrop-blur-sm"
-      contentClassName="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]"
+      title="Search settings"
+      description="Search settings, commands, env vars"
+      className="top-[15vh] -translate-y-0 gap-0 overflow-hidden p-0 sm:max-w-[580px]"
+      overlayClassName="bg-black/60 backdrop-blur-sm supports-backdrop-filter:backdrop-blur-sm"
     >
-      <div className="w-[580px] animate-in overflow-hidden rounded-xl border border-border/50 bg-popover shadow-2xl duration-150 zoom-in-95 fade-in motion-reduce:animate-none">
-        <div className="flex items-center gap-2 border-b border-border/30 px-4">
-          <SearchIcon className="size-4 shrink-0 text-muted-foreground/60" />
-          <Command.Input
-            value={query}
-            onValueChange={handleValueChange}
-            placeholder="Search settings, commands, env vars…"
-            className="h-11 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/40"
-            autoFocus
-          />
-          {query && (
-            <button
-              onClick={() => setQuery("")}
-              className="text-xs text-muted-foreground/50 transition-colors hover:text-muted-foreground"
-            >
-              Clear
-            </button>
-          )}
-        </div>
+      <Command shouldFilter={false} label="Search settings" className="bg-transparent p-0">
+        <CommandInput
+          variant="plain"
+          value={query}
+          onValueChange={handleValueChange}
+          placeholder="Search settings, commands, env vars…"
+          autoFocus
+        />
 
-        <Command.List ref={listRef} className="max-h-96 overflow-y-auto p-2">
+        <CommandList ref={listRef} className="max-h-96 overflow-y-auto p-2">
           {query.trim() === "" && (
             <div className="py-8 text-center text-sm text-muted-foreground/50">
               Type to search settings, commands, env vars…
@@ -84,13 +81,13 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
           )}
 
           {query.trim() !== "" && results.length === 0 && (
-            <Command.Empty className="py-8 text-center text-sm text-muted-foreground/60">
+            <CommandEmpty className="py-8 text-center text-sm text-muted-foreground/60">
               No results for &ldquo;{query}&rdquo;
-            </Command.Empty>
+            </CommandEmpty>
           )}
 
           {staticResults.length > 0 && (
-            <Command.Group
+            <CommandGroup
               heading={
                 <span className="flex items-center gap-1.5 px-1 py-1 text-[10px] font-semibold tracking-widest text-muted-foreground/50 uppercase">
                   <SettingsIcon className="size-3" /> Settings
@@ -100,11 +97,11 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
               {staticResults.map((item) => (
                 <ResultItem key={item.id} item={item} onSelect={handleSelect} />
               ))}
-            </Command.Group>
+            </CommandGroup>
           )}
 
           {dynamicResults.length > 0 && (
-            <Command.Group
+            <CommandGroup
               heading={
                 <span className="flex items-center gap-1.5 px-1 py-1 text-[10px] font-semibold tracking-widest text-muted-foreground/50 uppercase">
                   <TerminalSquareIcon className="size-3" /> Your config
@@ -114,23 +111,11 @@ export function SearchCommand({ open, onOpenChange, onSelect }: SearchCommandPro
               {dynamicResults.map((item) => (
                 <ResultItem key={item.id} item={item} onSelect={handleSelect} />
               ))}
-            </Command.Group>
+            </CommandGroup>
           )}
-        </Command.List>
-
-        <div className="flex gap-4 border-t border-border/20 px-4 py-2 text-[10px] text-muted-foreground/40">
-          <span>
-            <kbd className="font-mono">↑↓</kbd> navigate
-          </span>
-          <span>
-            <kbd className="font-mono">↵</kbd> select
-          </span>
-          <span>
-            <kbd className="font-mono">Esc</kbd> close
-          </span>
-        </div>
-      </div>
-    </Command.Dialog>
+        </CommandList>
+      </Command>
+    </CommandDialog>
   );
 }
 
@@ -142,11 +127,10 @@ function ResultItem({
   onSelect: (item: SearchResult) => void;
 }) {
   return (
-    <Command.Item
-      key={item.id}
+    <CommandItem
       value={item.id}
       onSelect={() => onSelect(item)}
-      className="group flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors duration-100 aria-selected:bg-accent aria-selected:text-accent-foreground data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground"
+      className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors duration-100 aria-selected:bg-accent aria-selected:text-accent-foreground data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground"
     >
       <div className="flex min-w-0 flex-1 flex-col">
         <span className="truncate font-medium text-foreground">{item.label}</span>
@@ -155,13 +139,9 @@ function ResultItem({
         )}
       </div>
 
-      <span className="shrink-0 rounded-md border border-border/30 bg-muted/40 px-2 py-0.5 text-[10px] font-medium tracking-wider text-muted-foreground/50 uppercase">
+      <span className="shrink-0 rounded-sm border border-border/30 bg-muted/40 px-2 py-0.5 text-[10px] font-medium tracking-wider text-muted-foreground/50 uppercase">
         {item.sectionLabel}
       </span>
-
-      <kbd className="hidden shrink-0 items-center gap-0.5 rounded-md border border-border/20 bg-muted/30 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground/40 group-aria-selected:flex group-data-[selected=true]:flex">
-        ↵
-      </kbd>
-    </Command.Item>
+    </CommandItem>
   );
 }
