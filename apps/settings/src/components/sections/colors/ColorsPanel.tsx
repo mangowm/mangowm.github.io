@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback, memo } from "react";
+import { useState, useEffect, useMemo, useCallback, memo } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
 import { Pipette } from "lucide-react";
 import { GLOBALS } from "@mangowm.github.io/config/catalog";
@@ -8,6 +8,9 @@ import type { ColorMode } from "@/lib/color-utils";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import { PanelShell, PanelHeader, SectionCard } from "@/components/primitives/section-ui";
+import { Popover, PopoverContent, PopoverTrigger } from "@mangowm/ui/components/popover";
+import { ToggleGroup, ToggleGroupItem } from "@mangowm/ui/components/toggle-group";
+import { Input } from "@mangowm/ui/components/input";
 import { cn } from "cn";
 
 interface ColorsConfig {
@@ -261,7 +264,6 @@ interface ColorInputProps {
   description: string;
   value: string;
   mode: ColorMode;
-  flipPopover: boolean;
   onChange: (value: string) => void;
 }
 
@@ -270,28 +272,16 @@ const ColorInput = memo(function ColorInput({
   description,
   value,
   mode,
-  flipPopover,
   onChange,
 }: ColorInputProps) {
   const cssValue = toCss(value);
   const [isOpen, setIsOpen] = useState(false);
   const [displayValue, setDisplayValue] = useState(() => formatColor(value, mode));
   const [isFocused, setIsFocused] = useState(false);
-  const popoverRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setDisplayValue(formatColor(value, mode));
   }, [value, mode]);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    if (isOpen) document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
 
   const commitTextChange = () => {
     onChange(toHex(displayValue, value));
@@ -308,22 +298,18 @@ const ColorInput = memo(function ColorInput({
   const alpha = Math.round((parseInt(alphaHex, 16) / 255) * 100);
   const isTranslucent = alpha < 100;
 
-  const popoverPosition = flipPopover ? "bottom-[calc(100%+8px)] top-auto" : "top-[calc(100%+8px)]";
-
   return (
     <div className="group relative flex items-center gap-3 px-4 py-3 transition-colors duration-150 hover:bg-muted/20">
       <div className="absolute top-0 left-0 h-full w-[2px] scale-y-0 rounded-full bg-ring/60 transition-transform duration-200 group-hover:scale-y-100" />
 
-      <div className="relative shrink-0" ref={popoverRef}>
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          className="relative size-8 cursor-pointer rounded-md p-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background"
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger
           aria-label={`Edit ${label} color`}
+          className="relative size-8 shrink-0 cursor-pointer rounded-md p-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background"
         >
           {isTranslucent && (
             <div
-              className="absolute inset-0 rounded-[5px]"
+              className="absolute inset-0 rounded-md"
               style={{
                 backgroundImage: "repeating-conic-gradient(#808080 0% 25%, transparent 0% 50%)",
                 backgroundSize: "8px 8px",
@@ -331,46 +317,47 @@ const ColorInput = memo(function ColorInput({
             />
           )}
           <div
-            className="absolute inset-0 rounded-[5px] shadow-inner transition-all duration-200"
+            className="absolute inset-0 rounded-md shadow-inner transition-all duration-200"
             style={{ backgroundColor: cssValue }}
           />
           <div
-            className="absolute inset-[-3px] rounded-[8px] opacity-0 transition-opacity duration-200 group-hover:opacity-40"
+            className="absolute inset-[-3px] rounded-lg opacity-0 transition-opacity duration-200 group-hover:opacity-40"
             style={{ boxShadow: `0 0 0 2px ${cssValue}` }}
           />
           {isOpen && (
             <div
-              className="absolute inset-[-3px] rounded-[8px] opacity-60"
+              className="absolute inset-[-3px] rounded-lg opacity-60"
               style={{ boxShadow: `0 0 0 2px ${cssValue}` }}
             />
           )}
-          <div className="absolute inset-0 flex items-center justify-center rounded-[5px] bg-black/0 opacity-0 transition-all duration-200 group-hover:bg-black/40 group-hover:opacity-100">
+          <div className="absolute inset-0 flex items-center justify-center rounded-md bg-black/0 opacity-0 transition-all duration-200 group-hover:bg-black/40 group-hover:opacity-100">
             <Pipette className="size-4 text-white drop-shadow-sm" />
           </div>
-        </button>
+        </PopoverTrigger>
 
-        {isOpen && (
-          <div
-            className={`absolute left-0 z-50 min-w-[220px] animate-in rounded-xl border border-border/60 bg-popover shadow-xl duration-150 zoom-in-95 fade-in motion-reduce:animate-none ${popoverPosition}`}
-          >
-            <div className="flex items-center justify-between border-b border-border/40 px-3 py-2">
-              <span className="text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
-                {label}
-              </span>
-              <div className="flex items-center gap-1.5">
-                <div
-                  className="size-3.5 rounded-sm shadow-inner"
-                  style={{ backgroundColor: cssValue }}
-                />
-                <span className="font-mono text-[10px] text-muted-foreground">{alpha}%</span>
-              </div>
-            </div>
-            <div className="p-3">
-              <HexAlphaColorPicker color={cssValue} onChange={pick} />
+        <PopoverContent
+          align="start"
+          side="bottom"
+          sideOffset={8}
+          className="w-[220px] gap-0 overflow-hidden rounded-lg border border-border/60 bg-popover p-0 shadow-xl"
+        >
+          <div className="flex items-center justify-between border-b border-border/40 px-3 py-2">
+            <span className="text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
+              {label}
+            </span>
+            <div className="flex items-center gap-1.5">
+              <div
+                className="size-3.5 rounded-sm shadow-inner"
+                style={{ backgroundColor: cssValue }}
+              />
+              <span className="font-mono text-[10px] text-muted-foreground">{alpha}%</span>
             </div>
           </div>
-        )}
-      </div>
+          <div className="p-3">
+            <HexAlphaColorPicker color={cssValue} onChange={pick} />
+          </div>
+        </PopoverContent>
+      </Popover>
 
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="text-[13px] leading-none font-medium text-foreground">{label}</span>
@@ -380,13 +367,14 @@ const ColorInput = memo(function ColorInput({
       </div>
 
       {isTranslucent && (
-        <span className="shrink-0 rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+        <span className="shrink-0 rounded-sm bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
           {alpha}%
         </span>
       )}
 
-      <input
+      <Input
         type="text"
+        aria-label={`${label} value`}
         value={displayValue}
         spellCheck={false}
         onChange={(e) => setDisplayValue(e.target.value)}
@@ -400,7 +388,7 @@ const ColorInput = memo(function ColorInput({
             (e.target as HTMLInputElement).blur();
           }
         }}
-        className="w-44 shrink-0 rounded-md border-0 bg-background/20 px-3 py-2 text-center font-mono text-[12px] transition-all duration-150 outline-none hover:bg-background/30"
+        className="h-auto w-44 shrink-0 rounded-md border-0 bg-background/20 px-3 py-2 text-center font-mono text-[12px] shadow-none transition-all duration-150 outline-none hover:bg-background/30 focus-visible:ring-0"
         style={{
           boxShadow: isFocused ? `0 0 0 2px ${cssValue}55` : "none",
           color: "hsl(var(--foreground))",
@@ -429,7 +417,7 @@ const PaletteCard = memo(function PaletteCard({ palette, isActive, onSelect }: P
           : "border-border/50 bg-card hover:border-border/70",
       )}
     >
-      <div className="mb-1.5 flex h-[22px] overflow-hidden rounded-[4px]">
+      <div className="mb-1.5 flex h-[22px] overflow-hidden rounded-sm">
         {COLORS_ORDER.filter((key) => palette.colors[key]).map((key) => (
           <div
             key={key}
@@ -611,27 +599,26 @@ export function ColorsPanel({ focusKey }: PanelProps) {
   const dimFields = COLORS_FIELDS.slice(32);
 
   const modeSelector = (
-    <div className="flex shrink-0 items-center rounded-lg border border-border/40 bg-muted/30 p-0.5">
+    <ToggleGroup
+      value={[mode]}
+      onValueChange={(value) => {
+        const next = value[0];
+        if (next) setMode(next as ColorMode);
+      }}
+      spacing={0}
+      className="shrink-0 rounded-lg border border-border/40 bg-muted/30 p-0.5"
+    >
       {COLOR_MODES.map((m) => (
-        <button
+        <ToggleGroupItem
           key={m}
-          type="button"
-          onClick={() => setMode(m)}
-          className="rounded-md px-3 py-1 font-mono text-[11px] font-medium tracking-wider uppercase transition-all duration-150"
-          style={
-            mode === m
-              ? {
-                  background: "hsl(var(--background))",
-                  color: "hsl(var(--foreground))",
-                  boxShadow: "0 1px 3px hsl(var(--foreground) / 0.08)",
-                }
-              : { color: "hsl(var(--muted-foreground))" }
-          }
+          value={m}
+          aria-label={`${m.toUpperCase()} color format`}
+          className="rounded-md px-3 py-1 font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase transition-all duration-150 data-pressed:bg-background data-pressed:text-foreground data-pressed:shadow-sm"
         >
           {m}
-        </button>
+        </ToggleGroupItem>
       ))}
-    </div>
+    </ToggleGroup>
   );
 
   return (
@@ -652,7 +639,7 @@ export function ColorsPanel({ focusKey }: PanelProps) {
         </div>
         <div className="flex gap-2 overflow-x-auto pb-1">
           <div className="w-[130px] shrink-0 rounded-lg border border-border/40 bg-card p-2">
-            <div className="mb-1.5 flex h-[22px] overflow-hidden rounded-[4px]">
+            <div className="mb-1.5 flex h-[22px] overflow-hidden rounded-sm">
               {COLORS_ORDER.map((key) => (
                 <div key={key} className="flex-1" style={{ backgroundColor: toCss(theme[key]) }} />
               ))}
@@ -673,14 +660,13 @@ export function ColorsPanel({ focusKey }: PanelProps) {
       </div>
 
       <SectionCard title="General">
-        {coreFields.map((field, i) => (
+        {coreFields.map((field) => (
           <div ref={fieldRef(field.key)} key={field.key}>
             <ColorInput
               label={field.label}
               description={field.description}
               value={theme[field.key]}
               mode={mode}
-              flipPopover={i >= coreFields.length - 3}
               onChange={changeHandlers[field.key]!}
             />
           </div>
@@ -697,7 +683,6 @@ export function ColorsPanel({ focusKey }: PanelProps) {
               description={field.description}
               value={theme[field.key]}
               mode={mode}
-              flipPopover={false}
               onChange={changeHandlers[field.key]!}
             />
           </div>
@@ -714,7 +699,6 @@ export function ColorsPanel({ focusKey }: PanelProps) {
               description={field.description}
               value={theme[field.key]}
               mode={mode}
-              flipPopover={false}
               onChange={changeHandlers[field.key]!}
             />
           </div>
@@ -731,7 +715,6 @@ export function ColorsPanel({ focusKey }: PanelProps) {
               description={field.description}
               value={theme[field.key]}
               mode={mode}
-              flipPopover={false}
               onChange={changeHandlers[field.key]!}
             />
           </div>
@@ -748,7 +731,6 @@ export function ColorsPanel({ focusKey }: PanelProps) {
               description={field.description}
               value={theme[field.key]}
               mode={mode}
-              flipPopover={false}
               onChange={changeHandlers[field.key]!}
             />
           </div>
@@ -765,7 +747,6 @@ export function ColorsPanel({ focusKey }: PanelProps) {
               description={field.description}
               value={theme[field.key]}
               mode={mode}
-              flipPopover={false}
               onChange={changeHandlers[field.key]!}
             />
           </div>
