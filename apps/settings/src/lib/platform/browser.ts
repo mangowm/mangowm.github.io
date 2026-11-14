@@ -1,25 +1,10 @@
 import { downloadFiles } from "./download";
+import { uploadConfigFromDir } from "./upload";
 import type { ConfigHost, PendingFile, Preferences, RawConfigFile } from "./types";
 
 const PREFERENCES_KEY = "mangowm.settings";
 const CONFIG_KEY = "mangowm.config";
 const CURRENT_SETTINGS_VERSION = "0.1.1";
-
-interface FileHandle {
-  kind: "file";
-  name: string;
-  getFile(): Promise<File>;
-}
-
-interface DirectoryHandle {
-  kind: "directory";
-  name: string;
-  values(): AsyncIterableIterator<FileHandle | DirectoryHandle>;
-}
-
-type PickerWindow = Window & {
-  showDirectoryPicker?: () => Promise<DirectoryHandle>;
-};
 
 function readPreferences(): Preferences {
   try {
@@ -65,26 +50,33 @@ function writeStoredFiles(files: RawConfigFile[]): void {
   }
 }
 
-async function readDirectory(handle: DirectoryHandle, prefix = ""): Promise<RawConfigFile[]> {
-  const files: RawConfigFile[] = [];
+// Chromium blocks ~/.config and its contents in showDirectoryPicker(), so use
+// a directory input instead.
+function pickDirectory(): Promise<File[] | null> {
+  return new Promise((resolve, reject) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.multiple = true;
+    input.webkitdirectory = true;
+    input.hidden = true;
 
-  for await (const entry of handle.values()) {
-    if (entry.kind === "directory") {
-      files.push(...(await readDirectory(entry, `${prefix}${entry.name}/`)));
-      continue;
+    const done = (files: File[] | null) => {
+      input.remove();
+      resolve(files);
+    };
+
+    input.addEventListener("change", () => done([...(input.files ?? [])]), { once: true });
+    input.addEventListener("cancel", () => done(null), { once: true });
+
+    document.body.append(input);
+
+    try {
+      input.showPicker();
+    } catch (error) {
+      input.remove();
+      reject(error);
     }
-
-    if (!/\.(conf|toml)$/.test(entry.name)) continue;
-
-    const file = await entry.getFile();
-    files.push({
-      absPath: `${prefix}${entry.name}`,
-      refPath: `${prefix}${entry.name}`,
-      text: await file.text(),
-    });
-  }
-
-  return files;
+  });
 }
 
 export function createBrowserHost(defaultConfig: string): ConfigHost {
@@ -98,9 +90,12 @@ export function createBrowserHost(defaultConfig: string): ConfigHost {
       return files;
     },
     importConfig: async () => {
-      const picker = (window as PickerWindow).showDirectoryPicker;
-      if (!picker) throw new Error("Folder import is not supported in this browser");
-      const files = await readDirectory(await picker());
+      const selected = await pickDirectory();
+      if (!selected) return null;
+
+      const files = await uploadConfigFromDir(selected);
+      if (files.length === 0) throw new Error("No mango config files found in that folder");
+
       writeStoredFiles(files);
       return files;
     },
