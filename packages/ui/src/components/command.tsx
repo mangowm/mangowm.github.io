@@ -30,25 +30,28 @@ function CommandDialog({
   description = "Search for a command to run...",
   children,
   className,
+  overlayClassName,
   showCloseButton = false,
   ...props
 }: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
   title?: string;
   description?: string;
   className?: string;
+  overlayClassName?: string;
   showCloseButton?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <Dialog {...props}>
-      <DialogHeader className="sr-only">
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
-      </DialogHeader>
       <DialogContent
         className={cn("top-1/3 translate-y-0 overflow-hidden rounded-xl! p-0", className)}
+        overlayClassName={overlayClassName}
         showCloseButton={showCloseButton}
       >
+        <DialogHeader className="sr-only">
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
         {children}
       </DialogContent>
     </Dialog>
@@ -57,10 +60,37 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  containerClassName,
+  variant = "default",
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}: React.ComponentProps<typeof CommandPrimitive.Input> & {
+  variant?: "default" | "plain";
+  containerClassName?: string;
+}) {
+  if (variant === "plain") {
+    return (
+      <div
+        data-slot="command-input-wrapper"
+        className={cn(
+          "flex h-11 items-center gap-2 border-b border-border/30 px-4",
+          containerClassName,
+        )}
+      >
+        <SearchIcon className="size-4 shrink-0 text-muted-foreground/60" />
+        <CommandPrimitive.Input
+          data-slot="command-input"
+          className={cn(
+            "h-full flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/40 disabled:cursor-not-allowed disabled:opacity-50",
+            className,
+          )}
+          {...props}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div data-slot="command-input-wrapper" className="p-1 pb-0">
+    <div data-slot="command-input-wrapper" className={cn("p-1 pb-0", containerClassName)}>
       <InputGroup className="h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!">
         <CommandPrimitive.Input
           data-slot="command-input"
@@ -83,7 +113,7 @@ function CommandList({ className, ...props }: React.ComponentProps<typeof Comman
     <CommandPrimitive.List
       data-slot="command-list"
       className={cn(
-        "no-scrollbar max-h-72 scroll-py-1 overflow-x-hidden overflow-y-auto outline-none",
+        "max-h-72 scroll-py-1 scrollbar-none overflow-x-hidden overflow-y-auto outline-none",
         className,
       )}
       {...props}
