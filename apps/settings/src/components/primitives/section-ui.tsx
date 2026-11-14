@@ -33,6 +33,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@mangowm/ui/components/select";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel as FieldLabelPrimitive,
+  FieldTitle,
+} from "@mangowm/ui/components/field";
 import { globalMax, globalMeta, globalMin, globalOptions } from "@/lib/config/schema-meta";
 
 function fieldText(configKey: string | undefined, label?: string, description?: string) {
@@ -66,33 +73,55 @@ export interface RowProps {
  */
 export function Row({ children, className = "" }: RowProps) {
   return (
-    <div
+    <Field
+      orientation="horizontal"
       className={
-        "group relative flex items-center gap-4 px-4 py-2.5 " +
+        "group relative gap-4 px-4 py-2.5 " +
         "transition-colors duration-150 hover:bg-muted/15 " +
         className
       }
     >
       <AccentHover />
       {children}
-    </div>
+    </Field>
   );
 }
 
 export interface FieldLabelProps {
   label: string;
   description: string;
+  /** Link the label to a labelable control (input, select, button). */
+  htmlFor?: string;
+  /** Use a title element instead of a <label> for non-labelable controls (switch, slider). */
+  asTitle?: boolean;
+  /** Optional id used with aria-labelledby when asTitle is set. */
+  id?: string;
 }
 
 /** Left-side label + muted description text. */
-export function FieldLabel({ label, description }: FieldLabelProps) {
+export function FieldLabel({ label, description, htmlFor, asTitle, id }: FieldLabelProps) {
   return (
-    <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-      <span className="text-[13px] leading-none font-medium text-foreground">{label}</span>
-      <span className="truncate text-[11px] leading-none text-muted-foreground/60">
+    <FieldContent className="min-w-0 flex-1">
+      {asTitle || !htmlFor ? (
+        <FieldTitle
+          id={id}
+          className="w-full truncate text-[13px] leading-none font-medium text-foreground"
+        >
+          {label}
+        </FieldTitle>
+      ) : (
+        <FieldLabelPrimitive
+          id={id}
+          htmlFor={htmlFor}
+          className="w-full truncate text-[13px] leading-none font-medium text-foreground"
+        >
+          {label}
+        </FieldLabelPrimitive>
+      )}
+      <FieldDescription className="truncate text-[11px] leading-none text-muted-foreground/60">
         {description}
-      </span>
-    </div>
+      </FieldDescription>
+    </FieldContent>
   );
 }
 
@@ -139,9 +168,10 @@ export function ToggleRow({
 }: ToggleRowProps) {
   const isOff = enabled === false;
   const field = fieldText(configKey, label, description);
+  const labelId = React.useId();
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
-      <FieldLabel label={field.label} description={field.description} />
+      <FieldLabel label={field.label} description={field.description} asTitle id={labelId} />
       <div className="flex shrink-0 items-center gap-2">
         <span
           className={
@@ -152,7 +182,13 @@ export function ToggleRow({
         >
           {value ? "On" : "Off"}
         </span>
-        <Switch checked={value} onCheckedChange={onChange} className="shrink-0" disabled={isOff} />
+        <Switch
+          aria-labelledby={labelId}
+          checked={value}
+          onCheckedChange={onChange}
+          className="shrink-0"
+          disabled={isOff}
+        />
       </div>
     </Row>
   );
@@ -197,24 +233,34 @@ export function SliderRow({
   const field = fieldText(configKey, label, description);
   const resolvedMin = min ?? (configKey ? globalMin(configKey) : undefined) ?? 0;
   const resolvedMax = max ?? (configKey ? globalMax(configKey) : undefined) ?? 1;
-  const display = value % 1 === 0 ? String(value) : value.toFixed(2);
+  const [draft, setDraft] = React.useState(value);
+  const labelId = React.useId();
+  const display = draft % 1 === 0 ? String(draft) : draft.toFixed(2);
+
+  React.useEffect(() => {
+    setDraft(value);
+  }, [value]);
 
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
-      <FieldLabel label={field.label} description={field.description} />
+      <FieldLabel label={field.label} description={field.description} asTitle id={labelId} />
       <div className="flex w-44 shrink-0 items-center gap-3">
         <Slider
-          value={[value]}
+          value={[draft]}
           min={resolvedMin}
           max={resolvedMax}
           step={step ?? 1}
           onValueChange={(v) => {
             const arr = Array.isArray(v) ? v : [v];
-            onChange(arr[0]);
+            setDraft(arr[0]);
+          }}
+          onValueCommitted={(v) => {
+            const next = Array.isArray(v) ? v[0] : v;
+            onChange(next);
           }}
           className="flex-1"
           disabled={isOff}
-          aria-label={field.label}
+          aria-labelledby={labelId}
         />
         <span className="w-14 text-right font-mono text-[12px] text-foreground/80 tabular-nums">
           {display}
@@ -254,11 +300,12 @@ export function SelectRow({
   const isOff = enabled === false;
   const field = fieldText(configKey, label, description);
   const resolvedOptions = options ?? (configKey ? globalOptions(configKey) : undefined) ?? [];
+  const id = React.useId();
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
-      <FieldLabel label={field.label} description={field.description} />
+      <FieldLabel label={field.label} description={field.description} htmlFor={id} />
       <Select value={value} onValueChange={(v) => v && onChange(v)} disabled={isOff}>
-        <SelectTrigger className="w-28" aria-label={field.label}>
+        <SelectTrigger id={id} className="w-28" aria-label={field.label}>
           <SelectValue>
             {resolvedOptions.find((o) => o.value === value)?.label ?? value}
           </SelectValue>
@@ -315,6 +362,7 @@ export function MultiTagInput({
   const inputRef = React.useRef<HTMLInputElement>(null);
   const isOff = enabled === false;
   const field = fieldText(configKey, label, description);
+  const id = React.useId();
 
   const tags = value ? value.split(",").filter((t) => t.trim()) : [];
 
@@ -348,7 +396,7 @@ export function MultiTagInput({
 
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
-      <FieldLabel label={field.label} description={field.description} />
+      <FieldLabel label={field.label} description={field.description} htmlFor={id} />
       <div className="flex w-52 shrink-0 flex-col items-stretch gap-1.5">
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-1">
@@ -373,6 +421,7 @@ export function MultiTagInput({
         <div className="flex items-center gap-1.5">
           <Input
             ref={inputRef}
+            id={id}
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -411,10 +460,12 @@ export function TextInputRow({
 }: TextInputRowProps) {
   const isOff = enabled === false;
   const field = fieldText(configKey, label, description);
+  const id = React.useId();
   return (
     <Row className={isOff ? "pointer-events-none opacity-40" : ""}>
-      <FieldLabel label={field.label} description={field.description} />
+      <FieldLabel label={field.label} description={field.description} htmlFor={id} />
       <Input
+        id={id}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
