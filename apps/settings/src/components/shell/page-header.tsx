@@ -13,6 +13,7 @@ import { useShallow } from "zustand/react/shallow";
 import { Separator } from "@mangowm/ui/components/separator";
 import { SidebarTrigger } from "@mangowm/ui/components/sidebar";
 import { Button } from "@mangowm/ui/components/button";
+import { Kbd } from "@mangowm/ui/components/kbd";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,16 +22,19 @@ import {
   DropdownMenuTrigger,
 } from "@mangowm/ui/components/dropdown-menu";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@mangowm/ui/components/dialog";
-import { useConfigStore, undo, redo } from "@/lib/config/store";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@mangowm/ui/components/alert-dialog";
+import { useConfigStore, useConfigDirty, undo, redo } from "@/lib/config/store";
 import { getHost } from "@/lib/platform";
 import { convertFile, convertName } from "@/lib/config/convert";
+import { REDO_SHORTCUT, SEARCH_SHORTCUT, UNDO_SHORTCUT } from "@/lib/platform/shortcuts";
 import { cn } from "cn";
 
 export function PageHeader({
@@ -65,18 +69,20 @@ export function PageHeader({
 
         <div className="flex flex-1 justify-center">
           {onSearch && (
-            <button
+            <Button
+              variant="outline"
+              size="sm"
               onClick={onSearch}
-              className="flex cursor-pointer items-center gap-2 rounded-lg border border-border/40 bg-muted/30 px-3 py-1.5 text-xs text-muted-foreground/70 transition-all outline-none hover:border-border/70 hover:bg-muted/50 hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
-              title="Search settings (Ctrl+K)"
+              className="h-auto gap-2 rounded-lg border-border/40 bg-muted/30 px-3 py-1.5 text-xs font-normal text-muted-foreground/70 shadow-none transition-all outline-none hover:border-border/70 hover:bg-muted/50 hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
+              title={`Search settings (${SEARCH_SHORTCUT})`}
             >
               <SearchIcon className="size-3.5 shrink-0" />
               <span className="hidden sm:inline">Search settings…</span>
               <span className="inline sm:hidden">Search…</span>
-              <kbd className="hidden items-center gap-0.5 rounded-md border border-border/30 bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground/60 sm:inline-flex">
-                Ctrl+K
-              </kbd>
-            </button>
+              <Kbd className="hidden h-auto min-w-0 items-center gap-0.5 rounded-sm border border-border/30 bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground/60 sm:inline-flex">
+                {SEARCH_SHORTCUT}
+              </Kbd>
+            </Button>
           )}
         </div>
 
@@ -111,9 +117,10 @@ function HistoryButtons() {
     })),
   );
 
-  const { dirty, loading, load } = useConfigStore(
-    useShallow((s) => ({ dirty: s.dirty, loading: s.loading, load: s.load })),
+  const { loading, load } = useConfigStore(
+    useShallow((s) => ({ loading: s.loading, load: s.load })),
   );
+  const dirty = useConfigDirty();
 
   return (
     <>
@@ -122,7 +129,7 @@ function HistoryButtons() {
         size="icon-sm"
         onClick={undo}
         disabled={!canUndo}
-        title="Undo (Ctrl+Z)"
+        title={`Undo (${UNDO_SHORTCUT})`}
       >
         <Undo2 className="size-4" />
       </Button>
@@ -131,7 +138,7 @@ function HistoryButtons() {
         size="icon-sm"
         onClick={redo}
         disabled={!canRedo}
-        title="Redo (Ctrl+Shift+Z)"
+        title={`Redo (${REDO_SHORTCUT})`}
       >
         <Redo2 className="size-4" />
       </Button>
@@ -150,14 +157,14 @@ function HistoryButtons() {
 }
 
 function ApplyButton() {
-  const { applying, loading, dirty, apply } = useConfigStore(
+  const { applying, loading, apply } = useConfigStore(
     useShallow((s) => ({
       applying: s.applying,
       loading: s.loading,
-      dirty: s.dirty,
       apply: s.apply,
     })),
   );
+  const dirty = useConfigDirty();
 
   if (loading) return null;
 
@@ -230,31 +237,29 @@ function SetupMenu() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Replace configuration?</DialogTitle>
-            <DialogDescription>
+      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Replace configuration?</AlertDialogTitle>
+            <AlertDialogDescription>
               {isTauri
                 ? "The current configuration will be backed up, then replaced with the default."
                 : "The current configuration will be replaced with the default. This cannot be undone."}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmOpen(false)}>
-              Cancel
-            </Button>
-            <Button
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
               onClick={() => {
                 setConfirmOpen(false);
                 void createDefault();
               }}
             >
               Replace
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

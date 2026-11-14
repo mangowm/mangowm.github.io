@@ -18,7 +18,7 @@ function sourceFile(text: string, format: FileFormat): SourceFile {
 }
 
 function reset(text: string, format: FileFormat): void {
-  useConfigStore.setState({ files: [sourceFile(text, format)], data: {}, dirty: false });
+  useConfigStore.setState({ files: [sourceFile(text, format)], data: {} });
 }
 
 function saved(format: FileFormat): string {

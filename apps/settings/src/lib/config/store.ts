@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create, useStore } from "zustand";
 import { temporal } from "zundo";
 import {
   applyChange,
@@ -179,6 +179,31 @@ function mergeFileData(files: SourceFile[], prevData: ConfigData = {}): ConfigDa
       result[key] = nextArr;
     }
   }
+
+  // Keep the previous object when nothing changed. Callers rely on reference
+  // equality to avoid an extra store update (and render) on every mutation.
+  const prevKeys = Object.keys(prevData);
+  const nextKeys = Object.keys(result);
+  if (prevKeys.length === nextKeys.length) {
+    let same = true;
+    for (const key of nextKeys) {
+      const prev = prevData[key];
+      const nextArr = result[key];
+      if (!prev || !nextArr || prev.length !== nextArr.length) {
+        same = false;
+        break;
+      }
+      for (let i = 0; i < nextArr.length; i++) {
+        if (prev[i] !== nextArr[i]) {
+          same = false;
+          break;
+        }
+      }
+      if (!same) break;
+    }
+    if (same) return prevData;
+  }
+
   return result;
 }
 
@@ -210,7 +235,6 @@ interface ConfigStore {
   files: SourceFile[]; // per-file — written to disk
   loading: boolean;
   applying: boolean;
-  dirty: boolean;
   error: string | null;
   isTauri: boolean;
   outputFormat: FileFormat;
@@ -252,7 +276,6 @@ export const useConfigStore = create<ConfigStore>()(
       files: [],
       loading: false,
       applying: false,
-      dirty: false,
       error: null,
       isTauri: isTauri(),
       outputFormat: "conf",
@@ -269,7 +292,6 @@ export const useConfigStore = create<ConfigStore>()(
             files,
             data: mergeFileData(files, {}),
             loading: false,
-            dirty: false,
             revision: get().revision + 1,
           });
           useConfigStore.temporal.getState().clear();
@@ -295,7 +317,6 @@ export const useConfigStore = create<ConfigStore>()(
             files,
             data: mergeFileData(files, {}),
             loading: false,
-            dirty: false,
             revision: get().revision + 1,
           });
           useConfigStore.temporal.getState().clear();
@@ -317,7 +338,6 @@ export const useConfigStore = create<ConfigStore>()(
             files,
             data: mergeFileData(files, {}),
             loading: false,
-            dirty: false,
             revision: get().revision + 1,
           });
           useConfigStore.temporal.getState().clear();
@@ -388,7 +408,6 @@ export const useConfigStore = create<ConfigStore>()(
             files: nextFiles,
             data: mergeFileData(nextFiles, {}),
             applying: false,
-            dirty: false,
             revision: get().revision + 1,
           });
           useConfigStore.temporal.getState().clear();
@@ -403,7 +422,7 @@ export const useConfigStore = create<ConfigStore>()(
           const files = state.files.map((file, index) =>
             index === fileIdx ? updateScalar(file, key, value) : file,
           );
-          return { files, data: mergeFileData(files, state.data), dirty: true };
+          return { files, data: mergeFileData(files, state.data) };
         }),
 
       setValues: (entries) =>
@@ -415,7 +434,7 @@ export const useConfigStore = create<ConfigStore>()(
               index === fileIdx ? updateScalar(file, key, value) : file,
             );
           }
-          return { files, data: mergeFileData(files, state.data), dirty: true };
+          return { files, data: mergeFileData(files, state.data) };
         }),
 
       setDirective: (key, values) =>
@@ -424,7 +443,7 @@ export const useConfigStore = create<ConfigStore>()(
           const files = state.files.map((file, index) =>
             index === fileIdx ? updateDocument(file, { kind: "directive", key, values }) : file,
           );
-          return { files, data: mergeFileData(files, state.data), dirty: true };
+          return { files, data: mergeFileData(files, state.data) };
         }),
 
       setPair: (table, name, value) =>
@@ -433,7 +452,7 @@ export const useConfigStore = create<ConfigStore>()(
           const files = state.files.map((file, index) =>
             index === fileIdx ? updateDocument(file, { kind: "pair", table, name, value }) : file,
           );
-          return { files, data: mergeFileData(files, state.data), dirty: true };
+          return { files, data: mergeFileData(files, state.data) };
         }),
 
       addEntry: (key, value) =>
@@ -447,7 +466,7 @@ export const useConfigStore = create<ConfigStore>()(
               ? updateDocument(candidate, addChange(candidate, key, value, state.data))
               : candidate,
           );
-          return { files, data: mergeFileData(files, state.data), dirty: true };
+          return { files, data: mergeFileData(files, state.data) };
         }),
 
       insertEntry: (key, value, { fileIdx, mode }) =>
@@ -460,7 +479,7 @@ export const useConfigStore = create<ConfigStore>()(
               ? updateDocument(candidate, bindingChange(key, value, mode))
               : candidate,
           );
-          return { files, data: mergeFileData(files, state.data), dirty: true };
+          return { files, data: mergeFileData(files, state.data) };
         }),
 
       updateEntry: (key, index, value) =>
@@ -494,7 +513,7 @@ export const useConfigStore = create<ConfigStore>()(
             return updateDocument(file, { kind: "option", key, value });
           });
 
-          return { files, data: mergeFileData(files, state.data), dirty: true };
+          return { files, data: mergeFileData(files, state.data) };
         }),
 
       removeEntry: (key, index) =>
@@ -521,7 +540,7 @@ export const useConfigStore = create<ConfigStore>()(
             return file;
           });
 
-          return { files, data: mergeFileData(files, state.data), dirty: true };
+          return { files, data: mergeFileData(files, state.data) };
         }),
 
       setFileText: (absPath, text, format) =>
@@ -555,7 +574,7 @@ export const useConfigStore = create<ConfigStore>()(
             const files = state.files.map((file) =>
               file.absPath === absPath ? { ...file, document, lines } : file,
             );
-            return { files, data: mergeFileData(files, state.data), dirty: true, error: null };
+            return { files, data: mergeFileData(files, state.data), error: null };
           } catch (error) {
             return { error: error instanceof Error ? error.message : String(error) };
           }
@@ -582,15 +601,17 @@ export const useConfigStore = create<ConfigStore>()(
 
 useConfigStore.subscribe((state, prevState) => {
   if (state.files === prevState.files) return;
-  const { pastStates } = useConfigStore.temporal.getState();
-  const newData = mergeFileData(state.files, state.data);
-  if (newData !== state.data || pastStates.length > 0 !== state.dirty) {
-    useConfigStore.setState({
-      data: newData,
-      dirty: pastStates.length > 0,
-    });
-  }
+  // Undo/redo replace `files` through zundo and bypass the action helpers, so
+  // the derived view has to be rebuilt here. Actions that compute it already
+  // return the same reference, which keeps this from causing an extra render.
+  const data = mergeFileData(state.files, state.data);
+  if (data !== state.data) useConfigStore.setState({ data });
 });
+
+/** True when there are changes that can still be undone back to the saved config. */
+export function useConfigDirty(): boolean {
+  return useStore(useConfigStore.temporal, (state) => state.pastStates.length > 0);
+}
 
 export function useConfigValue(key: string): string | undefined {
   return useConfigStore((s) => s.data[key]?.[0] ?? DEFAULTS[key]?.[0]);
