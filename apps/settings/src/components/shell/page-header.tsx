@@ -42,11 +42,13 @@ export function PageHeader({
   onSearch,
   showConfig,
   onToggleConfig,
+  onPreloadConfig,
 }: {
   title?: string;
   onSearch?: () => void;
   showConfig?: boolean;
   onToggleConfig?: () => void;
+  onPreloadConfig?: () => void;
 }) {
   const error = useConfigStore((s) => s.error);
   const isTauri = useConfigStore((s) => s.isTauri);
@@ -92,6 +94,8 @@ export function PageHeader({
               variant="ghost"
               size="icon-sm"
               onClick={onToggleConfig}
+              onPointerEnter={onPreloadConfig}
+              onFocus={onPreloadConfig}
               title={showConfig ? "Back to Settings" : "View Config Files"}
               className={cn(showConfig && "bg-accent text-accent-foreground")}
             >
