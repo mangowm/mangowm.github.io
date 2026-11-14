@@ -15,6 +15,12 @@ import { FilterPill } from "./components/FilterPill";
 import { BindingRow } from "./components/BindingRow";
 import { EditDialog } from "./dialogs/EditDialog";
 import { Button } from "@mangowm/ui/components/button";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@mangowm/ui/components/input-group";
 
 export function BindingsPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);
@@ -154,31 +160,31 @@ export function BindingsPanel({ focusKey }: PanelProps) {
 
       <div className="flex flex-col gap-3">
         <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <div className="relative w-full">
-            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground/40" />
-            <input
+          <InputGroup className="h-9 w-full border-border/60 bg-background shadow-sm">
+            <InputGroupAddon>
+              <Search className="size-4 text-muted-foreground/40" />
+            </InputGroupAddon>
+            <InputGroupInput
               type="text"
               role="search"
+              aria-label="Search bindings"
               placeholder={`Search in ${activeMode === "All" ? "all modes" : `'${activeMode}'`}…`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className={cn(
-                "h-9 w-full rounded-lg border bg-background pr-8 pl-9 text-sm",
-                "border-border/60 text-foreground shadow-sm placeholder:text-muted-foreground/40",
-                "transition-all duration-200",
-                "focus:border-ring/50 focus:ring-2 focus:ring-ring/20 focus:outline-none",
-              )}
+              className="text-sm placeholder:text-muted-foreground/40"
             />
             {search && (
-              <button
-                onClick={() => setSearch("")}
-                className="absolute top-1/2 right-2 -translate-y-1/2 p-1 text-muted-foreground/50 transition-colors hover:text-foreground"
-                aria-label="Clear search"
-              >
-                <X className="size-3.5" />
-              </button>
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  size="icon-xs"
+                  onClick={() => setSearch("")}
+                  aria-label="Clear search"
+                >
+                  <X className="size-3.5" />
+                </InputGroupButton>
+              </InputGroupAddon>
             )}
-          </div>
+          </InputGroup>
 
           <Button
             size="sm"

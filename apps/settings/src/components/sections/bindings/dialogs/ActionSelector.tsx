@@ -1,7 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import {
-  ChevronsUpDown,
-  Check,
   Terminal,
   Monitor,
   Tag,
@@ -18,15 +16,15 @@ import {
   Play,
   Shield,
 } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@mangowm/ui/components/popover";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@mangowm/ui/components/command";
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxTrigger,
+} from "@mangowm/ui/components/combobox";
 import { cn } from "cn";
 import { categoryLabel, getDispatchersByCategory } from "@/lib/dispatchers";
 import type { DispatcherInfo, DispatcherCategory } from "@/lib/dispatchers";
@@ -35,6 +33,8 @@ interface ActionSelectorProps {
   value: string;
   onChange: (v: string) => void;
 }
+
+const ALL_DISPATCHERS = getDispatchersByCategory().flatMap(([, items]) => items);
 
 function escapeRegExp(string: string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -52,7 +52,7 @@ function HighlightMatch({ text, query }: { text: string; query: string }) {
         part.toLowerCase() === query.trim().toLowerCase() ? (
           <span
             key={i}
-            className="rounded-[2px] bg-primary/25 px-[1px] font-bold text-primary-foreground"
+            className="rounded-sm bg-primary/25 px-[1px] font-bold text-primary-foreground"
           >
             {part}
           </span>
@@ -96,85 +96,45 @@ const CategoryIcon = ({
   return <Icon className={className} />;
 };
 
+function filterDispatcher(item: DispatcherInfo, query: string) {
+  if (!query.trim()) return true;
+  const q = query.toLowerCase().trim();
+  return (
+    item.name.toLowerCase().includes(q) ||
+    item.description.toLowerCase().includes(q) ||
+    item.aliases.some((alias) => alias.toLowerCase().includes(q))
+  );
+}
+
 export function ActionSelector({ value, onChange }: ActionSelectorProps) {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [popoverWidth, setPopoverWidth] = useState<number>();
-  const triggerRef = useRef<HTMLButtonElement>(null);
 
-  const categories = getDispatchersByCategory();
-
-  const selectedDispatcher = (() => {
-    if (!value) return null;
-    for (const [, items] of categories) {
-      const found = items.find((i) => i.name === value);
-      if (found) return found;
-    }
-    return null;
-  })();
-
-  useEffect(() => {
-    if (open && triggerRef.current) {
-      setPopoverWidth(triggerRef.current.offsetWidth);
-      setSearchQuery("");
-    }
-  }, [open]);
-
-  const q = searchQuery.toLowerCase().trim();
-  type ScoredItem = { d: DispatcherInfo; score: number };
-
-  const filtered = (() => {
-    const result: { category: DispatcherCategory; items: ScoredItem[] }[] = [];
-
-    if (!q) {
-      for (const [cat, items] of categories) {
-        result.push({
-          category: cat,
-          items: items.map((d) => ({ d, score: 0 })),
-        });
-      }
-      return result;
-    }
-
-    const scored: ScoredItem[] = [];
-    for (const [, items] of categories) {
-      for (const d of items) {
-        const nameLower = d.name.toLowerCase();
-        const descLower = d.description.toLowerCase();
-        const aliasLower = d.aliases.join(" ").toLowerCase();
-        if (nameLower.includes(q) || descLower.includes(q) || aliasLower.includes(q)) {
-          let score = 0;
-          if (nameLower === q) score = 4;
-          else if (nameLower.startsWith(q)) score = 3;
-          else if (nameLower.includes(q)) score = 2;
-          else score = 1;
-          scored.push({ d, score });
-        }
-      }
-    }
-
-    scored.sort((a, b) => b.score - a.score || a.d.name.localeCompare(b.d.name));
-
-    for (const [cat] of categories) {
-      const items = scored.filter((s) => s.d.category === cat);
-      if (items.length > 0) {
-        result.push({ category: cat, items });
-      }
-    }
-
-    return result;
-  })();
-
-  const hasResults = filtered.some((g) => g.items.length > 0);
+  const selectedDispatcher = value
+    ? (ALL_DISPATCHERS.find((item) => item.name === value) ?? null)
+    : null;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger
-        ref={triggerRef}
-        role="combobox"
-        aria-expanded={open}
+    <Combobox
+      items={ALL_DISPATCHERS}
+      filter={filterDispatcher}
+      itemToStringLabel={(item: DispatcherInfo) => item.name}
+      value={selectedDispatcher}
+      onValueChange={(item: DispatcherInfo | null) => {
+        if (item) onChange(item.name);
+      }}
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen);
+        setSearchQuery(nextOpen ? "" : (selectedDispatcher?.name ?? ""));
+      }}
+      inputValue={searchQuery}
+      onInputValueChange={setSearchQuery}
+      autoHighlight
+    >
+      <ComboboxTrigger
         className={cn(
-          "flex w-full items-center justify-between rounded-lg border border-border/40 text-left transition-all",
+          "flex w-full items-center justify-between gap-3 rounded-lg border border-border/40 text-left transition-all",
           "focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:outline-none",
           selectedDispatcher
             ? "bg-card p-3 shadow-sm hover:bg-accent/40"
@@ -203,86 +163,46 @@ export function ActionSelector({ value, onChange }: ActionSelectorProps) {
             <span className="text-sm font-medium">Search and select a system action...</span>
           </div>
         )}
-        <ChevronsUpDown className="ml-3 size-4 shrink-0 opacity-40" />
-      </PopoverTrigger>
+      </ComboboxTrigger>
 
-      <PopoverContent
-        className="rounded-xl border-border/60 bg-background/95 p-0 shadow-xl backdrop-blur-xl"
-        align="start"
-        sideOffset={6}
-        style={{ width: popoverWidth }}
-      >
-        <Command className="border-0 bg-transparent" shouldFilter={false}>
-          <CommandInput
-            placeholder="Search dispatchers (e.g. spawn, layout)..."
-            value={searchQuery}
-            onValueChange={setSearchQuery}
-            className="h-11 text-sm focus:ring-0"
-          />
-          <CommandList className="scrollbar-thin max-h-[320px]">
-            {q && !hasResults && (
-              <CommandEmpty className="flex flex-col items-center justify-center gap-2 py-8 text-muted-foreground">
-                <Search className="mb-1 size-8 opacity-20" />
-                <span className="text-sm font-medium">No actions found.</span>
-                <span className="text-xs opacity-70">Try a different search term.</span>
-              </CommandEmpty>
-            )}
-            {filtered.map(({ category, items }) => (
-              <CommandGroup
-                key={category}
-                heading={
-                  <div className="flex items-center gap-1.5 text-muted-foreground/50">
-                    <CategoryIcon category={category} className="size-3.5" />
-                    <span className="text-[10px] font-bold tracking-widest uppercase">
-                      {categoryLabel(category)}
-                    </span>
-                  </div>
-                }
-                className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2"
-              >
-                {items.map(({ d }) => (
-                  <CommandItem
-                    key={d.name}
-                    value={d.name}
-                    onSelect={() => {
-                      onChange(d.name);
-                      setOpen(false);
-                    }}
-                    className={cn(
-                      "mx-1 my-0.5 cursor-pointer flex-col items-start rounded-lg px-3 py-2 transition-colors",
-                      value === d.name
-                        ? "bg-primary/10 data-[selected]:bg-primary/15"
-                        : "data-[selected]:bg-muted/50",
-                    )}
-                  >
-                    <div className="flex w-full items-center gap-2">
-                      <span
-                        className={cn(
-                          "truncate font-mono text-[13px] font-semibold transition-colors",
-                          value === d.name ? "text-primary" : "text-foreground",
-                        )}
-                      >
-                        <HighlightMatch text={d.name} query={searchQuery} />
-                      </span>
-                      {value === d.name && (
-                        <Check className="ml-auto size-3.5 shrink-0 text-primary" strokeWidth={3} />
-                      )}
-                    </div>
-                    <span
-                      className={cn(
-                        "mt-0.5 line-clamp-1 text-[11px] transition-colors",
-                        value === d.name ? "text-primary/80" : "text-muted-foreground/70",
-                      )}
-                    >
-                      <HighlightMatch text={d.description} query={searchQuery} />
-                    </span>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ))}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+      <ComboboxContent className="min-w-0 p-0">
+        <ComboboxInput
+          showTrigger={false}
+          autoFocus
+          placeholder="Search dispatchers (e.g. spawn, layout)..."
+          className="m-1 mb-0 w-full"
+        />
+        <ComboboxList className="max-h-[320px]">
+          {(item: DispatcherInfo) => (
+            <ComboboxItem
+              key={item.name}
+              value={item}
+              className="mx-1 my-0.5 flex-col items-start gap-1 rounded-lg px-3 py-2 pr-8"
+            >
+              <div className="flex w-full items-center gap-2">
+                <CategoryIcon
+                  category={item.category}
+                  className="size-4 shrink-0 text-muted-foreground"
+                />
+                <span className="truncate text-sm font-medium text-foreground">
+                  <HighlightMatch text={item.name} query={searchQuery} />
+                </span>
+                <span className="ml-auto shrink-0 rounded-sm bg-muted/50 px-1.5 py-0.5 text-[10px] font-medium tracking-wider text-muted-foreground/60 uppercase">
+                  {categoryLabel(item.category)}
+                </span>
+              </div>
+              <span className="truncate text-xs text-muted-foreground/70">{item.description}</span>
+            </ComboboxItem>
+          )}
+        </ComboboxList>
+        <ComboboxEmpty className="py-8">
+          <div className="flex flex-col items-center justify-center gap-2 text-muted-foreground">
+            <Search className="mb-1 size-8 opacity-20" />
+            <span className="text-sm font-medium">No actions found.</span>
+            <span className="text-xs opacity-70">Try a different search term.</span>
+          </div>
+        </ComboboxEmpty>
+      </ComboboxContent>
+    </Combobox>
   );
 }

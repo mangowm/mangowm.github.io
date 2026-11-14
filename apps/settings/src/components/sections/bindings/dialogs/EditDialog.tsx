@@ -263,7 +263,7 @@ export function EditDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex scrollbar-thin flex-col gap-5 overflow-y-auto px-5 py-5">
+        <div className="flex scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent flex-col gap-5 overflow-y-auto px-5 py-5">
           <section className="flex shrink-0 flex-col gap-2">
             <SectionLabel>Binding Type</SectionLabel>
             <div className="flex flex-wrap items-center gap-1.5">

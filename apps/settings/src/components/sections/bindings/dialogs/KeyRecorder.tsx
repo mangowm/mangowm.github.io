@@ -108,7 +108,7 @@ export function KeyRecorder({
             placeholder="Search keys (e.g., Space)..."
             className="h-10 border-none text-sm focus:ring-0"
           />
-          <CommandList className="scrollbar-thin max-h-[200px]">
+          <CommandList className="max-h-[200px] scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
             <CommandEmpty className="py-4 text-center text-sm text-muted-foreground">
               No keys found.
             </CommandEmpty>
@@ -141,7 +141,7 @@ export function KeyRecorder({
     return (
       <>
         <CommandInput placeholder="Search..." className="h-10 border-none text-sm focus:ring-0" />
-        <CommandList className="scrollbar-thin max-h-[200px]">
+        <CommandList className="max-h-[200px] scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
           <CommandEmpty className="py-4 text-center text-sm text-muted-foreground">
             No options found.
           </CommandEmpty>
@@ -240,11 +240,11 @@ export function KeyRecorder({
               <ChevronsUpDown className="size-3.5" />
             </PopoverTrigger>
             <PopoverContent
-              className="w-64 rounded-xl border-border p-0 shadow-2xl"
+              className="w-64 rounded-lg border-border p-0 shadow-2xl"
               align="end"
               sideOffset={8}
             >
-              <Command className="border-0">{renderPickerContent()}</Command>
+              <Command className="rounded-lg! border-0">{renderPickerContent()}</Command>
             </PopoverContent>
           </Popover>
         </div>
@@ -336,7 +336,7 @@ export function KeyRecorder({
                   Override with a system code
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 rounded-md border border-border/50 bg-background pl-2 shadow-sm focus-within:ring-2 focus-within:ring-primary/20">
+              <div className="flex items-center gap-1.5 rounded-lg border border-border/50 bg-background pl-2 shadow-sm focus-within:ring-2 focus-within:ring-primary/20">
                 <span className="font-mono text-[11px] font-medium text-muted-foreground/50">
                   code:
                 </span>

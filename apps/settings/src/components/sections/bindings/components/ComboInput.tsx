@@ -129,7 +129,7 @@ export function ComboInput({
             <Label className="shrink-0 text-[13px] leading-none font-medium text-foreground">
               Fingers
             </Label>
-            <div className="flex items-center gap-1.5 rounded-md border border-border/50 bg-background pl-2 shadow-sm focus-within:ring-2 focus-within:ring-primary/20">
+            <div className="flex items-center gap-1.5 rounded-lg border border-border/50 bg-background pl-2 shadow-sm focus-within:ring-2 focus-within:ring-primary/20">
               <Input
                 type="text"
                 inputMode="numeric"
