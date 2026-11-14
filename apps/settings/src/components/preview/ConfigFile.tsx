@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Editor } from "@pierre/diffs/edit";
-import { EditProvider, File, type EditorFactory } from "@pierre/diffs/react";
+import { EditProvider, File, type EditorFactory, type FileOptions } from "@pierre/diffs/react";
 
 import { validateText, type ValidationIssue } from "@mangowm.github.io/config";
 import type { FileFormat } from "@/lib/config/types";
@@ -8,11 +8,19 @@ import type { FileFormat } from "@/lib/config/types";
 const createEditor: EditorFactory<undefined, undefined> = (type, options, key) =>
   new Editor(type, options, key);
 
+const FILE_OPTIONS: FileOptions<undefined, undefined> = {
+  disableFileHeader: true,
+  overflow: "wrap",
+  themeType: "dark",
+  theme: "pierre-dark",
+};
+
 const COMMIT_DELAY = 400;
 
 export interface ConfigFileProps {
   name: string;
   contents: string;
+  revision: number;
   onCommit?: (contents: string) => void;
   onIssues?: (issues: ValidationIssue[]) => void;
 }
@@ -25,80 +33,86 @@ function formatOf(name: string): FileFormat {
   return name.endsWith(".toml") ? "toml" : "conf";
 }
 
-export function ConfigFile({ name, contents, onCommit, onIssues }: ConfigFileProps) {
-  const [draft, setDraft] = useState(contents);
-  const draftRef = useRef(contents);
+function fileContents(name: string, contents: string, revision: number) {
+  return {
+    name,
+    contents,
+    lang: languageOf(name),
+    cacheKey: `${name}:${revision}`,
+  };
+}
+
+export function ConfigFile({ name, contents, revision, onCommit, onIssues }: ConfigFileProps) {
+  // The editor owns the live document while a session is active. This state is
+  // only replaced for external changes (undo/redo/apply), never for the echo
+  // of our own debounced commits.
+  const [file, setFile] = useState(() => fileContents(name, contents, revision));
+  const lastCommitted = useRef(contents);
+  const latest = useRef(contents);
+  const timer = useRef<number | null>(null);
   const commitRef = useRef(onCommit);
   const issuesRef = useRef(onIssues);
-  const dirty = useRef(false);
-  const timer = useRef<number | null>(null);
-  const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     commitRef.current = onCommit;
     issuesRef.current = onIssues;
   });
 
-  const flush = useCallback(() => {
-    if (timer.current !== null) {
-      window.clearTimeout(timer.current);
-      timer.current = null;
-    }
-    if (!dirty.current) return;
-
-    dirty.current = false;
-    commitRef.current?.(draftRef.current);
-  }, []);
-
-  const schedule = useCallback(() => {
-    if (timer.current !== null) window.clearTimeout(timer.current);
-    timer.current = window.setTimeout(flush, COMMIT_DELAY);
-  }, [flush]);
-
   useEffect(() => {
-    issuesRef.current?.(validateText(draft, formatOf(name)));
-  }, [draft, name]);
+    if (contents === lastCommitted.current) return;
+    lastCommitted.current = contents;
+    latest.current = contents;
+    setFile(fileContents(name, contents, revision));
+  }, [contents, name, revision]);
 
-  // The previewer stays mounted while the settings view is shown, so pick up
-  // config changes made outside the editor. Never clobber an in-progress edit
-  // or the text the user is currently typing into.
-  useEffect(() => {
-    if (contents === draftRef.current || dirty.current) return;
-    const root = rootRef.current;
-    if (root && root.contains(document.activeElement)) return;
-    draftRef.current = contents;
-    setDraft(contents);
-  }, [contents]);
+  const commit = useCallback(
+    (text: string) => {
+      lastCommitted.current = text;
+      issuesRef.current?.(validateText(text, formatOf(name)));
+      commitRef.current?.(text);
+    },
+    [name],
+  );
 
-  useEffect(() => {
-    const onPointerDown = (event: PointerEvent) => {
-      const root = rootRef.current;
-      if (root && event.composedPath().includes(root)) return;
-      flush();
-    };
+  const schedule = useCallback(
+    (text: string) => {
+      latest.current = text;
+      if (timer.current !== null) window.clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => {
+        timer.current = null;
+        commit(text);
+      }, COMMIT_DELAY);
+    },
+    [commit],
+  );
 
-    document.addEventListener("pointerdown", onPointerDown, true);
-    return () => document.removeEventListener("pointerdown", onPointerDown, true);
-  }, [flush]);
-
-  useEffect(() => () => flush(), [flush]);
+  useEffect(
+    () => () => {
+      if (timer.current !== null) {
+        window.clearTimeout(timer.current);
+        timer.current = null;
+        commit(latest.current);
+      }
+    },
+    [commit],
+  );
 
   return (
-    <div ref={rootRef} className="h-full">
+    <div className="h-full">
       <EditProvider createEditor={createEditor}>
         <File
-          file={{ name, contents: draft, lang: languageOf(name) }}
+          file={file}
           edit
-          onEditChange={(event) => {
-            draftRef.current = event.file.contents;
-            dirty.current = true;
-            setDraft(event.file.contents);
-            schedule();
-          }}
-          options={{
-            disableFileHeader: true,
-            overflow: "wrap",
-            themeType: "dark",
+          editStateKey={`${name}:${formatOf(name)}`}
+          options={FILE_OPTIONS}
+          onEditChange={(event) => schedule(event.file.contents)}
+          onEditComplete={() => {
+            if (timer.current !== null) {
+              window.clearTimeout(timer.current);
+              timer.current = null;
+            }
+            commit(latest.current);
+            return "accept";
           }}
           className="h-full"
         />

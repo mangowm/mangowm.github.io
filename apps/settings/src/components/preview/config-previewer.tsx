@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import {
   AlertCircle,
   ArrowUpRight,
@@ -11,13 +11,19 @@ import {
 import { useConfigStore } from "@/lib/config/store";
 import type { ValidationIssue } from "@mangowm.github.io/config";
 import type { FileFormat, SourceFile } from "@/lib/config/types";
-import { ConfigDiff } from "@/components/preview/ConfigDiff";
 import { ConfigFile } from "@/components/preview/ConfigFile";
 import { Button } from "@mangowm/ui/components/button";
 import { ToggleGroup, ToggleGroupItem } from "@mangowm/ui/components/toggle-group";
-import { convertFile, convertName, convertOriginal } from "@/lib/config/convert";
+import { convertFile, convertName } from "@/lib/config/convert";
+import { diffConfigFile } from "@/lib/config/diff";
 import { commonAncestorDir } from "@/lib/platform/paths";
 import { cn } from "cn";
+
+const ConfigDiff = lazy(() =>
+  import("@/components/preview/ConfigDiff").then((module) => ({
+    default: module.ConfigDiff,
+  })),
+);
 
 interface SectionSuggestion {
   id: string;
@@ -186,6 +192,7 @@ export function ConfigPreviewer({ resolveSection, onOpenSection }: ConfigPreview
   }, [files, selectedPath]);
 
   const contents = selectedFile ? convertFile(selectedFile, outputFormat) : "";
+  const diff = selectedFile ? diffConfigFile(selectedFile, outputFormat) : null;
 
   const handleCopy = useCallback(() => {
     navigator.clipboard
@@ -330,17 +337,22 @@ export function ConfigPreviewer({ resolveSection, onOpenSection }: ConfigPreview
         )}
         <div className="min-h-0 flex-1 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent overflow-y-auto">
           {selectedFile ? (
-            diffing ? (
-              <ConfigDiff
-                name={displayPath ?? selectedFile.refPath}
-                oldContents={convertOriginal(selectedFile, outputFormat)}
-                newContents={contents}
-              />
+            diffing && diff ? (
+              <Suspense
+                fallback={
+                  <div className="flex h-full items-center justify-center text-sm text-muted-foreground/40">
+                    Loading diff…
+                  </div>
+                }
+              >
+                <ConfigDiff diff={diff} />
+              </Suspense>
             ) : (
               <ConfigFile
-                key={`${selectedFile.absPath}:${outputFormat}:${revision}`}
+                key={`${selectedFile.absPath}:${outputFormat}`}
                 name={displayPath ?? selectedFile.refPath}
                 contents={contents}
+                revision={revision}
                 onCommit={(text) => setFileText(selectedFile.absPath, text, outputFormat)}
                 onIssues={handleIssues}
               />
