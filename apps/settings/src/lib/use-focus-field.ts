@@ -8,8 +8,10 @@ export function useFocusField(focusKey: string | undefined) {
   const focusKeyRef = useRef(focusKey);
   const highlightTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  // Keep ref in sync without triggering re-renders
-  focusKeyRef.current = focusKey;
+  // Keep the ref in sync without writing it during render.
+  useEffect(() => {
+    focusKeyRef.current = focusKey;
+  }, [focusKey]);
 
   const highlight = useCallback((el: HTMLElement) => {
     el.scrollIntoView({ behavior: "instant", block: "nearest" });
