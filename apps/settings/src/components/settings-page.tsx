@@ -15,6 +15,7 @@ import { getSectionById, SECTIONS } from "@/lib/presentation/sections";
 import { sectionForKey } from "@/lib/presentation/section-lookup";
 import { SearchCommand } from "@/components/shell/search-command";
 import { useSearchShortcut } from "@/components/shell/use-search-shortcut";
+import { useConfigShortcuts } from "@/components/shell/use-config-shortcuts";
 import type { SearchSelection } from "@/components/shell/search-command";
 
 const DEFAULT_SECTION = SECTIONS[0].id;
@@ -46,12 +47,13 @@ export function SettingsPage() {
   }, [load, hasFiles]);
 
   useSearchShortcut(() => setSearchOpen(true));
+  useConfigShortcuts();
 
   const section = getSectionById(activeSection);
   const Panel = section?.panel ?? null;
 
   return (
-    <SidebarProvider style={SIDEBAR_STYLES}>
+    <SidebarProvider style={SIDEBAR_STYLES} className="h-svh overflow-hidden">
       <SearchCommand
         open={searchOpen}
         onOpenChange={setSearchOpen}
@@ -59,6 +61,7 @@ export function SettingsPage() {
           startTransition(() => {
             setActiveSection(selection.sectionId);
             setFocusKey(selection.configKey);
+            setShowConfig(false);
           });
         }}
       />
@@ -73,7 +76,7 @@ export function SettingsPage() {
           });
         }}
       />
-      <SidebarInset>
+      <SidebarInset className="min-h-0">
         <PageHeader
           title={showConfig ? "Config Files" : (section?.label ?? "Settings")}
           onSearch={() => setSearchOpen(true)}
@@ -84,7 +87,7 @@ export function SettingsPage() {
           }}
         />
         {configMounted && (
-          <div className="flex-1 overflow-hidden p-5" hidden={!showConfig}>
+          <div className="min-h-0 flex-1 overflow-hidden p-5" hidden={!showConfig}>
             <div className="flex h-full flex-col rounded-xl bg-card p-6 ring-1 ring-foreground/10">
               <Suspense fallback={<Skeleton className="h-96 w-full rounded-xl" />}>
                 <ConfigPreviewer
@@ -99,7 +102,10 @@ export function SettingsPage() {
             </div>
           </div>
         )}
-        <div className="flex-1 scrollbar-gutter-stable overflow-y-auto p-5" hidden={showConfig}>
+        <div
+          className="min-h-0 flex-1 scrollbar-gutter-stable overflow-y-auto p-5"
+          hidden={showConfig}
+        >
           <div className="flex min-h-full flex-row gap-5">
             <div className="relative flex flex-1 flex-col rounded-xl bg-card p-6 ring-1 ring-foreground/10">
               {!ready ? (

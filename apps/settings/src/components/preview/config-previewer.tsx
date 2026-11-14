@@ -10,9 +10,11 @@ import {
 } from "lucide-react";
 import { useConfigStore } from "@/lib/config/store";
 import type { ValidationIssue } from "@mangowm.github.io/config";
-import type { SourceFile } from "@/lib/config/types";
+import type { FileFormat, SourceFile } from "@/lib/config/types";
 import { ConfigDiff } from "@/components/preview/ConfigDiff";
 import { ConfigFile } from "@/components/preview/ConfigFile";
+import { Button } from "@mangowm/ui/components/button";
+import { ToggleGroup, ToggleGroupItem } from "@mangowm/ui/components/toggle-group";
 import { convertFile, convertName, convertOriginal } from "@/lib/config/convert";
 import { commonAncestorDir } from "@/lib/platform/paths";
 import { cn } from "cn";
@@ -213,7 +215,7 @@ export function ConfigPreviewer({ resolveSection, onOpenSection }: ConfigPreview
 
   return (
     <div className="-m-6 flex flex-1 gap-0 overflow-hidden rounded-xl">
-      <div className="w-64 shrink-0 overflow-y-auto border-r border-foreground/10 bg-muted/30">
+      <div className="w-64 shrink-0 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent overflow-y-auto border-r border-foreground/10 bg-muted/30">
         <div className="p-3">
           <div className="mb-2 px-2 text-xs font-medium tracking-wider text-muted-foreground/60 uppercase">
             Config Files
@@ -234,51 +236,56 @@ export function ConfigPreviewer({ resolveSection, onOpenSection }: ConfigPreview
       </div>
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-foreground/10 bg-card px-4 py-2 text-xs text-muted-foreground/60">
+        <div className="flex items-center gap-2 border-b border-foreground/10 bg-card px-4 py-2 text-xs text-muted-foreground/60">
           <FileIcon className="size-3.5" />
           <span className="font-mono">{displayPath}</span>
           <span className="ml-auto flex items-center gap-1">
-            <div className="flex items-center rounded-md border border-border/40 p-0.5">
+            <ToggleGroup
+              value={[outputFormat]}
+              onValueChange={(value) => {
+                const format = value[0];
+                if (!format) return;
+                setDiffing(false);
+                setOutputFormat(format as FileFormat);
+              }}
+              disabled={invalid}
+              spacing={0}
+              className="rounded-lg border border-border/40 p-0.5"
+            >
               {(["conf", "toml"] as const).map((format) => (
-                <button
+                <ToggleGroupItem
                   key={format}
-                  onClick={() => {
-                    setDiffing(false);
-                    setOutputFormat(format);
-                  }}
-                  disabled={invalid}
+                  value={format}
                   title={invalid ? "Fix the error first to switch format." : undefined}
-                  className={cn(
-                    "rounded px-2 py-0.5 font-mono text-[10px] uppercase transition-colors",
-                    outputFormat === format
-                      ? "bg-accent text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
-                    invalid && "cursor-not-allowed opacity-40 hover:text-muted-foreground",
-                  )}
+                  className="h-6 rounded-md px-2 py-0.5 font-mono text-[10px] text-muted-foreground uppercase transition-colors data-pressed:bg-accent data-pressed:text-foreground"
                 >
                   {format}
-                </button>
+                </ToggleGroupItem>
               ))}
-            </div>
-            <button
+            </ToggleGroup>
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setDiffing((value) => !value)}
               disabled={!selectedFile || invalid}
               title={invalid ? "Fix the error first to view the diff." : undefined}
-              className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
+              className="h-7 px-2 text-[10px]"
             >
               {diffing ? "View" : "Diff"}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={handleCopy}
               disabled={!selectedFile || copied}
-              className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
+              className="h-7 px-2 text-[10px]"
             >
               {copied ? (
                 <span className="text-green-600 dark:text-green-400">Copied!</span>
               ) : (
                 <Copy className="size-3.5" />
               )}
-            </button>
+            </Button>
             <span className="ml-1">
               {selectedFile
                 ? `${contents.split("\n").length} line${contents.split("\n").length !== 1 ? "s" : ""}`
@@ -321,7 +328,7 @@ export function ConfigPreviewer({ resolveSection, onOpenSection }: ConfigPreview
             )}
           </div>
         )}
-        <div className="flex-1 overflow-hidden">
+        <div className="min-h-0 flex-1 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent overflow-y-auto">
           {selectedFile ? (
             diffing ? (
               <ConfigDiff
