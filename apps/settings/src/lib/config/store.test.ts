@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { useConfigStore } from "./store";
+import { deriveConfigData, useConfigStore } from "./store";
 import { documentLines, parseDocument } from "./parse";
 import { convertFile } from "./convert";
 import type { FileFormat, SourceFile } from "./types";
@@ -18,7 +18,7 @@ function sourceFile(text: string, format: FileFormat): SourceFile {
 }
 
 function reset(text: string, format: FileFormat): void {
-  useConfigStore.setState({ files: [sourceFile(text, format)], data: {} });
+  useConfigStore.setState({ files: [sourceFile(text, format)] });
 }
 
 function saved(format: FileFormat): string {
@@ -26,6 +26,43 @@ function saved(format: FileFormat): string {
   if (!file) throw new Error("missing source file");
   return convertFile(file, format);
 }
+
+describe("derived config data", () => {
+  it("caches the projection per files reference", () => {
+    const files = useConfigStore.getState().files;
+    expect(deriveConfigData(files)).toBe(deriveConfigData(files));
+  });
+
+  it("reuses unchanged arrays when another value changes", () => {
+    reset("blur = 1\nborder_radius = 2\n", "conf");
+    const before = deriveConfigData(useConfigStore.getState().files);
+    const borderBefore = before.border_radius;
+
+    useConfigStore.getState().setValue("blur", "0");
+
+    const after = deriveConfigData(useConfigStore.getState().files);
+    expect(after.border_radius).toBe(borderBefore);
+    expect(after.blur).not.toEqual(before.blur);
+  });
+
+  it("derives correctly after undo and redo", () => {
+    reset("border_radius = 2\n", "conf");
+    useConfigStore.temporal.getState().clear();
+
+    useConfigStore.getState().setValue("border_radius", "3");
+    expect(deriveConfigData(useConfigStore.getState().files).border_radius).toEqual(["3"]);
+
+    useConfigStore.temporal.getState().undo();
+    expect(deriveConfigData(useConfigStore.getState().files).border_radius).toEqual(["2"]);
+
+    useConfigStore.temporal.getState().redo();
+    expect(deriveConfigData(useConfigStore.getState().files).border_radius).toEqual(["3"]);
+  });
+
+  it("keeps data out of the store state", () => {
+    expect("data" in useConfigStore.getState()).toBe(false);
+  });
+});
 
 describe("config mutations reach the saved document", () => {
   it("adds, updates, and removes a conf rule", () => {
@@ -79,13 +116,13 @@ describe("config mutations reach the saved document", () => {
     reset("", "conf");
     useConfigStore.getState().setPair("env", "FOO", "bar");
     expect(saved("conf")).toContain("env = FOO,bar");
-    expect(useConfigStore.getState().data.env).toEqual(["FOO,bar"]);
+    expect(deriveConfigData(useConfigStore.getState().files).env).toEqual(["FOO,bar"]);
 
     reset("", "toml");
     useConfigStore.getState().setPair("env", "FOO", "bar");
     expect(saved("toml")).toContain("[env]");
     expect(saved("toml")).toContain('"FOO" = "bar"');
-    expect(useConfigStore.getState().data.env).toEqual(["FOO,bar"]);
+    expect(deriveConfigData(useConfigStore.getState().files).env).toEqual(["FOO,bar"]);
   });
 
   it("tracks conflict actions independently", () => {

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useConfigStore } from "@/lib/config/store";
+import { useConfigStore, useConfigValues } from "@/lib/config/store";
 import { parseRuleString, serializeRule } from "@/lib/rules/parser";
 import { RULE_CONFIG_KEY } from "@/lib/rules/metadata";
 import type { ParsedRule, RuleType } from "@/lib/rules/types";
@@ -9,7 +9,7 @@ export type { ParsedRule, RuleType };
 
 export function useRules(ruleType: RuleType) {
   const key = RULE_CONFIG_KEY[ruleType];
-  const rawRules = useConfigStore((state) => state.data[key]) ?? [];
+  const rawRules = useConfigValues(key);
   const addEntry = useConfigStore((state) => state.addEntry);
   const updateEntry = useConfigStore((state) => state.updateEntry);
   const removeEntry = useConfigStore((state) => state.removeEntry);

@@ -153,7 +153,7 @@ function addChange(file: SourceFile, key: string, value: string, data: ConfigDat
   return { kind: "option", key, value };
 }
 
-function mergeFileData(files: SourceFile[], prevData: ConfigData = {}): ConfigData {
+function mergeFileData(files: readonly SourceFile[], prevData: ConfigData = {}): ConfigData {
   const next: ConfigData = {};
   for (const file of files) {
     for (const line of file.lines) {
@@ -207,6 +207,26 @@ function mergeFileData(files: SourceFile[], prevData: ConfigData = {}): ConfigDa
   return result;
 }
 
+const dataCache = new WeakMap<readonly SourceFile[], ConfigData>();
+let lastDerivedData: ConfigData = {};
+
+/**
+ * Derive the flat config view from the canonical files.
+ *
+ * `files` is the only source of truth; this projection is memoized per files
+ * reference so selectors can safely use reference equality. Unchanged arrays
+ * are shared with the previous projection.
+ */
+export function deriveConfigData(files: readonly SourceFile[]): ConfigData {
+  const cached = dataCache.get(files);
+  if (cached) return cached;
+
+  const data = mergeFileData(files, lastDerivedData);
+  dataCache.set(files, data);
+  lastDerivedData = data;
+  return data;
+}
+
 function fileIndexForKey(files: SourceFile[], key: string): number {
   for (let i = 0; i < files.length; i++) {
     if (files[i].lines.some((l) => l.type === "entry" && l.key === key)) return i;
@@ -231,7 +251,6 @@ export function resolveGlobalIndex(
 }
 
 interface ConfigStore {
-  data: ConfigData; // merged — read by UI
   files: SourceFile[]; // per-file — written to disk
   loading: boolean;
   applying: boolean;
@@ -272,7 +291,6 @@ interface ConfigStore {
 export const useConfigStore = create<ConfigStore>()(
   temporal(
     (set, get) => ({
-      data: {},
       files: [],
       loading: false,
       applying: false,
@@ -290,7 +308,6 @@ export const useConfigStore = create<ConfigStore>()(
           const files = loaded.map(toSourceFile);
           set({
             files,
-            data: mergeFileData(files, {}),
             loading: false,
             revision: get().revision + 1,
           });
@@ -315,7 +332,6 @@ export const useConfigStore = create<ConfigStore>()(
           const files = (await host.createDefault()).map(toSourceFile);
           set({
             files,
-            data: mergeFileData(files, {}),
             loading: false,
             revision: get().revision + 1,
           });
@@ -336,7 +352,6 @@ export const useConfigStore = create<ConfigStore>()(
           const files = loaded.map(toSourceFile);
           set({
             files,
-            data: mergeFileData(files, {}),
             loading: false,
             revision: get().revision + 1,
           });
@@ -406,7 +421,6 @@ export const useConfigStore = create<ConfigStore>()(
 
           set({
             files: nextFiles,
-            data: mergeFileData(nextFiles, {}),
             applying: false,
             revision: get().revision + 1,
           });
@@ -422,7 +436,7 @@ export const useConfigStore = create<ConfigStore>()(
           const files = state.files.map((file, index) =>
             index === fileIdx ? updateScalar(file, key, value) : file,
           );
-          return { files, data: mergeFileData(files, state.data) };
+          return { files };
         }),
 
       setValues: (entries) =>
@@ -434,7 +448,7 @@ export const useConfigStore = create<ConfigStore>()(
               index === fileIdx ? updateScalar(file, key, value) : file,
             );
           }
-          return { files, data: mergeFileData(files, state.data) };
+          return { files };
         }),
 
       setDirective: (key, values) =>
@@ -443,7 +457,7 @@ export const useConfigStore = create<ConfigStore>()(
           const files = state.files.map((file, index) =>
             index === fileIdx ? updateDocument(file, { kind: "directive", key, values }) : file,
           );
-          return { files, data: mergeFileData(files, state.data) };
+          return { files };
         }),
 
       setPair: (table, name, value) =>
@@ -452,7 +466,7 @@ export const useConfigStore = create<ConfigStore>()(
           const files = state.files.map((file, index) =>
             index === fileIdx ? updateDocument(file, { kind: "pair", table, name, value }) : file,
           );
-          return { files, data: mergeFileData(files, state.data) };
+          return { files };
         }),
 
       addEntry: (key, value) =>
@@ -461,12 +475,13 @@ export const useConfigStore = create<ConfigStore>()(
           const file = state.files[fileIdx];
           if (!file) return state;
 
+          const data = deriveConfigData(state.files);
           const files = state.files.map((candidate, index) =>
             index === fileIdx
-              ? updateDocument(candidate, addChange(candidate, key, value, state.data))
+              ? updateDocument(candidate, addChange(candidate, key, value, data))
               : candidate,
           );
-          return { files, data: mergeFileData(files, state.data) };
+          return { files };
         }),
 
       insertEntry: (key, value, { fileIdx, mode }) =>
@@ -479,7 +494,7 @@ export const useConfigStore = create<ConfigStore>()(
               ? updateDocument(candidate, bindingChange(key, value, mode))
               : candidate,
           );
-          return { files, data: mergeFileData(files, state.data) };
+          return { files };
         }),
 
       updateEntry: (key, index, value) =>
@@ -513,7 +528,7 @@ export const useConfigStore = create<ConfigStore>()(
             return updateDocument(file, { kind: "option", key, value });
           });
 
-          return { files, data: mergeFileData(files, state.data) };
+          return { files };
         }),
 
       removeEntry: (key, index) =>
@@ -540,7 +555,7 @@ export const useConfigStore = create<ConfigStore>()(
             return file;
           });
 
-          return { files, data: mergeFileData(files, state.data) };
+          return { files };
         }),
 
       setFileText: (absPath, text, format) =>
@@ -574,7 +589,7 @@ export const useConfigStore = create<ConfigStore>()(
             const files = state.files.map((file) =>
               file.absPath === absPath ? { ...file, document, lines } : file,
             );
-            return { files, data: mergeFileData(files, state.data), error: null };
+            return { files, error: null };
           } catch (error) {
             return { error: error instanceof Error ? error.message : String(error) };
           }
@@ -599,42 +614,33 @@ export const useConfigStore = create<ConfigStore>()(
   ),
 );
 
-useConfigStore.subscribe((state, prevState) => {
-  if (state.files === prevState.files) return;
-  // Undo/redo replace `files` through zundo and bypass the action helpers, so
-  // the derived view has to be rebuilt here. Actions that compute it already
-  // return the same reference, which keeps this from causing an extra render.
-  const data = mergeFileData(state.files, state.data);
-  if (data !== state.data) useConfigStore.setState({ data });
-});
-
 /** True when there are changes that can still be undone back to the saved config. */
 export function useConfigDirty(): boolean {
   return useStore(useConfigStore.temporal, (state) => state.pastStates.length > 0);
 }
 
 export function useConfigValue(key: string): string | undefined {
-  return useConfigStore((s) => s.data[key]?.[0] ?? DEFAULTS[key]?.[0]);
+  return useConfigStore((s) => deriveConfigData(s.files)[key]?.[0] ?? DEFAULTS[key]?.[0]);
 }
 
 export function useConfigValues(key: string): readonly string[] {
-  return useConfigStore((s) => s.data[key] ?? EMPTY_VALUES);
+  return useConfigStore((s) => deriveConfigData(s.files)[key] ?? EMPTY_VALUES);
 }
 
 export function useConfigBool(key: string, fallback?: boolean): boolean {
-  return useConfigStore((s) => cfgBool(s.data, key, fallback));
+  return useConfigStore((s) => cfgBool(deriveConfigData(s.files), key, fallback));
 }
 
 export function useConfigInt(key: string, fallback?: number, min?: number, max?: number): number {
-  return useConfigStore((s) => cfgInt(s.data, key, fallback, min, max));
+  return useConfigStore((s) => cfgInt(deriveConfigData(s.files), key, fallback, min, max));
 }
 
 export function useConfigFloat(key: string, fallback?: number, min?: number, max?: number): number {
-  return useConfigStore((s) => cfgFloat(s.data, key, fallback, min, max));
+  return useConfigStore((s) => cfgFloat(deriveConfigData(s.files), key, fallback, min, max));
 }
 
 export function useConfigStr(key: string, fallback?: string): string {
-  return useConfigStore((s) => cfgStr(s.data, key, fallback));
+  return useConfigStore((s) => cfgStr(deriveConfigData(s.files), key, fallback));
 }
 
 export function useGlobalInt(key: string): number {

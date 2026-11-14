@@ -2,7 +2,7 @@ import MiniSearch from "minisearch";
 import { DIRECTIVES, GLOBAL_META, GLOBALS } from "@mangowm.github.io/config/catalog";
 import { useRef, useEffect, useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
-import { useConfigStore } from "./config/store";
+import { deriveConfigData, useConfigStore } from "./config/store";
 import { SECTIONS } from "./presentation/sections";
 import type { ConfigData } from "./config/types";
 import type { DynamicIndexSource, DynamicSearchItem } from "./presentation/section-types";
@@ -312,9 +312,10 @@ function search(query: string): SearchResult[] {
 export function useSearch(): (query: string) => SearchResult[] {
   const watchedValues = useConfigStore(
     useShallow((s) => {
+      const data = deriveConfigData(s.files);
       const vals: Record<string, readonly string[]> = {};
       for (const key of WATCH_KEYS) {
-        const arr = s.data[key];
+        const arr = data[key];
         if (arr && arr.length > 0) vals[key] = arr;
       }
       return vals;
@@ -327,7 +328,7 @@ export function useSearch(): (query: string) => SearchResult[] {
   useEffect(() => {
     if (!initializedRef.current) {
       initializedRef.current = true;
-      const data = useConfigStore.getState().data;
+      const data = deriveConfigData(useConfigStore.getState().files);
       for (const source of DYNAMIC_SOURCES) {
         rebuildDynamicSource(source, data);
       }
@@ -343,7 +344,7 @@ export function useSearch(): (query: string) => SearchResult[] {
         }
       }
       if (changed) {
-        rebuildDynamicSource(source, useConfigStore.getState().data);
+        rebuildDynamicSource(source, deriveConfigData(useConfigStore.getState().files));
       }
     }
     lastValuesRef.current = watchedValues;
