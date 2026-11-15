@@ -2,8 +2,5 @@
 
 Discord app for the mangowm server.
 
-## Commands
-
-| Command               | What it does                     |
-| --------------------- | -------------------------------- |
-| `/preview url:<link>` | posts a docs section as an image |
+- `/preview url:<link>` posts a docs section as an image.
+- A message that contains a docs link gets the same image automatically.

@@ -1,0 +1,12 @@
+{
+  "name": "mao",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-11-15",
+  "keep_vars": true,
+  "durable_objects": {
+    "bindings": [{ "name": "GATEWAY", "class_name": "Gateway" }],
+  },
+  "exports": {
+    "Gateway": { "type": "durable-object", "storage": "sqlite" },
+  },
+}
