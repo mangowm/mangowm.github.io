@@ -2,5 +2,6 @@ node_modules
 dist
 .tanstack
 .output
+.env
 **/public/og/
 .vitest/
