@@ -27,6 +27,10 @@ jobs:
       - run: vp run ready
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: install chromium
+        run: pnpm --filter docs exec playwright install --with-deps --only-shell chromium
+      - name: generate section previews
+        run: vp run --filter docs previews:generate
       - run: |
           mkdir -p dist/docs dist/settings dist/config
           cp -r apps/site/.output/public/. dist/

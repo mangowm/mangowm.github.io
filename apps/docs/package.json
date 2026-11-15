@@ -9,6 +9,7 @@
     "predev": "vp run --filter @mangowm/og build",
     "build": "fumapress build",
     "prebuild": "vp run --filter @mangowm/og build",
+    "previews:generate": "node scripts/previews.mjs",
     "start": "fumapress start",
     "check": "vp check --fix",
     "types:check": "tsc --noEmit"
@@ -20,6 +21,7 @@
     "fumadocs-mdx": "^15.5.1",
     "fumadocs-ui": "npm:@fumadocs/base-ui@^16.18.2",
     "fumapress": "2.0.1",
+    "playwright": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
