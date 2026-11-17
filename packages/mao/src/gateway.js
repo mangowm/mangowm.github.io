@@ -41,6 +41,11 @@ export class Gateway extends DurableObject {
     this.dial();
   }
 
+  async wake() {
+    if (!this.error) this.dial();
+    return this.snapshot();
+  }
+
   snapshot() {
     return {
       online: this.socket?.readyState === WebSocket.OPEN,
