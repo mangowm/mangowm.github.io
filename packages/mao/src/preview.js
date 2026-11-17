@@ -19,13 +19,12 @@ export function docsUrl(input) {
   return url;
 }
 
-export function docsLinks(content) {
-  const links = [];
+export function firstDocsLink(content) {
   for (const match of content.matchAll(URL_RE)) {
     const url = docsUrl(match[0].replace(/[.,;:!?)\]]+$/, ""));
-    if (url && url.hash.length > 1) links.push(url);
+    if (url && url.hash.length > 1) return url;
   }
-  return links;
+  return null;
 }
 
 export async function sectionFor(url) {
@@ -54,7 +53,7 @@ export async function previewMessage(message, env) {
   if (message.author?.bot || message.webhook_id) return "bot";
   if (!message.content) return "empty";
 
-  const url = docsLinks(message.content)[0];
+  const url = firstDocsLink(message.content);
   if (!url) return "no-link";
 
   let found;
