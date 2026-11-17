@@ -17,6 +17,7 @@ export class Gateway extends DurableObject {
   acked = true;
   tries = 0;
   error = null;
+  lastPreview = null;
   seen = new Set();
 
   constructor(ctx, env) {
@@ -47,6 +48,7 @@ export class Gateway extends DurableObject {
       session: Boolean(this.sessionId),
       tries: this.tries,
       error: this.error,
+      lastPreview: this.lastPreview,
     };
   }
 
@@ -155,7 +157,14 @@ export class Gateway extends DurableObject {
 
   preview(data) {
     this.ctx.waitUntil(
-      previewMessage(data, this.env).catch((error) => console.error("preview failed", error)),
+      previewMessage(data, this.env)
+        .then((outcome) => {
+          this.lastPreview = { at: Date.now(), outcome };
+        })
+        .catch((error) => {
+          this.lastPreview = { at: Date.now(), outcome: "failed" };
+          console.error("preview failed", error);
+        }),
     );
   }
 

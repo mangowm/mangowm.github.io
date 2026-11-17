@@ -51,21 +51,22 @@ export const embed = (base, section, part, url) => ({
 });
 
 export async function previewMessage(message, env) {
-  if (message.author?.bot || message.webhook_id) return;
-  if (!message.content) return;
+  if (message.author?.bot || message.webhook_id) return "bot";
+  if (!message.content) return "empty";
 
   const url = docsLinks(message.content)[0];
-  if (!url) return;
+  if (!url) return "no-link";
 
   let found;
   try {
     found = await sectionFor(url);
-  } catch {
-    return;
+  } catch (error) {
+    console.warn("index failed", error?.message ?? error);
+    return "index";
   }
-  if (found.error) return;
+  if (found.error) return found.error;
 
-  await post(env, message.channel_id, [embed(found.base, found.section, found.part, url)]);
+  return post(env, message.channel_id, [embed(found.base, found.section, found.part, url)]);
 }
 
 async function post(env, channelId, embeds) {
@@ -81,6 +82,8 @@ async function post(env, channelId, embeds) {
   if (!response.ok) {
     console.error("post failed", response.status, await response.text().catch(() => ""));
   }
+
+  return response.ok ? "posted" : `post ${response.status}`;
 }
 
 async function loadManifest(base) {
