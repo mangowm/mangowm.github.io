@@ -6,9 +6,6 @@
   "secrets": {
     "required": ["DISCORD_PUBLIC_KEY", "DISCORD_BOT_TOKEN", "GATEWAY_SECRET"],
   },
-  "triggers": {
-    "crons": ["* * * * *"],
-  },
   "durable_objects": {
     "bindings": [{ "name": "GATEWAY", "class_name": "Gateway" }],
   },

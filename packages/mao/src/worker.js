@@ -6,5 +6,4 @@ export default {
     handle(request, env, {
       getGateway: (environment) => environment.GATEWAY.getByName("mao"),
     }),
-  scheduled: (_controller, env, ctx) => ctx.waitUntil(env.GATEWAY.getByName("mao").wake()),
 };

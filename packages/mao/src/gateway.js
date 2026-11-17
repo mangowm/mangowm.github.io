@@ -4,6 +4,7 @@ import { previewMessage } from "./preview.js";
 const GATEWAY = "wss://gateway.discord.gg";
 const INTENTS = (1 << 0) | (1 << 9) | (1 << 15);
 const MAX_DELAY = 60_000;
+const KEEPALIVE = 60_000;
 const SEEN_LIMIT = 200;
 const decoder = new TextDecoder();
 
@@ -22,13 +23,19 @@ export class Gateway extends DurableObject {
 
   constructor(ctx, env) {
     super(ctx, env);
-    if (env.DISCORD_BOT_TOKEN) this.dial();
+    if (!env.DISCORD_BOT_TOKEN) return;
+
+    ctx.blockConcurrencyWhile(async () => {
+      await this.keepalive();
+      this.dial();
+    });
   }
 
   async start() {
     this.error = null;
     this.tries = 0;
     this.hangup();
+    this.keepalive();
     this.dial();
     return this.snapshot();
   }
@@ -38,12 +45,13 @@ export class Gateway extends DurableObject {
   }
 
   async alarm() {
+    if (this.error) return;
+    this.keepalive();
     this.dial();
   }
 
-  async wake() {
-    if (!this.error) this.dial();
-    return this.snapshot();
+  keepalive() {
+    return this.ctx.storage.setAlarm(Date.now() + KEEPALIVE).catch(() => {});
   }
 
   snapshot() {
