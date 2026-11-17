@@ -28,8 +28,7 @@ export class Gateway extends DurableObject {
   async start() {
     this.error = null;
     this.tries = 0;
-    this.sessionId = null;
-    this.sequence = null;
+    this.hangup();
     this.dial();
     return this.snapshot();
   }
@@ -50,6 +49,23 @@ export class Gateway extends DurableObject {
       error: this.error,
       lastPreview: this.lastPreview,
     };
+  }
+
+  hangup() {
+    const socket = this.socket;
+    this.socket = null;
+    this.sessionId = null;
+    this.sequence = null;
+    this.resumeUrl = null;
+
+    if (socket) {
+      socket.onmessage = null;
+      socket.onclose = null;
+      socket.close();
+    }
+
+    clearInterval(this.beatTimer);
+    this.beatTimer = null;
   }
 
   dial() {
