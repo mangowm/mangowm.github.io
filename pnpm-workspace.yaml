@@ -11,8 +11,8 @@ catalog:
   "@types/react": ^19.3.0
   "@types/react-dom": ^19.3.0
   typescript: ^7.0.2
-  vite: npm:@voidzero-dev/vite-plus-core@1.5.0
-  vite-plus: 1.5.0
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8000
+  vite-plus: 1.7.0
   react: ^19.3.1
   react-dom: ^19.3.1
   "@vitejs/plugin-react": ^6.1.1
@@ -37,11 +37,6 @@ overrides:
   vite@*: "catalog:"
 publicHoistPattern:
   - "@takumi-rs/core-*"
-peerDependencyRules:
-  allowAny:
-    - vite
-  allowedVersions:
-    vite: "*"
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
