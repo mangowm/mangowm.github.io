@@ -432,9 +432,11 @@ describe("schema", () => {
     expect(Value.Check(schema, { global: { root_color: "0X323232FF" } })).toBe(true);
   });
 
-  it("bounds saturation", () => {
-    expect(Value.Check(schema, { global: { blur_params_saturation: 1 } })).toBe(true);
-    expect(Value.Check(schema, { global: { blur_params_saturation: 1.2 } })).toBe(false);
+  it("bounds blur parameters", () => {
+    expect(Value.Check(schema, { global: { blur_params_saturation: 2 } })).toBe(true);
+    expect(Value.Check(schema, { global: { blur_params_saturation: 2.2 } })).toBe(false);
+    expect(Value.Check(schema, { global: { blur_params_brightness: 2 } })).toBe(true);
+    expect(Value.Check(schema, { global: { blur_params_contrast: 2.2 } })).toBe(false);
   });
 
   it("accepts an empty animation type", () => {

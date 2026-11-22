@@ -485,7 +485,7 @@ export const GLOBALS: readonly GlobalDef[] = [
     label: "Blur Brightness",
     description: "Brightness multiplier for the blurred layer.",
     min: 0,
-    max: 1,
+    max: 2,
   },
   {
     key: "blur_params_contrast",
@@ -494,18 +494,16 @@ export const GLOBALS: readonly GlobalDef[] = [
     label: "Blur Contrast",
     description: "Contrast multiplier for the blurred layer.",
     min: 0,
-    max: 1,
+    max: 2,
   },
   {
-    // Mango assigns 1.2, then clamps the effective value to 1.
     key: "blur_params_saturation",
     type: "float",
-    default: 1,
+    default: 1.2,
     label: "Blur Saturation",
-    description:
-      "Saturation multiplier for the blurred layer. Mango clamps the effective value to 0-1.",
+    description: "Saturation multiplier for the blurred layer.",
     min: 0,
-    max: 1,
+    max: 2,
   },
   {
     key: "shadows",

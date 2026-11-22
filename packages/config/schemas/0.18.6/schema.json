@@ -5536,7 +5536,7 @@
             {
               "type": "number",
               "minimum": 0,
-              "maximum": 1
+              "maximum": 2
             },
             {
               "type": "string",
@@ -5552,7 +5552,7 @@
             {
               "type": "number",
               "minimum": 0,
-              "maximum": 1
+              "maximum": 2
             },
             {
               "type": "string",
@@ -5568,7 +5568,7 @@
             {
               "type": "number",
               "minimum": 0,
-              "maximum": 1
+              "maximum": 2
             },
             {
               "type": "string",
@@ -5576,8 +5576,8 @@
             }
           ],
           "title": "Blur Saturation",
-          "description": "Saturation multiplier for the blurred layer. Mango clamps the effective value to 0-1.",
-          "default": 1
+          "description": "Saturation multiplier for the blurred layer.",
+          "default": 1.2
         },
         "shadows": {
           "anyOf": [

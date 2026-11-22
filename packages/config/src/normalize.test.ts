@@ -70,7 +70,7 @@ describe("normalizeConf", () => {
       "blur=maybe",
       "env=DPI",
       "var=1bad,x",
-      "blur_params_saturation=1.2",
+      "blur_params_saturation=2.5",
       "bind=SUPER,r,reload_config",
       "bind=SUPER,r,reload_config",
     ].join("\n");
@@ -82,12 +82,12 @@ describe("normalizeConf", () => {
       'expected a boolean, got "maybe"',
       "expected name,value in env",
       'invalid variable name "1bad"',
-      "blur_params_saturation clamped to 1",
+      "blur_params_saturation clamped to 2",
       'duplicate binding "SUPER+r"',
     ]);
 
     expect(config).toEqual({
-      global: { blur_params_saturation: 1 },
+      global: { blur_params_saturation: 2 },
       bind: { default: { "SUPER+r": [{ dispatcher: "reload_config" }] } },
     });
   });

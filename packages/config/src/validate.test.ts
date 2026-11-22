@@ -32,7 +32,7 @@ describe("validateText", () => {
   });
 
   it("keeps warning severity and codes from normalization", () => {
-    const issues = validateText("nope=1\nblur_params_saturation=1.2\n", "conf");
+    const issues = validateText("nope=1\nblur_params_saturation=2.5\n", "conf");
 
     expect(issues).toContainEqual(
       expect.objectContaining({ line: 1, severity: "warning", code: "unknown-option" }),
