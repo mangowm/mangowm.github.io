@@ -1,0 +1,41 @@
+name: settings desktop
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: settings-desktop-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          node-version: "26"
+          cache: true
+
+      - name: install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            librsvg2-dev
+
+      - uses: swatinem/rust-cache@v2.9.3
+        with:
+          workspaces: apps/settings/src-tauri -> target
+
+      - uses: tauri-apps/tauri-action@v1.0.0
+        with:
+          projectPath: apps/settings
+          uploadWorkflowArtifacts: true
