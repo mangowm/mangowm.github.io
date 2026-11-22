@@ -8,8 +8,8 @@
     "./schema": "./src/schema/index.ts",
     "./catalog": "./src/schema/data/index.ts",
     "./schemas/*": "./schemas/*",
-    "./schema.json": "./schemas/0.18.4/schema.json",
-    "./catalog.json": "./schemas/0.18.4/catalog.json",
+    "./schema.json": "./schemas/0.18.6/schema.json",
+    "./catalog.json": "./schemas/0.18.6/catalog.json",
     "./package.json": "./package.json"
   },
   "scripts": {

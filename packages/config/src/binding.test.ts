@@ -85,10 +85,10 @@ describe("other bindings", () => {
   });
 
   it("parses switch bindings without modifiers", () => {
-    const binding = parseBinding("switchbind", "fold,togglefloating");
+    const binding = parseBinding("switchbind", "lid_on,togglefloating");
 
     expect(binding.mods).toBe("");
-    expect(binding.trigger).toBe("fold");
-    expect(formatBinding(binding)).toBe("fold,togglefloating");
+    expect(binding.trigger).toBe("lid_on");
+    expect(formatBinding(binding)).toBe("lid_on,togglefloating");
   });
 });

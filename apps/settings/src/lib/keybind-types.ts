@@ -1,6 +1,6 @@
 import {
   BINDING_DIRECTIONS,
-  BINDING_FOLD_STATES,
+  BINDING_SWITCH_STATES,
   MOUSE_BUTTONS,
 } from "@mangowm.github.io/config/catalog";
 
@@ -15,9 +15,18 @@ export interface KeybindFlags {
 
 export type BindingType = "keyboard" | "mouse" | "axis" | "switch" | "gesture";
 
-export { BINDING_DIRECTIONS, BINDING_FOLD_STATES, MOUSE_BUTTONS };
+export { BINDING_DIRECTIONS, BINDING_SWITCH_STATES, MOUSE_BUTTONS };
 
 export type NamedMouseButton = (typeof MOUSE_BUTTONS)[number];
+
+export const SWITCH_STATE_LABELS: Record<string, string> = {
+  lid_on: "Lid Closed",
+  lid_off: "Lid Open",
+  tablet_on: "Tablet On",
+  tablet_off: "Tablet Off",
+  keypad_slide_on: "Keypad Exposed",
+  keypad_slide_off: "Keypad Hidden",
+};
 
 export const MOUSE_BUTTON_LABELS: Record<string, string> = {
   btn_left: "Left",

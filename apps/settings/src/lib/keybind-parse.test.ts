@@ -29,8 +29,8 @@ describe("keybind parsing", () => {
   });
 
   it("parses switch and gesture bindings", () => {
-    const switchBinding = parseSingleBinding("switchbind", 0, "fold,view,1");
-    expect(switchBinding).toMatchObject({ type: "switch", key: "fold", func: "view", args: "1" });
+    const switchBinding = parseSingleBinding("switchbind", 0, "lid_on,view,1");
+    expect(switchBinding).toMatchObject({ type: "switch", key: "lid_on", func: "view", args: "1" });
 
     const gesture = parseSingleBinding("gesturebind", 0, "SUPER,up,3,spawn,foot");
     expect(gesture).toMatchObject({

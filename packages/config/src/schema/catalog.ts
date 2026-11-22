@@ -3,7 +3,7 @@ import {
   BINDING_DIRECTIONS,
   BINDING_FLAG_LETTERS,
   BINDING_FLAGS,
-  BINDING_FOLD_STATES,
+  BINDING_SWITCH_STATES,
   BINDING_KEYWORDS,
   BINDING_KINDS,
   CATEGORIES,
@@ -90,7 +90,7 @@ export function buildCatalog() {
       flagLetters: BINDING_FLAG_LETTERS,
       mouseButtons: MOUSE_BUTTONS,
       directions: BINDING_DIRECTIONS,
-      foldStates: BINDING_FOLD_STATES,
+      switchStates: BINDING_SWITCH_STATES,
       modifierOrder: MODIFIER_ORDER,
     },
     tags: {

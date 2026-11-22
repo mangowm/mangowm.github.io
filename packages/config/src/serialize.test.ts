@@ -53,7 +53,7 @@ describe("serializeConf", () => {
       },
       mousebind: { default: { "SUPER+btn_left": [{ dispatcher: "killclient" }] } },
       gesturebind: { default: { "none+left+3": [{ dispatcher: "view", args: "1" }] } },
-      switchbind: { default: { fold: [{ dispatcher: "togglefloating" }] } },
+      switchbind: { default: { lid_on: [{ dispatcher: "togglefloating" }] } },
       rule: {
         window_rule: [{ app_id: "firefox", tags: [1, 3], is_floating: true }],
       },

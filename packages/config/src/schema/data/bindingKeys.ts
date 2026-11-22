@@ -2,7 +2,7 @@ import {
   BINDING_BARE_MODIFIERS,
   BINDING_DIRECTIONS,
   BINDING_FLAGS,
-  BINDING_FOLD_STATES,
+  BINDING_SWITCH_STATES,
   BINDING_MODIFIER_CODES,
   BINDING_MODIFIERS,
   MOUSE_BUTTONS,
@@ -33,7 +33,7 @@ export const BINDING_KEY_PATTERNS: Record<BindingKind, string> = {
   mouse: `^${RESERVED}(?:${MODIFIER}\\s*\\+\\s*)*${MOUSE_BUTTON}$`,
   axis: `^${RESERVED}(?:${MODIFIER}\\s*\\+\\s*)*${DIRECTION}$`,
   gesture: `^${RESERVED}${MODIFIER}\\s*\\+\\s*${DIRECTION}\\s*\\+\\s*(?:[0-9]+|${VARIABLE})$`,
-  switch: `^${RESERVED}(?:${BINDING_FOLD_STATES.map(ci).join("|")}|${VARIABLE})$`,
+  switch: `^${RESERVED}(?:${BINDING_SWITCH_STATES.map(ci).join("|")}|${VARIABLE})$`,
 };
 
 export const GLOBAL_KEY_BINDING_PATTERN = `^${MODIFIER}(?:\\s*\\+\\s*${MODIFIER})*\\s*-\\s*${KEYSYM}$`;

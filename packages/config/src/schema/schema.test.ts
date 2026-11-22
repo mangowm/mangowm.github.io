@@ -64,10 +64,10 @@ describe("schema", () => {
       properties: Record<string, unknown>;
     };
     const keys = Object.keys(global.properties);
-    expect(keys).toHaveLength(244);
+    expect(keys).toHaveLength(245);
     expect(
       keys.filter((key) => !["exec", "exec_once", "source", "source_optional"].includes(key)),
-    ).toHaveLength(240);
+    ).toHaveLength(241);
   });
 
   it("has six rule types and 165 fields", () => {
@@ -159,8 +159,10 @@ describe("schema", () => {
       ["axisbind", "ctrl+left"],
       ["gesturebind", "none+left+3"],
       ["gesturebind", "SUPER+right+4"],
-      ["switchbind", "fold"],
-      ["switchbind", "unfold"],
+      ["switchbind", "lid_on"],
+      ["switchbind", "lid_off"],
+      ["switchbind", "tablet_on"],
+      ["switchbind", "keypad_slide_off"],
     ];
     for (const [section, key] of valid) expect(binding(section, key)).toBe(true);
 
@@ -177,8 +179,8 @@ describe("schema", () => {
       ["gesturebind", "none+left"],
       ["gesturebind", "none+left+3+4"],
       ["gesturebind", "none+left+x"],
-      ["switchbind", "SUPER+fold"],
-      ["switchbind", "fold+unfold"],
+      ["switchbind", "SUPER+lid_on"],
+      ["switchbind", "lid_on+lid_off"],
     ];
     for (const [section, key] of invalid) expect(binding(section, key)).toBe(false);
   });
@@ -406,7 +408,7 @@ describe("schema", () => {
       mousebind: "SUPER+btn_left",
       axisbind: "SUPER+UP",
       gesturebind: "none+left+3",
-      switchbind: "fold",
+      switchbind: "lid_on",
     };
     for (const [section, key] of Object.entries(keys)) {
       expect(Value.Check(schema, { [section]: { default: { [key]: actions } } })).toBe(false);

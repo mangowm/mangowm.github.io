@@ -1,1 +1,1 @@
-export const MANGO_VERSION = "0.18.4";
+export const MANGO_VERSION = "0.18.6";

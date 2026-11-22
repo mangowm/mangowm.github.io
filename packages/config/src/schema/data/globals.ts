@@ -400,6 +400,14 @@ export const GLOBALS: readonly GlobalDef[] = [
     description: "Share the scratchpad pool across all monitors.",
   },
   {
+    key: "special_tag_cross_monitor",
+    type: "bool",
+    default: false,
+    label: "Special Tag Cross Monitor",
+    description:
+      "Move windows from other monitors' special tags to the monitor where the special tag is activated and apply the same special-tag layout. Floating windows are rescaled and centered.",
+  },
+  {
     key: "focus_cross_tag",
     type: "bool",
     default: false,
@@ -1975,8 +1983,8 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 0.8,
     label: "Scratchpad Width Ratio",
     description:
-      "Scratchpad width as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
-    min: 0.1,
+      "Scratchpad width as a fraction of the monitor (0-1), used when the rule does not set a width. A value of 0 keeps the application's requested width.",
+    min: 0,
     max: 1,
   },
   {
@@ -1985,8 +1993,8 @@ export const GLOBALS: readonly GlobalDef[] = [
     default: 0.9,
     label: "Scratchpad Height Ratio",
     description:
-      "Scratchpad height as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
-    min: 0.1,
+      "Scratchpad height as a fraction of the monitor (0-1), used when the rule does not set a height. A value of 0 keeps the application's requested height.",
+    min: 0,
     max: 1,
   },
   {

@@ -5,7 +5,7 @@ import {
   BINDING_DIRECTIONS,
   BINDING_FLAG_LETTERS,
   BINDING_FLAGS,
-  BINDING_FOLD_STATES,
+  BINDING_SWITCH_STATES,
   BINDING_KEYWORDS,
   BINDING_KINDS,
   MOUSE_BUTTONS,
@@ -34,11 +34,18 @@ describe("binding constants", () => {
     ]);
   });
 
-  it("defines the supported mouse buttons and directions", () => {
+  it("defines the supported mouse buttons, directions, and switch states", () => {
     expect(MOUSE_BUTTONS).toHaveLength(8);
     expect(MOUSE_BUTTONS).toContain("btn_task");
     expect(BINDING_DIRECTIONS).toEqual(["left", "right", "up", "down", "alldir"]);
-    expect(BINDING_FOLD_STATES).toEqual(["fold", "unfold"]);
+    expect(BINDING_SWITCH_STATES).toEqual([
+      "lid_on",
+      "lid_off",
+      "tablet_on",
+      "tablet_off",
+      "keypad_slide_on",
+      "keypad_slide_off",
+    ]);
     expect(MODIFIER_ORDER).toEqual(["super", "ctrl", "alt", "shift", "hyper"]);
   });
 
@@ -50,7 +57,8 @@ describe("binding constants", () => {
     expect(patterns.mouse?.test("SUPER+btn_left")).toBe(true);
     expect(patterns.axis?.test("SUPER+alldir")).toBe(true);
     expect(patterns.gesture?.test("SUPER+alldir+3")).toBe(true);
-    expect(patterns.switch?.test("fold")).toBe(true);
-    expect(patterns.switch?.test("unfold")).toBe(true);
+    expect(patterns.switch?.test("lid_on")).toBe(true);
+    expect(patterns.switch?.test("tablet_off")).toBe(true);
+    expect(patterns.switch?.test("keypad_slide_on")).toBe(true);
   });
 });

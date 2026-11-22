@@ -305,7 +305,7 @@ export function rootSchema() {
         ),
       ),
       switchbind: Type.Optional(
-        bindingMap("switch", "Switch bindings", "Switch bindings by key mode and fold state."),
+        bindingMap("switch", "Switch bindings", "Switch bindings by key mode and switch state."),
       ),
       rule: Type.Optional(rulesSchema()),
     },

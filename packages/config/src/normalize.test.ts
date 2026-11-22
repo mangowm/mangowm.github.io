@@ -25,7 +25,7 @@ describe("normalizeConf", () => {
       "bindc=SUPER,a,centerwin",
       "mousebind=SUPER,btn_left,killclient",
       "gesturebind=none,left,3,view,1",
-      "switchbind=fold,togglefloating",
+      "switchbind=lid_on,togglefloating",
       "window_rule=app_id:firefox,tags:1|3,is_floating:1",
       "tag_rule=id:*,master_count:2",
       "key_mode=default",
@@ -56,7 +56,7 @@ describe("normalizeConf", () => {
       },
       mousebind: { resize: { "SUPER+btn_left": [{ dispatcher: "killclient" }] } },
       gesturebind: { resize: { "none+left+3": [{ dispatcher: "view", args: "1" }] } },
-      switchbind: { resize: { fold: [{ dispatcher: "togglefloating" }] } },
+      switchbind: { resize: { lid_on: [{ dispatcher: "togglefloating" }] } },
       rule: {
         window_rule: [{ app_id: "firefox", tags: [1, 3], is_floating: true }],
         tag_rule: [{ id: "*", master_count: 2 }],

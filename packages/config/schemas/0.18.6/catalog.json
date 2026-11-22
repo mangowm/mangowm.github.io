@@ -1,6 +1,6 @@
 {
-  "mangoVersion": "0.18.4",
-  "schema": "https://mangowm.github.io/config/0.18.4/schema.json",
+  "mangoVersion": "0.18.6",
+  "schema": "https://mangowm.github.io/config/0.18.6/schema.json",
   "categories": {
     "window": {
       "label": "Window Management"
@@ -718,6 +718,18 @@
       "category": "scratchpad",
       "aliases": [
         "scratchpad across monitors"
+      ]
+    },
+    "special_tag_cross_monitor": {
+      "key": "special_tag_cross_monitor",
+      "type": "bool",
+      "default": false,
+      "label": "Special Tag Cross Monitor",
+      "description": "Move windows from other monitors' special tags to the monitor where the special tag is activated and apply the same special-tag layout. Floating windows are rescaled and centered.",
+      "category": "scratchpad",
+      "aliases": [
+        "special tag across monitors",
+        "special workspace across monitors"
       ]
     },
     "focus_cross_tag": {
@@ -2778,8 +2790,8 @@
       "type": "float",
       "default": 0.8,
       "label": "Scratchpad Width Ratio",
-      "description": "Scratchpad width as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
-      "min": 0.1,
+      "description": "Scratchpad width as a fraction of the monitor (0-1), used when the rule does not set a width. A value of 0 keeps the application's requested width.",
+      "min": 0,
       "max": 1,
       "category": "scratchpad",
       "aliases": [
@@ -2792,8 +2804,8 @@
       "type": "float",
       "default": 0.9,
       "label": "Scratchpad Height Ratio",
-      "description": "Scratchpad height as a fraction of the monitor (0.1-1.0). Used when the rule sets none.",
-      "min": 0.1,
+      "description": "Scratchpad height as a fraction of the monitor (0-1), used when the rule does not set a height. A value of 0 keeps the application's requested height.",
+      "min": 0,
       "max": 1,
       "category": "scratchpad",
       "aliases": [
@@ -7454,9 +7466,13 @@
       "down",
       "alldir"
     ],
-    "foldStates": [
-      "fold",
-      "unfold"
+    "switchStates": [
+      "lid_on",
+      "lid_off",
+      "tablet_on",
+      "tablet_off",
+      "keypad_slide_on",
+      "keypad_slide_off"
     ],
     "modifierOrder": [
       "super",

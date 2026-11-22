@@ -114,6 +114,10 @@ export const GLOBAL_META: Record<string, GlobalMeta> = {
   focus_direction_only_zone_overlap: { category: "focus" },
   exchange_cross_monitor: { category: "behaviour", aliases: ["swap across monitors", "exchange"] },
   scratchpad_cross_monitor: { category: "scratchpad", aliases: ["scratchpad across monitors"] },
+  special_tag_cross_monitor: {
+    category: "scratchpad",
+    aliases: ["special tag across monitors", "special workspace across monitors"],
+  },
   focus_cross_tag: { category: "behaviour", aliases: ["across tags", "tag crossing"] },
   view_current_to_back: { category: "tag", aliases: ["send to back", "background", "tag back"] },
   blur: { category: "appearance" },

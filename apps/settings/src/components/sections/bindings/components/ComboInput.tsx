@@ -5,8 +5,9 @@ import {
   MOUSE_BUTTONS,
   MOUSE_BUTTON_LABELS,
   BINDING_DIRECTIONS,
-  BINDING_FOLD_STATES,
+  BINDING_SWITCH_STATES,
   BINDING_MOTIONS,
+  SWITCH_STATE_LABELS,
   type BindingType,
 } from "@/lib/keybind-types";
 import { KeyRecorder, type PickerOption } from "../dialogs/KeyRecorder";
@@ -91,9 +92,9 @@ export function ComboInput({
     }
 
     case "switch": {
-      const switchOptions: PickerOption[] = BINDING_FOLD_STATES.map((f) => ({
-        label: f === "fold" ? "Closed" : "Open",
-        value: f,
+      const switchOptions: PickerOption[] = BINDING_SWITCH_STATES.map((state) => ({
+        label: SWITCH_STATE_LABELS[state],
+        value: state,
       }));
 
       return (
@@ -103,7 +104,7 @@ export function ComboInput({
           onModsChange={onModsChange}
           onKeyChange={onTriggerChange}
           pickerOptions={switchOptions}
-          pickerPlaceholder="Choose lid state..."
+          pickerPlaceholder="Choose switch state..."
           showMods={false}
         />
       );

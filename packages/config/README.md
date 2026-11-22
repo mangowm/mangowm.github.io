@@ -35,11 +35,11 @@ import { schema } from "@mangowm.github.io/config/schema";
 import { GLOBALS, RULES, DISPATCHERS } from "@mangowm.github.io/config/catalog";
 ```
 
-The artifacts are versioned by mango release:
+The artifacts describe the current mango release:
 
 ```text
-https://mangowm.github.io/config/0.18.4/schema.json
-https://mangowm.github.io/config/0.18.4/catalog.json
+https://mangowm.github.io/config/0.18.6/schema.json
+https://mangowm.github.io/config/0.18.6/catalog.json
 ```
 
 Categories are shared catalog identities. Their labels live in `CATEGORIES`,

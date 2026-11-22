@@ -25,7 +25,7 @@ const CONF = [
   "mousebind = SUPER,btn_left,moveresize,curmove",
   "axisbind = SUPER,UP,viewtoleft_have_client",
   "gesturebind = none,left,3,focusdir,left",
-  "switchbind = fold,spawn,external-monitor on",
+  "switchbind = lid_on,spawn,external-monitor on",
   "window_rule = is_floating:1,width:800,height:900,app_id:mpv",
   "tag_rule = id:1,layout_name:tile",
   "",

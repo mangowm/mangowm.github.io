@@ -1,4 +1,4 @@
-import { type BindingType, MOUSE_BUTTON_LABELS } from "@/lib/keybind-types";
+import { SWITCH_STATE_LABELS, type BindingType, MOUSE_BUTTON_LABELS } from "@/lib/keybind-types";
 import { xkbToDisplay } from "@/lib/keyboard";
 import { parseModifiers } from "@/lib/keybind-parse";
 import { KeyBadge } from "./KeyBadge";
@@ -6,7 +6,7 @@ import { KeyBadge } from "./KeyBadge";
 interface ComboDisplayProps {
   type: BindingType;
   mods: string;
-  /** For keyboard: XKB key name. For mouse: button. For axis: direction. For switch: fold state. For gesture: motion. */
+  /** For keyboard: XKB key name. For mouse: button. For axis: direction. For switch: switch state. For gesture: motion. */
   triggerLabel?: string;
   /** For gesture: the finger count */
   fingers?: string;
@@ -40,7 +40,7 @@ export function ComboDisplay({ type, mods, triggerLabel, fingers }: ComboDisplay
       triggerDisplay = `Scroll ${triggerLabel.charAt(0).toUpperCase() + triggerLabel.slice(1)}`;
       break;
     case "switch":
-      triggerDisplay = triggerLabel === "fold" ? "Lid Closed" : "Lid Open";
+      triggerDisplay = SWITCH_STATE_LABELS[triggerLabel] ?? triggerLabel;
       break;
     case "gesture": {
       const fingerText = fingers && fingers !== "1" ? `${fingers}-finger ` : "";

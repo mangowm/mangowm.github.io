@@ -35,7 +35,14 @@ export const MOUSE_BUTTONS = [
 
 export const BINDING_DIRECTIONS = ["left", "right", "up", "down", "alldir"] as const;
 
-export const BINDING_FOLD_STATES = ["fold", "unfold"] as const;
+export const BINDING_SWITCH_STATES = [
+  "lid_on",
+  "lid_off",
+  "tablet_on",
+  "tablet_off",
+  "keypad_slide_on",
+  "keypad_slide_off",
+] as const;
 
 export const MODIFIER_ORDER = ["super", "ctrl", "alt", "shift", "hyper"] as const;
 
