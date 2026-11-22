@@ -2,6 +2,7 @@ import {
   BINDING_FLAG_LETTERS,
   BINDING_FLAGS,
   BINDING_KEYWORDS,
+  BINDING_SWITCH_STATES,
   type BindingKind,
 } from "./schema/data";
 
@@ -74,6 +75,12 @@ export function parseFlags(keyword: string): BindingFlags {
   return flags;
 }
 
+/** Canonicalize a documented switch state, including Sway-style `type:state` aliases. */
+function normalizeSwitchState(state: string): string {
+  const normalized = state.trim().toLowerCase().replaceAll(":", "_");
+  return (BINDING_SWITCH_STATES as readonly string[]).includes(normalized) ? normalized : state;
+}
+
 /** Parse one binding line. */
 export function parseBinding(keyword: string, value: string): ParsedBinding {
   const kind = bindingKind(keyword);
@@ -85,7 +92,14 @@ export function parseBinding(keyword: string, value: string): ParsedBinding {
     if (!trigger || rest.length === 0) {
       throw new ValueError(`expected state,action in "${value}"`);
     }
-    return { kind, flags, mods: "", trigger, fingers: "", action: parseAction(rest.join(",")) };
+    return {
+      kind,
+      flags,
+      mods: "",
+      trigger: normalizeSwitchState(trigger),
+      fingers: "",
+      action: parseAction(rest.join(",")),
+    };
   }
 
   if (kind === "gesture") {

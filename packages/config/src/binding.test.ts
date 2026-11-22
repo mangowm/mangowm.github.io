@@ -91,4 +91,12 @@ describe("other bindings", () => {
     expect(binding.trigger).toBe("lid_on");
     expect(formatBinding(binding)).toBe("lid_on,togglefloating");
   });
+
+  it("normalizes documented switch state aliases", () => {
+    expect(parseBinding("switchbind", "LID:ON,togglefloating").trigger).toBe("lid_on");
+    expect(parseBinding("switchbind", "keypad_slide:off,togglefloating").trigger).toBe(
+      "keypad_slide_off",
+    );
+    expect(parseBinding("switchbind", "$state,togglefloating").trigger).toBe("$state");
+  });
 });
