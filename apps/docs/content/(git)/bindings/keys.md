@@ -194,34 +194,34 @@ It is formed by tag numbers `1`–`9`, optionally combined with `|`.
 
 ### System
 
-| Command                      | Param             | Description                                                                                                                             |
-| :--------------------------- | :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| `spawn`                      | `cmd`             | Execute a command.                                                                                                                      |
-| `spawn_shell`                | `cmd`             | Execute shell command (supports pipes `\|`).                                                                                            |
-| `spawn_on_empty`             | `cmd, tagmask`    | Open command on empty tag.Accepts a cmd string and [tagmask](/bindings/keys#tag-mask-format)                                            |
-| `reload_config`              | -                 | Hot-reload configuration. Does not support keybind conflict (`c` flag).                                                                 |
-| `load_config_file`           | `file path`       | Load configuration from the specified file. Empty path resets to default config location. Does not support keybind conflict (`c` flag). |
-| `quit`                       | -                 | Exit mangowm.                                                                                                                           |
-| `toggleoverview`             | `[1]`             | Toggle overview mode. Passing `1` only shows the current tagset's windows in the overview instead of all tags.                          |
-| `enteroverview`              | -                 | Enter overview mode.                                                                                                                    |
-| `leaveoverview`              | -                 | Leave overview mode.                                                                                                                    |
-| `toggleworkspaceoverview`    | `[all\|occupied]` | Toggle the draggable workspace overview. `all` includes empty tags; `occupied` shows only tags containing windows.                      |
-| `enterworkspaceoverview`     | `[all\|occupied]` | Enter the draggable workspace overview with the selected workspace scope.                                                               |
-| `leaveworkspaceoverview`     | -                 | Leave the draggable workspace overview.                                                                                                 |
-| `togglejump`                 | -                 | Toggle overview with jump mode.                                                                                                         |
-| `create_virtual_output`      | -                 | Create a headless monitor (for VNC/Sunshine).                                                                                           |
-| `destroy_all_virtual_output` | -                 | Destroy all virtual monitors.                                                                                                           |
-| `toggleoverlay`              | -                 | Toggle overlay state for the focused window.                                                                                            |
-| `toggle_trackpad_enable`     | -                 | Toggle trackpad enable.                                                                                                                 |
-| `setkeymode`                 | `mode`            | Set key_mode.                                                                                                                           |
-| `switch_keyboard_layout`     | `[index]`         | Switch keyboard layout. Optional index (0, 1, 2...) to switch to specific layout.                                                       |
-| `setoption`                  | `key,value`       | Set config option temporarily.                                                                                                          |
-| `sleep_monitor`              | `monitor_spec`    | Shutdown monitor power but not remove. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                           |
-| `wakeup_monitor`             | `monitor_spec`    | Turn on monitor power. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                                           |
-| `sleep_toggle_monitor`       | `monitor_spec`    | Toggle monitor power but not remove. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                             |
-| `disable_monitor`            | `monitor_spec`    | remove monitor. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                                                  |
-| `enable_monitor`             | `monitor_spec`    | add monitor. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                                                     |
-| `toggle_monitor`             | `monitor_spec`    | Toggle monitor add/remove. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                                       |
+| Command                      | Param                                          | Description                                                                                                                                                    |
+| :--------------------------- | :--------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `spawn`                      | `cmd`                                          | Execute a command.                                                                                                                                             |
+| `spawn_shell`                | `cmd`                                          | Execute shell command (supports pipes `\|`).                                                                                                                   |
+| `spawn_on_empty`             | `cmd, tagmask`                                 | Open command on empty tag.Accepts a cmd string and [tagmask](/bindings/keys#tag-mask-format)                                                                   |
+| `reload_config`              | -                                              | Hot-reload configuration. Does not support keybind conflict (`c` flag).                                                                                        |
+| `load_config_file`           | `file path`                                    | Load configuration from the specified file. Empty path resets to default config location. Does not support keybind conflict (`c` flag).                        |
+| `quit`                       | -                                              | Exit mangowm.                                                                                                                                                  |
+| `toggleoverview`             | `[1]`                                          | Toggle overview mode. Passing `1` only shows the current tagset's windows in the overview instead of all tags.                                                 |
+| `enteroverview`              | -                                              | Enter overview mode.                                                                                                                                           |
+| `leaveoverview`              | -                                              | Leave overview mode.                                                                                                                                           |
+| `toggleworkspaceoverview`    | `[all\|occupied\|scroll_all\|scroll_occupied]` | Toggle the draggable workspace overview. `all` includes empty tags, `occupied` shows only occupied tags, and the `scroll_*` variants use the scrolling layout. |
+| `enterworkspaceoverview`     | `[all\|occupied\|scroll_all\|scroll_occupied]` | Enter the draggable workspace overview with the selected scope and layout.                                                                                     |
+| `leaveworkspaceoverview`     | -                                              | Leave the draggable workspace overview.                                                                                                                        |
+| `togglejump`                 | -                                              | Toggle overview with jump mode.                                                                                                                                |
+| `create_virtual_output`      | -                                              | Create a headless monitor (for VNC/Sunshine).                                                                                                                  |
+| `destroy_all_virtual_output` | -                                              | Destroy all virtual monitors.                                                                                                                                  |
+| `toggleoverlay`              | -                                              | Toggle overlay state for the focused window.                                                                                                                   |
+| `toggle_trackpad_enable`     | -                                              | Toggle trackpad enable.                                                                                                                                        |
+| `setkeymode`                 | `mode`                                         | Set key_mode.                                                                                                                                                  |
+| `switch_keyboard_layout`     | `[index]`                                      | Switch keyboard layout. Optional index (0, 1, 2...) to switch to specific layout.                                                                              |
+| `setoption`                  | `key,value`                                    | Set config option temporarily.                                                                                                                                 |
+| `sleep_monitor`              | `monitor_spec`                                 | Shutdown monitor power but not remove. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                                                  |
+| `wakeup_monitor`             | `monitor_spec`                                 | Turn on monitor power. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                                                                  |
+| `sleep_toggle_monitor`       | `monitor_spec`                                 | Toggle monitor power but not remove. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                                                    |
+| `disable_monitor`            | `monitor_spec`                                 | remove monitor. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                                                                         |
+| `enable_monitor`             | `monitor_spec`                                 | add monitor. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                                                                            |
+| `toggle_monitor`             | `monitor_spec`                                 | Toggle monitor add/remove. Accepts a [monitor spec](/configuration/monitors#monitor-spec-format).                                                              |
 
 ### Media Controls
 
