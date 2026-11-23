@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 
 import { formatConf, parseConf } from "../conf";
+import { convertDocument } from "../convert";
 import { formatToml, parseToml } from "../toml";
 import { applyMigrations, detectMigrations } from "./registry";
 
@@ -64,6 +65,16 @@ describe("switch state migration", () => {
     const result = applyMigrations(parseConf("switchbind=fold,spawn,swaylock\r\n"));
 
     expect(formatConf(result.document)).toBe("switchbind=lid_on,spawn,swaylock\r\n");
+  });
+
+  it("converts migrated conf to bare TOML keys", () => {
+    const result = applyMigrations(parseConf("switchbind=fold,spawn,swaylock # close\n"));
+    const toml = convertDocument(result.document, "toml");
+
+    expect(toml).toContain("[switchbind.default]");
+    expect(toml).toContain('lid_on = "spawn,swaylock"');
+    expect(toml).not.toContain('"lid_on"');
+    expect(toml).toContain("# close");
   });
 
   it("leaves conflicting modes for manual resolution", () => {

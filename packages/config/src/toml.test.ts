@@ -162,6 +162,7 @@ describe("serializeToml", () => {
         },
       },
     },
+    switchbind: { default: { lid_on: [{ dispatcher: "togglefloating" }] } },
     rule: { window_rule: [{ is_floating: true, width: 800, app_id: "mpv" }] },
   };
 
@@ -180,6 +181,9 @@ describe("serializeToml", () => {
     expect(text).toContain('"Alt+Return" = "spawn,foot"');
     expect(text).toContain("[bind.default.conflict]");
     expect(text).toContain('"SUPER+r" = [');
+    expect(text).toContain("[switchbind.default]");
+    expect(text).toContain('lid_on = "togglefloating"');
+    expect(text).not.toContain('"lid_on"');
     expect(text).toContain("[[rule.window_rule]]");
     expect(text).toContain("is_floating = true");
   });

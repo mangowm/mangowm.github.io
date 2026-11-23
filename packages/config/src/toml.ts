@@ -321,11 +321,11 @@ function emitTomlBindings(
     for (const { trigger, actions } of triggers) {
       const values = actions.map(formatAction);
       if (flags.conflict) {
-        lines.push(`${quote(trigger)} = [`);
+        lines.push(`${tomlKey(trigger)} = [`);
         for (const value of values) lines.push(`  ${quote(value)},`);
         lines.push("]");
       } else {
-        lines.push(`${quote(trigger)} = ${quote(values[0] ?? "")}`);
+        lines.push(`${tomlKey(trigger)} = ${quote(values[0] ?? "")}`);
       }
     }
     lines.push("");
