@@ -14,6 +14,9 @@ export const scratchpadMeta: SectionMeta = {
       configKey: "scratchpad_cross_monitor",
     },
     {
+      configKey: "special_tag_cross_monitor",
+    },
+    {
       configKey: "single_scratchpad",
     },
     {

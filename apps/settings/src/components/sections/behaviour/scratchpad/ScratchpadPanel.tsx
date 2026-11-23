@@ -16,6 +16,7 @@ export function ScratchpadPanel({ focusKey }: PanelProps) {
   const tb = (key: string) => (v: boolean) => setValue(key, v ? "1" : "0");
 
   const scratchpadCrossMon = useConfigBool("scratchpad_cross_monitor");
+  const specialTagCrossMon = useConfigBool("special_tag_cross_monitor");
   const singleScratchpad = useConfigBool("single_scratchpad");
   const scratchpadWidth = useGlobalFloat("scratchpad_width_ratio");
   const scratchpadHeight = useGlobalFloat("scratchpad_height_ratio");
@@ -42,6 +43,13 @@ export function ScratchpadPanel({ focusKey }: PanelProps) {
               configKey="scratchpad_cross_monitor"
               value={scratchpadCrossMon}
               onChange={tb("scratchpad_cross_monitor")}
+            />
+          </div>
+          <div ref={fieldRef("special_tag_cross_monitor")}>
+            <ToggleRow
+              configKey="special_tag_cross_monitor"
+              value={specialTagCrossMon}
+              onChange={tb("special_tag_cross_monitor")}
             />
           </div>
         </SectionCard>
