@@ -77,6 +77,15 @@ describe("switch state migration", () => {
     expect(toml).toContain("# close");
   });
 
+  it("does not migrate during format conversion", () => {
+    const document = parseConf("switchbind=fold,spawn,swaylock\n");
+    const toml = convertDocument(document, "toml");
+
+    expect(toml).toContain('fold = "spawn,swaylock"');
+    expect(toml).not.toContain("lid_on");
+    expect(detectMigrations(document)).toHaveLength(1);
+  });
+
   it("leaves conflicting modes for manual resolution", () => {
     const text = ["switchbind=fold,spawn,a", "switchbind=lid_on,spawn,b"].join("\n");
 

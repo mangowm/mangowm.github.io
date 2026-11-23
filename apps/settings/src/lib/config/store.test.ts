@@ -65,6 +65,25 @@ describe("derived config data", () => {
 });
 
 describe("config migrations", () => {
+  it("keeps legacy states when the output format changes", () => {
+    reset("switchbind=fold,spawn,swaylock\n", "conf");
+    useConfigStore.getState().setOutputFormat("toml");
+
+    const file = useConfigStore.getState().files[0];
+    if (!file) throw new Error("missing source file");
+    const toml = convertFile(file, "toml");
+
+    expect(toml).toContain("fold");
+    expect(toml).not.toContain("lid_on");
+    expect(deriveMigrationFindings(useConfigStore.getState().files)).toHaveLength(1);
+
+    useConfigStore.getState().setFileText(file.absPath, toml, "toml");
+    expect(saved("conf")).toContain("switchbind = fold,spawn,swaylock");
+    expect(deriveMigrationFindings(useConfigStore.getState().files)).toHaveLength(1);
+
+    useConfigStore.getState().setOutputFormat("conf");
+  });
+
   it("detects and fixes legacy switch states", async () => {
     reset("switchbind=fold,spawn,a\nswitchbind=unfold,spawn,b\n", "conf");
     useConfigStore.temporal.getState().clear();
