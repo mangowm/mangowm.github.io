@@ -7,7 +7,7 @@
     "frontendDist": "../dist",
     "devUrl": "http://localhost:1420",
     "beforeDevCommand": "vp run dev",
-    "beforeBuildCommand": "vp run build"
+    "beforeBuildCommand": "vp build --base=/"
   },
   "app": {
     "windows": [
