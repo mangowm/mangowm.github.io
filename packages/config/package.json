@@ -18,7 +18,7 @@
     "types:check": "tsc --noEmit"
   },
   "dependencies": {
-    "typebox": "^1.4.3"
+    "typebox": "^1.4.7"
   },
   "devDependencies": {
     "@mangowm.github.io/tsconfig": "workspace:*",

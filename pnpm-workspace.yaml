@@ -22,12 +22,11 @@ catalog:
   "@tailwindcss/vite": ^4.3.5
   lucide-react: ^1.78.0
   cn: ^0.5.2
-  "@tanstack/react-router": 1.170.41
-  "@tanstack/react-start": 1.168.60
-  "@tanstack/router-plugin": ^1.168.42
+  "@tanstack/react-router": 1.170.46
+  "@tanstack/react-start": 1.169.7
   "@tauri-apps/cli": ^2.12.6
   cmdk: ^1.1.1
-  takumi-js: ^2.19.0
+  takumi-js: ^2.22.1
   yaml: ^2.9.1
   "@pierre/diffs": ^1.7.1
   "@mangowm.github.io/config": workspace:*
@@ -44,9 +43,9 @@ minimumReleaseAgeExclude:
   - lucide-react@1.51.0 || 1.78.0
   - fumapress@2.0.1
   - "@fumapress/*"
-  - "@fumadocs/base-ui@16.18.2"
+  - "@fumadocs/base-ui@16.18.2 || 16.19.7"
   - react@19.3.1
   - react-dom@19.3.1
-  - fumadocs-core@16.18.2
+  - fumadocs-core@16.18.2 || 16.19.7
   - fumadocs-mdx@15.5.1
   - "@pierre/diffs@1.7.1"
