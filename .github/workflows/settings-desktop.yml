@@ -2,14 +2,13 @@ name: settings desktop
 
 on:
   push:
-  workflow_dispatch:
+    branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: settings-desktop-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   linux:
@@ -36,6 +35,13 @@ jobs:
           workspaces: apps/settings/src-tauri -> target
 
       - uses: tauri-apps/tauri-action@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           projectPath: apps/settings
-          uploadWorkflowArtifacts: true
+          tagName: settings-nightly
+          releaseName: "mangowm settings nightly"
+          releaseBody: "main@${{ github.sha }}"
+          prerelease: true
+          releaseCommitish: ${{ github.sha }}
+          releaseAssetNamePattern: "mangowm-settings-[arch][ext]"
