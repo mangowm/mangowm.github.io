@@ -50,28 +50,20 @@ describe("validateText", () => {
     );
   });
 
-  it("reports removed switch states with their replacement", () => {
-    const issues = validateText("switchbind = fold,spawn,swaylock\n", "conf");
+  it("leaves removed switch states to the migration layer", () => {
+    expect(validateText("switchbind = fold,spawn,swaylock\n", "conf")).toEqual([]);
+    expect(validateText('[switchbind.default]\n"fold" = "spawn,swaylock"\n', "toml")).toEqual([]);
+  });
+
+  it("reports unknown switch states", () => {
+    const issues = validateText("switchbind = nope,spawn,swaylock\n", "conf");
 
     expect(issues).toContainEqual(
       expect.objectContaining({
         line: 1,
         severity: "warning",
-        code: "removed-value",
-        message: '"fold" is no longer a valid switch state. Use "lid_on".',
-      }),
-    );
-  });
-
-  it("reports removed switch states in TOML", () => {
-    const issues = validateText('[switchbind.default]\n"fold" = "spawn,swaylock"\n', "toml");
-
-    expect(issues).toContainEqual(
-      expect.objectContaining({
-        line: 2,
-        severity: "warning",
-        code: "removed-value",
-        message: '"fold" is no longer a valid switch state. Use "lid_on".',
+        code: "invalid-value",
+        message: '"nope" is not a valid switch state.',
       }),
     );
   });

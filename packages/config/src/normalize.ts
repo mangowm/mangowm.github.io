@@ -39,7 +39,6 @@ export type WarningCode =
   | "invalid-variable"
   | "duplicate-binding"
   | "reserved-binding"
-  | "removed-value"
   | "clamped";
 
 /** A recoverable problem in the source text. */
@@ -115,16 +114,8 @@ function placeAction(
 ): void {
   if (kind === "switch" && !trigger.startsWith("$")) {
     const normalized = trigger.trim().toLowerCase().replaceAll(":", "_");
-    const replacement = REMOVED_SWITCH_STATES[normalized];
 
-    if (replacement) {
-      warn(
-        `"${trigger}" is no longer a valid switch state. Use "${replacement}".`,
-        at,
-        "removed-value",
-        "warning",
-      );
-    } else if (!SWITCH_STATES.has(normalized)) {
+    if (!SWITCH_STATES.has(normalized) && !REMOVED_SWITCH_STATES[normalized]) {
       warn(`"${trigger}" is not a valid switch state.`, at, "invalid-value", "warning");
     }
   }
