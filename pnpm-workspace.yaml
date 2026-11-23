@@ -25,13 +25,13 @@ catalog:
   "@tanstack/react-router": 1.170.41
   "@tanstack/react-start": 1.168.60
   "@tanstack/router-plugin": ^1.168.42
-  "@tauri-apps/cli": ^2.12.1
+  "@tauri-apps/cli": ^2.12.6
   cmdk: ^1.1.1
   takumi-js: ^2.19.0
   yaml: ^2.9.1
   "@pierre/diffs": ^1.6.2
   "@mangowm.github.io/config": workspace:*
-  "@tauri-apps/plugin-dialog": ^2.8.4
+  "@tauri-apps/plugin-dialog": 2.8.4
   playwright: ^1.65.1
 overrides:
   vite@*: "catalog:"
