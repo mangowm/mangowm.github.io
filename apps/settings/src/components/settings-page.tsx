@@ -3,6 +3,7 @@ import { FileCode2Icon } from "lucide-react";
 
 import { SettingsSidebar } from "@/components/shell/settings-sidebar";
 import { PageHeader } from "@/components/shell/page-header";
+import { MigrationBanner } from "@/components/shell/migration-banner";
 import { EmptyConfig } from "@/components/shell/empty-config";
 import { convertFile, convertName } from "@/lib/config/convert";
 
@@ -120,6 +121,7 @@ export function SettingsPage() {
             setShowConfig(!showConfig);
           }}
         />
+        <MigrationBanner />
         {configMounted && (
           <div className="min-h-0 flex-1 overflow-hidden p-5" hidden={!showConfig}>
             <div className="flex h-full flex-col rounded-xl bg-card p-6 ring-1 ring-foreground/10">

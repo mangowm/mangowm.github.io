@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { deriveConfigData, useConfigStore } from "./store";
+import { deriveConfigData, deriveMigrationFindings, useConfigStore, undo } from "./store";
 import { documentLines, parseDocument } from "./parse";
 import { convertFile } from "./convert";
 import type { FileFormat, SourceFile } from "./types";
@@ -61,6 +61,37 @@ describe("derived config data", () => {
 
   it("keeps data out of the store state", () => {
     expect("data" in useConfigStore.getState()).toBe(false);
+  });
+});
+
+describe("config migrations", () => {
+  it("detects and fixes legacy switch states", async () => {
+    reset("switchbind=fold,spawn,a\nswitchbind=unfold,spawn,b\n", "conf");
+    useConfigStore.temporal.getState().clear();
+
+    const findings = deriveMigrationFindings(useConfigStore.getState().files);
+    expect(findings.map((finding) => finding.before)).toEqual(["fold", "unfold"]);
+
+    const applied = await useConfigStore.getState().fixMigrations();
+
+    expect(applied).toBe(2);
+    expect(saved("conf")).toBe("switchbind=lid_on,spawn,a\nswitchbind=lid_off,spawn,b\n");
+    expect(deriveMigrationFindings(useConfigStore.getState().files)).toEqual([]);
+
+    undo();
+    expect(saved("conf")).toBe("switchbind=fold,spawn,a\nswitchbind=unfold,spawn,b\n");
+  });
+
+  it("does not rewrite conflicting bindings", async () => {
+    const text = "switchbind=fold,spawn,a\nswitchbind=lid_on,spawn,b\n";
+    reset(text, "conf");
+
+    const findings = deriveMigrationFindings(useConfigStore.getState().files);
+    expect(findings).toHaveLength(1);
+    expect(findings[0]?.fixable).toBe(false);
+
+    expect(await useConfigStore.getState().fixMigrations()).toBe(0);
+    expect(saved("conf")).toBe(text);
   });
 });
 

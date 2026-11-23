@@ -2,12 +2,15 @@ import { create, useStore } from "zustand";
 import { temporal } from "zundo";
 import {
   applyChange,
+  applyMigrations as applyConfigMigrations,
   bindingKind,
   bindingTrigger,
+  detectMigrations,
   parseBinding,
   parseOption,
   validateText,
   type Change,
+  type MigrationFinding,
   type RuleKey,
 } from "@mangowm.github.io/config";
 import { DIRECTIVES, RULES } from "@mangowm.github.io/config/catalog";
@@ -227,6 +230,28 @@ export function deriveConfigData(files: readonly SourceFile[]): ConfigData {
   return data;
 }
 
+export interface SourceMigrationFinding extends MigrationFinding {
+  absPath: string;
+  refPath: string;
+}
+
+const migrationCache = new WeakMap<readonly SourceFile[], SourceMigrationFinding[]>();
+
+export function deriveMigrationFindings(files: readonly SourceFile[]): SourceMigrationFinding[] {
+  const cached = migrationCache.get(files);
+  if (cached) return cached;
+
+  const findings = files.flatMap((file) =>
+    detectMigrations(file.document).map((finding) => ({
+      ...finding,
+      absPath: file.absPath,
+      refPath: file.refPath,
+    })),
+  );
+  migrationCache.set(files, findings);
+  return findings;
+}
+
 function fileIndexForKey(files: SourceFile[], key: string): number {
   for (let i = 0; i < files.length; i++) {
     if (files[i].lines.some((l) => l.type === "entry" && l.key === key)) return i;
@@ -266,6 +291,8 @@ interface ConfigStore {
   importConfig: () => Promise<void>;
   backup: () => Promise<string | null>;
   openConfigFolder: () => Promise<void>;
+  /** Apply every safe legacy migration and return the number of findings fixed. */
+  fixMigrations: () => Promise<number>;
 
   // Scalar upsert: sets exactly one value for a key.
   // Use for singletons (blur_radius, borderpx, …).
@@ -373,6 +400,34 @@ export const useConfigStore = create<ConfigStore>()(
 
       openConfigFolder: async () => {
         await getHost().openConfigFolder?.();
+      },
+
+      fixMigrations: async () => {
+        const files = get().files;
+        const results = files.map((file) => applyConfigMigrations(file.document));
+        const applied = results.reduce((count, result) => count + result.applied.length, 0);
+        if (applied === 0) return 0;
+
+        if (get().isTauri) {
+          try {
+            await get().backup();
+          } catch {
+            // Migration is still safe to apply in memory if the backup fails.
+          }
+        }
+
+        const nextFiles = files.map((file, index) => {
+          const result = results[index];
+          if (!result || result.document === file.document) return file;
+          return {
+            ...file,
+            document: result.document,
+            lines: documentLines(result.document),
+          };
+        });
+
+        set({ files: nextFiles, revision: get().revision + 1 });
+        return applied;
       },
 
       apply: async () => {
@@ -617,6 +672,10 @@ export const useConfigStore = create<ConfigStore>()(
 /** True when there are changes that can still be undone back to the saved config. */
 export function useConfigDirty(): boolean {
   return useStore(useConfigStore.temporal, (state) => state.pastStates.length > 0);
+}
+
+export function useMigrationFindings(): readonly SourceMigrationFinding[] {
+  return useConfigStore((state) => deriveMigrationFindings(state.files));
 }
 
 export function useConfigValue(key: string): string | undefined {

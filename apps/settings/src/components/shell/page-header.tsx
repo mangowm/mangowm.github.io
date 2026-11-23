@@ -31,7 +31,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@mangowm/ui/components/alert-dialog";
-import { useConfigStore, useConfigDirty, undo, redo } from "@/lib/config/store";
+import {
+  useConfigStore,
+  useConfigDirty,
+  useMigrationFindings,
+  undo,
+  redo,
+} from "@/lib/config/store";
+import { MANGO_VERSION } from "@mangowm.github.io/config/catalog";
 import { getHost } from "@/lib/platform";
 import { convertFile, convertName } from "@/lib/config/convert";
 import { REDO_SHORTCUT, SEARCH_SHORTCUT, UNDO_SHORTCUT } from "@/lib/platform/shortcuts";
@@ -168,14 +175,70 @@ function ApplyButton() {
       apply: s.apply,
     })),
   );
+  const fixMigrations = useConfigStore((s) => s.fixMigrations);
+  const findings = useMigrationFindings();
   const dirty = useConfigDirty();
+  const [migrationOpen, setMigrationOpen] = useState(false);
+  const [fixing, setFixing] = useState(false);
+  const fixable = findings.filter((finding) => finding.fixable).length;
 
   if (loading) return null;
 
+  const runApply = () => {
+    if (findings.length > 0) setMigrationOpen(true);
+    else void apply();
+  };
+
+  const fixAndApply = async () => {
+    setFixing(true);
+    try {
+      await fixMigrations();
+      await apply();
+    } finally {
+      setFixing(false);
+      setMigrationOpen(false);
+    }
+  };
+
   return (
-    <Button onClick={apply} disabled={applying || !dirty} variant={dirty ? "default" : "outline"}>
-      {applying ? "Applying..." : dirty ? "Apply Changes" : "Applied"}
-    </Button>
+    <>
+      <Button
+        onClick={runApply}
+        disabled={applying || !dirty}
+        variant={dirty ? "default" : "outline"}
+      >
+        {applying ? "Applying..." : dirty ? "Apply Changes" : "Applied"}
+      </Button>
+
+      <AlertDialog open={migrationOpen} onOpenChange={setMigrationOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Fix legacy switch bindings?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This config uses switch states removed in mango {MANGO_VERSION}. Fix them before
+              applying, or apply the config as written.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              variant="outline"
+              onClick={() => {
+                setMigrationOpen(false);
+                void apply();
+              }}
+            >
+              Apply anyway
+            </AlertDialogAction>
+            {fixable > 0 && (
+              <AlertDialogAction disabled={fixing} onClick={() => void fixAndApply()}>
+                {fixing ? "Fixing..." : "Fix and apply"}
+              </AlertDialogAction>
+            )}
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
 
