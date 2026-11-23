@@ -1,4 +1,11 @@
-import { GLOBALS, RULES, type GlobalDef, type RuleDef } from "./schema/data";
+import {
+  BINDING_SWITCH_STATES,
+  GLOBALS,
+  REMOVED_SWITCH_STATES,
+  RULES,
+  type GlobalDef,
+  type RuleDef,
+} from "./schema/data";
 
 import {
   bindingTrigger,
@@ -32,6 +39,7 @@ export type WarningCode =
   | "invalid-variable"
   | "duplicate-binding"
   | "reserved-binding"
+  | "removed-value"
   | "clamped";
 
 /** A recoverable problem in the source text. */
@@ -74,6 +82,7 @@ const RULE_BY_KEY: ReadonlyMap<string, RuleDef> = new Map(RULES.map((rule) => [r
 const GLOBAL_BY_KEY: ReadonlyMap<string, GlobalDef> = new Map(
   GLOBALS.map((option) => [option.key, option]),
 );
+const SWITCH_STATES = new Set<string>(BINDING_SWITCH_STATES);
 
 function isBindingKey(key: string): boolean {
   return BIND_KEY.test(key) || PLAIN_BINDINGS.has(key);
@@ -104,6 +113,22 @@ function placeAction(
   warn: WarnFn,
   at: SourceLocation,
 ): void {
+  if (kind === "switch" && !trigger.startsWith("$")) {
+    const normalized = trigger.trim().toLowerCase().replaceAll(":", "_");
+    const replacement = REMOVED_SWITCH_STATES[normalized];
+
+    if (replacement) {
+      warn(
+        `"${trigger}" is no longer a valid switch state. Use "${replacement}".`,
+        at,
+        "removed-value",
+        "warning",
+      );
+    } else if (!SWITCH_STATES.has(normalized)) {
+      warn(`"${trigger}" is not a valid switch state.`, at, "invalid-value", "warning");
+    }
+  }
+
   if (RESERVED_TRIGGERS.has(trigger)) {
     warn(`"${trigger}" is a reserved binding name`, at, "reserved-binding");
     return;

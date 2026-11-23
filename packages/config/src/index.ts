@@ -14,3 +14,4 @@ export * from "./annotate";
 export * from "./emit";
 export * from "./convert";
 export * from "./validate";
+export * from "./migrations";

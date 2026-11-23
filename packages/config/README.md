@@ -101,6 +101,20 @@ other arrays expand into one value per element.
 Formatting is preserved through `formatConf` and `formatToml` as long as nodes
 are not edited.
 
+## Migrations
+
+`detectMigrations` finds obsolete values in a document. `applyMigrations` rewrites the findings that can be fixed safely and returns the updated document, applied findings, and anything left for manual resolution.
+
+```ts
+import { applyMigrations, detectMigrations, parseConf } from "@mangowm.github.io/config";
+
+const document = parseConf(text);
+const findings = detectMigrations(document);
+const result = applyMigrations(document);
+```
+
+Migrations edit the document model, so comments, blank lines, order, and CRLF survive. Detection is based on content, not a config version. Every migration is idempotent.
+
 ## Normalization
 
 `normalize` dispatches on the document format. `normalizeConf` and

@@ -44,6 +44,11 @@ export const BINDING_SWITCH_STATES = [
   "keypad_slide_off",
 ] as const;
 
+export const REMOVED_SWITCH_STATES: Record<string, (typeof BINDING_SWITCH_STATES)[number]> = {
+  fold: "lid_on",
+  unfold: "lid_off",
+};
+
 export const MODIFIER_ORDER = ["super", "ctrl", "alt", "shift", "hyper"] as const;
 
 export const BINDING_MODIFIERS = [
