@@ -7,7 +7,7 @@ catalogMode: prefer
 
 catalog:
   "@base-ui/react": ^1.9.0
-  "@types/node": ^26.6.5
+  "@types/node": ^26.6.6
   "@types/react": ^19.3.0
   "@types/react-dom": ^19.3.0
   typescript: ^7.0.2
@@ -15,13 +15,13 @@ catalog:
   vite-plus: 1.7.0
   react: ^19.3.1
   react-dom: ^19.3.1
-  "@vitejs/plugin-react": ^6.1.1
-  "@rolldown/plugin-babel": ^0.2.4
+  "@vitejs/plugin-react": ^6.3.0
+  "@rolldown/plugin-babel": ^0.3.1
   babel-plugin-react-compiler: ^1.0.0
-  tailwindcss: ^4.3.3
-  "@tailwindcss/vite": ^4.3.3
-  lucide-react: ^1.51.0
-  cn: ^0.4.0
+  tailwindcss: ^4.3.5
+  "@tailwindcss/vite": ^4.3.5
+  lucide-react: ^1.78.0
+  cn: ^0.5.2
   "@tanstack/react-router": 1.170.41
   "@tanstack/react-start": 1.168.60
   "@tanstack/router-plugin": ^1.168.42
@@ -29,7 +29,7 @@ catalog:
   cmdk: ^1.1.1
   takumi-js: ^2.19.0
   yaml: ^2.9.1
-  "@pierre/diffs": ^1.6.2
+  "@pierre/diffs": ^1.7.1
   "@mangowm.github.io/config": workspace:*
   "@tauri-apps/plugin-dialog": 2.8.4
   playwright: ^1.65.1
@@ -41,7 +41,7 @@ allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
   - "@tanstack/*"
-  - lucide-react@1.51.0
+  - lucide-react@1.51.0 || 1.78.0
   - fumapress@2.0.1
   - "@fumapress/*"
   - "@fumadocs/base-ui@16.18.2"
@@ -49,3 +49,4 @@ minimumReleaseAgeExclude:
   - react-dom@19.3.1
   - fumadocs-core@16.18.2
   - fumadocs-mdx@15.5.1
+  - "@pierre/diffs@1.7.1"
