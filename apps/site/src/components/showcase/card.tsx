@@ -33,7 +33,7 @@ export function Card({
         {screenshot ? (
           <ShowcasePicture
             image={screenshot}
-            alt={`${entry.username}'s desktop`}
+            alt={`${entry.username}'s setup`}
             sizes={CARD_SIZES}
             loading={priority ? "eager" : "lazy"}
             fetchPriority={priority ? "high" : "auto"}

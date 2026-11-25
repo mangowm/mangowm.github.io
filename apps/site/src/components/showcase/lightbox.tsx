@@ -63,7 +63,7 @@ function ImageView({ image, username }: { image: ShowcaseImage; username: string
       <ShowcasePicture
         ref={ref}
         image={image}
-        alt={`${username}'s desktop`}
+        alt={`${username}'s setup`}
         sizes="100vw"
         loading="eager"
         fetchPriority="high"

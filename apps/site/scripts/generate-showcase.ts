@@ -82,12 +82,7 @@ async function download(url: string): Promise<Buffer> {
   return Buffer.from(await response.arrayBuffer());
 }
 
-async function processScreenshot(username: string, file: MediaFile): Promise<ShowcaseImage | null> {
-  if (path.extname(file.fileName).toLowerCase() === ".gif") {
-    console.warn(`Showcase: skipping ${file.url} (GIF is not supported yet)`);
-    return null;
-  }
-
+async function processScreenshot(username: string, file: MediaFile): Promise<ShowcaseImage> {
   const input = await download(file.url);
   const base = mediaBase(username, file.fileName, input);
   const metadata = await new Transformer(input).metadata();
@@ -122,8 +117,7 @@ async function buildEntry(entry: ResolvedEntry): Promise<ShowcaseEntry | null> {
   try {
     const screenshots: ShowcaseImage[] = [];
     for (const file of entry.screenshots) {
-      const image = await processScreenshot(entry.username, file);
-      if (image) screenshots.push(image);
+      screenshots.push(await processScreenshot(entry.username, file));
     }
 
     const videos: string[] = [];

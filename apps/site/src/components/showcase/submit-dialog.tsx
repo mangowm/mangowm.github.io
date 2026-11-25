@@ -12,93 +12,17 @@ import {
 } from "@mangowm/ui/components/dialog";
 import { Input } from "@mangowm/ui/components/input";
 import { Label } from "@mangowm/ui/components/label";
-import { parseRepo, submissionProbes } from "@/lib/showcase-media";
-
-type Status =
-  | "idle"
-  | "checking"
-  | "ready"
-  | "invalid-url"
-  | "not-found"
-  | "private"
-  | "no-media"
-  | "error";
-
-async function checkRepo(owner: string, repo: string): Promise<Status> {
-  try {
-    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
-    if (response.status === 404) return "not-found";
-    if (!response.ok) return "error";
-
-    const data = (await response.json()) as { private?: boolean };
-    if (data.private) return "private";
-
-    for (const probe of submissionProbes()) {
-      const listing = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/contents/${probe.path}`,
-      );
-      if (listing.status === 404) continue;
-      if (!listing.ok) return "error";
-
-      const files = (await listing.json()) as Array<{ name?: string; type?: string }>;
-      const found = files.some(
-        (file) => file.type === "file" && typeof file.name === "string" && probe.matches(file.name),
-      );
-      if (found) return "ready";
-    }
-    return "no-media";
-  } catch {
-    return "error";
-  }
-}
-
-function FieldStatus({ status, username }: { status: Status; username: string | null }) {
-  if (status === "checking") {
-    return (
-      <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-        <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-warning" />
-        Checking…
-      </p>
-    );
-  }
-  if (status === "invalid-url") {
-    return <p className="text-[11px] text-destructive">Must be a GitHub URL</p>;
-  }
-  if (status === "not-found") {
-    return <p className="text-[11px] text-destructive">Repository not found</p>;
-  }
-  if (status === "private") {
-    return <p className="text-[11px] text-destructive">Repo is private</p>;
-  }
-  if (status === "no-media") {
-    return <p className="text-[11px] text-destructive">No showcase/ media found in repo</p>;
-  }
-  if (status === "error") {
-    return <p className="text-[11px] text-warning">Can&apos;t verify — you can still submit</p>;
-  }
-  if (status === "ready") {
-    return <p className="text-[11px] text-success">Ready · submitting as @{username}</p>;
-  }
-  return null;
-}
+import { parseRepo } from "@/lib/showcase-media";
 
 export function SubmitDialog({ className }: { className?: string }) {
   const [dotfiles, setDotfiles] = useState("");
   const [tags, setTags] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
+  const [invalid, setInvalid] = useState(false);
 
-  const repo = parseRepo(dotfiles);
-
-  const handleSubmit = async () => {
-    if (!repo) {
-      setStatus("invalid-url");
-      return;
-    }
-
-    setStatus("checking");
-    const result = await checkRepo(repo.owner, repo.repo);
-    setStatus(result);
-    if (result !== "ready" && result !== "error") return;
+  const handleSubmit = () => {
+    const repo = parseRepo(dotfiles);
+    setInvalid(!repo);
+    if (!repo) return;
 
     const params = new URLSearchParams({
       template: "showcase.yml",
@@ -141,14 +65,14 @@ export function SubmitDialog({ className }: { className?: string }) {
             <Input
               id="showcase-dotfiles"
               type="url"
-              placeholder="https://github.com/your-username/dotfiles"
+              placeholder="https://github.com/<username>/<repo>"
               value={dotfiles}
               onChange={(event) => {
                 setDotfiles(event.target.value);
-                setStatus("idle");
+                setInvalid(false);
               }}
             />
-            <FieldStatus status={status} username={repo?.owner ?? null} />
+            {invalid && <p className="text-[11px] text-destructive">Must be a GitHub repo URL</p>}
           </div>
 
           <div className="space-y-1.5">
@@ -171,7 +95,7 @@ export function SubmitDialog({ className }: { className?: string }) {
           <Button
             type="button"
             onClick={handleSubmit}
-            disabled={!dotfiles.trim() || status === "checking"}
+            disabled={!dotfiles.trim()}
             className="gap-1.5 rounded-full text-xs font-semibold"
           >
             Open issue <ExternalLink size={8} strokeWidth={2.5} />

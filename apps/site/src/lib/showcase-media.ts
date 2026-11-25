@@ -1,9 +1,4 @@
-// Media layout:
-//   screenshots: showcase/image.<ext>       | showcase/images/<n>.<ext>
-//   videos:      showcase/video.<ext>       | showcase/videos/<n>.<ext>
-//   legacy:      screenshot.png (repo root) | screenshots/<n>.<ext>
-
-const IMAGE_EXTS = ["png", "jpg", "jpeg", "webp", "gif", "avif"] as const;
+const IMAGE_EXTS = ["png", "jpg", "jpeg", "webp", "avif"] as const;
 const VIDEO_EXTS = ["mp4", "webm"] as const;
 
 export const SHOWCASE_DIR = "showcase";
@@ -84,26 +79,13 @@ export function pickVideos(paths: string[]): string[] {
     .slice(0, 1);
 }
 
-export type MediaProbe = { path: string; matches: (name: string) => boolean };
-
-export function submissionProbes(): MediaProbe[] {
-  return [
-    { path: SCREENSHOT_MULTI, matches: (name) => NUMBERED_IMAGE_RE.test(name) },
-    { path: VIDEO_MULTI, matches: (name) => NUMBERED_VIDEO_RE.test(name) },
-    {
-      path: SHOWCASE_DIR,
-      matches: (name) => SINGLE_IMAGE_RE.test(name) || SINGLE_VIDEO_RE.test(name),
-    },
-  ];
-}
-
 export function parseRepo(dotfiles: string): { owner: string; repo: string } | null {
   try {
     const url = new URL(dotfiles);
-    if (url.hostname !== "github.com") return null;
-    const [owner, repo] = url.pathname.replace(/^\/+|\/+$/g, "").split("/");
-    if (!owner || !repo) return null;
-    return { owner, repo: repo.replace(/\.git$/i, "") };
+    if (url.protocol !== "https:" || url.hostname !== "github.com") return null;
+    const [owner, repo, ...rest] = url.pathname.replace(/^\/+|\/+$/g, "").split("/");
+    if (!owner || !repo || rest.length || repo.toLowerCase().endsWith(".git")) return null;
+    return { owner, repo };
   } catch {
     return null;
   }
