@@ -3,8 +3,7 @@
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: url("@fontsource/bricolage-grotesque/files/bricolage-grotesque-latin-700-normal.woff2")
-    format("woff2");
+  src: url("/fonts/bricolage-grotesque-latin-opsz-700.woff2") format("woff2-variations");
 }
 
 @font-face {

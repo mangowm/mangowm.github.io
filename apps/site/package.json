@@ -27,7 +27,6 @@
   "devDependencies": {
     "@fontsource-variable/geist": "catalog:",
     "@fontsource-variable/geist-mono": "catalog:",
-    "@fontsource/bricolage-grotesque": "catalog:",
     "@mangowm.github.io/tsconfig": "workspace:*",
     "@mangowm/og": "workspace:*",
     "@napi-rs/image": "^1.16.0",

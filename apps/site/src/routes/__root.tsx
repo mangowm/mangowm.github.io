@@ -4,7 +4,6 @@ import appleTouchIcon from "@mangowm/assets/favicons/apple-touch-icon.png";
 import faviconIco from "@mangowm/assets/favicons/favicon.ico";
 import faviconSvg from "@mangowm/assets/favicons/favicon.svg";
 import appCss from "@/App.css?url";
-import bricolageFont from "@fontsource/bricolage-grotesque/files/bricolage-grotesque-latin-700-normal.woff2?url";
 import geistFont from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url";
 import geistMonoFont from "@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url";
 import { Footer } from "@/components/footer";
@@ -26,7 +25,7 @@ export const Route = createRootRoute({
       { rel: "apple-touch-icon", sizes: "180x180", href: appleTouchIcon },
       {
         rel: "preload",
-        href: bricolageFont,
+        href: "/fonts/bricolage-grotesque-latin-opsz-700.woff2",
         as: "font",
         type: "font/woff2",
         crossOrigin: "anonymous",
