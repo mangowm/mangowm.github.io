@@ -4,6 +4,9 @@ import appleTouchIcon from "@mangowm/assets/favicons/apple-touch-icon.png";
 import faviconIco from "@mangowm/assets/favicons/favicon.ico";
 import faviconSvg from "@mangowm/assets/favicons/favicon.svg";
 import appCss from "@/App.css?url";
+import bricolageFont from "@fontsource/bricolage-grotesque/files/bricolage-grotesque-latin-700-normal.woff2?url";
+import geistFont from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url";
+import geistMonoFont from "@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -21,11 +24,20 @@ export const Route = createRootRoute({
       { rel: "icon", href: faviconIco, sizes: "32x32" },
       { rel: "icon", type: "image/svg+xml", href: faviconSvg },
       { rel: "apple-touch-icon", sizes: "180x180", href: appleTouchIcon },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..800&display=swap",
+        rel: "preload",
+        href: bricolageFont,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
+      },
+      { rel: "preload", href: geistFont, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
+      {
+        rel: "preload",
+        href: geistMonoFont,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
       },
       { rel: "stylesheet", href: appCss },
     ],

@@ -186,7 +186,7 @@ export function Header() {
         <Link
           to="/"
           onClick={() => setMenuOpen(false)}
-          className="site-piece group inline-flex h-[var(--nav-piece-height)] flex-none items-center gap-2 rounded-full pr-4 pl-[0.85rem] font-display text-[0.95rem] font-semibold tracking-[-0.02em] text-foreground no-underline focus-visible:border-ring"
+          className="site-piece group inline-flex h-[var(--nav-piece-height)] flex-none items-center gap-2 rounded-full pr-4 pl-[0.85rem] font-display text-[0.95rem] font-bold tracking-[-0.02em] text-foreground no-underline focus-visible:border-ring"
           aria-label="mangowm home"
         >
           <img
