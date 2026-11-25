@@ -171,10 +171,6 @@ animation similarly reverses back toward the selected workspace.
 
 Pointer interaction:
 
-Configured key, mouse, axis, gesture, and switch bindings are handled before the
-workspace overview's built-in input actions. Bindings that consume their input
-do not also trigger overview navigation.
-
 | Action                             | Result                                                                       |
 | :--------------------------------- | :--------------------------------------------------------------------------- |
 | Left click a workspace             | Switch to that workspace and leave the overview.                             |
