@@ -24,7 +24,7 @@ import {
   ComboboxItem,
   ComboboxList,
   ComboboxTrigger,
-} from "@mangowm/ui/components/combobox";
+} from "@/components/ui/combobox";
 import { cn } from "cn";
 import { categoryLabel, getDispatchersByCategory } from "@/lib/dispatchers";
 import type { DispatcherInfo, DispatcherCategory } from "@/lib/dispatchers";

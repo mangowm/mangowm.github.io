@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@mangowm/ui/components/dialog";
 import { Button } from "@mangowm/ui/components/button";
-import { Switch } from "@mangowm/ui/components/switch";
+import { Switch } from "@/components/ui/switch";
 import { Label } from "@mangowm/ui/components/label";
 import {
   LayoutGridIcon,

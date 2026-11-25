@@ -9,7 +9,7 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@mangowm/ui/components/input-group";
+} from "@/components/ui/input-group";
 
 const Combobox = ComboboxPrimitive.Root;
 

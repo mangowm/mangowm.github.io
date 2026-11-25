@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronsUpDown, Plus, Settings2, X } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@mangowm/ui/components/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -8,7 +8,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@mangowm/ui/components/command";
+} from "@/components/ui/command";
 import { cn } from "cn";
 import { Input } from "@mangowm/ui/components/input";
 import { useKeyRecorder, KEY_GROUPS, xkbToDisplay } from "@/lib/keyboard";

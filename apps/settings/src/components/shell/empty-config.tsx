@@ -8,7 +8,7 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@mangowm/ui/components/empty";
+} from "@/components/ui/empty";
 import { useConfigStore } from "@/lib/config/store";
 
 export function EmptyConfig() {

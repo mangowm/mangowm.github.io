@@ -15,7 +15,7 @@
   "aliases": {
     "components": "@/components",
     "utils": "@mangowm/ui/lib/utils",
-    "ui": "@mangowm/ui/components",
+    "ui": "@/components/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },

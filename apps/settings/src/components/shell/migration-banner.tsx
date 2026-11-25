@@ -11,7 +11,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@mangowm/ui/components/alert-dialog";
+} from "@/components/ui/alert-dialog";
 
 import { useConfigStore, useMigrationFindings } from "@/lib/config/store";
 

@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@mangowm/ui/components/dialog";
-import { InputGroup, InputGroupAddon } from "@mangowm/ui/components/input-group";
+import { InputGroup, InputGroupAddon } from "@/components/ui/input-group";
 import { SearchIcon, CheckIcon } from "lucide-react";
 
 function Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {

@@ -11,9 +11,9 @@ import {
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { Separator } from "@mangowm/ui/components/separator";
-import { SidebarTrigger } from "@mangowm/ui/components/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@mangowm/ui/components/button";
-import { Kbd } from "@mangowm/ui/components/kbd";
+import { Kbd } from "@/components/ui/kbd";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +30,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@mangowm/ui/components/alert-dialog";
+} from "@/components/ui/alert-dialog";
 import {
   useConfigStore,
   useConfigDirty,

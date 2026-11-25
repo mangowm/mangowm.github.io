@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@mangowm/ui/components/select";
+} from "@/components/ui/select";
 import { OverrideRow } from "./OverrideRow";
 import { OverridePalette } from "./OverridePalette";
 import {

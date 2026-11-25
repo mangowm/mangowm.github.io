@@ -16,7 +16,7 @@ import {
   SheetTitle,
 } from "@mangowm/ui/components/sheet";
 import { Skeleton } from "@mangowm/ui/components/skeleton";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@mangowm/ui/components/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { PanelLeftIcon } from "lucide-react";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";

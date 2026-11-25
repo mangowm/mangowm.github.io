@@ -21,7 +21,7 @@
 
 import React from "react";
 import { X, Plus } from "lucide-react";
-import { Switch } from "@mangowm/ui/components/switch";
+import { Switch } from "@/components/ui/switch";
 import { Slider } from "@mangowm/ui/components/slider";
 import { Separator } from "@mangowm/ui/components/separator";
 import { Input } from "@mangowm/ui/components/input";
@@ -32,14 +32,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@mangowm/ui/components/select";
+} from "@/components/ui/select";
 import {
   Field,
   FieldContent,
   FieldDescription,
   FieldLabel as FieldLabelPrimitive,
   FieldTitle,
-} from "@mangowm/ui/components/field";
+} from "@/components/ui/field";
 import { globalMax, globalMeta, globalMin, globalOptions } from "@/lib/config/schema-meta";
 
 function fieldText(configKey: string | undefined, label?: string, description?: string) {

@@ -20,7 +20,7 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@mangowm/ui/components/input-group";
+} from "@/components/ui/input-group";
 
 export function BindingsPanel({ focusKey }: PanelProps) {
   const fieldRef = useFocusField(focusKey);

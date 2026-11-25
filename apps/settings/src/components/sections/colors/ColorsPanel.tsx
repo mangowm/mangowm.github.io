@@ -8,7 +8,7 @@ import type { ColorMode } from "@/lib/color-utils";
 import type { PanelProps } from "@/lib/presentation/section-types";
 import { useFocusField } from "@/lib/use-focus-field";
 import { PanelShell, PanelHeader, SectionCard } from "@/components/primitives/section-ui";
-import { Popover, PopoverContent, PopoverTrigger } from "@mangowm/ui/components/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@mangowm/ui/components/toggle-group";
 import { Input } from "@mangowm/ui/components/input";
 import { cn } from "cn";

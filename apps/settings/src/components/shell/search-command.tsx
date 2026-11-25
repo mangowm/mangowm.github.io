@@ -8,7 +8,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@mangowm/ui/components/command";
+} from "@/components/ui/command";
 import { useSearch, type SearchResult } from "@/lib/search-engine";
 
 export interface SearchSelection {

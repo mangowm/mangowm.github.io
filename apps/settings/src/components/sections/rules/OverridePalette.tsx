@@ -7,7 +7,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@mangowm/ui/components/command";
+} from "@/components/ui/command";
 import { cn } from "cn";
 import { categoryLabel } from "@/lib/dispatchers";
 import { getOverridesForRuleType } from "@/lib/rules/metadata";

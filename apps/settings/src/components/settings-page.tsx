@@ -13,7 +13,7 @@ const loadConfigPreviewer = () =>
   }));
 
 const ConfigPreviewer = lazy(loadConfigPreviewer);
-import { SidebarInset, SidebarProvider } from "@mangowm/ui/components/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Skeleton } from "@mangowm/ui/components/skeleton";
 import { useConfigStore } from "@/lib/config/store";
 import { getSectionById, SECTIONS } from "@/lib/presentation/sections";

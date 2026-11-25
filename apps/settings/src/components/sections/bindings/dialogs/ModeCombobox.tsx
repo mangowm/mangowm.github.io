@@ -7,7 +7,7 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from "@mangowm/ui/components/combobox";
+} from "@/components/ui/combobox";
 
 interface ModeComboboxProps {
   value: string;

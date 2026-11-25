@@ -32,6 +32,8 @@ catalog:
   "@mangowm.github.io/config": workspace:*
   "@tauri-apps/plugin-dialog": 2.8.4
   playwright: ^1.65.1
+  shadcn: ^4.23.0
+  class-variance-authority: ^0.7.1
 overrides:
   vite@*: "catalog:"
   seroval: ^1.8.2

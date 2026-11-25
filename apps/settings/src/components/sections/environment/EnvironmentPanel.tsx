@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useConfigStore, useConfigValues } from "@/lib/config/store";
 import { Button } from "@mangowm/ui/components/button";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@mangowm/ui/components/input-group";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Input } from "@mangowm/ui/components/input";
 import { Trash2, Plus } from "lucide-react";
 import type { PanelProps } from "@/lib/presentation/section-types";

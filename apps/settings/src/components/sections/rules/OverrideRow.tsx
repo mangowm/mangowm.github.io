@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@mangowm/ui/components/select";
+} from "@/components/ui/select";
 import { Button } from "@mangowm/ui/components/button";
 import { ToggleGroup, ToggleGroupItem } from "@mangowm/ui/components/toggle-group";
 import { getOverrideMeta } from "@/lib/rules/metadata";

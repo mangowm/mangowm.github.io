@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@mangowm/ui/components/select";
+} from "@/components/ui/select";
 import { TerminalSquare, AlertCircle } from "lucide-react";
 
 interface DynamicArgFieldProps {

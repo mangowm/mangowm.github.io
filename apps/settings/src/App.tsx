@@ -1,4 +1,4 @@
-import { TooltipProvider } from "@mangowm/ui/components/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { SettingsPage } from "@/components/settings-page";
 import "./index.css";
 
