@@ -1,6 +1,6 @@
 {
-  "title": "v0.18.6",
-  "description": "v0.18.6 release",
+  "title": "v0.19.1",
+  "description": "v0.19.1 release",
   "root": true,
   "pages": [
     "---Getting Started---",
@@ -13,6 +13,7 @@
     "window-management",
     "bindings",
     "---Examples---",
+    "game-suggestion",
     "screenshot",
     "---Reference---",
     "nix-options",
