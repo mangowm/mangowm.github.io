@@ -51,7 +51,7 @@ export function SponsorPage() {
             )}
           >
             {copied === "qr" ? (
-              <Check className="size-6 text-success" />
+              <Check className="size-6 text-success-text" />
             ) : (
               <ImageIcon className="size-5 text-foreground" />
             )}
@@ -76,7 +76,7 @@ export function SponsorPage() {
               className={cn(
                 "inline-flex shrink-0 items-center gap-1.5 rounded-full border border-transparent px-2 py-1 text-xs font-semibold transition-colors focus-visible:border-ring",
                 copied === "address"
-                  ? "text-success"
+                  ? "text-success-text"
                   : "text-muted-foreground hover:bg-card hover:text-foreground",
               )}
             >
