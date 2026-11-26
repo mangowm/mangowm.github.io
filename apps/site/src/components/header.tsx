@@ -96,7 +96,7 @@ function SocialLinks() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="inline-flex size-8 flex-none items-center justify-center rounded-full border border-transparent text-muted-foreground transition-[color,background-color] duration-150 hover:bg-accent hover:text-foreground focus-visible:border-ring"
+          className="inline-flex size-8 flex-none touch-manipulation items-center justify-center rounded-full border border-transparent text-muted-foreground transition-[color,background-color] duration-150 hover:bg-accent hover:text-foreground focus-visible:border-ring pointer-coarse:size-11"
         >
           <Icon />
         </a>
@@ -121,7 +121,7 @@ function MobileNav({
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full lg:hidden"
+            className="touch-manipulation rounded-full lg:hidden pointer-coarse:size-11"
             aria-label="Open menu"
           />
         }
@@ -142,7 +142,7 @@ function MobileNav({
                   item={item}
                   active={isCurrent(item, pathname)}
                   onNavigate={() => setOpen(false)}
-                  className="flex items-center rounded-full border border-transparent px-3 py-2.5 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:border-ring aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"
+                  className="flex min-h-11 touch-manipulation items-center rounded-full border border-transparent px-3 py-2.5 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:border-ring aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"
                 />
               </li>
             ))}

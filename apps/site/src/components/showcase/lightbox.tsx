@@ -181,7 +181,7 @@ export function Lightbox({
             onClick={goPrev}
             disabled={prevDisabled}
             aria-label="Previous"
-            className="absolute inset-y-0 left-4 z-20 my-auto rounded-full bg-white/10 text-white/70 backdrop-blur-md hover:bg-white/20 hover:text-white disabled:opacity-0"
+            className="absolute inset-y-0 left-4 z-20 my-auto touch-manipulation rounded-full bg-white/10 text-white/70 backdrop-blur-md hover:bg-white/20 hover:text-white disabled:opacity-0 pointer-coarse:size-11"
           >
             <ArrowLeft size={16} />
           </Button>
@@ -204,7 +204,7 @@ export function Lightbox({
             onClick={goNext}
             disabled={nextDisabled}
             aria-label="Next"
-            className="absolute inset-y-0 right-4 z-20 my-auto rounded-full bg-white/10 text-white/70 backdrop-blur-md hover:bg-white/20 hover:text-white disabled:opacity-0"
+            className="absolute inset-y-0 right-4 z-20 my-auto touch-manipulation rounded-full bg-white/10 text-white/70 backdrop-blur-md hover:bg-white/20 hover:text-white disabled:opacity-0 pointer-coarse:size-11"
           >
             <ArrowRight size={16} />
           </Button>
@@ -221,7 +221,7 @@ export function Lightbox({
                   onClick={() => setMediaIndex(mediaItemIndex)}
                   aria-label={`${item.type === "video" ? "Video" : "Screenshot"} ${mediaItemIndex + 1}`}
                   aria-current={active ? "true" : undefined}
-                  className="flex h-4 items-center justify-center rounded-full border border-transparent focus-visible:border-ring"
+                  className="flex h-11 min-w-11 touch-manipulation items-center justify-center rounded-full border border-transparent focus-visible:border-ring"
                 >
                   {item.type === "video" ? (
                     <span

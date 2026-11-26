@@ -14,7 +14,7 @@ export function ModeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      className="touch-manipulation rounded-full"
+      className="touch-manipulation rounded-full pointer-coarse:size-11"
       onClick={toggleTheme}
       aria-label="Toggle theme"
       title="Toggle theme"
