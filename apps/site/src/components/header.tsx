@@ -171,15 +171,6 @@ export function Header() {
     setMenuOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 1024px)");
-    const onChange = () => {
-      if (desktop.matches) setMenuOpen(false);
-    };
-    desktop.addEventListener("change", onChange);
-    return () => desktop.removeEventListener("change", onChange);
-  }, []);
-
   return (
     <header className="site-header">
       <div className="pointer-events-none relative z-[2] mx-auto flex w-full max-w-[var(--container)] items-center justify-between gap-2">
