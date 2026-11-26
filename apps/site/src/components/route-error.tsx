@@ -17,6 +17,7 @@ export function RouteError({ reset }: ErrorComponentProps) {
           variant="outline"
           className="h-11 rounded-full px-6 text-[0.9375rem] font-semibold"
           render={<Link to="/" />}
+          nativeButton={false}
         >
           Go home
         </Button>

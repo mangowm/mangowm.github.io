@@ -23,6 +23,7 @@ function Hero() {
                 size="lg"
                 className="h-11 rounded-full px-6 text-[0.9375rem] font-semibold"
                 render={<a href="/docs/" />}
+                nativeButton={false}
               >
                 Get started
               </Button>
@@ -31,6 +32,7 @@ function Hero() {
                 size="lg"
                 className="h-11 rounded-full px-6 text-[0.9375rem] font-semibold"
                 render={<a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" />}
+                nativeButton={false}
               >
                 View on GitHub
               </Button>
