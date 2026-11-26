@@ -23,21 +23,31 @@ export const Route = createRootRoute({
       { rel: "icon", href: faviconIco, sizes: "32x32" },
       { rel: "icon", type: "image/svg+xml", href: faviconSvg },
       { rel: "apple-touch-icon", sizes: "180x180", href: appleTouchIcon },
-      {
-        rel: "preload",
-        href: "/fonts/bricolage-grotesque-latin-opsz-700.woff2",
-        as: "font",
-        type: "font/woff2",
-        crossOrigin: "anonymous",
-      },
-      { rel: "preload", href: geistFont, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
-      {
-        rel: "preload",
-        href: geistMonoFont,
-        as: "font",
-        type: "font/woff2",
-        crossOrigin: "anonymous",
-      },
+      ...(import.meta.env.DEV
+        ? []
+        : ([
+            {
+              rel: "preload",
+              href: "/fonts/bricolage-grotesque-latin-opsz-700.woff2",
+              as: "font",
+              type: "font/woff2",
+              crossOrigin: "anonymous",
+            },
+            {
+              rel: "preload",
+              href: geistFont,
+              as: "font",
+              type: "font/woff2",
+              crossOrigin: "anonymous",
+            },
+            {
+              rel: "preload",
+              href: geistMonoFont,
+              as: "font",
+              type: "font/woff2",
+              crossOrigin: "anonymous",
+            },
+          ] as const)),
       { rel: "stylesheet", href: appCss },
     ],
   }),
